@@ -18,6 +18,9 @@ export default {
     extend: {
       fontFamily:{
         inter:['Inter', 'system-ui', 'sans-serif']
+      },
+      backgroundImage: {
+        'login-pattern': "url('/public/assets/bg/login-bg.jpg')",
       }
     },
   },
