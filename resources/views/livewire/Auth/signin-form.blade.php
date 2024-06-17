@@ -1,4 +1,4 @@
-<div class="p-5 max-lg:border max-lg:shadow max-lg:bg-white rounded-lg space-y-3 w-full max-w-[450px]">
+<div class="p-5 max-lg:border max-lg:shadow max-lg:bg-white rounded-lg space-y-3 w-full max-w-[400px]">
     <h1 class="text-3xl font-bold">Login</h1>
     <x-input icon="envelope" label="Email" shadowless />
     <x-password  icon="lock-closed" label="Password" shadowless />
