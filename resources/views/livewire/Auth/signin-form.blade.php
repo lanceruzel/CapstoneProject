@@ -4,12 +4,14 @@
     <x-password  icon="lock-closed" label="Password" shadowless />
     <x-button wire:loading.attr='disabled' class="w-full" wire:click='login' spinner='login' label="Sign in" />
 
-    <div class="w-full text-center">
-        <div class="w-full flex items-center justify-center">
+    <div class="w-full flex items-center justify-center flex-col">
+        <div class="w-full flex items-center justify-center py-3 ">
             <span class="w-full border border-b border-gray-300"></span>
             <span class="px-4 font-semibold text-gray-600">or</span>
             <span class="w-full border border-b border-gray-300"></span>
         </div>
         <x-link label="Create an account" href="{{ route('signup') }}" secondary sm />
+
+        <x-link class="mt-3" label="Do you plan on selling a product?" href="{{ route('signin') }}" secondary sm />
     </div>
 </div>
