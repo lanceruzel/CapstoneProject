@@ -9,7 +9,7 @@
 
     @wireUiScripts
     @vite(['resources/css/app.css','resources/js/app.js'])
-    <script src="//unpkg.com/alpinejs" defer></script>
+    {{-- <script src="//unpkg.com/alpinejs" defer></script> --}}
 </head>
 
 <body class="font-inter text-gray-700 antialiased p-0 m-0">
@@ -27,23 +27,23 @@
         <div class="py-3 px-2.5 flex items-center justify-between flex-col h-full">
             <ul class="space-y-2 w-full">
                 <li>
-                    <x-button class='!justify-start' xl icon='user-circle' href='#' flat full secondary label="Profile" />
+                    <x-button class='!justify-start font-medium' xl icon='user-circle' href='#' flat full secondary label="Profile" />
                 </li>
 
                 <li>
-                    <x-button class='!justify-start' xl icon='home' href='#' flat full secondary label="Home" />
+                    <x-button class='!justify-start font-medium' xl icon='home' href='#' flat full secondary label="Home" />
                 </li>
 
                 <li>
-                    <x-button class='!justify-start' xl icon='bell' href='#' flat full secondary label="Notification" />
+                    <x-button class='!justify-start font-medium' xl icon='bell' href='#' flat full secondary label="Notification" />
                 </li>
 
                 <li>
-                    <x-button class='!justify-start' xl icon='magnifying-glass' href='#' flat full secondary label="Search" />
+                    <x-button class='!justify-start font-medium' xl icon='magnifying-glass' href='#' flat full secondary label="Search" />
                 </li>
 
                 <li>
-                    <x-button class='!justify-start' xl icon='chat-bubble-bottom-center-text' href='#' flat full secondary label="Messages" />
+                    <x-button class='!justify-start font-medium' xl icon='chat-bubble-bottom-center-text' href='#' flat full secondary label="Messages" />
                 </li>
             </ul>
 
