@@ -2,10 +2,6 @@
 
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
 Route::group(['middleware' => 'guest'], function(){
     Route::get('/signin', function () {
         return view('pages.signin');
@@ -14,5 +10,11 @@ Route::group(['middleware' => 'guest'], function(){
     Route::get('/signup', function () {
         return view('pages.signup');
     })->name('signup');
+});
+
+Route::group([], function(){
+    Route::get('/', function () {
+        return view('livewire.Tabs.home');
+    })->name('home');
 });
 
