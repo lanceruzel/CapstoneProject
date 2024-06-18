@@ -11,7 +11,7 @@
 </head>
 <body class="font-inter text-gray-700 antialiased p-0 m-0">
     <main class="w-screen h-screen grid grid-cols-12">
-        <div class="max-lg:hidden lg:col-span-7 xl:col-span-6 overflow-hidden flex items-start justify-center bg-slate-100">
+        <div class="max-lg:hidden lg:col-span-7 xl:col-span-6 overflow-hidden flex items-start justify-center">
             <img src="{{ asset('assets/svg/Traveling-cuate.svg') }}" alt="Traveling-cuate"/>
         </div>
 
