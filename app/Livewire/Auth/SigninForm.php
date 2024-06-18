@@ -27,13 +27,13 @@ class SigninForm extends Component
 
         }catch (\Exception $e){
             //Log the error for debugging
-            Log::error('Error signup: ' . $e->getMessage());
+            Log::error('Error signin: ' . $e->getMessage());
     
             //Show error dialog
             $this->dialog()->show([
                 'icon' => 'error',
                 'title' => 'Error!',
-                'description' => 'Woops, there seems to be a problem creating your account. Please try again later.',
+                'description' => 'Woops, there seems to be a problem logging in your account. Please try again later.',
             ]);
         }
 
