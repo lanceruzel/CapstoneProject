@@ -13,6 +13,9 @@
 </head>
 
 <body class="font-inter text-gray-700 antialiased p-0 m-0">
+    <x-dialog />
+    <x-notifications />
+    
     <nav class="bg-white shadow border-gray-200 fixed top-0 w-screen z-60">
         <div class="flex flex-wrap items-center justify-between mx-auto p-4">
             <a href="/" class="flex items-center space-x-3">
