@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -22,5 +23,17 @@ Route::group([], function(){
     Route::get('/', function () {
         return view('livewire.Pages.home');
     })->name('home');
+    
+    Route::get('/profile', function () {
+        return view('livewire.Pages.profile' , [
+            'user' => auth()->user()
+        ]);
+    })->name('profile');
+
+    Route::get('/profile/{username}', function ($username) {
+        return view('livewire.Pages.profile' , [
+            'user' => User::where('username', $username)->firstOrFail()
+        ]);
+    })->name('profile_2');
 });
 

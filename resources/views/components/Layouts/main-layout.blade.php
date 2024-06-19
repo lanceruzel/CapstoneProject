@@ -69,11 +69,11 @@
         <div class="py-3 px-2.5 flex items-center justify-between flex-col h-full">
             <ul class="space-y-2 w-full">
                 <li>
-                    <x-button class='!justify-start font-medium' xl icon='user-circle' href='#' flat full secondary label="Profile" />
-                </li>
-
-                <li>
-                    <x-button class='!justify-start font-medium' xl icon='home' href='#' flat full secondary label="Home" />
+                    @if(request()->routeIS('home'))
+                        <x-button class='!justify-start font-medium' xl icon='home' href="{{ route('home') }}" solid flat full secondary label="Home" />
+                    @else
+                        <x-button class='!justify-start font-medium' xl icon='home' href="{{ route('home') }}" flat full secondary label="Home" /> 
+                    @endif
                 </li>
 
                 <li>
@@ -86,6 +86,14 @@
 
                 <li>
                     <x-button class='!justify-start font-medium' xl icon='chat-bubble-bottom-center-text' href='#' flat full secondary label="Messages" />
+                </li>
+
+                <li>
+                    @if(request()->routeIS('profile'))
+                        <x-button class='!justify-start font-medium' xl icon='user-circle' href="{{ route('profile') }}" solid flat full secondary label="Profile" />   
+                    @else
+                        <x-button class='!justify-start font-medium' xl icon='user-circle' href="{{ route('profile') }}" flat full secondary label="Profile" />
+                    @endif 
                 </li>
             </ul>
 
