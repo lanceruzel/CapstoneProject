@@ -22,11 +22,35 @@
                 {{-- <img src="https://flowbite.com/docs/images/logo.svg" class="h-8" alt="Flowbite Logo" /> --}}
                 <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">GlobeConnect</span>
             </a>
+
+            <div>
+                <ul class="w-full max-md:flex hidden items-center justify-center flex-row">
+                    <li>
+                        <x-mini-button rounded icon="user-circle" href='#' flat primary interaction:solid />
+                    </li>
+    
+                    <li>
+                        <x-mini-button rounded icon="Home" href='#' flat primary interaction:solid />
+                    </li>
+    
+                    <li>
+                        <x-mini-button rounded icon="bell" href='#' flat primary interaction:solid />
+                    </li>
+    
+                    <li>
+                        <x-mini-button rounded icon="magnifying-glass" href='#' flat primary interaction:solid />
+                    </li>
+    
+                    <li>
+                        <x-mini-button rounded icon="chat-bubble-bottom-center-text" href='#' flat primary interaction:solid />
+                    </li>
+                </ul>
+            </div>
         </div>
     </nav>
 
     <!-- Sidebar -->
-    <aside class="fixed top-auto h-full w-64 left-0 border-e pt-16 bg-white">
+    <aside class="max-md:hidden fixed top-auto h-full w-64 left-0 border-e pt-16 bg-white">
         <div class="py-3 px-2.5 flex items-center justify-between flex-col h-full">
             <ul class="space-y-2 w-full">
                 <li>
@@ -60,8 +84,8 @@
         </div>
     </aside>
 
-    <main class="ps-64 pt-16 bg-gray-50">
-        <div class="p-5">
+    <main class="md:ps-64 pt-16 bg-gray-50">
+        <div class="p-5 overflow-hidden">
             {{ $slot }}
         </div>
     </main>
