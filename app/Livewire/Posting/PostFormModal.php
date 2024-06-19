@@ -18,6 +18,23 @@ class PostFormModal extends Component
     public $content;
     public $images;
 
+    public $postUpdate = null;
+
+    protected $listeners = [
+        'update-post' => 'getPostData',
+    ];
+
+    public function getPostData($id = null){
+        if($id){
+            $this->postUpdate = Post::findOrFail($id);
+
+            if($this->postUpdate){
+                $this->content = $this->postUpdate->content;
+                $this->images = json_decode($this->postUpdate->images);
+            }
+        }
+    }
+
     public function store(){
         $postType = PostType::Status;
 
@@ -27,6 +44,7 @@ class PostFormModal extends Component
 
         if($post){
             $this->reset('content');
+            $this->reset('images');
 
             $this->dispatch('post-created');
             $this->dispatch('close-modal', ['modal' => 'postFormModal']);
@@ -34,25 +52,30 @@ class PostFormModal extends Component
             $this->notification()->send([
                 'icon' => 'success',
                 'title' => 'Success!',
-                'description' => 'Your post has been successfully posted!',
+                'description' => $this->postUpdate ? 'Your post has been successfully updated.' : 'Your post has been successfully created.',
             ]);
         }else{
             $this->notification()->send([
                 'icon' => 'error',
                 'title' => 'Error!',
-                'description' => 'There seem to be a problem creating your post.',
+                'description' => $this->postUpdate ? 'There seem to be a problem creating your post.' : 'There seem to be a problem updating your post.',
             ]);
         }
     }
 
     public function storePost($postType, $validated){
-        return Post::create([
-            'type' => $postType,
-            'user_id' => Auth::id(),
-            'content' => $validated['content'],
-            'images' => json_encode($this->storeImages($this->images)),
-            'status' => Status::Available
-        ]);
+        return Post::updateOrCreate(
+            [
+                'id' => $this->postUpdate ? $this->postUpdate->id : null,
+                'user_id' => Auth::id()
+            ],
+            [
+                'type' => $postType,
+                'content' => $validated['content'],
+                'images' => json_encode($this->storeImages($this->images)),
+                'status' => Status::Available
+            ]
+        );      
     }
 
     public function formValidate(){

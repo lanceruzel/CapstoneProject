@@ -1,4 +1,4 @@
-<x-modal-card name="postFormModal" title="Consent Terms" align='center' blurless>
+<x-modal-card name="postFormModal" title="Consent Terms" align='center' blurless wire:ignore.self>
     <div class="flex flex-col gap-2 items-start text-gray-600">
         <div class="flex flex-col gap-2 w-full">
             <div class="flex justify-between items-center">
@@ -19,8 +19,8 @@
                 <div class="max-w-[520px] flex gap-4 overflow-x-auto p-3 pt-5" uk-lightbox>
                     @foreach($images as $key => $image)
                         <div class="flex-shrink-0 w-56 h-56 relative">
-                            <a href="{{ $image->temporaryUrl() }}">
-                                <img src="{{ $image->temporaryUrl() }}" alt="Uploaded Image" accept="image/png, image/jpeg" class="w-full h-full object-cover rounded-lg shadow border">
+                            <a href="{{ is_object($image) && method_exists($image, 'temporaryUrl') ? $image->temporaryUrl() : asset('uploads/posts') . '/' . $image }}">
+                                <img src="{{ is_object($image) && method_exists($image, 'temporaryUrl') ? $image->temporaryUrl() : asset('uploads/posts') . '/' . $image }}" alt="Uploaded Image" accept="image/png, image/jpeg" class="w-full h-full object-cover rounded-lg shadow border">
                             </a>
 
                             <button wire:click="deleteImage({{ $key }})" class="absolute -top-5 -right-3.5 active:scale-95 transition-all">
@@ -44,7 +44,13 @@
         
         <x-slot name="footer" class="flex justify-end gap-x-4">
             <x-button flat label="Cancel" x-on:click="close" />
-            <x-button wire:loading.attr="disabled" wire:click="store" spinner="store" label="Post" />
+
+            @if($postUpdate)
+                <x-button wire:loading.attr="disabled" wire:click="store" spinner="store" label="Update" />
+            @else
+                <x-button wire:loading.attr="disabled" wire:click="store" spinner="store" label="Post" />
+            @endif
+            
         </x-slot>
     </div>
 </x-modal-card>
