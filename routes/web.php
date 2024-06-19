@@ -20,7 +20,7 @@ Route::get('/signout', function () {
 
 Route::group([], function(){
     Route::get('/', function () {
-        return view('livewire.Tabs.home');
+        return view('livewire.Pages.home');
     })->name('home');
 });
 
