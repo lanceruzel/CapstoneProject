@@ -26,7 +26,7 @@
     </nav>
 
     <!-- Sidebar -->
-    <aside class="fixed top-auto h-full w-64 left-0 border-e pt-16">
+    <aside class="fixed top-auto h-full w-64 left-0 border-e pt-16 bg-white">
         <div class="py-3 px-2.5 flex items-center justify-between flex-col h-full">
             <ul class="space-y-2 w-full">
                 <li>
@@ -60,7 +60,7 @@
         </div>
     </aside>
 
-    <main class="ps-64 pt-16">
+    <main class="ps-64 pt-16 bg-gray-50">
         <div class="p-5">
             {{ $slot }}
         </div>

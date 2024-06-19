@@ -127,7 +127,7 @@
     <div class="flex gap-2 flex-row items-center justify-items-center mt-4">
         <div class="size-4 bg-red-500 rounded-full p-4"></div>
 
-        <textarea placeholder="Add Comment...." rows="1" class="w-full resize-none text-sm !bg-transparent px-4 py-2 focus:outline-none focus:!border-transparent focus:!ring-transparent" wire:model="commentContent"></textarea>
+        {{-- <textarea placeholder="Add Comment...." rows="1" class="w-full resize-none text-sm !bg-transparent px-4 py-2 focus:outline-none focus:!border-transparent focus:!ring-transparent" wire:model="commentContent"></textarea> --}}
 
         <button class="bg-gray-100 px-4 py-1.5 h-full rounded-full text-sm font-medium active:scale-95 transition-all w-auto hover:bg-gray-200" wire:loading.attr='disabled' wire:click.prevent='store_comment'>
             <span wire:loading.remove wire:target="store_comment">Send</span>

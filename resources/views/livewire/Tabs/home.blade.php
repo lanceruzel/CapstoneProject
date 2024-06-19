@@ -1,5 +1,5 @@
 <x-layouts.main-layout>
-    <div class="flex flex-col lg:flex-row lg:items-start items-center justify-center lg:gap-5 xl:gap-7" x-on:click="$openModal('simpleModal')">
+    <div class="flex flex-col lg:flex-row lg:items-start items-center justify-center lg:gap-5 xl:gap-7" x-on:click="$openModal('testModal')">
 
         <div class="w-[510px] max-w-[510px] min-h-screen rounded-lg max-sm:px-7 space-y-5">
             <div class="border w-full bg-white rounded-lg p-4 gap-3 shadow-sm flex justify-stretch items-stretch hover:cursor-pointer active:scale-95 transition-all">
@@ -65,7 +65,7 @@
         </div>
     </div>
 
-    <x-modal name="simpleModal">
+    <x-modal name="testModal">
         <x-card title="Consent Terms">
             <p>
                 Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the
@@ -75,10 +75,10 @@
                 with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop
                 publishing software like Aldus PageMaker including versions of Lorem Ipsum.
             </p>
-     
+    
             <x-slot name="footer" class="flex justify-end gap-x-4">
                 <x-button flat label="Cancel" x-on:click="close" />
-     
+    
                 <x-button primary label="I Agree" wire:click="agree" />
             </x-slot>
         </x-card>
