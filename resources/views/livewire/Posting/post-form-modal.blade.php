@@ -1,4 +1,4 @@
-<x-modal-card name="postFormModal" title="Consent Terms" align='center' blurless wire:ignore.self>
+<x-modal-card name="postFormModal" title="Manage Post" align='center' blurless wire:ignore.self>
     <div class="flex flex-col gap-2 items-start text-gray-600">
         <div class="flex flex-col gap-2 w-full">
             <div class="flex justify-between items-center">

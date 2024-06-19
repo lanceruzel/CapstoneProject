@@ -27,7 +27,8 @@ class PostContainer extends Component
     public function getListeners(){
         return [
             "echo:new-comment.{$this->post->id},CommentCreated" => '$refresh',
-            "echo:update-post.{$this->post->id},PostUpdated" => '$refresh',
+            "echo:post-updated.{$this->post->id},PostUpdated" => '$refresh',
+            "delete-post" => 'postDeleteConfirmation',
         ];
     }
 
@@ -100,6 +101,45 @@ class PostContainer extends Component
         }
 
         return false;
+    }
+
+    public function postDeleteConfirmation($id){
+        $this->dialog()->confirm([
+            'title' => 'Are you Sure?',
+            'description' => 'Delete this post?',
+            'icon' => 'question',
+            'accept' => [
+                'label' => 'Yes, delete it',
+                'method' => 'deletePost',
+                'params' => $id,
+            ],
+            'reject' => [
+                'label' => 'No, cancel',
+                'method' => '',
+            ],
+        ]);
+    }
+
+    public function deletePost($id){
+        $post = Post::find($id);
+
+        if($post){
+            if(Post::destroy($id)){
+                $this->dispatch('post-create-delete');
+
+                $this->notification()->send([
+                    'icon' => 'success',
+                    'title' => 'Success!',
+                    'description' => 'Your post has been removed.',
+                ]);
+            }
+        }else{
+            $this->dialog()->show([
+                'icon' => 'error',
+                'title' => 'Error Dialog!',
+                'description' => 'Your post cannot be found.',
+            ]);
+        }
     }
 
     public function getTotalLikes(){

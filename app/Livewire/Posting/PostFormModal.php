@@ -4,6 +4,7 @@ namespace App\Livewire\Posting;
 
 use App\Enums\PostType;
 use App\Enums\Status;
+use App\Events\PostUpdated;
 use App\Models\Post;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
@@ -46,21 +47,39 @@ class PostFormModal extends Component
             $this->reset('content');
             $this->reset('images');
 
-            $this->dispatch('post-created');
-            $this->dispatch('close-modal', ['modal' => 'postFormModal']);
-
-            $this->notification()->send([
-                'icon' => 'success',
+            if($this->postUpdate == null){
+                $this->dispatch('post-create-delete');
+            }else{
+                PostUpdated::dispatch($this->postUpdate->id);
+                $this->postUpdate = null;
+            }
+  
+            $this->dialog()->show([
                 'title' => 'Success!',
+                'icon' => 'success',
                 'description' => $this->postUpdate ? 'Your post has been successfully updated.' : 'Your post has been successfully created.',
+
+                'onClose' => [
+                    'method' => 'closeModal',
+                ],
+                'onDismiss' => [
+                    'method' => 'closeModal',
+                ],
+                'onTimeout' => [
+                    'method' => 'closeModal',
+                ],
             ]);
         }else{
-            $this->notification()->send([
+            $this->dialog()->show([
                 'icon' => 'error',
                 'title' => 'Error!',
                 'description' => $this->postUpdate ? 'There seem to be a problem creating your post.' : 'There seem to be a problem updating your post.',
             ]);
         }
+    }
+
+    public function closeModal(){
+        $this->dispatch('close-modal', ['modal' => 'postFormModal']);
     }
 
     public function storePost($postType, $validated){

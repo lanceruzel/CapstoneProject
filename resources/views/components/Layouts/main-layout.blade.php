@@ -108,7 +108,7 @@
     <script>
         document.addEventListener('livewire:init', () => {
             Livewire.on('close-modal', (event) => {
-                $closeModal(event[0].modal)
+                $closeModal(event[0].modal);
             });
 
             Livewire.on('messagesUpdated', function () {

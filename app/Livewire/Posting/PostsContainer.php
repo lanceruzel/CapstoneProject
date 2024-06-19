@@ -9,7 +9,7 @@ use Livewire\Component;
 class PostsContainer extends Component
 {
     protected $listeners = [
-        'post-created' => '$refresh'
+        'post-create-delete' => '$refresh'
     ];
 
     public function render()

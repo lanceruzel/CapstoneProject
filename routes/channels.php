@@ -9,3 +9,7 @@ Broadcast::channel('App.Models.User.{id}', function ($user, $id) {
 Broadcast::channel('new-comment', function (){
     return true;
 });
+
+Broadcast::channel('post-updated', function (){
+    return true;
+});

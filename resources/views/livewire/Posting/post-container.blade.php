@@ -17,7 +17,7 @@
 
         <x-dropdown position="bottom">
             <x-dropdown.item label="Update Post" wire:click="$dispatch('update-post', { id: {{ $post->id }} })" />
-            <x-dropdown.item label="Delete Post" />
+            <x-dropdown.item label="Delete Post" wire:click="$dispatch('delete-post', { id: {{ $post->id }} })" />
         </x-dropdown>
     </div>
 
