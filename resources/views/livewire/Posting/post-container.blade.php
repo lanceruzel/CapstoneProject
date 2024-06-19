@@ -11,7 +11,7 @@
                     <a href="#" class="hover:text-gray-700 hover:no-underline py-0 font-medium">{{ $post->user->userInformation->fullname() }}</a>
                 </div>
 
-                <small class="text-xs font-medium text-gray-600">6mins ago</small>
+                <small class="text-xs font-medium text-gray-600">{{ $this->getDateTimeDiff() }}</small>
             </div>
         </div>
 

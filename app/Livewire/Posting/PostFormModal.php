@@ -44,10 +44,10 @@ class PostFormModal extends Component
         $post = $this->storePost($postType, $validated);
 
         if($post){
-            $this->reset('content');
-            $this->reset('images');
-
             if($this->postUpdate == null){
+                $this->reset('content');
+                $this->reset('images');
+
                 $this->dispatch('post-create-delete');
             }else{
                 PostUpdated::dispatch($this->postUpdate->id);
@@ -57,7 +57,7 @@ class PostFormModal extends Component
             $this->dialog()->show([
                 'title' => 'Success!',
                 'icon' => 'success',
-                'description' => $this->postUpdate ? 'Your post has been successfully updated.' : 'Your post has been successfully created.',
+                'description' => $this->postUpdate != null ? 'Your post has been successfully updated.' : 'Your post has been successfully created.',
 
                 'onClose' => [
                     'method' => 'closeModal',
@@ -73,7 +73,7 @@ class PostFormModal extends Component
             $this->dialog()->show([
                 'icon' => 'error',
                 'title' => 'Error!',
-                'description' => $this->postUpdate ? 'There seem to be a problem creating your post.' : 'There seem to be a problem updating your post.',
+                'description' => $this->postUpdate != null ? 'There seem to be a problem creating your post.' : 'There seem to be a problem updating your post.',
             ]);
         }
     }
