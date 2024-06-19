@@ -7,16 +7,31 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
 
+    <script src="https://cdn.jsdelivr.net/npm/uikit@3.21.5/dist/js/uikit.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/uikit@3.21.5/dist/css/uikit.min.css" />
+    
     @wireUiScripts
     @vite(['resources/css/app.css','resources/js/app.js'])
     {{-- <script src="//unpkg.com/alpinejs" defer></script> --}}
+
+    <style>
+        .uk-active > a{
+            border-bottom-color: rgb(107 114 128) !important;
+            text-decoration: none !important;
+        }
+
+        a{
+            border-bottom-color: rgb(107 114 128) !important;
+            text-decoration: none !important;
+        }
+    </style>
 </head>
 
 <body class="font-inter text-gray-700 antialiased p-0 m-0">
     <x-dialog />
     <x-notifications />
     
-    <nav class="bg-white shadow border-gray-200 fixed top-0 w-screen z-60">
+    <nav class="bg-white shadow border-gray-200 fixed top-0 w-screen" style="z-index: 1">
         <div class="flex flex-wrap items-center justify-between mx-auto p-4">
             <a href="/" class="flex items-center space-x-3">
                 {{-- <img src="https://flowbite.com/docs/images/logo.svg" class="h-8" alt="Flowbite Logo" /> --}}
@@ -89,6 +104,40 @@
             {{ $slot }}
         </div>
     </main>
-</body>
 
+    <script>
+        document.addEventListener('livewire:init', () => {
+            Livewire.on('close-modal', (event) => {
+                $closeModal(event[0].modal)
+            });
+
+            Livewire.on('messagesUpdated', function () {
+                scrollToBottom();
+            });
+
+            Livewire.on('update-post', function () {
+                $openModal('postFormModal');
+            });
+        });
+
+        function copyToClipboard(textToCopy) {
+            var $temp = $("<input>");
+            $("body").append($temp);
+            $temp.val(textToCopy).select();
+            document.execCommand("copy");
+            toast('success', 'Copied to clipboard.');
+            $temp.remove();
+        }
+
+        function scrollToBottom() {
+            var chatContainer = document.getElementById("chat-container");
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        }
+
+        // Call scrollToBottom when the page loads
+        window.onload = function() {
+            scrollToBottom();
+        }
+    </script>
+</body>
 </html>

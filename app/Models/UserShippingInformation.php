@@ -19,7 +19,7 @@ class UserShippingInformation extends Model
         'postal',
     ];
 
-    public function account(){
+    public function user(){
         return $this->belongsTo(User::class);
     }
 }

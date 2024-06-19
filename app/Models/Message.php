@@ -20,7 +20,7 @@ class Message extends Model
         return $this->belongsTo(Conversation::class);
     }
 
-    public function account(){
+    public function user(){
         return $this->belongsTo(User::class);
     }
 }

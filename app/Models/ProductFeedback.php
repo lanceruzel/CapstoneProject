@@ -16,7 +16,7 @@ class ProductFeedback extends Model
         'rating',
     ];
 
-    public function account(){
+    public function user(){
         return $this->belongsTo(User::class);
     }
 

@@ -17,7 +17,7 @@ class CartItem extends Model
         'for_checkout',
     ];
 
-    public function account(){
+    public function user(){
         return $this->belongsTo(User::class, 'user_id');
     }
 

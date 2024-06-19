@@ -19,7 +19,7 @@ class StoreInformation extends Model
         'requirements',
     ];
 
-    public function account(){
+    public function user(){
         return $this->belongsTo(User::class);
     }
 }

@@ -1,8 +1,7 @@
 <x-layouts.main-layout>
-    <div class="flex flex-col lg:flex-row lg:items-start items-center justify-center lg:gap-5 xl:gap-7" x-on:click="$openModal('testModal')">
-
+    <div class="flex flex-col lg:flex-row lg:items-start items-center justify-center lg:gap-5 xl:gap-7">
         <div class="w-[510px] max-w-[510px] min-h-screen rounded-lg max-sm:px-7 space-y-5">
-            <div class="border w-full bg-white rounded-lg p-4 gap-3 shadow-sm flex justify-stretch items-stretch hover:cursor-pointer active:scale-95 transition-all">
+            <div class="border w-full bg-white rounded-lg p-4 gap-3 shadow-sm flex justify-stretch items-stretch hover:cursor-pointer active:scale-95 transition-all" onclick="$openModal('postFormModal')">
                 <div class="w-full text-center bg-gray-200 rounded-lg py-2 font-medium text-sm select-none text-gray-600">What do you have in mind?</div>
             
                 <i class="py-1 px-2 text-xl bg-blue-200 text-blue-800 rounded-lg">
@@ -15,9 +14,7 @@
             </div>
 
             <!-- Posts Container -->
-            <div class="w-full">
-                <livewire:Posting.post-container />
-            </div>
+            <livewire:Posting.posts-container />
         </div>
     
         <!-- Rightbar -->
@@ -30,7 +27,7 @@
                     <div class="flex justify-between items-center">
                         <h3 class="font-bold"> People You might know </h3>
                         
-                        <x-mini-button lg rounded icon="arrow-path" flat primary interaction:solid />
+                        <x-mini-button rounded icon="arrow-path" outline flat primary interaction:solid />
                     </div>
                 
                     <!-- Content -->
@@ -65,22 +62,5 @@
         </div>
     </div>
 
-    <x-modal name="testModal">
-        <x-card title="Consent Terms">
-            <p>
-                Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the
-                industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type
-                and scrambled it to make a type specimen book. It has survived not only five centuries, but also the
-                leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s
-                with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop
-                publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-            </p>
-    
-            <x-slot name="footer" class="flex justify-end gap-x-4">
-                <x-button flat label="Cancel" x-on:click="close" />
-    
-                <x-button primary label="I Agree" wire:click="agree" />
-            </x-slot>
-        </x-card>
-    </x-modal>
+    <livewire:Posting.post-form-modal />
 </x-layouts.main-layout>

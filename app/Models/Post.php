@@ -17,7 +17,15 @@ class Post extends Model
         'status',
     ];
 
-    public function account(){
+    public function user(){
         return $this->belongsTo(User::class);
+    }
+
+    public function postLikes(){
+        return $this->hasMany(PostLike::class);
+    }
+
+    public function postComments(){
+        return $this->hasMany(PostComment::class);
     }
 }

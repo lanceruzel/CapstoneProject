@@ -16,7 +16,7 @@ class Notification extends Model
         'status',
     ];
 
-    public function account(){
+    public function user(){
         return $this->belongsTo(User::class);
     }
 }

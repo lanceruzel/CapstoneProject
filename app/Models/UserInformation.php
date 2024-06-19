@@ -23,7 +23,7 @@ class UserInformation extends Model
         return $this->first_name . ' ' . $this->last_name;
     }
 
-    public function account(){
+    public function user(){
         return $this->belongsTo(User::class);
     }
 }
