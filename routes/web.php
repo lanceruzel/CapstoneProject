@@ -24,16 +24,14 @@ Route::group([], function(){
         return view('livewire.Pages.home');
     })->name('home');
     
-    Route::get('/profile', function () {
+    Route::get('/profile/{username?}', function ($username = null) {
         return view('livewire.Pages.profile' , [
-            'user' => auth()->user()
+            'user' => $username ? User::where('username', $username)->firstOrFail() : auth()->user()
         ]);
     })->name('profile');
 
-    Route::get('/profile/{username}', function ($username) {
-        return view('livewire.Pages.profile' , [
-            'user' => User::where('username', $username)->firstOrFail()
-        ]);
-    })->name('profile_2');
+    Route::get('/messages/{username?}', function ($username = null) {
+        return view('livewire.Pages.message');
+    })->name('message');
 });
 

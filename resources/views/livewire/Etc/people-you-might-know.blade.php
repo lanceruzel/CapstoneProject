@@ -13,7 +13,7 @@
             @if(count($users) > 0)
                 @foreach ($users as $user)
                     <div class="flex items-center gap-3">
-                        <a href="{{ route('profile_2', $user->username) }}">
+                        <a href="{{ route('profile', $user->username) }}">
                             <img src="https://static.everypixel.com/ep-pixabay/0329/8099/0858/84037/3298099085884037069-head.png" alt="" class="bg-gray-200 rounded-full w-10 h-10">
                         </a>
     

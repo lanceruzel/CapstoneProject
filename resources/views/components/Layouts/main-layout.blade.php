@@ -89,7 +89,11 @@
                 </li>
 
                 <li>
-                    <x-button class='!justify-start font-medium' xl icon='chat-bubble-bottom-center-text' href='#' flat full secondary label="Messages" />
+                    @if(request()->routeIS('message'))
+                        <x-button class='!justify-start font-medium' xl icon='chat-bubble-bottom-center-text' href="{{ route('message') }}" solid flat full secondary label="Messages" />
+                    @else
+                        <x-button class='!justify-start font-medium' xl icon='chat-bubble-bottom-center-text' href="{{ route('message') }}" flat full secondary label="Messages" /> 
+                    @endif
                 </li>
 
                 <li>
