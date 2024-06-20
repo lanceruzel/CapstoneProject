@@ -6,18 +6,14 @@
                 <div class="flex gap-5 flex-col items-center p-8">
 
                     <!-- Profile Picture -->
-                    <div class="relative rounded-full h-full w-28 md:w-40 bg-slate-600 shadow-md">
-                        <div class="relative h-28 w-28 md:h-40 md:w-40 rounded-full overflow-hidden border-[6px] border-gray-100 shrink-0"> 
-                            {{-- @if($account->userProfile->profile_dp == null) --}}
-                                <div class="w-full h-full object-cover absolute bottom-10 right-1">
-                                    <i class="ri-user-3-fill ri-10x"></i>
-                                </div>
-                            {{-- @else
-                                <img src="{{ asset('uploads/all') . '/' . $account->userProfile->profile_dp }}" class="w-full h-full absolute object-cover">
-                            @endif --}}
-                        </div>
-
-                        <x-mini-button class="absolute -bottom-3 left-1/2 -translate-x-1/2 shadow border-2 border-gray-100" rounded primary lg icon="pencil" />
+                    <div class="relative h-28 w-28 md:h-40 md:w-40 rounded-full overflow-hidden border-[6px] bg-slate-400 border-gray-100 shrink-0"> 
+                        {{-- @if($account->userProfile->profile_dp == null) --}}
+                            <div class="w-full h-full object-cover absolute bottom-10 right-1">
+                                <i class="ri-user-3-fill ri-10x"></i>
+                            </div>
+                        {{-- @else
+                            <img src="{{ asset('uploads/all') . '/' . $account->userProfile->profile_dp }}" class="w-full h-full absolute object-cover">
+                        @endif --}}
                     </div>
                 
                     <div class="w-full">
