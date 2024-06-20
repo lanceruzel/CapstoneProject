@@ -23,6 +23,7 @@ class PostFormModal extends Component
 
     protected $listeners = [
         'update-post' => 'getPostData',
+        'clearPostFormModalData' => 'clearData',
     ];
 
     public function getPostData($id = null){
@@ -45,13 +46,9 @@ class PostFormModal extends Component
 
         if($post){
             if($this->postUpdate == null){
-                $this->reset('content');
-                $this->reset('images');
-
                 $this->dispatch('post-create-delete');
             }else{
                 PostUpdated::dispatch($this->postUpdate->id);
-                $this->postUpdate = null;
             }
   
             $this->dialog()->show([
@@ -78,8 +75,15 @@ class PostFormModal extends Component
         }
     }
 
+    public function clearData(){
+        $this->postUpdate = null;
+        $this->reset('content');
+        $this->reset('images');
+    }
+
     public function closeModal(){
         $this->dispatch('close-modal', ['modal' => 'postFormModal']);
+        $this->clearData();
     }
 
     public function storePost($postType, $validated){
