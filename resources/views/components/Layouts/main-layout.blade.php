@@ -24,6 +24,10 @@
             border-bottom-color: rgb(107 114 128) !important;
             text-decoration: none !important;
         }
+
+        [x-cloak]{
+            display: none !important;
+        }
     </style>
 </head>
 
