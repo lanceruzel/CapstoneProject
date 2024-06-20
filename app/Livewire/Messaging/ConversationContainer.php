@@ -64,7 +64,7 @@ class ConversationContainer extends Component
                     }
                 }
                 
-                $this->images;
+                $this->images = [];
 
                 //Update Conversation last message
                 $this->conversation->last_message_id = $messageStore->id;
@@ -93,8 +93,8 @@ class ConversationContainer extends Component
     public function storeImages($images){
         $imagePaths = [];
 
-        if($this->images){
-            foreach ($this->images as $key => $image) {
+        if($images){
+            foreach ($images as $key => $image) {
                 $filename = $key . '_' . time() . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
                 $image->storeAs('messages', $filename);
                 array_push($imagePaths, $filename);

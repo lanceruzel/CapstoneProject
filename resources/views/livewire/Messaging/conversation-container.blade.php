@@ -166,7 +166,7 @@
                                 </a>
 
                                 <button wire:click="deleteImage({{ $key }})" class="absolute -top-5 -right-3.5 active:scale-95 transition-all">
-                                    <i class="ri-close-circle-fill ri-2x"></i>
+                                    <x-icon name="x-circle" solid class="w-8 h-8" />
                                 </button>
                             </div>  
                         @endforeach
@@ -218,7 +218,7 @@
                             <div>
                                 <div class="flex gap-3">
                                     <img src="https://i.pravatar.cc" alt="" class="w-9 h-9 rounded-full shadow">
-                                    <div class="px-4 py-2 rounded-[20px] max-w-sm bg-gray-100 break-words !text-wrap hyphens-auto space-y-3">
+                                    <div class="px-4 py-2 rounded-[20px] max-w-sm bg-gray-100 shadow break-words !text-wrap hyphens-auto space-y-3">
                                         <span>{{ $message->content }}</span>
 
                                         <!-- images -->
@@ -278,10 +278,10 @@
         <div class="flex items-center md:gap-4 gap-2 p-3 overflow-hidden">
             <label class="py-5 flex flex-col justify-center items-center cursor-pointer">
                 <input class="hidden" type="file" multiple wire:model="images">
-                <i class="ri-image-2-line ri-lg"></i>
+                <x-icon name="photo" solid class="w-8 h-8" />
             </label>
 
-            <x-input label="" wire:model='message' placeholder="Message"/>
+            <x-input label="" wire:model='message' shadowless placeholder="Message"/>
 
             <x-mini-button rounded flat black icon="paper-airplane" wire:click='sendMessage' />
         </div>
