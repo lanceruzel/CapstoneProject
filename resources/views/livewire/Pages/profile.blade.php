@@ -46,8 +46,7 @@
                             <!-- Options -->
                             <div class="flex items-center justify-center flex-row gap-3">
                                 @if($user->id == Auth::id())
-                                   <x-button icon="user-group" label="Affiliate" />
-                                    <x-button icon="building-storefront" label="Store Management" /> 
+                                   <x-button icon="user" label="Update Profile" />
                                 @else
                                     <x-button icon="chat-bubble-oval-left" label="Message" />
                                 @endif
