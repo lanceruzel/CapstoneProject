@@ -6,8 +6,8 @@
                 <div class="flex items-center sm:gap-4 gap-2">
 
                     <!-- toggle for mobile -->
-                    {{-- <x-button-icon class="md:hidden" icon='<i class="ri-arrow-left-s-line"></i>' uk-toggle="target: #side-chat ; cls: max-md:-translate-x-full" aria-expanded="false"/> --}}
-                    
+                    <x-mini-button white rounded icon="chevron-left" class="md:hidden" uk-toggle="target: #side-chat ; cls: max-md:-translate-x-full" aria-expanded="false" />
+                        
                     <div class="relative cursor-pointer max-md:hidden">
                         <img src="https://i.pravatar.cc" alt="" class="w-8 h-8 rounded-full shadow">
                         {{-- <div class="w-2 h-2 bg-teal-500 rounded-full absolute right-0 bottom-0 m-px"></div> --}}
@@ -49,7 +49,7 @@
             
         @if($isAppeal == false)
             <!-- chats bubble -->
-            <div id="chat-container" class="w-full p-5 py-10 overflow-y-auto md:h-[calc(100vh-210px)] h-[calc(100vh-210px)]">
+            <div id="chat-container" class="w-full p-5 py-10 overflow-y-auto md:h-[calc(100vh-210px)] h-[calc(100vh-220px)]">
                 @if($isAppeal == false)
                     <div class="py-10 text-center text-sm lg:pt-8">
                         <img src="https://i.pravatar.cc" class="w-24 h-24 rounded-full mx-auto mb-3" alt="">
