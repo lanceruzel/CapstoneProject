@@ -106,7 +106,7 @@
                     <x-button class='!justify-start' icon='cog-6-tooth' flat full secondary label="Lance Ruzel C. Ambrocio" />
                 </x-slot>
                 
-                <x-dropdown.item icon='arrow-left-end-on-rectangle' label="Logout" />
+                <x-dropdown.item icon='arrow-left-end-on-rectangle' href="{{ route('signout') }}" label="Logout" />
             </x-dropdown>
         </div>
     </aside>
