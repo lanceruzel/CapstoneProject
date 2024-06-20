@@ -1,10 +1,10 @@
 <x-layouts.main-layout wire:ignore.self>
-    <div class="max-w-[1200px] mx-auto h-screen max-h-screen relative shadow-lg overflow-hidden md:-my-10 max-md:-mt-3 max-md:-mb-12 max-md:!h-fit">
+    <div class="w-full mx-auto h-[calc(100vh-85px)] max-md:h-[calc(100vh-100px)] max-h-screen relative -mt-5 max-md:-mt-4 max-md:w-screen max-md:-ms-5 shadow-lg">
 
         <div class="flex bg-white w-full">
 
             <!-- sidebar -->
-            <div class="md:w-[360px] relative border-r">
+            <div class="md:w-[360px] relative border-r h-full">
 
                 <div id="side-chat" class="top-0 left-0 max-md:fixed max-md:w-5/6 max-md:h-screen bg-white z-50 max-md:shadow dark:bg-dark2 max-md:-translate-x-full">
                     <livewire:Messaging.inbox-container />
