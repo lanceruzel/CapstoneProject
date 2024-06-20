@@ -28,6 +28,7 @@ class Conversation extends Model
         return $this->belongsTo(User::class, 'user_1');
     }
 
+    //Receiver
     public function user2(){
         return $this->belongsTo(User::class, 'user_2');
     }

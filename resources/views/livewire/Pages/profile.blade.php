@@ -44,7 +44,7 @@
                                 @if($user->id == Auth::id())
                                    <x-button icon="user" label="Update Profile" />
                                 @else
-                                    <x-button icon="chat-bubble-oval-left" label="Message" />
+                                    <x-button icon="chat-bubble-oval-left" href="{{ route('message', $user->username) }}" label="Message" />
                                 @endif
                             </div>
                         </div>

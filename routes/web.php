@@ -1,10 +1,11 @@
 <?php
 
+use App\Models\Conversation;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
-Route::group(['middleware' => 'guest'], function(){
+Route::group(['middleware' => 'guest'], function () {
     Route::get('/signin', function () {
         return view('livewire.Pages.signin');
     })->name('signin');
@@ -19,19 +20,42 @@ Route::get('/signout', function () {
     return redirect()->route('signin');
 })->name('signout');
 
-Route::group([], function(){
+Route::group([], function () {
     Route::get('/', function () {
         return view('livewire.Pages.home');
     })->name('home');
-    
+
     Route::get('/profile/{username?}', function ($username = null) {
-        return view('livewire.Pages.profile' , [
+        return view('livewire.Pages.profile', [
             'user' => $username ? User::where('username', $username)->firstOrFail() : auth()->user()
         ]);
     })->name('profile');
 
     Route::get('/messages/{username?}', function ($username = null) {
-        return view('livewire.Pages.message');
+        $id = null;
+
+        if ($username) {
+            $id = User::where('username', $username)->firstOrFail()->id;
+
+            //Check if convo exists
+            if (!Conversation::where(function ($query) use ($id) {
+                $query->where('user_1', Auth::id())
+                    ->where('user_2', $id);
+            })->orWhere(function ($query) use ($id) {
+                $query->where('user_1', $id)
+                    ->where('user_2', Auth::id());
+            })->exists()) {
+                //If convo does not exists
+                Conversation::create([
+                    'user_1' => Auth::id(),
+                    'user_2' => $id,
+                    'status' => 'active'
+                ]);
+            }
+        } 
+
+        return view('livewire.Pages.message', [
+            'id' => $id
+        ]);
     })->name('message');
 });
-

@@ -1,8 +1,4 @@
 <div>
-    @php
-        $conversation = false;
-    @endphp
-    
     @if($conversation)
         @if($isAppeal == false)
             <!-- chat heading -->
@@ -18,11 +14,10 @@
                     </div>
                     
                     <div class="cursor-pointer">
-                        
-                        @if($conversation->receiver_id != Auth::id())
-                            <a href="{{ route('other-profile', $conversation->receiver_id) }}" class="hover:no-underline hover:text-gray-700 text-base font-bold">{{  $conversation->receiver->role == UserType::Store ? $conversation->receiver->storeInfo->name : $conversation->receiver->userInfo->first_name . ' ' . $conversation->receiver->userInfo->last_name }}</a>
+                        @if($conversation->user2->id != Auth::id())
+                            <a href="{{ route('profile', $conversation->user2->username) }}" class="hover:no-underline hover:text-gray-700 text-base font-bold">{{  $conversation->user2->role == App\Enums\UserType::Store ? $conversation->user2->storeInformation->name : $conversation->user2->userInformation->fullname() }}</a>
                         @else
-                            <a href="{{ route('other-profile', $conversation->user_id) }}" class="hover:no-underline hover:text-gray-700 text-base font-bold">{{  $conversation->user->role == UserType::Store ? $conversation->user->storeInfo->name : $conversation->user->userInfo->first_name . ' ' . $conversation->user->userInfo->last_name }}</a>
+                            <a href="{{ route('profile', $conversation->user1->username) }}" class="hover:no-underline hover:text-gray-700 text-base font-bold">{{  $conversation->user1->role == App\Enums\UserType::Store ? $conversation->user1->storeInformation->name : $conversation->user1->userInformation->fullname() }}</a>
                         @endif
                         
                         {{-- <div class="text-xs text-green-500 font-semibold">Online</div> --}}
@@ -60,16 +55,16 @@
                         <img src="https://i.pravatar.cc" class="w-24 h-24 rounded-full mx-auto mb-3" alt="">
                         <div class="mt-8">
                             <div class="md:text-xl text-base font-medium text-black dark:text-white">
-                                @if($conversation->receiver_id != Auth::id())
-                                    {{ $conversation->receiver->role == UserType::Store ? $conversation->receiver->storeInfo->name : $conversation->receiver->userInfo->first_name . ' ' . $conversation->receiver->userInfo->last_name }}
+                                @if($conversation->user2->id != Auth::id())
+                                    {{  $conversation->user2->role == App\Enums\UserType::Store ? $conversation->user2->storeInformation->name : $conversation->user2->userInformation->fullname() }}
                                 @else
-                                    {{ $conversation->user->role == UserType::Store ? $conversation->user->storeInfo->name : $conversation->user->userInfo->first_name . ' ' . $conversation->user->userInfo->last_name }}
+                                    {{  $conversation->user1->role == App\Enums\UserType::Store ? $conversation->user1->storeInformation->name : $conversation->user1->userInformation->fullname() }}
                                 @endif
                             </div>
                             {{-- <div class="text-gray-500 text-sm   dark:text-white/80"> @Monroepark </div> --}}
                         </div>
                         <div class="mt-3.5">
-                            <a href="{{ route('other-profile', $conversation->receiver->id) }}" class="inline-block rounded-lg px-4 py-1.5 text-sm font-semibold bg-gray-100">View profile</a>
+                            <a href="{{ route('profile', $conversation->user2->username) }}" class="inline-block rounded-lg px-4 py-1.5 text-sm font-semibold bg-gray-100">View profile</a>
                         </div>
                     </div>
                 @endif
@@ -114,6 +109,14 @@
                         @else
                             <!-- received -->
                             <div class="">
+                                <p class="ms-12 pb-1 text-sm text-gray-500">
+                                    @if($conversation->user2->id != Auth::id())
+                                        {{  $conversation->user2->role == App\Enums\UserType::Store ? $conversation->user2->storeInformation->name : $conversation->user2->userInformation->fullname() }}
+                                    @else
+                                        {{  $conversation->user1->role == App\Enums\UserType::Store ? $conversation->user1->storeInformation->name : $conversation->user1->userInformation->fullname() }}
+                                    @endif
+                                </p>
+
                                 <div class="flex gap-3">
                                     <img src="https://i.pravatar.cc" alt="" class="w-9 h-9 rounded-full shadow">
                                     <div class="px-4 py-2 rounded-[20px] max-w-sm bg-gray-100 break-words !text-wrap hyphens-auto space-y-3">
@@ -147,7 +150,7 @@
                                 </div>
 
                                 <div class="!ms-12">
-                                    <small>{{ $message->created_at }}</small>
+                                    <small class="text-gray-400">{{ $message->created_at }}</small>
                                 </div>
                             </div>
                         @endif
@@ -262,7 +265,7 @@
                                 </a>
 
                                 <button wire:click="deleteImage({{ $key }})" class="absolute -top-5 -right-3.5 active:scale-95 transition-all">
-                                    <i class="ri-close-circle-fill ri-2x"></i>
+                                    <x-icon name="x-circle" solid class="w-8 h-8" />
                                 </button>
                             </div>  
                         @endforeach
@@ -279,8 +282,8 @@
             </label>
 
             <x-input label="" wire:model='message' placeholder="Message"/>
-            
-            {{-- <x-button-icon icon='<i class="ri-send-plane-2-line ri-lg"></i>' wire:click='sendMessage'/> --}}
+
+            <x-mini-button rounded flat black icon="paper-airplane" wire:click='sendMessage' />
         </div>
     @else
         <div class="!w-full !h-screen flex items-center justify-center">

@@ -1,7 +1,3 @@
-@php
-    $conversations = null;
-@endphp
-
 <div>
     <!-- heading title -->
     <div class="p-4 border-b dark:border-slate-700">
@@ -40,43 +36,40 @@
 
         <!-- search -->
         <div class="relative mt-4">
-            {{-- <x-input-with-icon wire:model.live.debounce.200ms="search" icon='<i class="ri-search-line"></i>' type="text" label="" placeholder="Search" /> --}}
-                <x-input icon="magnifying-glass" placeholder="Search" shadowless />
+            <x-input icon="magnifying-glass" wire:model.live.debounce.200ms="search" placeholder="Search" shadowless />
         </div> 
 
     </div> 
 
     <!-- users list -->
     <div class="space-y-2 p-2 overflow-y-auto h-[calc(100vh-127px)]">
-        {{-- @if($conversations->whereNotNull('last_message_id')->count() > 0)
+        @if($conversations->count() > 0)
             @foreach ($conversations as $convo)
-                    @if($convo->last_message_id != null) --}}
-                        {{-- @if($convo->user_id == 1 || $convo->receiver_id == 1) --}} <!-- old comment -->
-                            {{-- <div class="relative flex items-center gap-4 p-2 duration-200 rounded-xl hover:bg-gray-100 cursor-pointer" wire:click="$dispatch('view-conversation', { id: {{ $convo->id }} })">
-                                <div class="relative w-14 h-14 shrink-0"> 
-                                    <img src="https://i.pravatar.cc" alt="" class="object-cover w-full h-full rounded-full"> --}}
-                                    {{-- <div class="w-4 h-4 absolute bottom-0 right-0  bg-green-500 rounded-full border border-white dark:border-slate-800"></div> --}} <!-- old comment -->
-                                {{-- </div>
-                                <div class="flex-1 min-w-0">
-                                    <div class="flex items-center gap-2 mb-1.5">
-                                        @if($convo->receiver_id != Auth::id())
-                                            <div class="mr-auto text-sm text-black dark:text-white font-medium">{{ $convo->receiver->role == UserType::Store ? $convo->receiver->storeInfo->name : $convo->receiver->userInfo->first_name . ' ' . $convo->receiver->userInfo->last_name }}</div>
-                                        @else
-                                            <div class="mr-auto text-sm text-black dark:text-white font-medium">{{ $convo->user->role == UserType::Store ? $convo->user->storeInfo->name : $convo->user->userInfo->first_name . ' ' . $convo->user->userInfo->last_name }}</div>
-                                        @endif
-                                        
-                                        <div class="text-xs font-light text-gray-500 dark:text-white/70">{{ $convo->last_message_id ? $this->getDateTimeDiff($convo->lastMessage->updated_at) : null }}</div> 
-                                    </div>
-                                    <div class="font-medium overflow-hidden text-ellipsis text-sm whitespace-nowrap">{{ $convo->lastMessage->user_id == Auth::id() ? 'You: ' : null }} {{ $convo->last_message_id ? $convo->lastMessage->content : 'No message' }}</div>
-                                </div>
-                            </div> --}}
-                        {{-- @endif --}} <!-- old comment -->
-                    {{-- @endif
+                <div class="relative flex items-center gap-4 p-2 duration-200 rounded-xl hover:bg-gray-100 cursor-pointer" wire:click="$dispatch('view-conversation', { id: {{ $convo->id }} })">
+                    <div class="relative w-14 h-14 shrink-0"> 
+                        <img src="https://i.pravatar.cc" alt="" class="object-cover w-full h-full rounded-full">
+                    </div>
+                    
+                    <div class="flex-1 min-w-0">
+                        <div class="flex items-center gap-2 mb-1.5">
+                            @if($convo->receiver_id != Auth::id())
+                                <div class="mr-auto text-sm text-black dark:text-white font-medium">{{ $convo->user1->role == App\Enums\UserType::Store ? $convo->user1->storeInformation->name : $convo->user1->userInformation->fullname() }}</div>
+                            @else
+                                <div class="mr-auto text-sm text-black dark:text-white font-medium">{{ $convo->user2->role == App\Enums\UserType::Store ? $convo->user2->storeInformation->name : $convo->user1->userInformation->fullname() }}</div>
+                            @endif
+                            
+                            <div class="text-xs font-light text-gray-500 dark:text-white/70">{{ $convo->last_message_id ? $this->getDateTimeDiff($convo->lastMessage->updated_at) : null }}</div> 
+                        </div>
+
+                        <!-- Last Chat Preview -->
+                        <div class="font-medium overflow-hidden text-ellipsis text-sm whitespace-nowrap">{{ $convo->lastMessage->user_id == Auth::id() ? 'You: ' : null }} {{ $convo->last_message_id ? $convo->lastMessage->content : 'No message' }}</div>
+                    </div>
+                </div>
             @endforeach
-        @else --}}
+        @else
             <div class="w-full h-full flex items-center justify-center">
                 <h1>There are no conversation available</h1>
             </div>
-        {{-- @endif --}}
+        @endif
     </div>
 </div>

@@ -13,3 +13,7 @@ Broadcast::channel('new-comment', function (){
 Broadcast::channel('post-updated', function (){
     return true;
 });
+
+Broadcast::channel('new-chat', function ($userID, $id){
+    return (int) $userID === (int) $id;
+});
