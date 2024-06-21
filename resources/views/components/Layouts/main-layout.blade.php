@@ -107,7 +107,7 @@
 
             <x-dropdown position="top-start">
                 <x-slot name="trigger">
-                    <x-button class='!justify-start' icon='cog-6-tooth' flat full secondary label="Lance Ruzel C. Ambrocio" />
+                    <x-button class='!justify-start !w-full' icon='cog-6-tooth' flat full secondary label="{{ auth()->user()->role != App\Enums\UserType::Store ? auth()->user()->userInformation->fullname() : auth()->user()->storeInformation->name }}" />
                 </x-slot>
                 
                 <x-dropdown.item icon='building-storefront' href="/}" label="Store Management" />

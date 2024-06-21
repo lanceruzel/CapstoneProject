@@ -20,7 +20,7 @@ Route::get('/signout', function () {
     return redirect()->route('signin');
 })->name('signout');
 
-Route::group([], function () {
+Route::group(['middleware' => 'auth'], function () {
     Route::get('/', function () {
         return view('livewire.Pages.home');
     })->name('home');
