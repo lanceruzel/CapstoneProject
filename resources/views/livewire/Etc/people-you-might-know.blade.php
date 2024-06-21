@@ -18,14 +18,14 @@
                         </a>
     
                         <div class="flex-1">
-                            <a href="#">
+                            <a href="{{ route('profile', $user->username) }}">
                                 <h4 class="font-semibold text-sm text-gray-700 dark:text-white">{{ $user->userInformation->fullname() }}</h4>
                             </a>
     
                             <div class="mt-0.5">Suggested For You</div>
                         </div>
                         
-                        <a href="#" class="hover:no-underline hover:text-gray-600 text-sm rounded-full py-1.5 px-4 font-semibold">
+                        <a href="{{ route('message', $user->username) }}" class="hover:no-underline hover:text-gray-600 text-sm rounded-full py-1.5 px-4 font-semibold">
                             Message
                         </a>
                     </div>
