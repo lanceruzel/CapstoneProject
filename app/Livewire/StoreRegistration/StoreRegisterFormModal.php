@@ -79,9 +79,9 @@ class StoreRegisterFormModal extends Component
         $this->savedRequirements->requirement_3->file_path = $this->storeDocument($id, $validated['requirement_3']);
 
         //Update document status
-        $this->savedRequirements->requirement_1->status = Status::Submitted;
-        $this->savedRequirements->requirement_2->status = Status::Submitted;
-        $this->savedRequirements->requirement_3->status = Status::Submitted;
+        $this->savedRequirements->requirement_1->status = Status::ForReview;
+        $this->savedRequirements->requirement_2->status = Status::ForReview;
+        $this->savedRequirements->requirement_3->status = Status::ForReview;
 
         //Update Overall Status
         $this->savedRequirements->status = Status::ForReview;

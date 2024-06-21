@@ -7,14 +7,12 @@
         </div>
     </div>
 
-    <div class="w-full pt-5 overflow-auto">
+    <div class="w-full pt-5 overflow-auto flex items-center justify-center flex-col">
         <table class="table-auto w-full border-spacing-y-4 text-sm text-left">
             <thead class="border-b-2">
                 <tr>
                     <th scope="col" class="px-6 py-3">Store</th>
                     <th scope="col" class="px-6 py-3">Status</th>
-                    <th scope="col" class="px-6 py-3">Last Validator</th>
-                    <th scope="col" class="px-6 py-3">Remarks</th>
                     <th scope="col" class="px-6 py-3">Last Update</th>
                     <th scope="col" class="px-6 py-3">Date Submitted</th>
                     <th scope="col" class="px-6 py-3"></th>
@@ -22,54 +20,40 @@
             </thead>
 
             <tbody>
-                {{-- @if(count($registrations) > 0)
+                @if(count($registrations) > 0)
                     @foreach ($registrations as $registration)
                         <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-100">
-                            <td class="px-6 py-4">{{ $registration->user->role === UserType::Travelpreneur ? $registration->user->userInfo->first_name . ' ' . $registration->user->userInfo->last_name . '\'s store' : $registration->user->storeInfo->name }}</td>
+                            <td class="px-6 py-4">{{ $registration->user->storeInformation->name }}</td>
                             <td class="px-6 py-4">
-                                @if($registration->status == 'Denied')
-                                    {{ 'Waiting for resubmission' }}
-                                @elseif($registration->status == BusReqStatus::Resubmitted)
-                                    {{ 'Waiting for re-validation' }}
-                                @elseif($registration->status == BusReqStatus::Validated)
-                                    {{ 'Validated' }}
+                                @php
+                                    $status = json_decode($registration->user->storeInformation->requirements)->status;
+                                @endphp
+
+                                @if($status == App\Enums\Status::ForReview)
+                                    <x-badge flat info label="For Review" />
                                 @else
-                                    {{ 'Waiting for validation' }}
+                                    {{ $status }}
                                 @endif
                             </td>
 
-                            <td class="px-6 py-4">
-                                @if ($registration->validated_by)
-                                    {{ $registration->validatedBy->userInfo->first_name . ' ' . $registration->validatedBy->userInfo->last_name }}
-                                @else
-                                    None
-                                @endif
-                            </td>
-
-                            <td class="px-6 py-4">{{ $registration->remarks }}</td>
                             <td class="px-6 py-4">{{ date_format($registration->updated_at, "M d, Y g:i a") }}</td>
                             <td class="px-6 py-4">{{ date_format($registration->created_at, "M d, Y g:i a") }}</td>
 
                             <td class="-mr-1 px-6 py-4">
-                                @if($registration->status != 'Validated')
-                                    <x-button-with-icon label="Validate" icon='<i class="ri-edit-2-line ri-lg"></i>' wire:click="$dispatch('for-validation', { id: {{ $registration->id }} })" uk-toggle="target: #validation-modal"/>
-                                @else
-                                    <button class='bg-green-500 text-white py-2 px-5 text-sm font-medium rounded-lg active:scale-95 transition-all'>
-                                        <span>Validated</span>
-                                    </button>
-                                @endif
+                                <x-button label="View Registration" icon="eye" flat interaction:solid="info" x-on:click="$openModal('storeRegistrationModal')" wire:click="$dispatch('viewRegistration', { id: {{ $registration->id }} })"/>
                             </td>
                         </tr>
                     @endforeach 
-                @else --}}
-                    <tr>
-                        <td colspan="7" class="text-center px-6 py-4 bg-gray-50">
-                            No registrations requests found.
-                        </td>
-                    </tr>
-                {{-- @endif --}}
+                @endif
             </tbody>
         </table>
+
+        @if(count($registrations) <= 0)
+            <div class="flex flex-col items-center justify-center mt-5">
+                <h1 class="text-2xl font-semibold">No records found</h1>
+                <img class="h-[400px]" src="{{ asset('assets/svg/no-data-2.svg') }}" alt="No data found"/>
+            </div>
+        @endif
     </div>
 
     <!-- Pagination -->

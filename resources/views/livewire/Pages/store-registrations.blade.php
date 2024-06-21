@@ -3,7 +3,9 @@
         <h1 class="text-3xl font-semibold">Store Registrations</h1>
     </div>
 
-    <div class="!mt-10 md:p-10">
+    <div class="mt-5">
         <livewire:StoreRegistration.store-registrations-table />
     </div>
+
+    <livewire:StoreRegistration.view-store-registration-modal />
 </x-layouts.admin-layout>

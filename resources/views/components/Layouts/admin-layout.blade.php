@@ -73,7 +73,7 @@
     </aside>
 
     <main x-bind:class="sidebarOpened ? 'md:!ps-64' : ''" x-transition class="pt-16 bg-gray-50 min-h-screen transition-all">
-        <div class="p-5 overflow-hidden">
+        <div class="p-5 !pt-10 overflow-hidden">
             {{ $slot }}
         </div>
     </main>

@@ -16,4 +16,5 @@ enum Status: string
     const Submitted = 'submitted';
     const Resubmit = 'resubmit';
     const ForSubmission = 'for-submission';
+    const ForReSubmission = 'for-resubmission';
 }
