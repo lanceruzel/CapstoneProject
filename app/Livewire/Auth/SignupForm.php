@@ -5,6 +5,7 @@ namespace App\Livewire\Auth;
 use App\Models\User;
 use App\Models\UserInformation;
 use App\Enums\UserType;
+use App\Models\StoreInformation;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\Rules\Password;
 use Livewire\Component;
@@ -52,14 +53,38 @@ class SignupForm extends Component
         try{
             $account = $this->createAccount($validated);
     
-            if ($account) {
-                if($this->insertUserInformation($account, $validated)) {
-                    return redirect()->route('signin')->with('success', 'Your account has been successfully created.');
+            if($account) {
+                $userInformation = $this->insertUserInformation($account, $validated);
+
+                if($userInformation) {
+                    if($this->userType == UserType::Travelpreneur){
+                        $storeInformation = $this->insertStoreInformation($account, $validated);
+
+                        if($storeInformation){
+                            return redirect()->route('signin')->with('success', 'Your account has been successfully created.'); 
+                        }else{
+                            // Delete the user row
+                            User::find($account->id)->destroy();
+
+                            //Delete the userinformation row
+                            UserInformation::where('user_id', $account->id)->destroy();
+                        }       
+
+                    }else{
+                        return redirect()->route('signin')->with('success', 'Your account has been successfully created.');
+                    }
                 }else{
                     // Delete the user row
                     User::find($account->id)->destroy();
                 }
             }
+
+            //Show error dialog
+            $this->dialog()->show([
+                'icon' => 'error',
+                'title' => 'Error!',
+                'description' => 'Woops, there seems to be a problem creating your account. Please try again later.',
+            ]);
         }catch (\Exception $e){
             // Delete the user row
             User::find($account->id)->destroy();
@@ -102,6 +127,39 @@ class SignupForm extends Component
             'password' => bcrypt($validated['password']),
             'role' => $this->userType
         ]);
+    }
+
+    public function insertStoreInformation($account, $validated){
+        return StoreInformation::create([
+            'user_id' => $account->id,
+            'name' => $validated['firstName'] . ' ' . $validated['lastName'] . '\'s Store',
+            'email' => $validated['email'],
+            'country' => $validated['country'],
+            'address' => $validated['address'],
+            'requirements' => $this->storeRequirementsFormat()
+        ]);
+    }
+
+    public function storeRequirementsFormat(){
+        $format = [
+            'requirement_1' => [
+                'file_path' => '',
+                'status' => '',
+                'remarks' => ''
+            ],
+            'requirement_2' => [
+                'file_path' => '',
+                'status' => '',
+                'remarks' => ''
+            ],
+            'requirement_3' => [
+                'file_path' => '',
+                'status' => '',
+                'remarks' => ''
+            ]
+        ];
+
+        return json_encode($format);
     }
 
     public function insertUserInformation($account, $validated){
