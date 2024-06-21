@@ -20,7 +20,7 @@
 
         <div class="col-span-12 lg:col-span-5 xl:col-span-6 relative">
             <div class="flex items-center justify-center h-full w-full px-3 md:px-5 lg:px-10 z-60 max-md:py-5">
-                <livewire:Auth.signup-form :type="$type"/>
+                @livewire('Auth.store-signup-form')
             </div>
 
             <div class="absolute top-0 lg:hidden blur-xs w-full h-full z-[-10] object-auto">

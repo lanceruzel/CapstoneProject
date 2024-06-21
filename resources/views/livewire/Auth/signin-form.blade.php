@@ -21,6 +21,6 @@
         </div>
         <x-link label="Create an account" href="{{ route('signup') }}" secondary sm />
 
-        <x-link class="mt-3" label="Do you plan on selling a product?" href="{{ route('signin') }}" secondary sm />
+        <x-link class="mt-3" label="Do you plan selling a product? Create an account here instead." onclick="$openModal('createAccountUserTypeSelectionModal')" secondary sm />
     </div>
 </div>

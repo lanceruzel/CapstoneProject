@@ -28,5 +28,7 @@
             </div>
         </div>
     </main>
+
+    <livewire:Auth.create-account-user-type-selection />
 </body>
 </html>

@@ -10,9 +10,15 @@ Route::group(['middleware' => 'guest'], function () {
         return view('livewire.Pages.signin');
     })->name('signin');
 
-    Route::get('/signup', function () {
-        return view('livewire.Pages.signup');
+    Route::get('/signup/{type?}', function ($type = null) {
+        return view('livewire.Pages.signup', [
+            'type' => $type
+        ]);
     })->name('signup');
+
+    Route::get('/signup-store', function () {
+        return view('livewire.Pages.store-signup');
+    })->name('store-signup');
 });
 
 Route::get('/signout', function () {

@@ -26,6 +26,18 @@ class SignupForm extends Component
     public $password;
     public $password_confirmation;
 
+    public $userType = UserType::ContentCreator;
+
+    public function mount($type = null){
+        if($type != null){
+            if($type == UserType::Travelpreneur){
+                $this->userType = $type;
+            }else{
+                abort(404, 'Invalid Url');
+            }
+        }
+    }
+
     public function getCountries(){
         $countriesJsonPath = public_path('json/countries.json');
         $countries = json_decode(file_get_contents($countriesJsonPath), true);
@@ -45,10 +57,13 @@ class SignupForm extends Component
                     return redirect()->route('signin')->with('success', 'Your account has been successfully created.');
                 }else{
                     // Delete the user row
-                    $account->delete();
+                    User::find($account->id)->destroy();
                 }
             }
         }catch (\Exception $e){
+            // Delete the user row
+            User::find($account->id)->destroy();
+            
             //Log the error for debugging
             Log::error('Error signup: ' . $e->getMessage());
     
@@ -85,7 +100,7 @@ class SignupForm extends Component
             'username' => $validated['username'],
             'email' => $validated['email'],
             'password' => bcrypt($validated['password']),
-            'role' => UserType::ContentCreator
+            'role' => $this->userType
         ]);
     }
 

@@ -9,6 +9,8 @@ use WireUi\Traits\WireUiActions;
 
 class SigninForm extends Component
 {
+    use WireUiActions;
+
     public $email;
     public $password;
 
