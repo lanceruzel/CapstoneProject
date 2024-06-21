@@ -65,3 +65,9 @@ Route::group(['middleware' => 'auth'], function () {
         ]);
     })->name('message');
 });
+
+Route::group([], function () {
+    Route::get('/admin/store-registrations', function () {
+        return view('livewire.Pages.store-registrations');
+    })->name('admin.store-registrations');
+});
