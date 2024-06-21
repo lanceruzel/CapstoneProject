@@ -13,5 +13,7 @@ enum Status: string
     const ForReview = 'for-review';
     const Accepted = 'accepted';
     const Declined = 'declined';
+    const Submitted = 'submitted';
     const Resubmit = 'resubmit';
+    const ForSubmission = 'for-submission';
 }

@@ -92,18 +92,16 @@ class StoreSignupForm extends Component
             'requirement_1' => [
                 'file_path' => '',
                 'status' => '',
-                'remarks' => ''
             ],
             'requirement_2' => [
                 'file_path' => '',
                 'status' => '',
-                'remarks' => ''
             ],
             'requirement_3' => [
                 'file_path' => '',
                 'status' => '',
-                'remarks' => ''
-            ]
+            ],
+            'status' => Status::ForSubmission
         ];
 
         return json_encode($format);
