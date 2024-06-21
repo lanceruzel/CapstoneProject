@@ -1,3 +1,9 @@
+@php
+    use App\Classes\StoreRegistration;
+
+    $storeRegistration = new StoreRegistration();
+@endphp
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -110,8 +116,16 @@
                     <x-button class='!justify-start !w-full' icon='cog-6-tooth' flat full secondary label="{{ auth()->user()->role != App\Enums\UserType::Store ? auth()->user()->userInformation->fullname() : auth()->user()->storeInformation->name }}" />
                 </x-slot>
                 
-                <x-dropdown.item icon='building-storefront' href="/}" label="Store Management" />
-                <x-dropdown.item icon='user-group' href="/" label="Affiliates" />
+                @if(auth()->user()->role == App\Enums\UserType::Store || auth()->user()->role == App\Enums\UserType::Travelpreneur)
+                    <x-dropdown.item icon='building-storefront' label="Register Store" onclick="$openModal('storeRegistrationFormModal')" />
+                    
+                    @if($storeRegistration->isRegistered())
+                        <x-dropdown.item icon='building-storefront' label="Store Management" />
+                    @endif
+                @else
+                    <x-dropdown.item icon='user-group' href="/" label="Affiliates" />
+                @endif
+
                 <x-dropdown.item separator icon='arrow-left-end-on-rectangle' href="{{ route('signout') }}" label="Sign out" />
             </x-dropdown>
         </div>
@@ -122,6 +136,8 @@
             {{ $slot }}
         </div>
     </main>
+
+    <livewire:StoreRegistration.store-register-form-modal />
 
     <script>
         document.addEventListener('livewire:init', () => {
