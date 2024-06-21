@@ -15,10 +15,12 @@
             </div>
         </div>
 
-        <x-dropdown position="bottom">
-            <x-dropdown.item label="Update Post" wire:click="$dispatch('update-post', { id: {{ $post->id }} })" />
-            <x-dropdown.item label="Delete Post" wire:click="$dispatch('delete-post', { id: {{ $post->id }} })" />
-        </x-dropdown>
+        @if($post->user->id == Auth::id())
+            <x-dropdown position="bottom">
+                <x-dropdown.item label="Update Post" wire:click="$dispatch('update-post', { id: {{ $post->id }} })" />
+                <x-dropdown.item label="Delete Post" wire:click="$dispatch('delete-post', { id: {{ $post->id }} })" />
+            </x-dropdown>
+        @endif
     </div>
 
     <div class="leading-snug h-auto text-wrap text-ellipsis break-words hyphens-auto mt-3">
