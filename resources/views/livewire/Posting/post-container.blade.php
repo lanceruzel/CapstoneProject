@@ -8,7 +8,7 @@
 
             <div class="leading-none">
                 <div class="flex items-center justify-start gap-1">
-                    <a href="{{ route('profile', $post->user->username) }}" class="hover:text-gray-700 hover:no-underline py-0 font-medium">{{ $post->user->userInformation->fullname() }}</a>
+                    <a href="{{ route('profile', $post->user->username) }}" class="hover:text-gray-700 hover:no-underline py-0 font-medium">{{ $post->user->role == App\Enums\UserType::Store ? $post->user->storeInformation->name : $post->user->userInformation->fullname() }}</a>
                 </div>
 
                 <small class="text-xs font-medium text-gray-600">{{ $this->getDateTimeDiff() }}</small>
