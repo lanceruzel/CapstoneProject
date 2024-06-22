@@ -58,6 +58,8 @@
                                     <x-badge flat info label="For Review" />
                                 @elseif($status == App\Enums\Status::ForReSubmission)
                                     <x-badge flat sky label="For Resubmission" />
+                                @elseif($status == App\Enums\Status::Accepted)
+                                    <x-badge flat positive label="Accepted" />
                                 @else
                                     {{ $status }}
                                 @endif

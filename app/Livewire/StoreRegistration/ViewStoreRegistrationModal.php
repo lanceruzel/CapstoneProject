@@ -41,7 +41,10 @@ class ViewStoreRegistrationModal extends Component
     }
 
     public function updateRegistration(){
-        $this->updateRegistrationStatus();
+        if(!$this->updateRegistrationStatus()){
+            return;
+        }
+
         $this->requirements->remarks = $this->remarks;
         $this->registration->requirements = json_encode($this->requirements);
 
@@ -67,26 +70,25 @@ class ViewStoreRegistrationModal extends Component
 
     public function updateRegistrationStatus(){
         $isAccepted = true;
+        $requirements = ['requirement_1', 'requirement_2', 'requirement_3'];
 
-        if($this->requirements->requirement_1->status == Status::Declined){
-            $isAccepted = false;
+        foreach ($requirements as $requirement) {
+            if ($this->requirements->{$requirement}->status == Status::Declined) {
+                $isAccepted = false;
+            }
+
+            if ($this->requirements->{$requirement}->status == Status::ForReview) { 
+                return $this->dialog()->show([
+                    'icon' => 'info',
+                    'title' => 'Information!',
+                    'description' => 'Woops, there are still document/s that are need for review.',
+                ]);
+            }
         }
 
-        if($this->requirements->requirement_2->status == Status::Declined){
-            $isAccepted = false;
-        }
+        $this->requirements->status = $isAccepted ? Status::Accepted : Status::ForReSubmission;
 
-        if($this->requirements->requirement_3->status == Status::Declined){
-            $isAccepted = false;
-        }
-
-        if($isAccepted){
-            $this->requirements->status = Status::Accepted;
-
-        }else{
-            $this->requirements->status = Status::ForReSubmission;
-        }
-
+        return true;
     }
 
     public function acceptDocument($model){

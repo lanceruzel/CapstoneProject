@@ -69,6 +69,66 @@
             <img class="w-[400px] h-[400px]" src="{{ asset('assets/svg/for-review.svg') }}" alt="For Review and Validation"/>
         </div>
     @elseif($registrationStatus == App\Enums\Status::ForReSubmission)
-        
+        <div class="w-full flex flex-col items-center justify-center">
+            <x-alert title="Your registration has been declined and need for resubmission." info>
+                <span class="font-medium">Admin's Remarks:</span> {{ $savedRequirements->remarks }}
+            </x-alert>
+
+            <div class="pt-5 w-full space-y-3">
+
+                @if($savedRequirements->requirement_1->status == App\Enums\Status::Declined)
+                    <x-input type="file" label="Requirement 1" wire:model="requirement_1" shadowless>
+                        <x-slot name='corner' wire:target='requirement_1' wire:loading>
+                            <div class="flex items-center justify-center gap-2">
+                                <span>
+                                    <x-icon name="arrow-path" class="w-5 h-5 animate-spin" />
+                                </span>
+                                
+                                <span>
+                                    Uploading...
+                                </span>
+                            </div>
+                        </x-slot>
+                    </x-input>
+                @endif
+
+                @if($savedRequirements->requirement_2->status == App\Enums\Status::Declined)
+                    <x-input type="file" label="Requirement 2" wire:model="requirement_2" shadowless>
+                        <x-slot name='corner' wire:target='requirement_2' wire:loading>
+                            <div class="flex items-center justify-center gap-2">
+                                <span>
+                                    <x-icon name="arrow-path" class="w-5 h-5 animate-spin" />
+                                </span>
+                                
+                                <span>
+                                    Uploading...
+                                </span>
+                            </div>
+                        </x-slot>
+                    </x-input>
+                @endif
+
+                @if($savedRequirements->requirement_3->status == App\Enums\Status::Declined)
+                    <x-input type="file" label="Requirement 3" wire:model="requirement_3" shadowless>
+                        <x-slot name='corner' wire:target='requirement_3' wire:loading>
+                            <div class="flex items-center justify-center gap-2">
+                                <span>
+                                    <x-icon name="arrow-path" class="w-5 h-5 animate-spin" />
+                                </span>
+                                
+                                <span>
+                                    Uploading...
+                                </span>
+                            </div>
+                        </x-slot>
+                    </x-input>
+                @endif
+            </div>
+
+            <x-slot name="footer" class="flex justify-end gap-x-4">
+                <x-button flat label="Cancel" x-on:click="close" />
+                <x-button wire:loading.attr="disabled" wire:click="store" spinner="store" label="Submit" />
+            </x-slot>
+        </div>
     @endif
 </x-modal-card>

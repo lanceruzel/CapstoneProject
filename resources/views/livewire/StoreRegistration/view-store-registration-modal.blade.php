@@ -37,8 +37,10 @@
                             @endif
                         </td>
                         <td class="flex flex-row items-center justify-center gap-3">
-                            <x-mini-button rounded negative icon="x-mark" wire:click="declineDocument('requirement_1')" />
-                            <x-mini-button rounded positive icon="check" wire:click="acceptDocument('requirement_1')" />
+                            @if($requirements->status != App\Enums\Status::Accepted)
+                                <x-mini-button rounded negative icon="x-mark" wire:click="declineDocument('requirement_1')" />
+                                <x-mini-button rounded positive icon="check" wire:click="acceptDocument('requirement_1')" />
+                            @endif
                         </td>
                     </tr>
 
@@ -57,8 +59,10 @@
                             @endif
                         </td>
                         <td class="flex flex-row items-center justify-center gap-3">
-                            <x-mini-button rounded negative icon="x-mark" wire:click="declineDocument('requirement_2')" />
-                            <x-mini-button rounded positive icon="check" wire:click="acceptDocument('requirement_2')" />
+                            @if($requirements->status != App\Enums\Status::Accepted)
+                                <x-mini-button rounded negative icon="x-mark" wire:click="declineDocument('requirement_2')" />
+                                <x-mini-button rounded positive icon="check" wire:click="acceptDocument('requirement_2')" />
+                            @endif
                         </td>
                     </tr>
 
@@ -77,18 +81,25 @@
                             @endif
                         </td>
                         <td class="flex flex-row items-center justify-center gap-3">
-                            <x-mini-button rounded negative icon="x-mark" wire:click="declineDocument('requirement_3')" />
-                            <x-mini-button rounded positive icon="check" wire:click="acceptDocument('requirement_3')" />
+                            @if($requirements->status != App\Enums\Status::Accepted)
+                                <x-mini-button rounded negative icon="x-mark" wire:click="declineDocument('requirement_3')" />
+                                <x-mini-button rounded positive icon="check" wire:click="acceptDocument('requirement_3')" />
+                            @endif
                         </td>
                     </tr>
                 </tbody>
             </table>
 
-            <x-textarea wire:model='remarks' label="Remarks" placeholder="Send remarks" shadowless />
+            @if($requirements->status != App\Enums\Status::Accepted)
+                <x-textarea wire:model='remarks' label="Remarks" placeholder="Send remarks" shadowless />
+            @endif
             
             <x-slot name="footer" class="flex justify-end gap-x-4">
                 <x-button flat label="Cancel" x-on:click="close" />
-                <x-button wire:loading.attr="disabled" wire:click="updateRegistration" spinner="updateRegistration" label="Update" />
+
+                @if($requirements->status != App\Enums\Status::Accepted)
+                    <x-button wire:loading.attr="disabled" wire:click="updateRegistration" spinner="updateRegistration" label="Update" />
+                @endif
             </x-slot>
         </div>
     @else
