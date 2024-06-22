@@ -101,7 +101,8 @@ class StoreSignupForm extends Component
                 'file_path' => '',
                 'status' => '',
             ],
-            'status' => Status::ForSubmission
+            'status' => Status::ForSubmission,
+            'remarks' => ''
         ];
 
         return json_encode($format);

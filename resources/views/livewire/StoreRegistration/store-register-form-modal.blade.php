@@ -68,5 +68,7 @@
 
             <img class="w-[400px] h-[400px]" src="{{ asset('assets/svg/for-review.svg') }}" alt="For Review and Validation"/>
         </div>
+    @elseif($registrationStatus == App\Enums\Status::ForReSubmission)
+        
     @endif
 </x-modal-card>

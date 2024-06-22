@@ -2,7 +2,31 @@
     <div class="flex items-center justify-between">
         <p class="font-semibold text-xl">Store lists</p>
 
-        <div class="w-60">
+        <div class="w-60 flex items-center justify-center gap-3">
+            <x-dropdown>
+                <x-slot name="trigger">
+                    <x-mini-button rounded icon="funnel" flat gray interaction="gray" />
+                </x-slot>
+             
+                <x-dropdown.header label="Filter">
+                    <x-dropdown.item>
+                        <x-checkbox label="Accepted" wire:model.live="filterStatus" :value="App\Enums\Status::Accepted" />
+                    </x-dropdown.item>
+
+                    <x-dropdown.item>
+                        <x-checkbox label="For Review" wire:model.live="filterStatus" :value="App\Enums\Status::ForReview" />
+                    </x-dropdown.item>
+
+                    <x-dropdown.item>
+                        <x-checkbox label="For Resubmission" wire:model.live="filterStatus" :value="App\Enums\Status::ForReSubmission" />
+                    </x-dropdown.item>
+
+                    <x-dropdown.item>
+                        <x-checkbox label="For Submission" wire:model.live="filterStatus" :value="App\Enums\Status::ForSubmission" />
+                    </x-dropdown.item> 
+                </x-dropdown.header>
+            </x-dropdown>
+
             <x-input icon="magnifying-glass" wire:model.live.debounce.200ms="search" placeholder="Search" shadowless />
         </div>
     </div>
@@ -20,17 +44,20 @@
             </thead>
 
             <tbody>
-                @if(count($registrations) > 0)
+                @if($registrations && count($registrations) > 0)
                     @foreach ($registrations as $registration)
                         <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-100">
                             <td class="px-6 py-4">{{ $registration->user->storeInformation->name }}</td>
                             <td class="px-6 py-4">
                                 @php
-                                    $status = json_decode($registration->user->storeInformation->requirements)->status;
+                                    $requirements = json_decode($registration->user->storeInformation->requirements);
+                                    $status = $requirements->status ?? 'No status';
                                 @endphp
 
                                 @if($status == App\Enums\Status::ForReview)
                                     <x-badge flat info label="For Review" />
+                                @elseif($status == App\Enums\Status::ForReSubmission)
+                                    <x-badge flat sky label="For Resubmission" />
                                 @else
                                     {{ $status }}
                                 @endif

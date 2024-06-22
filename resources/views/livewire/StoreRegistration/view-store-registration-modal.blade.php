@@ -22,69 +22,73 @@
                 </thead>
 
                 <tbody>
-                    
-                        <tr class="border-b">
-                            <td class="text-center py-3">Requirement 1</td>
-                            <td class="text-center">
-                                <x-button info label="View" sm />
-                            </td>
-                            <td class="text-center">
-                                @if($requirements->requirement_1->status == App\Enums\Status::ForReview)
-                                    <x-badge flat info label="For Review" />
-                                @else
-                                    {{ $requirements->requirement_1->status }}
-                                @endif
-                            </td>
-                            <td class="flex flex-row items-center justify-center gap-3">
-                                <x-mini-button rounded negative icon="x-mark" />
-                                <x-mini-button rounded positive icon="check" />
-                            </td>
-                        </tr>
+                    <tr class="border-b">
+                        <td class="text-center py-3">Requirement 1</td>
+                        <td class="text-center">
+                            <x-button info label="View" sm />
+                        </td>
+                        <td class="text-center">
+                            @if($requirements->requirement_1->status == App\Enums\Status::ForReview)
+                                <x-badge flat info label="For Review" />
+                            @elseif($requirements->requirement_1->status == App\Enums\Status::Accepted)
+                                <x-badge flat positive label="Accepted" />
+                            @elseif($requirements->requirement_1->status == App\Enums\Status::Declined)
+                                <x-badge flat negative label="Declined" />
+                            @endif
+                        </td>
+                        <td class="flex flex-row items-center justify-center gap-3">
+                            <x-mini-button rounded negative icon="x-mark" wire:click="declineDocument('requirement_1')" />
+                            <x-mini-button rounded positive icon="check" wire:click="acceptDocument('requirement_1')" />
+                        </td>
+                    </tr>
 
-                        <tr class="border-b">
-                            <td class="text-center py-3">Requirement 2</td>
-                            <td class="text-center">
-                                <x-button info label="View" sm />
-                            </td>
-                            <td class="text-center">
-                                @if($requirements->requirement_2->status == App\Enums\Status::ForReview)
-                                    <x-badge flat info label="For Review" />
-                                @else
-                                    {{ $requirements->requirement_2->status }}
-                                @endif
-                            </td>
-                            <td class="flex flex-row items-center justify-center gap-3">
-                                <x-mini-button rounded negative icon="x-mark" />
-                                <x-mini-button rounded positive icon="check" />
-                            </td>
-                        </tr>
+                    <tr class="border-b">
+                        <td class="text-center py-3">Requirement 2</td>
+                        <td class="text-center">
+                            <x-button info label="View" sm />
+                        </td>
+                        <td class="text-center">
+                            @if($requirements->requirement_2->status == App\Enums\Status::ForReview)
+                                <x-badge flat info label="For Review" />
+                            @elseif($requirements->requirement_2->status == App\Enums\Status::Accepted)
+                                <x-badge flat positive label="Accepted" />
+                            @elseif($requirements->requirement_2->status == App\Enums\Status::Declined)
+                                <x-badge flat negative label="Declined" />
+                            @endif
+                        </td>
+                        <td class="flex flex-row items-center justify-center gap-3">
+                            <x-mini-button rounded negative icon="x-mark" wire:click="declineDocument('requirement_2')" />
+                            <x-mini-button rounded positive icon="check" wire:click="acceptDocument('requirement_2')" />
+                        </td>
+                    </tr>
 
-                        <tr class="border-b">
-                            <td class="text-center py-3">Requirement 3</td>
-                            <td class="text-center">
-                                <x-button info label="View" sm />
-                            </td>
-                            <td class="text-center">
-                                @if($requirements->requirement_3->status == App\Enums\Status::ForReview)
-                                    <x-badge flat info label="For Review" />
-                                @else
-                                    {{ $requirements->requirement_3->status }}
-                                @endif
-                            </td>
-                            <td class="flex flex-row items-center justify-center gap-3">
-                                <x-mini-button rounded negative icon="x-mark" />
-                                <x-mini-button rounded positive icon="check" />
-                            </td>
-                        </tr>
-                    
+                    <tr class="border-b">
+                        <td class="text-center py-3">Requirement 3</td>
+                        <td class="text-center">
+                            <x-button info label="View" sm />
+                        </td>
+                        <td class="text-center">
+                            @if($requirements->requirement_3->status == App\Enums\Status::ForReview)
+                                <x-badge flat info label="For Review" />
+                            @elseif($requirements->requirement_3->status == App\Enums\Status::Accepted)
+                                <x-badge flat positive label="Accepted" />
+                            @elseif($requirements->requirement_3->status == App\Enums\Status::Declined)
+                                <x-badge flat negative label="Declined" />
+                            @endif
+                        </td>
+                        <td class="flex flex-row items-center justify-center gap-3">
+                            <x-mini-button rounded negative icon="x-mark" wire:click="declineDocument('requirement_3')" />
+                            <x-mini-button rounded positive icon="check" wire:click="acceptDocument('requirement_3')" />
+                        </td>
+                    </tr>
                 </tbody>
             </table>
 
-            <x-textarea label="Remarks" placeholder="Send remarks" shadowless />
+            <x-textarea wire:model='remarks' label="Remarks" placeholder="Send remarks" shadowless />
             
             <x-slot name="footer" class="flex justify-end gap-x-4">
                 <x-button flat label="Cancel" x-on:click="close" />
-                <x-button wire:loading.attr="disabled" wire:click="store" spinner="store" label="Update" />
+                <x-button wire:loading.attr="disabled" wire:click="updateRegistration" spinner="updateRegistration" label="Update" />
             </x-slot>
         </div>
     @else
