@@ -137,7 +137,9 @@
         </div>
     </main>
 
-    <livewire:StoreRegistration.store-register-form-modal />
+    @if(auth()->user()->role == App\Enums\UserType::Store || auth()->user()->role == App\Enums\UserType::Travelpreneur)
+        <livewire:StoreRegistration.store-register-form-modal />
+    @endif
 
     <script>
         document.addEventListener('livewire:init', () => {
