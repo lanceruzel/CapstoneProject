@@ -4,9 +4,12 @@ namespace App\Livewire\Product;
 
 use Illuminate\Support\Facades\Log;
 use Livewire\Component;
+use Livewire\Features\SupportFileUploads\WithFileUploads;
 
 class ProductFormModal extends Component
 {
+    use WithFileUploads;
+
     public $images;
     public $name;
     public $description;
@@ -62,6 +65,10 @@ class ProductFormModal extends Component
         $productCategories = json_decode(file_get_contents($productCategoriesJsonPath), true);
 
         return collect($productCategories['categories'])->sortBy('name')->values()->toArray();
+    }
+
+    public function deleteImage($index){
+        array_splice($this->images, $index, 1);
     }
 
     public function render()

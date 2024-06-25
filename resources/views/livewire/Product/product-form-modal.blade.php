@@ -38,7 +38,7 @@
                                 </td>
 
                                 <td class="py-3">
-                                    <x-maskable class="w-[100px]" label="" icon="truck" placeholder="Value" mask="####" wire:model="variations.{{ $key }}.stocks" shadowless />
+                                    <x-maskable class="w-[100px]" label="" icon="truck" mask="####" wire:model="variations.{{ $key }}.stocks" shadowless />
                                 </td>
 
                                 <td class="py-3">
@@ -53,8 +53,10 @@
                     </caption>
                 </table>
             @else
-                <x-maskable label="Stock" icon="truck" placeholder="Value" mask="####" wire:model="stocks" shadowless />
-                <x-currency label="Price" prefix="$" thousands="," decimal="." wire:model="price" shadowless />
+                <div class="grid grid-cols-2 gap-3">
+                    <x-maskable class="max-lg:col-span-2" label="Stock" icon="truck" mask="####" wire:model="stocks" shadowless />
+                    <x-currency class="max-lg:col-span-2" label="Price" prefix="$" thousands="," decimal="." wire:model="price" shadowless />
+                </div>
             @endif
             
             <x-errors only="images" />
