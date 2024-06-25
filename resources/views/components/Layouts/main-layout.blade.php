@@ -117,10 +117,10 @@
                 </x-slot>
                 
                 @if(auth()->user()->role == App\Enums\UserType::Store || auth()->user()->role == App\Enums\UserType::Travelpreneur)
-                    <x-dropdown.item icon='building-storefront' label="Register Store" onclick="$openModal('storeRegistrationFormModal')" />
-                    
                     @if($storeRegistration->isRegistered())
-                        <x-dropdown.item icon='building-storefront' label="Store Management" />
+                        <x-dropdown.item href="{{ route('store.product-management') }}" icon='building-storefront' label="Store Management" />
+                    @else
+                        <x-dropdown.item icon='building-storefront' label="Register Store" onclick="$openModal('storeRegistrationFormModal')" />
                     @endif
                 @else
                     <x-dropdown.item icon='user-group' href="/" label="Affiliates" />

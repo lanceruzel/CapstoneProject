@@ -71,3 +71,9 @@ Route::group([], function () {
         return view('livewire.Pages.store-registrations');
     })->name('admin.store-registrations');
 });
+
+Route::group([], function () {
+    Route::get('/store/product-management', function () {
+        return view('livewire.Pages.product-management');
+    })->name('store.product-management');
+});

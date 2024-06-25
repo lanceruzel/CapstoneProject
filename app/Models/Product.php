@@ -40,4 +40,8 @@ class Product extends Model
     public function reports(){
         return $this->hasMany(ProductReport::class);
     }
+
+    public function posts(){
+        return $this->hasMany(Post::class);
+    }
 }

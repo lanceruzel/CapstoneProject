@@ -1,5 +1,5 @@
 <x-layouts.main-layout>
-    <div class="w-full">
+    <div class="w-full" x-data="{ tabSelected: 1 }">
         <div class="w-full max-w-[1000px] mx-auto px-3 min-h-screen">
             <div class="w-full border-2 bg-white rounded-lg">
                 <!-- Header -->
@@ -18,7 +18,7 @@
                 
                     <div class="w-full">
                         <!-- Name -->
-                        <h3 class="text-xl font-semibold text-black dark:text-white text-center">{{ $user->userInformation->fullname() }}</h3>
+                        <h3 class="text-xl font-semibold text-black dark:text-white text-center">{{ $user->role == App\Enums\UserType::Store ? $user->storeInformation->name : $user->userInformation->fullname() }}</h3>
                             
                         <!-- Username -->
                         <p class="text-sm text-gray-500 font-normal text-center">{{ '@' . $user->username }}</p>
@@ -49,12 +49,19 @@
                             </div>
                         </div>
                     </div>
-                </div> 
+                </div>
+
+                @if($user->role == App\Enums\UserType::Travelpreneur || $user->role == App\Enums\UserType::Store)
+                    <div class="flex items-center justify-center">
+                        <div class="cursor-pointer px-10 py-3 transition-all" x-bind:class="tabSelected == 1 ? 'border-b-2 border-gray-500 font-semibold' : ''" x-on:click="tabSelected = 1">Posts</div>
+                        <div class="cursor-pointer px-10 py-3 transition-all" x-bind:class="tabSelected == 2 ? 'border-b-2 border-gray-500 font-semibold' : ''" x-on:click='tabSelected = 2'>Products</div>
+                    </div>
+                @endif
             </div>
 
             <!-- Content -->
-            <div class="w-full flex items-center justify-center">
-                <div class="w-[510px] max-w-[510px] min-h-screen rounded-lg max-sm:px-7 space-y-5 mt-5">
+            <div class="w-full flex flex-col items-center justify-center">
+                <div x-show='tabSelected == 1' x-cloak x-transition class="w-[510px] max-w-[510px] min-h-screen rounded-lg max-sm:px-7 space-y-5 mt-5"> <!-- Posts -->
                     <div class="border w-full bg-white rounded-lg p-4 gap-3 shadow-sm flex justify-stretch items-stretch hover:cursor-pointer active:scale-95 transition-all" onclick="$openModal('postFormModal')">
                         <div class="w-full text-center bg-gray-200 rounded-lg py-2 font-medium text-sm select-none text-gray-600">What do you have in mind?</div>
                     
@@ -70,10 +77,15 @@
                     <!-- Posts Container -->
                     <livewire:Posting.posts-container userID="{{ $user->id }}"/>
                 </div>
-            </div>
-            
+
+                <div x-show='tabSelected == 2' x-cloak x-transition class="">
+                    Products
+                </div>
+            </div> 
         </div>
     </div>
 
     <livewire:Posting.post-form-modal />
+
+    
 </x-layouts.main-layout>
