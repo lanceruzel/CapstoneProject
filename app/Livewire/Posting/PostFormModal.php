@@ -6,6 +6,7 @@ use App\Enums\PostType;
 use App\Enums\Status;
 use App\Events\PostUpdated;
 use App\Models\Post;
+use App\Models\Product;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 use Livewire\Features\SupportFileUploads\WithFileUploads;
@@ -120,6 +121,10 @@ class PostFormModal extends Component
         }
 
         return $imagePaths;
+    }
+
+    public function markAsUnvailable($id){
+        Product::findOrFail($id);
     }
 
     public function deleteImage($index){

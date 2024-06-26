@@ -3,18 +3,17 @@
         <div class="flex flex-col gap-2 w-full">
 
             <x-input label="Product Name" wire:model="name" shadowless />
-            <x-textarea label="Description" wire:model="name" placeholder="Write product's description here." />
+            <x-textarea label="Description" wire:model="description" placeholder="Write product's description here." />
             <x-select label="Categories" wire:model="category" placeholder="Select Category" :options="$categories" option-label="name" option-value="name" shadowless />
 
             <x-checkbox class="m-2" label="Enable Variation" wire:model.live="hasVariation" lg/>
 
             @if($hasVariation)
-                <table class="w-full border-spacing-y-2 text-sm text-left">
+                <table class="w-full border-spacing-2 text-sm text-left">
                     <thead class="border-b-2">
                         <tr>
                             <th scope="col" class="px-6 py-3"></th>
-                            <th scope="col" class="px-6 py-3">Variation Type</th>
-                            <th scope="col" class="px-6 py-3">Value</th>
+                            <th scope="col" class="px-6 py-3">Variation Name</th>
                             <th scope="col" class="px-6 py-3">Stock</th>
                             <th scope="col" class="px-6 py-3">Price</th>
                         </tr>
@@ -22,19 +21,15 @@
         
                     <tbody>
                         @foreach ($variations as $key => $variation)
-                            <tr>
+                            <tr wire:key="{{ $key }}">
                                 <td class="px-2">
                                     @if(count($variations) > 1)
                                         <x-mini-button rounded icon="trash" flat gray interaction="negative" wire:click="removeVariation('{{ $key }}')" />
                                     @endif
                                 </td>
 
-                                <td class="flex items-center justify-center py-3">
-                                    <x-select class="w-[140px]" label="" wire:model="variations.{{ $key }}.type" placeholder="Variation Type" :options="['Sizes', 'Colors', 'Weight', 'Custom']" shadowless />
-                                </td>
-
                                 <td class="py-3">
-                                    <x-input class="w-[140px]" label="" placeholder="Value" wire:model="variations.{{ $key }}.value" placeholder="Eg. Small" shadowless />
+                                    <x-input class="w-[140px]" label="" wire:model="variations.{{ $key }}.name" placeholder="Eg. Small" shadowless />
                                 </td>
 
                                 <td class="py-3">
@@ -65,8 +60,8 @@
                 <div class="max-w-[520px] flex gap-4 overflow-x-auto p-3 pt-5" uk-lightbox>
                     @foreach($images as $key => $image)
                         <div class="flex-shrink-0 w-56 h-56 relative">
-                            <a href="{{ is_object($image) && method_exists($image, 'temporaryUrl') ? $image->temporaryUrl() : asset('uploads/posts') . '/' . $image }}">
-                                <img src="{{ is_object($image) && method_exists($image, 'temporaryUrl') ? $image->temporaryUrl() : asset('uploads/posts') . '/' . $image }}" alt="Uploaded Image" accept="image/png, image/jpeg" class="w-full h-full object-cover rounded-lg shadow border">
+                            <a href="{{ is_object($image) && method_exists($image, 'temporaryUrl') ? $image->temporaryUrl() : asset('uploads/products') . '/' . $image }}">
+                                <img src="{{ is_object($image) && method_exists($image, 'temporaryUrl') ? $image->temporaryUrl() : asset('uploads/products') . '/' . $image }}" alt="Uploaded Image" accept="image/png, image/jpeg" class="w-full h-full object-cover rounded-lg shadow border">
                             </a>
 
                             <button wire:click="deleteImage({{ $key }})" class="absolute -top-5 -right-3.5 active:scale-95 transition-all">
@@ -99,4 +94,14 @@
             
         </x-slot>
     </div>
+
+    {{-- <div class="flex items-center justify-center">
+        <div class="flex items-row items-center justify-center gap-3">
+            <x-icon name='arrow-path' class="h-5 w-5 animate-spin"/>
+
+            <span>
+                Fetching Data...
+            </span>
+        </div>
+    </div> --}}
 </x-modal-card>

@@ -6,9 +6,12 @@ use App\Enums\Status;
 use App\Models\StoreInformation;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
+use Livewire\WithPagination;
 
 class StoreRegistrationsTable extends Component
 {
+    use WithPagination;
+
     public $filterStatus = ['for-review', 'for-resubmission'];
 
     protected $listeners = [
@@ -19,7 +22,7 @@ class StoreRegistrationsTable extends Component
         $filter = $this->filterStatus;
 
         if(empty($filter)){
-            return StoreInformation::orderBy('created_at', 'desc')->get();
+            return StoreInformation::orderBy('created_at', 'desc')->paginate(10);
         }else{
             return StoreInformation::query()
             ->Where(function ($query) use($filter) {
@@ -28,7 +31,7 @@ class StoreRegistrationsTable extends Component
                 }  
             })
             ->orderBy('created_at', 'desc')
-            ->get();
+            ->paginate(10);
         }
     }
 

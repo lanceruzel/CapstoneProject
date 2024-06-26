@@ -1,6 +1,7 @@
 <?php
 
 use App\Enums\ProductStatus;
+use App\Enums\Status;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -24,10 +25,9 @@ return new class extends Migration
             $table->string('name');
             $table->string('category');
             $table->text('description');
-            $table->float('price');
-            $table->bigInteger('stocks');
+            $table->json('variations');
             $table->json('images');
-            $table->string('status')->default(ProductStatus::Validating);
+            $table->string('status')->default(Status::ForReview);
             $table->text('remarks')->nullable();
 
             $table->timestamps();

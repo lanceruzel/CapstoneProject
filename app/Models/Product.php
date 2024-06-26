@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Log;
 
 class Product extends Model
 {
@@ -14,12 +15,31 @@ class Product extends Model
         'name',
         'category',
         'description',
-        'price',
-        'stocks',
+        'variations',
         'images',
         'status',
         'remarks',
     ];
+
+    public function totalStocks(){
+        $totalStocks = 0;
+
+        foreach (json_decode($this->variations) as $variation) {
+            $totalStocks += $variation->stocks;
+        }
+
+        return $totalStocks;
+    }
+
+    public function priceRange(){
+        $prices = [];
+
+        foreach (json_decode($this->variations) as $variation) {
+            $prices[] += (float) $variation->price;
+        }
+
+        return count($prices) === 1 ? '$' . $prices[0] : '$' . min($prices) . ' ~ ' . '$' . max($prices);
+    }
 
     public function seller(){
         return $this->belongsTo(User::class, 'seller_id');

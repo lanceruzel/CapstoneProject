@@ -6,7 +6,7 @@
     </div>
 
     <div class="mt-5">
-        <livewire:StoreRegistration.store-registrations-table />
+        <livewire:Product.products-table />
     </div>
 
     <livewire:Product.product-form-modal />
