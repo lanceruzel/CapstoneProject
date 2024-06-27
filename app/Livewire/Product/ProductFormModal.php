@@ -41,12 +41,13 @@ class ProductFormModal extends Component
         'viewProductInformation' => 'getData'
     ];
 
-    public function getData($id){
+    public function getData($id)
+    {
         $this->isUpdate = true;
 
         $this->productUpdate = Product::findOrFail($id);
 
-        if($this->productUpdate){
+        if ($this->productUpdate) {
             $this->images = json_decode($this->productUpdate->images);
             $this->name = $this->productUpdate->name;
             $this->description = $this->productUpdate->description;
@@ -54,29 +55,41 @@ class ProductFormModal extends Component
 
             $this->variations = json_decode($this->productUpdate->variations);
 
-            if(count($this->variations) > 1){
+            if (count($this->variations) > 1) {
                 $this->hasVariation = true;
-            }else{
+            } else {
                 $this->price = $this->variations[0]->price;
                 $this->stocks = $this->variations[0]->stocks;
             }
-
         }
     }
 
-    public function store(){
+    public function store()
+    {
         $validated = $this->formValidate();
 
-        if($this->storeProduct($validated)){
-            $this->notification()->send([
-                'icon' => 'success',
-                'title' => 'Success!',
-                'description' => 'Your product has been successfully submitted for review.',
-            ]);
+        try {
+            $storeProduct = $this->storeProduct($validated);
 
-            $this->dispatch('refresh-product-table');
-            $this->dispatch('close-modal', ['modal' => 'productFormModal']);
-        }else{
+            if ($storeProduct) {
+                $this->notification()->send([
+                    'icon' => 'success',
+                    'title' => 'Success!',
+                    'description' => 'Your product has been successfully submitted for review.',
+                ]);
+
+                $this->dispatch('refresh-product-table');
+                $this->dispatch('close-modal', ['modal' => 'productFormModal']);
+            } else {
+                $this->notification()->send([
+                    'icon' => 'error',
+                    'title' => 'Error!',
+                    'description' => 'Woops, there\'s an error while submitting your product.',
+                ]);
+            }
+        } catch (\Exception $e) {
+            Log::error('Error store product: ' . $e->getMessage());
+
             $this->notification()->send([
                 'icon' => 'error',
                 'title' => 'Error!',
@@ -85,7 +98,8 @@ class ProductFormModal extends Component
         }
     }
 
-    public function storeProduct($validated){
+    public function storeProduct($validated)
+    {
         return Product::updateOrCreate(
             [
                 'id' => $this->productUpdate ? $this->productUpdate->id : null,
@@ -95,14 +109,14 @@ class ProductFormModal extends Component
                 'name' => $validated['name'],
                 'category' => $validated['category'],
                 'description' => $validated['description'],
-                'images' => json_encode($this->storeImages($this->images)),
+                'images' => json_decode($this->productUpdate->images) == $this->images ? json_encode($this->images) : json_encode($this->storeImages($this->images)),
                 'variations' => $this->hasVariation ? json_encode($this->variations) : json_encode([
-                                                                                                0 => [
-                                                                                                    'name' => 'Default',
-                                                                                                    'stocks' => $validated['stocks'],
-                                                                                                    'price' => $validated['price'],
-                                                                                                ]
-                                                                                            ])
+                    0 => [
+                        'name' => 'Default',
+                        'stocks' => $validated['stocks'],
+                        'price' => $validated['price'],
+                    ]
+                ])
             ]
         );
     }
@@ -112,14 +126,14 @@ class ProductFormModal extends Component
             'name' => 'required|min:10',
             'category' => 'required',
             'description' => 'required|min:50',
-            'images.*' => 'required|image|mimes:png,jpg,jpeg',
+            'images.*' => $this->productUpdate ? '' : 'required|image|mimes:png,jpg,jpeg',
         ];
 
-        if($this->hasVariation){
+        if ($this->hasVariation) {
             $rules['variations.*.name'] = 'required';
             $rules['variations.*.stocks'] = 'required|numeric|min:20|max:9999';
             $rules['variations.*.price'] = 'required|numeric';
-        }else{
+        } else {
             $rules['stocks'] = 'required|numeric|min:20|max:9999';
             $rules['price'] = 'required|numeric';
         }
@@ -127,9 +141,10 @@ class ProductFormModal extends Component
         return $this->validate($rules);
     }
 
-    public function clearData(){
+    public function clearData()
+    {
         $this->reset([
-            'images', 
+            'images',
             'name',
             'description',
             'category',
@@ -151,44 +166,57 @@ class ProductFormModal extends Component
         $this->isUpdate = false;
     }
 
-    public function addVariation() {
+    public function addVariation()
+    {
         $this->variations[] = [
-          'type' => '',
-          'value' => '',
-          'stocks' => '',
-          'price' => '',
+            'type' => '',
+            'value' => '',
+            'stocks' => '',
+            'price' => '',
         ];
     }
 
-    public function removeVariation($variationKey) {
+    public function removeVariation($variationKey)
+    {
         if (isset($this->variations[$variationKey])) {
             array_splice($this->variations, $variationKey, 1);
             $this->variations = array_values($this->variations);
         }
     }
 
-    public function getCategories(){
+    public function getCategories()
+    {
         $productCategoriesJsonPath = public_path('json/product_categories.json');
         $productCategories = json_decode(file_get_contents($productCategoriesJsonPath), true);
 
         return collect($productCategories['categories'])->sortBy('name')->values()->toArray();
     }
 
-    public function storeImages($images){
+    public function storeImages($images)
+    {
         $imagePaths = [];
 
-        if($images){
+        if ($images) {
+            $dbImages = json_decode($this->productUpdate->images, true); // Decode to array
+
             foreach ($images as $key => $image) {
-                $filename = $key . '_' . time() . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
-                $image->storeAs('products', $filename);
-                array_push($imagePaths, $filename);
+                if ($dbImages !== null && in_array($image, $dbImages)) {
+                    // Existing image, keep the path
+                    array_push($imagePaths, $image);
+                } else {
+                    // New image, store and get path
+                    $filename = $key . '_' . time() . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
+                    $image->storeAs('products', $filename);
+                    array_push($imagePaths, $filename);
+                }
             }
         }
 
         return $imagePaths;
     }
 
-    public function deleteImage($index){
+    public function deleteImage($index)
+    {
         array_splice($this->images, $index, 1);
     }
 

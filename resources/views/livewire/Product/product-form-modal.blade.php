@@ -86,11 +86,11 @@
         <x-slot name="footer" class="flex justify-end gap-x-4">
             <x-button flat label="Cancel" x-on:click="close" />
 
-            {{-- @if($postUpdate)
+            @if($productUpdate)
                 <x-button wire:loading.attr="disabled" wire:click="store" spinner="store" label="Update" />
-            @else --}}
+            @else
                 <x-button wire:loading.attr="disabled" wire:click="store" spinner="store" label="Publish" />
-            {{-- @endif --}}
+            @endif
             
         </x-slot>
     </div>

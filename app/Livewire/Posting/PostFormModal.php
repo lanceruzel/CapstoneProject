@@ -8,6 +8,7 @@ use App\Events\PostUpdated;
 use App\Models\Post;
 use App\Models\Product;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Livewire\Component;
 use Livewire\Features\SupportFileUploads\WithFileUploads;
 use WireUi\Traits\WireUiActions;
@@ -39,40 +40,44 @@ class PostFormModal extends Component
     }
 
     public function store(){
-        $postType = PostType::Status;
+        try{
+            $postType = PostType::Status;
 
-        $validated = $this->formValidate();
+            $validated = $this->formValidate();
 
-        $post = $this->storePost($postType, $validated);
+            $post = $this->storePost($postType, $validated);
 
-        if($post){
-            if($this->postUpdate == null){
-                $this->dispatch('post-create-delete');
+            if($post){
+                if($this->postUpdate == null){
+                    $this->dispatch('post-create-delete');
+                }else{
+                    PostUpdated::dispatch($this->postUpdate->id);
+                }
+    
+                $this->dialog()->show([
+                    'title' => 'Success!',
+                    'icon' => 'success',
+                    'description' => $this->postUpdate != null ? 'Your post has been successfully updated.' : 'Your post has been successfully created.',
+
+                    'onClose' => [
+                        'method' => 'closeModal',
+                    ],
+                    'onDismiss' => [
+                        'method' => 'closeModal',
+                    ],
+                    'onTimeout' => [
+                        'method' => 'closeModal',
+                    ],
+                ]);
             }else{
-                PostUpdated::dispatch($this->postUpdate->id);
+                $this->dialog()->show([
+                    'icon' => 'error',
+                    'title' => 'Error!',
+                    'description' => $this->postUpdate != null ? 'There seem to be a problem creating your post.' : 'There seem to be a problem updating your post.',
+                ]);
             }
-  
-            $this->dialog()->show([
-                'title' => 'Success!',
-                'icon' => 'success',
-                'description' => $this->postUpdate != null ? 'Your post has been successfully updated.' : 'Your post has been successfully created.',
-
-                'onClose' => [
-                    'method' => 'closeModal',
-                ],
-                'onDismiss' => [
-                    'method' => 'closeModal',
-                ],
-                'onTimeout' => [
-                    'method' => 'closeModal',
-                ],
-            ]);
-        }else{
-            $this->dialog()->show([
-                'icon' => 'error',
-                'title' => 'Error!',
-                'description' => $this->postUpdate != null ? 'There seem to be a problem creating your post.' : 'There seem to be a problem updating your post.',
-            ]);
+        }catch (\Exception $e){
+            Log::error('Error on store post: ' . $e->getMessage());
         }
     }
 
@@ -96,7 +101,7 @@ class PostFormModal extends Component
             [
                 'type' => $postType,
                 'content' => $validated['content'],
-                'images' => json_encode($this->storeImages($this->images)),
+                'images' => json_decode($this->postUpdate->images) == $this->images ? json_encode($this->images) : json_encode($this->storeImages($this->images)),
                 'status' => Status::Available
             ]
         );      
@@ -105,18 +110,26 @@ class PostFormModal extends Component
     public function formValidate(){
         return $this->validate([
             'content' => 'required',
-            'images.*' => 'image|mimes:png,jpg,jpeg',
+            'images.*' => $this->postUpdate ? '' : 'image|mimes:png,jpg,jpeg',
         ]);
     }
 
     public function storeImages($images){
         $imagePaths = [];
 
-        if($images){
+        if ($images) {
+            $dbImages = json_decode($this->postUpdate->images, true); // Decode to array
+
             foreach ($images as $key => $image) {
-                $filename = $key . '_' . time() . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
-                $image->storeAs('posts', $filename);
-                array_push($imagePaths, $filename);
+                if ($dbImages !== null && in_array($image, $dbImages)) {
+                    // Existing image, keep the path
+                    array_push($imagePaths, $image);
+                } else {
+                    // New image, store and get path
+                    $filename = $key . '_' . time() . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
+                    $image->storeAs('posts', $filename);
+                    array_push($imagePaths, $filename);
+                }
             }
         }
 
