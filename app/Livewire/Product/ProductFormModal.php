@@ -23,7 +23,6 @@ class ProductFormModal extends Component
 
     public $hasVariation = false;
 
-    public $isUpdate = false;
     public $productUpdate = null;
 
     public $variations = [
@@ -45,8 +44,6 @@ class ProductFormModal extends Component
     ];
 
     public function getData($id){
-        $this->isUpdate = true;
-
         $this->productUpdate = Product::findOrFail($id);
 
         if ($this->productUpdate) {
@@ -55,16 +52,25 @@ class ProductFormModal extends Component
             $this->description = $this->productUpdate->description;
             $this->category = $this->productUpdate->category;
 
-            $this->variations = json_decode($this->productUpdate->variations);
+            $this->variations = json_decode($this->productUpdate->variations, true);
 
             if (count($this->variations) >= 2) {
                 $this->hasVariation = true;
             } else {
-                $this->price = $this->variations[0]->price;
-                $this->stocks = $this->variations[0]->stocks;
+                $this->price = $this->variations[0]['price'];
+                $this->stocks = $this->variations[0]['stocks'];
             }
         }
     }
+
+    public function removeEmptyVariations() {
+        $filteredVariations = array_filter($this->variations, function ($variation) {
+          // Check if all properties in the variation are empty strings
+          return !empty(trim(implode('', array_values($variation))));
+        });
+      
+        $this->variations = array_values($filteredVariations); // Reset keys
+      }
 
     public function store(){
         $validated = $this->formValidate();
@@ -130,9 +136,16 @@ class ProductFormModal extends Component
         ];
 
         if ($this->hasVariation) {
-            $rules['variations.*.name'] = 'required';
-            $rules['variations.*.stocks'] = 'required|numeric|min:20|max:9999';
-            $rules['variations.*.price'] = 'required|numeric';
+            //Check if there is empty variations
+            $this->removeEmptyVariations();
+
+            foreach($this->variations as $key => $i){
+                Log::info('Key: ' . $key);
+                Log::info($this->variations);
+                $rules["variations.$key.name"] = 'required';
+                $rules["variations.$key.stocks"] = 'required|numeric|min:20|max:9999';
+                $rules["variations.$key.price"] = 'required|numeric';
+            }   
         } else {
             $rules['stocks'] = 'required|numeric|min:20|max:9999';
             $rules['price'] = 'required|numeric';
@@ -151,23 +164,11 @@ class ProductFormModal extends Component
             'price'
         ]);
 
-        $this->hasVariation = false;
 
-        $this->variations = [
-            0 => [
-                'name' => '',
-                'stocks' => '',
-                'price' => '',
-            ],
-            1 => [
-                'name' => '',
-                'stocks' => '',
-                'price' => '',
-            ]
-        ];
+        $this->variations = [];
 
         $this->productUpdate = null;
-        $this->isUpdate = false;
+        $this->hasVariation = false;
     }
 
     public function addVariation(){
@@ -176,15 +177,10 @@ class ProductFormModal extends Component
             'stocks' => '',
             'price' => '',
         ];
-
-        Log::info($this->variations);
     }
 
     public function removeVariation($variationKey){
-        if (isset($this->variations[$variationKey])) {
-            array_splice($this->variations, $variationKey, 1);
-            $this->variations = array_values($this->variations);
-        }
+        array_splice($this->variations, $variationKey, 1);
     }
 
     public function getCategories(){
