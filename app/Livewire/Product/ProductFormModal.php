@@ -22,7 +22,6 @@ class ProductFormModal extends Component
     public $price;
 
     public $hasVariation = false;
-
     public $productUpdate = null;
 
     public $variations = [
@@ -44,6 +43,8 @@ class ProductFormModal extends Component
     ];
 
     public function getData($id){
+        $this->variations = null;
+
         $this->productUpdate = Product::findOrFail($id);
 
         if ($this->productUpdate) {
@@ -177,6 +178,7 @@ class ProductFormModal extends Component
 
         $this->productUpdate = null;
         $this->hasVariation = false;
+        $this->isUpdate = false;
     }
 
     public function addVariation(){
