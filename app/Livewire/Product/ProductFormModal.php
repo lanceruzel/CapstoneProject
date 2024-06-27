@@ -63,14 +63,24 @@ class ProductFormModal extends Component
         }
     }
 
-    public function removeEmptyVariations() {
-        $filteredVariations = array_filter($this->variations, function ($variation) {
-          // Check if all properties in the variation are empty strings
-          return !empty(trim(implode('', array_values($variation))));
-        });
-      
-        $this->variations = array_values($filteredVariations); // Reset keys
-      }
+    public function removeEmptyVariations(){
+        $filteredVariations = [];
+        foreach ($this->variations as $variation) {
+            $hasNonEmptyValue = false;
+            
+            foreach ($variation as $value) {
+                if (!empty(trim($value))) {
+                    $hasNonEmptyValue = true;
+                    break; // Exit inner loop if a non-empty value is found
+                }
+            }
+
+            if ($hasNonEmptyValue) {
+                $filteredVariations[] = $variation;
+            }
+        }
+        $this->variations = $filteredVariations;
+    }
 
     public function store(){
         $validated = $this->formValidate();
@@ -140,8 +150,6 @@ class ProductFormModal extends Component
             $this->removeEmptyVariations();
 
             foreach($this->variations as $key => $i){
-                Log::info('Key: ' . $key);
-                Log::info($this->variations);
                 $rules["variations.$key.name"] = 'required';
                 $rules["variations.$key.stocks"] = 'required|numeric|min:20|max:9999';
                 $rules["variations.$key.price"] = 'required|numeric';

@@ -63,7 +63,7 @@
                             <td class="px-6 py-4">{{ $product->priceRange() }}</td>
                             <td class="px-6 py-4">
                                 <x-dropdown icon="bars-3">
-                                    <x-dropdown.item label="Add Stock" />
+                                    <x-dropdown.item label="Add Stock" onclick="$openModal('addStockFormModal')" wire:click="$dispatch('viewProductStocksInformation', { id: {{ $product->id }} })" />
                                     <x-dropdown.item label="Update Product" onclick="$openModal('productFormModal')" wire:click="$dispatch('viewProductInformation', { id: {{ $product->id }} })" />
                                 </x-dropdown>
                             </td>

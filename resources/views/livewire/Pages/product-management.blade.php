@@ -10,4 +10,5 @@
     </div>
 
     <livewire:Product.product-form-modal />
+    <livewire:Product.add-stock-form-modal />
 </x-layouts.store-layout>
