@@ -23,7 +23,7 @@
                         @foreach ($variations as $key => $variation)
                             <tr wire:key="{{ $key }}">
                                 <td class="px-2">
-                                    @if(count($variations) > 1)
+                                    @if(count($variations) > 2)
                                         <x-mini-button rounded icon="trash" flat gray interaction="negative" wire:click="removeVariation('{{ $key }}')" />
                                     @endif
                                 </td>

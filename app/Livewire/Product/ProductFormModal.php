@@ -31,6 +31,11 @@ class ProductFormModal extends Component
             'name' => '',
             'stocks' => '',
             'price' => '',
+        ],
+        1 => [
+            'name' => '',
+            'stocks' => '',
+            'price' => '',
         ]
     ];
 
@@ -41,8 +46,7 @@ class ProductFormModal extends Component
         'viewProductInformation' => 'getData'
     ];
 
-    public function getData($id)
-    {
+    public function getData($id){
         $this->isUpdate = true;
 
         $this->productUpdate = Product::findOrFail($id);
@@ -55,7 +59,7 @@ class ProductFormModal extends Component
 
             $this->variations = json_decode($this->productUpdate->variations);
 
-            if (count($this->variations) > 1) {
+            if (count($this->variations) >= 2) {
                 $this->hasVariation = true;
             } else {
                 $this->price = $this->variations[0]->price;
@@ -64,8 +68,7 @@ class ProductFormModal extends Component
         }
     }
 
-    public function store()
-    {
+    public function store(){
         $validated = $this->formValidate();
 
         try {
@@ -98,8 +101,9 @@ class ProductFormModal extends Component
         }
     }
 
-    public function storeProduct($validated)
-    {
+    public function storeProduct($validated){
+        Log::info($this->variations);
+
         return Product::updateOrCreate(
             [
                 'id' => $this->productUpdate ? $this->productUpdate->id : null,
@@ -110,7 +114,7 @@ class ProductFormModal extends Component
                 'category' => $validated['category'],
                 'description' => $validated['description'],
                 'images' => json_decode($this->productUpdate->images) == $this->images ? json_encode($this->images) : json_encode($this->storeImages($this->images)),
-                'variations' => $this->hasVariation ? json_encode($this->variations) : json_encode([
+                'variations' => $this->hasVariation == true ? json_encode($this->variations) : json_encode([
                     0 => [
                         'name' => 'Default',
                         'stocks' => $validated['stocks'],
@@ -141,8 +145,7 @@ class ProductFormModal extends Component
         return $this->validate($rules);
     }
 
-    public function clearData()
-    {
+    public function clearData(){
         $this->reset([
             'images',
             'name',
@@ -159,6 +162,11 @@ class ProductFormModal extends Component
                 'name' => '',
                 'stocks' => '',
                 'price' => '',
+            ],
+            1 => [
+                'name' => '',
+                'stocks' => '',
+                'price' => '',
             ]
         ];
 
@@ -166,34 +174,29 @@ class ProductFormModal extends Component
         $this->isUpdate = false;
     }
 
-    public function addVariation()
-    {
+    public function addVariation(){
         $this->variations[] = [
-            'type' => '',
-            'value' => '',
+            'name' => '',
             'stocks' => '',
             'price' => '',
         ];
     }
 
-    public function removeVariation($variationKey)
-    {
+    public function removeVariation($variationKey){
         if (isset($this->variations[$variationKey])) {
             array_splice($this->variations, $variationKey, 1);
             $this->variations = array_values($this->variations);
         }
     }
 
-    public function getCategories()
-    {
+    public function getCategories(){
         $productCategoriesJsonPath = public_path('json/product_categories.json');
         $productCategories = json_decode(file_get_contents($productCategoriesJsonPath), true);
 
         return collect($productCategories['categories'])->sortBy('name')->values()->toArray();
     }
 
-    public function storeImages($images)
-    {
+    public function storeImages($images){
         $imagePaths = [];
 
         if ($images) {
@@ -215,13 +218,11 @@ class ProductFormModal extends Component
         return $imagePaths;
     }
 
-    public function deleteImage($index)
-    {
+    public function deleteImage($index){
         array_splice($this->images, $index, 1);
     }
 
-    public function render()
-    {
+    public function render(){
         return view('livewire.Product.product-form-modal', [
             'categories' => $this->getCategories()
         ]);
