@@ -54,7 +54,7 @@
                 </div>
             @endif
             
-            <x-errors only="images" />
+            <x-errors only="images.*" />
 
             @if($images)
                 <div class="max-w-[520px] flex gap-4 overflow-x-auto p-3 pt-5" uk-lightbox>
@@ -74,7 +74,7 @@
 
             <div class="w-full mt-3 border1 rounded-lg bg-[url('https://demo.foxthemes.net/instello/assets/images/ad_pattern.png')] bg-repeat">   
                 <label wire:target='images' wire:loading.attr='disabled' class="py-5 flex flex-col justify-center items-center cursor-pointer">
-                    <input class="hidden" type="file" multiple wire:model="images">
+                    <input class="hidden" type="file" accept="image/png, image/jpg, image/jpeg" multiple wire:model="images">
                     <x-icon name="photo" class="w-10 h-10 text-teal-600" lg />
                     
                     <span wire:target='images' wire:loading.remove class="text-gray-700 mt-2">Browse to Upload image</span>

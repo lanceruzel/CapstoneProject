@@ -116,9 +116,13 @@ class PostFormModal extends Component
 
     public function storeImages($images){
         $imagePaths = [];
+        $dbImages = null;
 
-        if ($images) {
-            $dbImages = json_decode($this->postUpdate->images, true); // Decode to array
+        if($images){
+
+            if($this->postUpdate){
+                $dbImages = json_decode($this->postUpdate->images, true); // Decode to array
+            }
 
             foreach ($images as $key => $image) {
                 if ($dbImages !== null && in_array($image, $dbImages)) {
@@ -133,7 +137,7 @@ class PostFormModal extends Component
             }
         }
 
-        return $imagePaths;
+        return json_encode($imagePaths);
     }
 
     public function markAsUnvailable($id){

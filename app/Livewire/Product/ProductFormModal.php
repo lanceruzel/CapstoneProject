@@ -39,8 +39,6 @@ class ProductFormModal extends Component
         ]
     ];
 
-    public $isLoading = false;
-
     protected $listeners = [
         'clearProductFormModalData' => 'clearData',
         'viewProductInformation' => 'getData'
@@ -102,8 +100,6 @@ class ProductFormModal extends Component
     }
 
     public function storeProduct($validated){
-        Log::info($this->variations);
-
         return Product::updateOrCreate(
             [
                 'id' => $this->productUpdate ? $this->productUpdate->id : null,
@@ -113,7 +109,7 @@ class ProductFormModal extends Component
                 'name' => $validated['name'],
                 'category' => $validated['category'],
                 'description' => $validated['description'],
-                'images' => json_decode($this->productUpdate->images) == $this->images ? json_encode($this->images) : json_encode($this->storeImages($this->images)),
+                'images' => $this->productUpdate != null && json_decode($this->productUpdate->images) == $this->images ? json_encode($this->images) : $this->storeImages($this->images),
                 'variations' => $this->hasVariation == true ? json_encode($this->variations) : json_encode([
                     0 => [
                         'name' => 'Default',
@@ -130,7 +126,7 @@ class ProductFormModal extends Component
             'name' => 'required|min:10',
             'category' => 'required',
             'description' => 'required|min:50',
-            'images.*' => $this->productUpdate ? '' : 'required|image|mimes:png,jpg,jpeg',
+            'images.*' => $this->productUpdate != null ? '' : 'required|image|mimes:png,jpg,jpeg',
         ];
 
         if ($this->hasVariation) {
@@ -180,6 +176,8 @@ class ProductFormModal extends Component
             'stocks' => '',
             'price' => '',
         ];
+
+        Log::info($this->variations);
     }
 
     public function removeVariation($variationKey){
@@ -198,9 +196,13 @@ class ProductFormModal extends Component
 
     public function storeImages($images){
         $imagePaths = [];
+        $dbImages = null;
 
-        if ($images) {
-            $dbImages = json_decode($this->productUpdate->images, true); // Decode to array
+        if($images){
+
+            if($this->productUpdate){
+                $dbImages = json_decode($this->productUpdate->images, true); // Decode to array
+            }
 
             foreach ($images as $key => $image) {
                 if ($dbImages !== null && in_array($image, $dbImages)) {
@@ -215,7 +217,7 @@ class ProductFormModal extends Component
             }
         }
 
-        return $imagePaths;
+        return json_encode($imagePaths);
     }
 
     public function deleteImage($index){
