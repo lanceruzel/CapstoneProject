@@ -66,6 +66,14 @@
                         <x-button class='!justify-start font-medium' icon='folder' href="{{ route('admin.store-registrations') }}" flat full secondary label="Store Registrations" /> 
                     @endif
                 </li>
+
+                <li>
+                    @if(request()->routeIS('admin.product-registrations'))
+                        <x-button class='!justify-start font-medium' icon='folder' href="{{ route('admin.product-registrations') }}" solid flat full secondary label="Product Registrations" />
+                    @else
+                        <x-button class='!justify-start font-medium' icon='folder' href="{{ route('admin.product-registrations') }}" flat full secondary label="Product Registrations" /> 
+                    @endif
+                </li>
             </ul>
 
             <x-button href='signout' icon='arrow-left-end-on-rectangle' white label="Sign Out" />

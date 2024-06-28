@@ -70,6 +70,10 @@ Route::group([], function () {
     Route::get('/admin/store-registrations', function () {
         return view('livewire.Pages.store-registrations');
     })->name('admin.store-registrations');
+
+    Route::get('/admin/product-registrations', function () {
+        return view('livewire.Pages.product-registrations');
+    })->name('admin.product-registrations');
 });
 
 Route::group([], function () {
