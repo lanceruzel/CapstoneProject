@@ -1,6 +1,6 @@
 <x-layouts.main-layout>
     <div class="w-full" x-data="{ tabSelected: 1 }">
-        <div class="w-full max-w-[1000px] mx-auto px-3 min-h-screen">
+        <div class="w-full max-w-[1000px] mx-auto px-3 h-full">
             <div class="w-full border-2 bg-white rounded-lg">
                 <!-- Header -->
                 <div class="flex gap-5 flex-col items-center p-8">

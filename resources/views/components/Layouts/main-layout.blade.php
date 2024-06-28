@@ -41,7 +41,7 @@
     <x-dialog />
     <x-notifications />
     
-    <nav class="bg-white shadow border-gray-200 fixed top-0 w-screen opacity-95" style="z-index: 1">
+    <nav class="bg-white shadow border-gray-200 fixed top-0 w-screen" style="z-index: 1">
         <div class="flex flex-wrap items-center justify-between mx-auto p-4">
             <a href="/" class="flex items-center space-x-3">
                 {{-- <img src="https://flowbite.com/docs/images/logo.svg" class="h-8" alt="Flowbite Logo" /> --}}
@@ -103,6 +103,14 @@
                 </li>
 
                 <li>
+                    @if(request()->routeIS('cart'))
+                        <x-button class='!justify-start font-medium' xl icon='shopping-cart' href="{{ route('cart') }}" solid flat full secondary label="My Cart" />
+                    @else
+                        <x-button class='!justify-start font-medium' xl icon='shopping-cart' href="{{ route('cart') }}" flat full secondary label="My Cart" /> 
+                    @endif
+                </li>
+
+                <li>
                     @if(request()->routeIS('message'))
                         <x-button class='!justify-start font-medium' xl icon='chat-bubble-bottom-center-text' href="{{ route('message') }}" solid flat full secondary label="Messages" />
                     @else
@@ -139,7 +147,7 @@
         </div>
     </aside>
 
-    <main class=" {{ request()->routeIS('message') ? 'lg:ps-64' : 'md:ps-64' }} pt-16 bg-gray-50">
+    <main class=" {{ request()->routeIS('message') ? 'lg:ps-64' : 'md:ps-64' }} min-h-screen pt-16 bg-gray-50">
         <div class="p-5 overflow-hidden">
             {{ $slot }}
         </div>

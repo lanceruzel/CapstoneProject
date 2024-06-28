@@ -65,9 +65,17 @@ Route::group(['middleware' => 'auth'], function () {
         ]);
     })->name('message');
 
-    Route::get('/market', function ($username = null) {
+    Route::get('/market', function () {
         return view('livewire.Pages.market');
     })->name('market');
+
+    Route::get('/cart', function () {
+        return view('livewire.Pages.cart');
+    })->name('cart');
+
+    Route::get('/orders', function () {
+        return view('livewire.Pages.orders');
+    })->name('orders');
 });
 
 Route::group([], function () {
