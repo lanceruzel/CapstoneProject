@@ -1,5 +1,5 @@
 <x-modal-card name="productFormModal" title="Manage Product" align='center' x-cloak x-on:close="$dispatch('clearProductFormModalData')" blurless wire:ignore.self>  
-    @if($variations)
+    {{-- @if($variations || $productUpdate) --}}
         <div class="flex flex-col gap-2 items-start text-gray-600 overflow-auto">
             <div class="flex flex-col gap-2 w-full">
 
@@ -103,7 +103,7 @@
                 
             </x-slot>
         </div>
-    @else
+    {{-- @else
         <div class="flex items-center justify-center w-full">
             <div class="flex items-row items-center justify-center gap-3">
                 <x-icon name='arrow-path' class="h-5 w-5 animate-spin"/>
@@ -113,5 +113,5 @@
                 </span>
             </div>
         </div>
-    @endif
+    @endif --}}
 </x-modal-card>

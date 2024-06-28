@@ -192,7 +192,18 @@ class ProductFormModal extends Component
         ]);
 
 
-        $this->variations = [];
+        $this->variations = [
+            0 => [
+                'name' => '',
+                'stocks' => '',
+                'price' => '',
+            ],
+            1 => [
+                'name' => '',
+                'stocks' => '',
+                'price' => '',
+            ]
+        ];
 
         $this->productUpdate = null;
         $this->hasVariation = false;
