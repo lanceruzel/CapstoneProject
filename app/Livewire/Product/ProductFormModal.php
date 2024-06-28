@@ -2,11 +2,13 @@
 
 namespace App\Livewire\Product;
 
+use App\Enums\Status;
 use App\Models\Product;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Livewire\Component;
 use Livewire\Features\SupportFileUploads\WithFileUploads;
+use NunoMaduro\Collision\Adapters\Phpunit\State;
 use WireUi\Traits\WireUiActions;
 
 class ProductFormModal extends Component
@@ -20,6 +22,8 @@ class ProductFormModal extends Component
     public $category;
     public $stocks;
     public $price;
+
+    public $remarks;
 
     public $hasVariation = false;
     public $productUpdate = null;
@@ -52,6 +56,8 @@ class ProductFormModal extends Component
             $this->name = $this->productUpdate->name;
             $this->description = $this->productUpdate->description;
             $this->category = $this->productUpdate->category;
+
+            $this->remarks = $this->productUpdate->remarks;
 
             $this->variations = json_decode($this->productUpdate->variations, true);
 
@@ -117,6 +123,16 @@ class ProductFormModal extends Component
     }
 
     public function storeProduct($validated){
+        $status = 'for-review';
+        
+        if($this->productUpdate){
+            if($this->productUpdate->status == Status::ForReSubmission){
+                $status = Status::ForReview;
+            }else{
+                $status = $this->productUpdate->status;
+            }
+        }
+
         return Product::updateOrCreate(
             [
                 'id' => $this->productUpdate ? $this->productUpdate->id : null,
@@ -126,6 +142,7 @@ class ProductFormModal extends Component
                 'name' => $validated['name'],
                 'category' => $validated['category'],
                 'description' => $validated['description'],
+                'status' => $status,
                 'images' => $this->productUpdate != null && json_decode($this->productUpdate->images) == $this->images ? json_encode($this->images) : $this->storeImages($this->images),
                 'variations' => $this->hasVariation == true ? json_encode($this->variations) : json_encode([
                     0 => [
@@ -170,7 +187,8 @@ class ProductFormModal extends Component
             'description',
             'category',
             'stocks',
-            'price'
+            'price',
+            'remarks'
         ]);
 
 
@@ -178,7 +196,6 @@ class ProductFormModal extends Component
 
         $this->productUpdate = null;
         $this->hasVariation = false;
-        $this->isUpdate = false;
     }
 
     public function addVariation(){

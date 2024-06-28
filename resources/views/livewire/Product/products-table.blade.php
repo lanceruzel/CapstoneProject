@@ -55,6 +55,8 @@
                                     <x-badge flat positive label="Available" />
                                 @elseif($product->status == App\Enums\Status::Unavailable)
                                     <x-badge flat negative label="Unavailable" />
+                                @elseif($product->status == App\Enums\Status::ForReSubmission)
+                                    <x-badge flat warning label="For Resumission" />
                                 @else
                                     {{ $product->status }}
                                 @endif

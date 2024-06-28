@@ -3,6 +3,14 @@
         <div class="flex flex-col gap-2 items-start text-gray-600 overflow-auto">
             <div class="flex flex-col gap-2 w-full">
 
+                @if($productUpdate && $productUpdate->status == App\Enums\Status::ForReSubmission && $productUpdate->remarks)
+                    <x-alert title="Admin's Remark" info>
+                        <x-slot name="slot">
+                            {{ $productUpdate->remarks }}
+                        </x-slot>
+                    </x-alert>
+                @endif
+
                 <x-input label="Product Name" wire:model="name" shadowless />
                 <x-textarea label="Description" wire:model="description" placeholder="Write product's description here." />
                 <x-select label="Categories" wire:model="category" placeholder="Select Category" :options="$categories" option-label="name" option-value="name" shadowless />
