@@ -95,6 +95,14 @@
                 </li>
 
                 <li>
+                    @if(request()->routeIS('market'))
+                        <x-button class='!justify-start font-medium' xl icon='shopping-bag' href="{{ route('market') }}" solid flat full secondary label="Market" />
+                    @else
+                        <x-button class='!justify-start font-medium' xl icon='shopping-bag' href="{{ route('market') }}" flat full secondary label="Market" /> 
+                    @endif
+                </li>
+
+                <li>
                     @if(request()->routeIS('message'))
                         <x-button class='!justify-start font-medium' xl icon='chat-bubble-bottom-center-text' href="{{ route('message') }}" solid flat full secondary label="Messages" />
                     @else

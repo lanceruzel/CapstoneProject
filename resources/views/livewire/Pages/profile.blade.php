@@ -77,10 +77,22 @@
                     <!-- Posts Container -->
                     <livewire:Posting.posts-container userID="{{ $user->id }}"/>
                 </div>
+                @if($user->role == App\Enums\UserType::Travelpreneur || $user->role == App\Enums\UserType::Store)
+                    <div x-show='tabSelected == 2' class="w-full px-5" x-cloak x-transition class="">
+                        <div class="pt-5">
+                            <div class="flex max-sm:items-start items-center max-sm:flex-col justify-between gap-4">
+                                <p class="text-2xl font-semibold">Our Products</p>
+                    
+                                <div class="flex items-center justify-end max-md:w-full sm:w-7/12 md:w-5/12">
+                                    <x-input icon="magnifying-glass" wire:model.live.debounce.200ms="search" placeholder="Search" shadowless />
+                                </div>
+                            </div>
 
-                <div x-show='tabSelected == 2' x-cloak x-transition class="">
-                    Products
-                </div>
+                            <!-- Container here -->
+                            <livewire:Product.products-container userID="{{ $user->id }}"/>
+                        </div>
+                    </div>
+                @endif
             </div> 
         </div>
     </div>

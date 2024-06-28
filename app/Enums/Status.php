@@ -19,4 +19,6 @@ enum Status: string
     const ForReSubmission = 'for-resubmission';
     const LowStockLevel = 'low-stock-level';
     const Suspended = 'suspended';
+
+    const Delivered = 'delivered';
 }

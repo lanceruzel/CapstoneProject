@@ -64,6 +64,10 @@ Route::group(['middleware' => 'auth'], function () {
             'id' => $id
         ]);
     })->name('message');
+
+    Route::get('/market', function ($username = null) {
+        return view('livewire.Pages.market');
+    })->name('market');
 });
 
 Route::group([], function () {
