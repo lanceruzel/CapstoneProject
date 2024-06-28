@@ -41,7 +41,7 @@
     <x-dialog />
     <x-notifications />
     
-    <nav class="bg-white shadow border-gray-200 fixed top-0 w-screen" style="z-index: 1">
+    <nav class="bg-white shadow border-gray-200 fixed top-0 w-screen opacity-95" style="z-index: 1">
         <div class="flex flex-wrap items-center justify-between mx-auto p-4">
             <a href="/" class="flex items-center space-x-3">
                 {{-- <img src="https://flowbite.com/docs/images/logo.svg" class="h-8" alt="Flowbite Logo" /> --}}

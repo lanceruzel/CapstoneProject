@@ -1,5 +1,5 @@
 <x-layouts.main-layout wire:ignore.self>
-    <div class="flex flex-col lg:flex-row lg:items-start items-center justify-center lg:gap-5 xl:gap-7">
+    <div class="flex flex-col lg:flex-row lg:items-start items-center justify-center lg:gap-7 xl:gap-10" id="js-oversized">
         <div class="w-[510px] max-w-[510px] min-h-screen rounded-lg max-sm:px-7 space-y-5">
             <div class="border w-full bg-white rounded-lg p-4 gap-3 shadow-sm flex justify-stretch items-stretch hover:cursor-pointer active:scale-95 transition-all" onclick="$openModal('postFormModal')">
                 <div class="w-full text-center bg-gray-200 rounded-lg py-2 font-medium text-sm select-none text-gray-600">What do you have in mind?</div>
@@ -18,9 +18,11 @@
         </div>
     
         <!-- Rightbar -->
-        <div class="lg:max-w-[370px] max-md:max-w-[510px] max-sm:px-7 shadow-sm border rounded-lg">
-            <!-- People You might know -->
-            <livewire:Etc.people-you-might-know />
+        <div class="lg:max-w-[370px] max-md:max-w-[510px] max-sm:px-7" style="z-index: 0">
+            <div class="space-y-5 uk-sticky" uk-sticky="end: #js-oversized; offset: 40; media:992;">
+                <livewire:Etc.people-you-might-know />
+                <livewire:Etc.random-product-container />
+            </div>
         </div>
     </div>
 
