@@ -12,7 +12,7 @@ class StoreRegistrationsTable extends Component
 {
     use WithPagination;
 
-    public $filterStatus = ['for-review', 'for-resubmission'];
+    public $filterStatus = [];
 
     protected $listeners = [
         'refreshStoreRegistrationTable' => '$refresh'

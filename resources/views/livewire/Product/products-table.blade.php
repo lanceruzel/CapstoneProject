@@ -10,19 +10,19 @@
             
                 <x-dropdown.header label="Filter">
                     <x-dropdown.item>
-                        <x-checkbox label="Accepted" wire:model.live="filterStatus" :value="App\Enums\Status::Accepted" />
-                    </x-dropdown.item>
-
-                    <x-dropdown.item>
                         <x-checkbox label="For Review" wire:model.live="filterStatus" :value="App\Enums\Status::ForReview" />
                     </x-dropdown.item>
 
                     <x-dropdown.item>
-                        <x-checkbox label="For Resubmission" wire:model.live="filterStatus" :value="App\Enums\Status::ForReSubmission" />
+                        <x-checkbox label="Available" wire:model.live="filterStatus" :value="App\Enums\Status::Available" />
                     </x-dropdown.item>
 
                     <x-dropdown.item>
-                        <x-checkbox label="For Submission" wire:model.live="filterStatus" :value="App\Enums\Status::ForSubmission" />
+                        <x-checkbox label="Unavailable" wire:model.live="filterStatus" :value="App\Enums\Status::Unavailable" />
+                    </x-dropdown.item>
+
+                    <x-dropdown.item>
+                        <x-checkbox label="Suspended" wire:model.live="filterStatus" :value="App\Enums\Status::Suspended" />
                     </x-dropdown.item> 
                 </x-dropdown.header>
             </x-dropdown>
