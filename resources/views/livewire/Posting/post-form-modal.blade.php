@@ -17,7 +17,7 @@
                 <x-errors only="images" />
 
                 @if($images)
-                    <div class="max-w-[520px] flex gap-4 overflow-x-auto p-3 pt-5" uk-lightbox>
+                    <div class="max-w-full flex gap-4 overflow-x-auto p-3 pt-5" uk-lightbox>
                         @foreach($images as $key => $image)
                             <div class="flex-shrink-0 w-56 h-56 relative">
                                 <a href="{{ is_object($image) && method_exists($image, 'temporaryUrl') ? $image->temporaryUrl() : asset('uploads/posts') . '/' . $image }}">

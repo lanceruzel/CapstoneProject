@@ -15,7 +15,7 @@ class StoreRegistrationsTable extends Component
     public $filterStatus = [];
 
     protected $listeners = [
-        'refreshStoreRegistrationTable' => '$refresh'
+        'refreshStoreRegistrationTable' => '$refresh',
     ];
 
     public function getRegistrations(){

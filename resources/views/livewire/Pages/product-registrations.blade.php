@@ -7,5 +7,5 @@
         <livewire:ProductRegistration.product-registrations-table />
     </div>
 
-    {{-- <livewire:StoreRegistration.view-store-registration-modal /> --}}
+    <livewire:ProductRegistration.product-registration-modal />
 </x-layouts.admin-layout>
