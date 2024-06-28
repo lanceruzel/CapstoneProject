@@ -12,7 +12,6 @@ class AddStockFormModal extends Component
 
     public $product = null;
     public $variations = null;
-
     public $stocks = null;
 
     protected $listeners = [
@@ -71,9 +70,9 @@ class AddStockFormModal extends Component
     }
 
     public function clearData(){
-        $this->stocks = null;
-        $this->variations = null;
-        $this->product = null;
+        $this->variations = [];
+        $this->product = [];
+        $this->stocks = [];
     }
 
     public function render()
