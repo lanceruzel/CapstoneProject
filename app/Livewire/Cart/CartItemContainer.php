@@ -13,6 +13,8 @@ class CartItemContainer extends Component
     public $cartItem;
     public $quantity;
 
+    public $isForCheckout;
+
     public $price;
 
     public function mount($id){
@@ -26,6 +28,8 @@ class CartItemContainer extends Component
                 $this->price = $variation->price;
             }
         }
+
+        $this->isForCheckout = $this->cartItem->for_checkout;
     }
 
     public function addQuantity(){

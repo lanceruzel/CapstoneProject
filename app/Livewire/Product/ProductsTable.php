@@ -21,7 +21,7 @@ class ProductsTable extends Component
         $filter = $this->filterStatus;
 
         if(empty($filter)){
-            return Product::orderBy('created_at', 'desc')->paginate(10);
+            return Product::orderBy('created_at', 'desc')->where('seller_id', Auth::id())->paginate(10);
         }else{
             return Product::query()
             ->Where(function ($query) use($filter) {
@@ -29,6 +29,7 @@ class ProductsTable extends Component
                     $query->orwhere('status', 'like',  '%' . $filter[$i] .'%');
                 }  
             })
+            ->where('seller_id', Auth::id())
             ->orderBy('created_at', 'desc')
             ->paginate(10);
         }

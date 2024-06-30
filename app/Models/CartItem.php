@@ -2,8 +2,10 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 
 class CartItem extends Model
 {
@@ -29,4 +31,18 @@ class CartItem extends Model
     public function product(){
         return $this->belongsTo(Product::class);
     }
+
+    public static function groupBySeller()
+    {
+        $cartItems = self::where('user_id', Auth::id())->get();
+
+        $groupedItems = [];
+
+        foreach ($cartItems as $item) {
+            $groupedItems[$item->seller->storeInformation->name][] = $item;
+        }
+
+        return $groupedItems;
+    }
 }
+

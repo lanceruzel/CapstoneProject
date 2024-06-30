@@ -12,10 +12,9 @@ class CartItemsContainer extends Component
         'refresh-cartContainer' => '$refresh',
     ];
 
-    public function render()
-    {
+    public function render(){
         return view('livewire.Cart.cart-items-container', [
-            'products' => CartItem::where('user_id', Auth::id())->get()
+            'products' => CartItem::groupBySeller()
         ]);
     }
 }
