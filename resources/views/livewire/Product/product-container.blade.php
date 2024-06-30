@@ -1,5 +1,5 @@
 <div class="relative hover:no-underline hover:text-gray-700 border shadow-sm rounded-lg cursor-pointer flex-1 bg-white overflow-hidden">
-    <div uk-toggle="target: #view-product" wire:click="$dispatch('view-product-info', { id: {{ $product->id }}, feedback: false })">
+    <div onclick="$openModal('productViewModal')" wire:click="$dispatch('view-product-info', { id: {{ $product->id }}, feedback: false })">
         <div class="h-[220px] rounded-t-lg border-b-2">
             <img src="{{ asset('uploads/products') . '/' . json_decode($product->images)[0] }}" class="block w-full h-full object-contain rounded-t-lg bg-white" alt="...">
         </div>
