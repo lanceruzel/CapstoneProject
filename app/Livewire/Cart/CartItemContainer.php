@@ -29,7 +29,7 @@ class CartItemContainer extends Component
             }
         }
 
-        $this->isForCheckout = $this->cartItem->for_checkout;
+        $this->isForCheckout = $this->cartItem->for_checkout == 1 ? true : false;
     }
 
     public function addQuantity(){
@@ -59,7 +59,7 @@ class CartItemContainer extends Component
         }else{
             $this->notification()->send([
                 'icon' => 'error',
-                'title' => 'Error Notification!',
+                'title' => 'Error!',
                 'description' => 'Woops, its an error. There seems to be a problem removing this item from your cart.',
             ]);
         }

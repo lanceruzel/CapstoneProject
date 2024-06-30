@@ -1,6 +1,6 @@
 <tr class="bg-white">
     <td class="px-6 py-4">
-        <x-checkbox md wire:click="toggleIsForCheckout" />
+        <x-checkbox wire:model='isForCheckout' md wire:click="toggleIsForCheckout" />
     </td>
 
     <td class="px-6 py-4">

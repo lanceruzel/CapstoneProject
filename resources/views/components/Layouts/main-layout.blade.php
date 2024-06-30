@@ -41,7 +41,7 @@
     <x-dialog />
     <x-notifications />
     
-    <nav class="bg-white shadow border-gray-200 fixed top-0 w-screen" style="z-index: 1">
+    <nav class="bg-white shadow border-gray-200 fixed top-0 w-screen" style="z-index: 10">
         <div class="flex flex-wrap items-center justify-between mx-auto p-4">
             <a href="/" class="flex items-center space-x-3">
                 {{-- <img src="https://flowbite.com/docs/images/logo.svg" class="h-8" alt="Flowbite Logo" /> --}}
@@ -75,7 +75,7 @@
     </nav>
 
     <!-- Sidebar -->
-    <aside class="{{ request()->routeIS('message') ? 'max-lg:hidden' : 'max-md:hidden' }} fixed top-auto h-full w-64 left-0 border-e pt-16 bg-white">
+    <aside class="{{ request()->routeIS('message') ? 'max-lg:hidden' : 'max-md:hidden' }} fixed top-auto h-full w-64 left-0 border-e pt-16 bg-white z-[5]">
         <div class="py-3 px-2.5 flex items-center justify-between flex-col h-full">
             <ul class="space-y-2 w-full">
                 <li>
