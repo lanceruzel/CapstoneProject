@@ -6,18 +6,18 @@
                     <tr>
                         <th scope="col" class="px-6 py-3 text-center">Variation</th>
                         <th scope="col" class="px-6 py-3 text-center">Stocks Available</th>
-                        <th scope="col" class="px-6 py-3 text-center">Total Stocks</th>
+                        <th scope="col" class="px-6 py-3 text-center">Price</th>
                     </tr>
                 </thead>
 
                 <tbody>
                     @foreach ($variations as $key => $variation)
                             <tr>
-                                <td class="text-center">
+                                <td class="text-center py-1">
                                     <x-radio label="{{ $variation->name }}" wire:model.live="selectedVariation" lg value="{{ $variation->name }}" />
                                 </td>
                                 <td class="text-center">x{{ $variation->stocks }}</td>
-                                <td class="text-center">${{ $variation->price }}</td>
+                                <td class="text-center">${{ number_format($variation->price, 2) }}</td>
                             </tr>
                     @endforeach
                 </tbody>
