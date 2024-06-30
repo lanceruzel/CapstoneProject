@@ -14,6 +14,7 @@ class CartItem extends Model
         'seller_id',
         'product_id',
         'quantity',
+        'variation',
         'for_checkout',
     ];
 

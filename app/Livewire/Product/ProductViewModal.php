@@ -9,15 +9,20 @@ use App\Models\Product;
 use App\Models\ProductFeedback;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
+use WireUi\Traits\WireUiActions;
 
 class ProductViewModal extends Component
 {
+    use WireUiActions;
+
     public $product;
     public $quantity = 1;
     public $images;
     public $name;
     public $description;
     public $allowFeedback = false;
+
+    public $variations;
 
     protected $listeners = [
         'view-product-info' => 'getData',
@@ -29,6 +34,8 @@ class ProductViewModal extends Component
         $this->images = json_decode($this->product->images);
 
         $this->allowFeedback = $feedback;
+
+        $this->variations = json_decode($this->product->variations);
     }
 
     public function store_toCart(){
@@ -36,7 +43,7 @@ class ProductViewModal extends Component
             'quantity' => 'required',
         ]);
 
-        $existingCartItem = CartItem::where('user_id', Auth::id())->where('product_id', $this->product->id)->first();
+        $existingCartItem = CartItem::where('user_id', Auth::id())->where('product_id', $this->product->id)->where('variation', 'Default')->first();
 
         if($existingCartItem){
             $this->notification()->send([
@@ -51,7 +58,9 @@ class ProductViewModal extends Component
 
         $store = CartItem::create([
             'user_id' => Auth::id(),
+            'seller_id' => $this->product->seller_id,
             'product_id' => $this->product->id,
+            'variation' => 'Default',
             'quantity' => $validated['quantity'],
         ]);
 

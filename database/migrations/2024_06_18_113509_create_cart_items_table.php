@@ -23,6 +23,7 @@ return new class extends Migration
             $table->unsignedBigInteger('product_id');
             $table->foreign('product_id')->references('id')->on('products')->cascadeOnDelete();
 
+            $table->string('variation');
             $table->float('quantity')->default(1);
             $table->boolean('for_checkout')->default(0);
 

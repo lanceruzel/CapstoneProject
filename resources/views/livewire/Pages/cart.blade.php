@@ -8,6 +8,7 @@
             </div>
 
             <!-- content -->
+            <livewire:Cart.cart-items-container />
         </div>
     </div>
 

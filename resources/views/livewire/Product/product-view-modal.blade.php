@@ -70,31 +70,15 @@
                         @endif
                     </div>
     
-                    @if(auth()->user()->role != UserType::Admin && auth()->user()->role != UserType::Store)
-                        <div class="flex items-center gap-x-3" x-data="{ quantity: @entangle('quantity') }">
-                            <div class="flex items-center gap-x-3" x-data="{
-                                quantity: @entangle('quantity'),
-                                plus() { 
-                                    this.quantity++ 
-                                },
-                                minus() { 
-                                    (quantity >= 2) ? this.quantity-- : this.quantity
-                                }
-                            }">
-                                <x-button x-hold.click="minus" icon="minus" />
-                             
-                                <span class="bg-teal-600 text-white px-5 py-1.5 rounded-lg" x-text="quantity"></span>
-                             
-                                <x-button x-hold.click="plus" icon="plus" />
-                            </div>
-                        </div>
-                
-                        <div class="flex max-lg:justify-center lg:justify-end items-center gap-3">
-                            @if(auth()->user()->role != UserType::Store)
-                                <x-button wire:click="store_toCart" label="Add to cart" />
+                    <div class="flex max-lg:justify-center lg:justify-end items-center gap-3">
+                        @if(auth()->user()->role != UserType::Store)
+                            @if(count($variations) > 1)
+                                <x-button onclick="$openModal('variationSelectionModal')" wire:click="$dispatch('view-variations-info', { id: {{ $product->id }} })" label="Add to cart" />
+                            @else
+                                <x-button  wire:click="store_toCart" label="Add to cart" />
                             @endif
-                        </div>
-                    @endif
+                        @endif
+                    </div>
                 </div>  
             </div>
     
