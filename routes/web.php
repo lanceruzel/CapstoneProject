@@ -76,6 +76,10 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/orders', function () {
         return view('livewire.Pages.orders');
     })->name('orders');
+
+    Route::get('/checkout', function () {
+        return view('livewire.Pages.checkout');
+    })->name('checkout');
 });
 
 Route::group([], function () {
