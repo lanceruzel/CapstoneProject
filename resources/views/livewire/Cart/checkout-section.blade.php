@@ -4,6 +4,6 @@
             Total: <span class="font-semibold">${{ number_format($total, 2) }}</span>
         </div>
 
-        <x-button label="Checkout" />
+        <x-button label="Checkout" href="{{ route('checkout') }}" />
     </div>
 </div>
