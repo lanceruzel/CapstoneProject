@@ -11,7 +11,6 @@ class UserShippingInformation extends Model
 
     protected $fillable = [
         'user_id',
-        'alias',
         'full_name',
         'phone_number',
         'address_1',

@@ -3,7 +3,7 @@
         <x-input label="Recipient Name" shadowless />
         <x-input label="House #. StreetName, Brgy." corner="Eg. 01 Magsaysay St., Landing" shadowless />
         <x-input label="Municipality, City, Country" corner="Eg. Limay, Bataan, Philippines" shadowless />
-        <x-input label="Zip Code" corner="Eg. 2103" shadowless />
+        <x-input label="Postal Code" corner="Eg. 2103" shadowless />
         <x-input label="Contact Number" shadowless />
 
         <x-slot name="footer" class="flex justify-end gap-x-4">
