@@ -5,7 +5,7 @@
         <div class="w-full h-full px-1 space-y-3 max-h-[400px]">
             @if(count($addresses) > 0)
                 @foreach ($addresses as $address)
-                    <x-radio wire:model="model1" value="">
+                    <x-radio wire:model="selectedAddress" value="{{ $address->id }}" wire:click="updateSelectedAddress">
                         <x-slot name="label" class="w-full">
                             <div class="!w-full border p-3 rounded-lg flex items-center justify-between">
                                 <div>
