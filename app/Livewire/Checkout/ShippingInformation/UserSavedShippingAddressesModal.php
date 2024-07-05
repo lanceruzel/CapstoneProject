@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\Checkout;
+namespace App\Livewire\Checkout\ShippingInformation;
 
 use App\Models\UserShippingInformation;
 use Illuminate\Support\Facades\Auth;
@@ -21,7 +21,7 @@ class UserSavedShippingAddressesModal extends Component
 
     public function render()
     {
-        return view('livewire.Checkout.user-saved-shipping-addresses-modal', [
+        return view('livewire.Checkout.ShippingInformation.user-saved-shipping-addresses-modal', [
             'addresses' => UserShippingInformation::where('user_id', Auth::id())->get()
         ]);
     }

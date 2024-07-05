@@ -32,6 +32,18 @@ class CartItem extends Model
         return $this->belongsTo(Product::class);
     }
 
+    public function getTotalPrice(){
+        $price = 0;
+
+        foreach(json_decode($this->product->variations) as $variation){
+            if($variation->name == $this->variation){
+                $price = $variation->price * $this->quantity;
+            }
+        }
+
+        return $price;
+    }
+
     public static function groupBySeller()
     {
         $cartItems = self::where('user_id', Auth::id())->get();
@@ -43,6 +55,39 @@ class CartItem extends Model
         }
 
         return $groupedItems;
+    }
+
+    // public static function groupBySellerCheckout()
+    // {
+    //     $cartItems = self::where('user_id', Auth::id())->where('for_checkout', true)->get();
+
+    //     $groupedItems = [];
+
+    //     foreach ($cartItems as $item) {
+    //         $item->total_price = $item->getTotalPrice();
+    //         $groupedItems[$item->seller->storeInformation->name][] = $item;
+    //     }
+
+    //     return $groupedItems;
+    // }
+
+    public static function groupBySellerCheckout(){
+        $cartItems = self::where('user_id', Auth::id())->where('for_checkout', true)->get();
+
+        $groupedItems = [];
+        $totalPrices = [];
+
+        foreach ($cartItems as $item) {
+            $totalPrice = $item->getTotalPrice();
+            $groupedItems[$item->seller->storeInformation->name][] = $item;
+
+            if (!isset($totalPrices[$item->seller->storeInformation->name])) {
+                $totalPrices[$item->seller->storeInformation->name] = 0;
+            }
+            $totalPrices[$item->seller->storeInformation->name] += $totalPrice;
+        }
+
+        return ['orders' => $groupedItems, 'totalPrices' => $totalPrices];
     }
 }
 

@@ -24,5 +24,4 @@
             </td>
         </tr>
     @endif
-
 </div>

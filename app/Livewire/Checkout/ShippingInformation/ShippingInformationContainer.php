@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\Checkout;
+namespace App\Livewire\Checkout\ShippingInformation;
 
 use App\Models\UserShippingInformation;
 use Livewire\Component;
@@ -19,6 +19,6 @@ class ShippingInformationContainer extends Component
 
     public function render()
     {
-        return view('livewire.Checkout.shipping-information-container');
+        return view('livewire.Checkout.ShippingInformation.shipping-information-container');
     }
 }

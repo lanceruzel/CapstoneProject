@@ -9,11 +9,17 @@
             <!-- content -->
 
             <div class="w-full">
-                <livewire:Checkout.shipping-information-container />
+                <livewire:Checkout.ShippingInformation.shipping-information-container />
+
+                <livewire:Checkout.Orders.orders-checkout-container />
+
+                <livewire:Checkout.Payment.payment-method-container />
+
+                <livewire:Checkout.TotalSummary.order-total-summary />
             </div>
         </div>
     </div>
 
-    <livewire:Checkout.user-saved-shipping-addresses-modal />
-    <livewire:Checkout.shipping-address-form-modal />
+    <livewire:Checkout.ShippingInformation.user-saved-shipping-addresses-modal />
+    <livewire:Checkout.ShippingInformation.shipping-address-form-modal />
 </x-layouts.main-layout>
