@@ -9,14 +9,13 @@
                         <x-slot name="label" class="w-full">
                             <div class="!w-full border p-3 rounded-lg flex items-center justify-between">
                                 <div>
-                                    <p class="text-lg">Lance Ruzel C. Ambrocio</p>
-                                    <p>Address 1</p>
-                                    <p>Address 2</p>
-                                    <p>09205524353</p>
+                                    <p class="text-lg">{{ $address->full_name }}</p>
+                                    <p>{{ $address->address_1 . ' ' . $address->address_2 . ' ' . $address->postal }}</p>
+                                    <p>{{ $address->phone_number }}</p>
                                 </div>
 
                                 <div>
-                                    <x-button white xs label="Edit" />
+                                    <x-button white xs label="Edit" wire:click="$dispatch('view-address', { id: {{ $address->id }} })" onclick="$openModal('shippingAddressForm')"  />
                                 </div>
                             </div>
                         </x-slot>
