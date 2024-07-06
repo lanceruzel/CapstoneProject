@@ -14,15 +14,14 @@ return new class extends Migration
         Schema::create('ordered_items', function (Blueprint $table) {
             $table->id();
 
-            $table->unsignedBigInteger('seller_id');
-            $table->foreign('seller_id')->references('id')->on('users')->cascadeOnDelete();
-
             $table->unsignedBigInteger('order_id');
             $table->foreign('order_id')->references('id')->on('orders')->cascadeOnDelete();
 
             $table->unsignedBigInteger('product_id');
             $table->foreign('product_id')->references('id')->on('products')->cascadeOnDelete();
 
+            $table->string('variation');
+            
             $table->float('quantity');
             $table->float('subtotal');
 

@@ -86,5 +86,11 @@ class CartItem extends Model
     
         return $groupedItems;
     }
+
+    public static function deleteCheckoutItems(){
+        self::where('user_id', Auth::id())
+            ->where('for_checkout', true)
+            ->delete();
+    }
 }
 
