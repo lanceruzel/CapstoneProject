@@ -44,49 +44,47 @@ class CartItem extends Model
         return $price;
     }
 
-    public static function groupBySeller()
-    {
+    public static function groupBySeller(){
         $cartItems = self::where('user_id', Auth::id())->get();
 
         $groupedItems = [];
 
         foreach ($cartItems as $item) {
-            $groupedItems[$item->seller->storeInformation->name][] = $item;
+            $sellerName = $item->seller->storeInformation->name;
+            if (!isset($groupedItems[$sellerName])) {
+                $groupedItems[$sellerName] = [
+                    'seller' => $item->seller,
+                    'items' => [],
+                ];
+            }
+            $groupedItems[$sellerName]['items'][] = $item;
         }
 
         return $groupedItems;
     }
 
-    // public static function groupBySellerCheckout()
-    // {
-    //     $cartItems = self::where('user_id', Auth::id())->where('for_checkout', true)->get();
-
-    //     $groupedItems = [];
-
-    //     foreach ($cartItems as $item) {
-    //         $item->total_price = $item->getTotalPrice();
-    //         $groupedItems[$item->seller->storeInformation->name][] = $item;
-    //     }
-
-    //     return $groupedItems;
-    // }
-
     public static function groupBySellerCheckout(){
         $cartItems = self::where('user_id', Auth::id())->where('for_checkout', true)->get();
-
+    
         $groupedItems = [];
         $totalPrices = [];
-
+    
         foreach ($cartItems as $item) {
+            $sellerName = $item->seller->storeInformation->name;
             $totalPrice = $item->getTotalPrice();
-            $groupedItems[$item->seller->storeInformation->name][] = $item;
-
-            if (!isset($totalPrices[$item->seller->storeInformation->name])) {
-                $totalPrices[$item->seller->storeInformation->name] = 0;
+    
+            if (!isset($groupedItems[$sellerName])) {
+                $groupedItems[$sellerName] = [
+                    'seller' => $item->seller,
+                    'items' => [],
+                ];
+                $totalPrices[$sellerName] = 0;
             }
-            $totalPrices[$item->seller->storeInformation->name] += $totalPrice;
+    
+            $groupedItems[$sellerName]['items'][] = $item;
+            $totalPrices[$sellerName] += $totalPrice;
         }
-
+    
         return ['orders' => $groupedItems, 'totalPrices' => $totalPrices];
     }
 }

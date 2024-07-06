@@ -11,21 +11,21 @@ class OrderTotalSummary extends Component
     use WireUiActions;
 
     public $merchandiseTotal = 0;
-    public $shippingTotal = 0;
+    public $shippingTotal = 150;
 
     protected $listeners = [
         'payment-completed' => 'test'
     ];
 
     public function test($status){
+        $prices = $this->getMerchandiseTotal();
 
-        
 
-        $this->notification()->send([
-            'icon' => 'error',
-            'title' => 'Error Notification!',
-            'description' => 'Woops,' . $status,
-        ]);
+        if($status == 'COMPLETED'){
+            
+
+
+        }
     }
 
     public function getMerchandiseTotal(){
@@ -33,13 +33,12 @@ class OrderTotalSummary extends Component
 
         $totalPrices = $orders['totalPrices'];
 
-        return array_sum($totalPrices);
+        return $totalPrices;
     }
 
     public function render()
     {
-        $this->merchandiseTotal = $this->getMerchandiseTotal();
-        $this->shippingTotal = 150;
+        $this->merchandiseTotal = array_sum($this->getMerchandiseTotal());
 
         return view('livewire.Checkout.TotalSummary.order-total-summary', [
             'merchandiseTotal' => $this->merchandiseTotal,
