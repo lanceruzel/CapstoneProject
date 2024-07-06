@@ -14,7 +14,7 @@ class CartItemsContainer extends Component
 
     public function render(){
         return view('livewire.Cart.cart-items-container', [
-            'products' => CartItem::groupBySeller()
+            'checkedOutSellers' => CartItem::groupBySeller()
         ]);
     }
 }

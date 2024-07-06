@@ -1,17 +1,17 @@
 <div class="w-full flex flex-col items-center justify-center">
-    @if(count($products))
-        @foreach($products as $seller => $items)
+    @if(count($checkedOutSellers))
+        @foreach($checkedOutSellers as $seller => $checkedOutSeller)
             <div class="bg-white w-full mt-4 shadow overflow-auto px-3">
                 <div class="border-b p-3 text-lg flex items-center gap-2">
-                    <a href="{{ route('profile', $items['seller']->username) }}" class="font-semibold">{{ $seller }}</a>
+                    <a href="{{ route('profile', $checkedOutSeller['seller']->username) }}" class="font-semibold">{{ $seller }}</a>
 
                     <x-icon name="chevron-right" class="w-5 h-5" />
                 </div>
 
                 <table class="w-full">
                     <tbody class="divide-y">
-                        @foreach ($items['items'] as $key => $item)
-                            <livewire:Cart.cart-item-container :id="$item->id" wire:key="{{ $key }}-cart-{{ $item->id }}">
+                        @foreach ($checkedOutSeller['products'] as $key => $product)
+                            <livewire:Cart.cart-item-container :id="$product->id" wire:key="{{ $key }}-cart-{{ $product->id }}">
                         @endforeach
                     </tbody>
                 </table>

@@ -14,31 +14,34 @@ class OrderTotalSummary extends Component
     public $shippingTotal = 150;
 
     protected $listeners = [
-        'payment-completed' => 'test'
+        'payment-completed' => 'placeOrder'
     ];
 
-    public function test($status){
-        $prices = $this->getMerchandiseTotal();
+    public function placeOrder($status = null){
+        $checkedOutSellers = CartItem::groupBySellerCheckout();
 
-
-        if($status == 'COMPLETED'){
+        if($status && $status == 'COMPLETED'){ //Paypal
             
-
-
+        }else{ // COD
+            foreach($checkedOutSellers as $checkedOutSeller){
+                dd($checkedOutSeller);
+            }
         }
     }
 
     public function getMerchandiseTotal(){
-        $orders = CartItem::groupBySellerCheckout();
+        $total = 0;
 
-        $totalPrices = $orders['totalPrices'];
+        foreach(CartItem::groupBySellerCheckout() as $item){
+            $total += $item['total'];
+        }
 
-        return $totalPrices;
+        return $total;
     }
 
     public function render()
     {
-        $this->merchandiseTotal = array_sum($this->getMerchandiseTotal());
+        $this->merchandiseTotal = $this->getMerchandiseTotal();
 
         return view('livewire.Checkout.TotalSummary.order-total-summary', [
             'merchandiseTotal' => $this->merchandiseTotal,

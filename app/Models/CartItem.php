@@ -32,7 +32,7 @@ class CartItem extends Model
         return $this->belongsTo(Product::class);
     }
 
-    public function getTotalPrice(){
+    public function getTotal(){
         $price = 0;
 
         foreach(json_decode($this->product->variations) as $variation){
@@ -54,10 +54,10 @@ class CartItem extends Model
             if (!isset($groupedItems[$sellerName])) {
                 $groupedItems[$sellerName] = [
                     'seller' => $item->seller,
-                    'items' => [],
+                    'products' => [],
                 ];
             }
-            $groupedItems[$sellerName]['items'][] = $item;
+            $groupedItems[$sellerName]['products'][] = $item;
         }
 
         return $groupedItems;
@@ -67,25 +67,24 @@ class CartItem extends Model
         $cartItems = self::where('user_id', Auth::id())->where('for_checkout', true)->get();
     
         $groupedItems = [];
-        $totalPrices = [];
     
         foreach ($cartItems as $item) {
             $sellerName = $item->seller->storeInformation->name;
-            $totalPrice = $item->getTotalPrice();
+            $total = $item->getTotal();
     
             if (!isset($groupedItems[$sellerName])) {
                 $groupedItems[$sellerName] = [
                     'seller' => $item->seller,
-                    'items' => [],
+                    'products' => [],
+                    'total' => 0,
                 ];
-                $totalPrices[$sellerName] = 0;
             }
     
-            $groupedItems[$sellerName]['items'][] = $item;
-            $totalPrices[$sellerName] += $totalPrice;
+            $groupedItems[$sellerName]['products'][] = $item;
+            $groupedItems[$sellerName]['total'] += $total;
         }
     
-        return ['orders' => $groupedItems, 'totalPrices' => $totalPrices];
+        return $groupedItems;
     }
 }
 

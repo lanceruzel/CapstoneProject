@@ -23,5 +23,5 @@
         </tbody>
     </table>
 
-    <x-button class="!px-10" label="Place Order" />
+    <x-button class="!px-10" wire:loading.attr="disabled" wire:click='placeOrder' label="Place Order" />
 </div> 

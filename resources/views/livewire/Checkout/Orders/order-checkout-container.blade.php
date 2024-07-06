@@ -17,7 +17,7 @@
         </div>
     </td>
 
-    <td class="px-3 py-4 text-center min-w-[150px] max-w-[150px]">${{ number_format($order->getTotalPrice(), 2) }}</td>
+    <td class="px-3 py-4 text-center min-w-[150px] max-w-[150px]">${{ number_format($order->getTotal(), 2) }}</td>
 
     <td class="px-6 py-4">x {{ $order->quantity }}</td>
 </tr>
