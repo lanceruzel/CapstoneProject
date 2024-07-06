@@ -3,22 +3,22 @@
         <tbody>
             <tr>
                 <td class="text-end">Merchandise Subtotal:</td>
-                <td>${{ $totalMerchandiseTotal }}</td>
+                <td>${{ number_format($merchandiseTotal, 2) }}</td>
             </tr>
 
-            <tr>
+            {{-- <tr>
                 <td class="text-end">Tax Total:</td>
                 <td>₱3232 (2%)</td>
-            </tr>
+            </tr> --}}
 
             <tr>
                 <td class="text-end">Shipping Total:</td>
-                <td>₱323232</td>
+                <td>${{ $shippingTotal }}</td>
             </tr>
 
             <tr>
                 <td class="text-end">Total Payment:</td>
-                <td class="text-xl font-semibold">₱3232</td>
+                <td class="text-xl font-semibold">${{ number_format($merchandiseTotal + $shippingTotal, 2) }}</td>
             </tr>
         </tbody>
     </table>

@@ -12,13 +12,17 @@ class OrderTotalSummary extends Component
 
         $totalPrices = $orders['totalPrices'];
 
-        return number_format(array_sum($totalPrices), 2);
+        return array_sum($totalPrices);
     }
 
     public function render()
     {
+        $merchandiseTotal = $this->getMerchandiseTotal();
+        $shippingTotal = 150;
+
         return view('livewire.Checkout.TotalSummary.order-total-summary', [
-            'totalMerchandiseTotal' => $this->getMerchandiseTotal()
+            'merchandiseTotal' => $merchandiseTotal,
+            'shippingTotal' => $shippingTotal
         ]);
     }
 }
