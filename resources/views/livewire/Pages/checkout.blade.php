@@ -1,4 +1,4 @@
-<x-layouts.main-layout>
+<x-layouts.checkout-layout>
     <div class="w-full max-w-[1000px] mx-auto h-full max-md:mb-20 md:mb-28">
         <div class="pb-2.5">
             <div class="flex items-center gap-3">
@@ -22,4 +22,4 @@
 
     <livewire:Checkout.ShippingInformation.user-saved-shipping-addresses-modal />
     <livewire:Checkout.ShippingInformation.shipping-address-form-modal />
-</x-layouts.main-layout>
+</x-layouts.checkout-layout>

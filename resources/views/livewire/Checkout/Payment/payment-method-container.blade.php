@@ -25,6 +25,9 @@
                 </div>
             </div>
 
+            <div id="paypal-button-container"></div>
+    <p id="result-message"></p>
+
             {{-- <div class="border-2 p-5 first-line:p-5 rounded-lg cursor-pointer hover:bg-slate-50 active:scale-95 transition-all">
                 <div class="flex items-center justify-center gap-1">
                     <span>

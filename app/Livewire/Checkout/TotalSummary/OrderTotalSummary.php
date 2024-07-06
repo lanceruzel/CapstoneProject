@@ -4,9 +4,30 @@ namespace App\Livewire\Checkout\TotalSummary;
 
 use App\Models\CartItem;
 use Livewire\Component;
+use WireUi\Traits\WireUiActions;
 
 class OrderTotalSummary extends Component
 {
+    use WireUiActions;
+
+    public $merchandiseTotal = 0;
+    public $shippingTotal = 0;
+
+    protected $listeners = [
+        'payment-completed' => 'test'
+    ];
+
+    public function test($status){
+
+        
+
+        $this->notification()->send([
+            'icon' => 'error',
+            'title' => 'Error Notification!',
+            'description' => 'Woops,' . $status,
+        ]);
+    }
+
     public function getMerchandiseTotal(){
         $orders = CartItem::groupBySellerCheckout();
 
@@ -17,12 +38,12 @@ class OrderTotalSummary extends Component
 
     public function render()
     {
-        $merchandiseTotal = $this->getMerchandiseTotal();
-        $shippingTotal = 150;
+        $this->merchandiseTotal = $this->getMerchandiseTotal();
+        $this->shippingTotal = 150;
 
         return view('livewire.Checkout.TotalSummary.order-total-summary', [
-            'merchandiseTotal' => $merchandiseTotal,
-            'shippingTotal' => $shippingTotal
+            'merchandiseTotal' => $this->merchandiseTotal,
+            'shippingTotal' => $this->shippingTotal
         ]);
     }
 }
