@@ -7,7 +7,7 @@
             @if($address != null)
                 <div class="flex flex-col">
                     <p class="font-medium text-lg">{{ $address[0]->full_name }}</p>
-                    <p>{{ $address[0]->address_1 . ', #' . $address[0]->address_2 . ', ' . $address[0]->postal }}</p>
+                    <p>{{ $address[0]->address_1 . ', ' . $address[0]->address_2 . ', ' . $address[0]->postal }}</p>
                     <p>+{{ $address[0]->phone_number }}</p>
                 </div>
 
