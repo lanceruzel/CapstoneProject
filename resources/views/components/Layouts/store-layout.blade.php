@@ -61,14 +61,22 @@
             <ul class="space-y-2 w-full">
                 <li>
                     @if(request()->routeIS('store.product-management'))
-                        <x-button class='!justify-start font-medium' icon='folder' href="{{ route('admin.store-registrations') }}" solid flat full secondary label="Product Management" />
+                        <x-button class='!justify-start font-medium' icon='folder' href="{{ route('store.product-management') }}" solid flat full secondary label="Product Management" />
                     @else
-                        <x-button class='!justify-start font-medium' icon='folder' href="{{ route('admin.store-registrations') }}" flat full secondary label="Product Management" /> 
+                        <x-button class='!justify-start font-medium' icon='folder' href="{{ route('store.product-management') }}" flat full secondary label="Product Management" /> 
+                    @endif
+                </li>
+
+                <li>
+                    @if(request()->routeIS('store.order-management'))
+                        <x-button class='!justify-start font-medium' icon='folder' href="{{ route('store.order-management') }}" solid flat full secondary label="Order Management" />
+                    @else
+                        <x-button class='!justify-start font-medium' icon='folder' href="{{ route('store.order-management') }}" flat full secondary label="Order Management" /> 
                     @endif
                 </li>
             </ul>
 
-            <x-button href='signout' icon='arrow-left-end-on-rectangle' white label="Sign Out" />
+            <x-button href='/' icon='arrow-left-end-on-rectangle' white label="Go Home" />
         </div>
     </aside>
 

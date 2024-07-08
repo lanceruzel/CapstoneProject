@@ -96,4 +96,8 @@ Route::group([], function () {
     Route::get('/store/product-management', function () {
         return view('livewire.Pages.product-management');
     })->name('store.product-management');
+
+    Route::get('/store/order-management', function () {
+        return view('livewire.Pages.order-management');
+    })->name('store.order-management');
 });
