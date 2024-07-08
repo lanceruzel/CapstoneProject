@@ -21,4 +21,12 @@ enum Status: string
     const Suspended = 'suspended';
 
     const Delivered = 'delivered';
+
+    const OrderSellerConfirmation = 'Waiting for seller\'s confirmation.';
+    const OrderSellerPreparing = 'Seller is preparing your order for shipment.';
+    const OrderSellerShipped = 'Your order has already been shipped out by the seller.';
+    const OrderSellerCancel = 'Seller cancelled your order.';
+
+    const OrderBuyerReceived = 'Order has been received.';
+    const OrderBuyerCancel = 'Buyer cancelled they\'re order.';
 }

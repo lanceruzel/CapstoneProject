@@ -32,59 +32,69 @@
     </div>
 
     <div class="w-full pt-5 overflow-auto flex items-center justify-center flex-col">
-        {{-- <table class="table-auto w-full border-spacing-y-4 text-sm text-left">
+        <table class="table-auto w-full border-spacing-y-4 text-sm text-left">
             <thead class="border-b-2">
                 <tr>
-                    <th scope="col" class="px-6 py-3">Product</th>
+                    <th scope="col" class="px-6 py-3">Order #</th>
+                    <th scope="col" class="px-6 py-3">Buyer</th>
+                    <th scope="col" class="px-6 py-3">Payment Method</th>
+                    <th scope="col" class="px-6 py-3">Payment Status</th>
                     <th scope="col" class="px-6 py-3">Status</th>
-                    <th scope="col" class="px-6 py-3">Total Stocks</th>
-                    <th scope="col" class="px-6 py-3">Price Range</th>
+                    <th scope="col" class="px-6 py-3">Ordered Data</th>
                     <th scope="col" class="px-6 py-3"></th>
                 </tr>
             </thead>
 
             <tbody>
-                @if($products && count($products) > 0)
-                    @foreach ($products as $product)
+                @if($orders && count($orders) > 0)
+                    @foreach ($orders as $order)
                         <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-100">
-                            <td class="px-6 py-4">{{ $product->name }}</td>
+                            <td class="px-6 py-4">{{ $order->id }}</td>
+                            <td class="px-6 py-4">{{ $order->name }}</td>
                             <td class="px-6 py-4">
-                                @if($product->status == App\Enums\Status::ForReview)
-                                    <x-badge flat info label="For Review" />
-                                @elseif($product->status == App\Enums\Status::Available)
-                                    <x-badge flat positive label="Available" />
-                                @elseif($product->status == App\Enums\Status::Unavailable)
-                                    <x-badge flat negative label="Unavailable" />
-                                @elseif($product->status == App\Enums\Status::ForReSubmission)
-                                    <x-badge flat warning label="For Resumission" />
+                                <x-badge flat amber label="{{ $order->payment_method }}" />
+                            </td>
+                            <td class="px-6 py-4">
+                                @if($order->is_paid)
+                                    <x-badge flat positive label="Paid" />
                                 @else
-                                    {{ $product->status }}
+                                    <x-badge flat info label="Not yet paid" />
                                 @endif
                             </td>
-                            <td class="px-6 py-4">{{ $product->totalStocks() }}</td>
-                            <td class="px-6 py-4">{{ $product->priceRange() }}</td>
                             <td class="px-6 py-4">
-                                <x-dropdown icon="bars-3">
-                                    <x-dropdown.item label="Add Stock" onclick="$openModal('addStockFormModal')" wire:click="$dispatch('viewProductStocksInformation', { id: {{ $product->id }} })" />
-                                    <x-dropdown.item label="Update Product" onclick="$openModal('productFormModal')" wire:click="$dispatch('viewProductInformation', { id: {{ $product->id }} })" />
-                                </x-dropdown>
+                                @if($order->status == App\Enums\Status::OrderSellerConfirmation)
+                                    <span>Waiting for your confirmation.</span>
+                                @elseif($order->status == App\Enums\Status::OrderSellerPreparing)
+                                    <span>Waiting for shipment and tracking number.</span>
+                                @elseif($order->status == App\Enums\Status::OrderSellerShipped)
+                                    <span>Order has been shipped and waiting for buyer to be received.</span>
+                                @elseif($order->status == App\Enums\Status::OrderSellerCancel)
+                                    <span>You cancelled this order.</span>
+                                @elseif($order->status == App\Enums\Status::OrderBuyerReceived)
+                                    <span>Buyer have received the order.</span>
+                                @elseif($order->status == App\Enums\Status::OrderBuyerCancel)
+                                    <span>Buyer cancelled this order.</span>
+                                @else
+                                    <span>{{ $order->status }}</span>
+                                @endif
                             </td>
+                            <td class="px-6 py-4">{{ $order->created_at }}</td>
                         </tr>
                     @endforeach 
                 @endif
             </tbody>
-        </table> --}}
+        </table>
 
-        {{-- @if(count($products) <= 0) --}}
+        @if(count($orders) <= 0)
             <div class="flex flex-col items-center justify-center mt-5">
                 <h1 class="text-2xl font-semibold">No orders found</h1>
                 <img class="h-[400px]" src="{{ asset('assets/svg/no-data-2.svg') }}" alt="No data found"/>
             </div>
-        {{-- @endif --}}
+        @endif
     </div>
 
     <!-- Pagination -->
     <div class="w-full mt-5">
-        {{-- {{ $products->links() }} --}}
+        {{ $orders->links() }}
     </div>
-</div>
+</div>      
