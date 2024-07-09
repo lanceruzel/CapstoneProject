@@ -82,6 +82,8 @@ class OrderTotalSummary extends Component
                             'title' => 'Error!',
                             'description' => 'Woops, there\'s a problem removing your cart items',
                         ]);
+
+                        return;
                     }
                 }
 
@@ -91,6 +93,8 @@ class OrderTotalSummary extends Component
                     'title' => 'Error!',
                     'description' => 'Woops, its an error. ' . $e->getMessage() ,
                 ]);
+
+                return;
             }
         }
 
