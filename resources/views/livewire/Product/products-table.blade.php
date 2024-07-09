@@ -47,7 +47,15 @@
                 @if($products && count($products) > 0)
                     @foreach ($products as $product)
                         <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-100">
-                            <td class="px-6 py-4">{{ $product->name }}</td>
+                            <td class="px-6 py-4 flex items-center justify-start gap-3">
+                                <div class="rounded-lg w-16 h-16 border" wire:ignore>
+                                    <img src="{{ asset('uploads/products') . '/' . json_decode($product->images)[0] }}" class="w-full h-full object-cover object-center rounded-lg" alt="...">
+                                </div>
+
+                                <div>
+                                    {{ $product->name }}
+                                </div>
+                            </td>
                             <td class="px-6 py-4">
                                 @if($product->status == App\Enums\Status::ForReview)
                                     <x-badge flat info label="For Review" />
@@ -61,7 +69,7 @@
                                     {{ $product->status }}
                                 @endif
                             </td>
-                            <td class="px-6 py-4">{{ $product->totalStocks() }}</td>
+                            <td class="px-6 py-4">x{{ $product->totalStocks() }}</td>
                             <td class="px-6 py-4">{{ $product->priceRange() }}</td>
                             <td class="px-6 py-4">
                                 <x-dropdown icon="bars-3">
