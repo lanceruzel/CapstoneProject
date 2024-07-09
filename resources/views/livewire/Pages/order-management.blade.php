@@ -8,4 +8,6 @@
     <div class="mt-5">
         <livewire:Order.orders-table />
     </div>
+
+    <livewire:Order.order-information-modal />
 </x-layouts.store-layout>

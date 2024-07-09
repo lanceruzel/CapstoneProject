@@ -25,7 +25,8 @@ return new class extends Migration
             $table->string('address');
             $table->string('postal');
             $table->string('contact');
-            $table->string('total');
+            $table->float('total');
+            $table->string('courrier');
             $table->string('payment_method');
             $table->string('tracking_number')->nullable();
             $table->string('status');

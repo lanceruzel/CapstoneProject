@@ -79,6 +79,9 @@
                                 @endif
                             </td>
                             <td class="px-6 py-4">{{ $order->created_at }}</td>
+                            <td class="px-6 py-4">
+                                <x-button icon="eye" label="View" onclick="$openModal('orderViewModal')" wire:click="$dispatch('view-order-info', { id: {{ $order->id }}})"  />
+                            </td>
                         </tr>
                     @endforeach 
                 @endif

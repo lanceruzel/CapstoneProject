@@ -1,0 +1,108 @@
+<?php
+
+namespace App\Livewire\Order;
+
+use App\Enums\Status;
+use App\Models\Order;
+use Livewire\Component;
+use WireUi\Traits\WireUiActions;
+
+class OrderInformationModal extends Component
+{
+    use WireUiActions;
+
+    public $order = null;
+
+    public $orderNumber;
+    public $name;
+    public $address;
+    public $postal;
+    public $contact;
+    public $paymentMethod;
+    public $paymentStatus;
+    public $total;
+    public $affiliateCode;
+    public $products;
+
+    public $trackingNumber;
+    public $courrier;
+
+    protected $listeners = [
+        'view-order-info' => 'getData',
+        'clearOrderViewModalData' => 'clearData'
+    ];
+
+    public function getData($id){
+        $this->order = Order::findOrFail($id);
+
+        if($this->order){
+            $this->orderNumber = $this->order->id;
+            $this->name = $this->order->name;
+            $this->address = $this->order->address;
+            $this->postal = $this->order->postal;
+            $this->contact = $this->order->contact;
+            $this->paymentMethod = $this->order->payment_method;
+            $this->paymentStatus = $this->order->is_paid ? 'Paid' : 'Not yet paid';
+            $this->products = $this->order->orderedItems;
+        }
+    }
+
+    public function acceptOrder(){
+        $this->order->status = Status::OrderSellerPreparing;
+        $this->saveOrder();
+    }
+
+    public function updateTrackingNumber(){
+        $validated = $this->validate([
+            'trackingNumber' => 'required',
+            'courrier' => 'required',
+        ]);
+
+        $this->order->status = Status::OrderSellerShipped;
+        $this->order->tracking_number = $validated['trackingNumber'];
+        $this->order->courrier = $validated['courrier'];
+        $this->saveOrder();
+    }
+
+    public function saveOrder(){
+        if($this->order->save()){
+            $this->notification()->send([
+                'icon' => 'success',
+                'title' => 'Success!',
+                'description' => 'Order successfully updated.',
+            ]);
+
+            $this->dispatch('refresh-order-table');
+            $this->dispatch('close-modal', ['modal' => 'orderViewModal']);
+        }else{
+            $this->notification()->send([
+                'icon' => 'error',
+                'title' => 'Error!',
+                'description' => 'Woops, its an error. There seems to be a problem updating this order status.',
+            ]);
+        }
+    }
+
+    public function clearData(){
+        $this->reset([
+            'orderNumber',
+            'name',
+            'address',
+            'postal',
+            'contact',
+            'paymentMethod',
+            'paymentStatus',
+            'total',
+            'affiliateCode',
+            'products',
+        ]);
+
+        $this->order = null;
+        $this->products = null;
+    }
+
+    public function render()
+    {
+        return view('livewire.Order.order-information-modal');
+    }
+}

@@ -22,6 +22,22 @@ class Product extends Model
         'remarks',
     ];
 
+    public function getStocks($selected){
+        $variations = json_decode($this->variations);
+
+        $stocks = null;
+
+        foreach($variations as $variation){
+            // $stocks[$variation->name] = $variation->stocks;
+
+            if($variation->name == $selected){
+                $stocks = $variation->stocks;
+            }
+        }
+
+        return $stocks;
+    }
+
     public function totalStocks(){
         $totalStocks = 0;
 

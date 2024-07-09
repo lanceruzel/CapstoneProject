@@ -20,7 +20,8 @@ class Order extends Model
         'payment_method',
         'tracking_number',
         'status',
-        'is_paid'
+        'is_paid',
+        'courrier'
     ];
 
     public function user(){
