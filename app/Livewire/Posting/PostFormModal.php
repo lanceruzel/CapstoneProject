@@ -19,7 +19,7 @@ class PostFormModal extends Component
     use WireUiActions;
 
     public $content;
-    public $images;
+    public $images = [];
 
     public $postUpdate = null;
 
@@ -101,7 +101,7 @@ class PostFormModal extends Component
             [
                 'type' => $postType,
                 'content' => $validated['content'],
-                'images' => json_decode($this->postUpdate->images) == $this->images ? json_encode($this->images) : json_encode($this->storeImages($this->images)),
+                'images' => json_encode($this->storeImages($this->images)),
                 'status' => Status::Available
             ]
         );      
@@ -119,7 +119,6 @@ class PostFormModal extends Component
         $dbImages = null;
 
         if($images){
-
             if($this->postUpdate){
                 $dbImages = json_decode($this->postUpdate->images, true); // Decode to array
             }
@@ -137,7 +136,7 @@ class PostFormModal extends Component
             }
         }
 
-        return json_encode($imagePaths);
+        return $imagePaths;
     }
 
     public function markAsUnvailable($id){
