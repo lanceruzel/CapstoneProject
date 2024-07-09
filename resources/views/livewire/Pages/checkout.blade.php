@@ -14,7 +14,7 @@
                 <livewire:Checkout.Orders.orders-checkout-container />
 
                 <livewire:Checkout.Payment.payment-method-container />
-
+                
                 <livewire:Checkout.TotalSummary.order-total-summary />
             </div>
         </div>

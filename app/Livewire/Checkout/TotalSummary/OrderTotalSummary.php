@@ -144,6 +144,8 @@ class OrderTotalSummary extends Component
     public function render(){
         $this->merchandiseTotal = $this->getMerchandiseTotal();
 
+        $this->dispatch('getTotal', ['total' => ($this->merchandiseTotal + $this->shippingTotal)]);
+
         return view('livewire.Checkout.TotalSummary.order-total-summary', [
             'merchandiseTotal' => $this->merchandiseTotal,
             'shippingTotal' => $this->shippingTotal

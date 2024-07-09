@@ -179,6 +179,12 @@ $storeRegistration = new StoreRegistration();
 
     <script>
         document.addEventListener('livewire:init', () => {
+            total = 0;
+
+            Livewire.on('getTotal', (event) => {
+                total = event[0].total;
+            });
+
             Livewire.on('close-modal', (event) => {
                 $closeModal(event[0].modal);
             });
@@ -196,15 +202,12 @@ $storeRegistration = new StoreRegistration();
                     return actions.order.create({
                         purchase_units: [{
                             amount: {
-                                value: '100'
+                                value: total
                             }
                         }]
                     })
                 },
                 onApprove: function(data, actions){
-                    // console.log('Data: ' + data);
-                    // console.log('Action: ' + actions);
-
                     return actions.order.capture().then(function(details){
                         Livewire.dispatch('payment-completed', { status: details.status });
                     })
