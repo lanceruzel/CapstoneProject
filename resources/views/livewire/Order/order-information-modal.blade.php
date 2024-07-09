@@ -49,12 +49,29 @@
                         <td class="text-right pe-3 font-medium">Applied Affiliate Code:</td>
                         <td>{{ $affiliateCode ? $affiliateCode : 'None' }}</td>
                     </tr>
+
+                    @if($order->status == App\Enums\Status::OrderSellerShipped)
+                        <tr>
+                            <td></td>
+                            <td></td>
+                        </tr>
+
+                        <tr>
+                            <td class="text-right pe-3 font-medium">Courrier:</td>
+                            <td>{{ $order->courrier }}</td>
+                        </tr>
+
+                        <tr>
+                            <td class="text-right pe-3 font-medium">Tracking Number:</td>
+                            <td>{{ $order->tracking_number }}</td>
+                        </tr>
+                    @endif
                 </tbody>
             </table>
 
             @if($order->status == App\Enums\Status::OrderSellerPreparing)
                 <div class="w-full grid grid-cols-12 gap-3">
-                    <x-input class="col-span-12 lg:col-span-4" label="Courrier" wire:model='courrier' shadowless/>
+                    <x-select class="col-span-12 lg:col-span-4" label="Courrier" wire:model="courrier" placeholder="Select Courrier" :options="$listOfCourriers" searchable shadowless />
                     <x-input class="col-span-12 lg:col-span-8" label="Tracking Number" wire:model='trackingNumber' shadowless/>
                 </div>
             @endif
@@ -80,9 +97,9 @@
                                     <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-100">
                                         <td class="px-6 py-4">{{ $item->product->name }}</td>
                                         <td class="px-6 py-4">{{ $item->variation }}</td>
-                                        <td class="px-6 py-4">x{{ $item->product->getStocks($item->variation) }}</td>
-                                        <td class="px-6 py-4">x{{ $item->quantity }}</td>
-                                        <td class="px-6 py-4">${{ number_format($item->subtotal, 2) }}</td>
+                                        <td class="px-6 py-4 text-center">x{{ $item->product->getStocks($item->variation) }}</td>
+                                        <td class="px-6 py-4 text-center">x{{ $item->quantity }}</td>
+                                        <td class="px-6 py-4 text-center">${{ number_format($item->subtotal, 2) }}</td>
                                     </tr>
                                 @endforeach 
                             @endif
@@ -92,14 +109,15 @@
             </div>
             
             <x-slot name="footer" class="flex justify-end gap-x-4">
-                <x-button flat label="Cancel" x-on:click="close" />
+                <x-button flat label="Close" x-on:click="close" />
 
                 @if($order->status == App\Enums\Status::OrderSellerConfirmation)
-                    <x-button wire:loading.attr="disabled" wire:click="acceptOrder" spinner="acceptOrder" label="Accept Order" />
+                    <div class="w-full flex justify-end gap-x-4">
+                        <x-button outline negative wire:loading.attr="disabled" wire:click="declineConfirmation" spinner="declineOrder" label="Decline Order" />
+                        <x-button wire:loading.attr="disabled" wire:click="acceptOrder" spinner="acceptOrder" label="Accept Order" />
+                    </div>
                 @elseif($order->status == App\Enums\Status::OrderSellerPreparing)
                     <x-button wire:loading.attr="disabled" wire:click="updateTrackingNumber" spinner="updateTrackingNumber" label="Update Tracking Number" />
-                @else
-                    <x-button wire:loading.attr="disabled" wire:click="acceptOrder" spinner="acceptOrder" label="Nothing" />
                 @endif
             </x-slot>
         </div>
