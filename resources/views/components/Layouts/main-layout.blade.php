@@ -26,6 +26,14 @@
             text-decoration: none !important;
         }
 
+        .uk-tab > li > a {
+            border-bottom: none !important;
+        }
+
+        .uk-tab > li.uk-active > a {
+            border-bottom: 2px solid #000 !important; /* Adjust the border size and color as needed */
+        }
+
         a{
             border-bottom-color: rgb(107 114 128) !important;
             text-decoration: none !important;
