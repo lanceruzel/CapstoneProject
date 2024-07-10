@@ -130,7 +130,7 @@ class Product extends Model
             }else if($product_halfStar && $i == $product_fullStars + 1){
                 $stars .= "<i class='ri-star-half-fill text-yellow-300 ri-{$size}'></i>";
             }else{
-                $stars .= "<i class='ri-star-fill text-gray-500 ri-{$size}'></i>";
+                $stars .= "<i class='ri-star-fill text-gray-400 ri-{$size}'></i>";
             }
         }
     
