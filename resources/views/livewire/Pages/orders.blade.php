@@ -51,4 +51,6 @@
             <!-- content -->
         </div>
     </div>
+
+    <livewire:Order.product-feedback-form-modal />
 </x-layouts.main-layout>

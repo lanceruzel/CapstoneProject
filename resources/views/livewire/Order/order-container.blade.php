@@ -40,8 +40,13 @@
                     <td class="px-3 py-4 text-center">$4343</td>
                     <td class="px-6 py-4">
                         <div class="gap-3 flex flex-row items-center justify-center h-full">
-                            <x-button negative label="Report" />
-                            <x-button label="Review" />
+                            @if($order->status == App\Enums\Status::OrderBuyerReceived)
+                                <x-button negative label="Report" />
+
+                                @if(!$orderProduct->hasFeedback())
+                                    <x-button label="Review" onclick="$openModal('productFeedbackFormModal')" wire:click="$dispatch('open-product-feedback', { id: {{ $orderProduct->id }} })" />
+                                @endif
+                            @endif
                         </div>
                     </td>
                 </tr>
@@ -51,13 +56,19 @@
 
     <div class="border-t pt-3 flex items-center justify-between max-md:flex-col">
         <div>
-            <p>{{ $order->status }} <x-link label="View Tracking" href="https://parcelsapp.com/en/tracking/{{ $order->tracking_number }}" target="_blank" /></p>
+            <p>{{ $order->status }} 
+                @if(($order->tracking_number != null || $order->tracking_number != '') && $order->status != App\Enums\Status::OrderBuyerReceived)
+                    <x-link label="View Tracking" href="https://parcelsapp.com/en/tracking/{{ $order->tracking_number }}" target="_blank" />
+                @endif
+            </p>
         </div>
 
         <div class="flex items-center justify-center flex-col gap-3 max-md:pt-3">
             <p class="font-bold">${{ number_format($order->total, 2) }}</p>
-            <x-button label="Received" />
+
+            @if($order->status == App\Enums\Status::OrderSellerShipped)
+                <x-button label="Received" wire:click="receivedOrder" />
+            @endif
         </div>
     </div>
-
 </div>

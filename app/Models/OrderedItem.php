@@ -2,8 +2,10 @@
 
 namespace App\Models;
 
+use App\Enums\Status;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 
 class OrderedItem extends Model
 {
@@ -23,5 +25,19 @@ class OrderedItem extends Model
 
     public function product(){
         return $this->belongsTo(Product::class);
+    }
+
+    public function hasFeedback()
+    {
+        $userId = Auth::id();
+        $orderStatus = Status::OrderBuyerReceived;
+
+        return $this->whereHas('order', function ($query) use ($orderStatus) {
+                    $query->where('status', $orderStatus);
+                })
+                ->whereHas('product.feedbacks', function ($query) use ($userId) {
+                    $query->where('user_id', $userId);
+                })
+                ->exists();
     }
 }
