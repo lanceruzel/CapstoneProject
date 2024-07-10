@@ -140,7 +140,7 @@ class Product extends Model
     public function getSoldCount(){
         return $this->orderItems()
                 ->whereHas('order', function ($query) {
-                    $query->where('status', Status::Delivered);
+                    $query->where('status', Status::OrderBuyerReceived);
                 })
                 ->count();
     }

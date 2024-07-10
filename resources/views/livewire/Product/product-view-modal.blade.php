@@ -4,8 +4,8 @@
 
 <x-modal-card name="productViewModal" title="" width='LG' align='center' x-cloak x-on:close="$dispatch('clearProductViewModalData')" blurless wire:ignore.self>  
     {{-- @if($variations || $productUpdate) --}}
-    <div class="max-w-[1100px] mx-auto max-lg:p-5 lg:p-7">
-        @if($product != null)
+    @if($product != null)
+        <div class="max-w-[1100px] mx-auto max-lg:p-5 lg:p-7">
             <div class="grid grid-cols-2 gap-5">
                 <div class="max-lg:col-span-2 lg:col-span-1">   
                     @if(count($images) > 1)
@@ -103,25 +103,11 @@
                 </div>
     
                 <div class="space-y-3 divide-y-2">
-                    @if($product->seller->id != Auth::id() && auth()->user()->role != UserType::Admin)
-                        @if($hasFeedback == false && $hasOrderedItem)
-                            <div class="flex flex-col gap-3 py-5">
-                                <div class="flex flex-row gap-3 w-full">
-                                    <div class="min-w-14 min-h-14 size-14 rounded-full bg-red-500"></div>
-                                    <livewire:Product.Feedback.feedback-form id="{{ $product->id }}">
-                                </div>
-                            </div>
-                        @endif
-                    @endif
-    
-                    <div>
-                        <livewire:Product.Feedback.feedbacks-container id="{{ $product->id }}" :key="'feedbacks-' . $product->id" :id="$product->id" />
-                    </div>
+                    <livewire:Product.Feedback.feedbacks-container id="{{ $product->id }}" :key="'feedbacks-' . $product->id" :id="$product->id" />
                 </div>
             </div>
-        @endif
-    </div>
-    {{-- @else
+        </div>
+    @else
         <div class="flex items-center justify-center w-full">
             <div class="flex items-row items-center justify-center gap-3">
                 <x-icon name='arrow-path' class="h-5 w-5 animate-spin"/>
@@ -131,5 +117,5 @@
                 </span>
             </div>
         </div>
-    @endif --}}
+    @endif
 </x-modal-card>

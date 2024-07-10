@@ -16,26 +16,33 @@ class ProductViewModal extends Component
     use WireUiActions;
 
     public $product;
-    public $quantity = 1;
     public $images;
     public $name;
     public $description;
-    public $allowFeedback = false;
 
     public $variations;
 
     protected $listeners = [
         'view-product-info' => 'getData',
-        'new-feedback' => '$refresh',
+        'clearProductViewModalData' => 'clearData',
     ];
 
-    public function getData($id, $feedback = false){
+    public function getData($id){
         $this->product = Product::findOrFail($id);
         $this->images = json_decode($this->product->images);
 
-        $this->allowFeedback = $feedback;
-
         $this->variations = json_decode($this->product->variations);
+    }
+
+    public function clearData(){
+        $this->reset([
+            'images',
+            'name',
+            'description',
+            'variations'
+        ]);
+
+        $this->product = null;
     }
 
     public function store_toCart(){
@@ -79,37 +86,7 @@ class ProductViewModal extends Component
         }
     }
 
-    public function render()
-    {
-        $hasFeedback = false;
-        $hasOrderedItem = false;
-
-        if($this->product){
-            $feedbackExists = ProductFeedback::where('user_id', Auth::id())
-            ->where('product_id', $this->product->id)
-            ->exists();
-
-            $userOrderItems = OrderedItem::where('product_id', $this->product->id)->get();
-            
-            if($userOrderItems){
-                foreach ($userOrderItems as $orderItem) {
-                    $order = $orderItem->order;
-
-                    if($order->status == Status::Delivered && $order->user_id == Auth::id()){
-                        $hasOrderedItem = true;
-                    }
-                }
-            }
-            
-            if($feedbackExists){
-                $hasFeedback = true;
-            }
-        }
-
-        return view('livewire.Product.product-view-modal', [
-            'product' => $this->product,
-            'hasFeedback' => $hasFeedback,
-            'hasOrderedItem' => $hasOrderedItem
-        ]);
+    public function render(){
+        return view('livewire.Product.product-view-modal');
     }
 }
