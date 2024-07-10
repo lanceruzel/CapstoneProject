@@ -18,6 +18,9 @@ class ProductViewModal extends Component
     public $product;
     public $images;
     public $name;
+
+    public $quantity = 1;
+
     public $description;
 
     public $variations;
@@ -43,6 +46,7 @@ class ProductViewModal extends Component
         ]);
 
         $this->product = null;
+        $this->quantity = 1;
     }
 
     public function store_toCart(){
