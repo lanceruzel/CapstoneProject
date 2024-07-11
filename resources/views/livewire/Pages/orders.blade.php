@@ -53,4 +53,5 @@
     </div>
 
     <livewire:Order.product-feedback-form-modal />
+    <livewire:Report.product-report-form-modal />
 </x-layouts.main-layout>

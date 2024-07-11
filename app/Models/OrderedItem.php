@@ -40,4 +40,18 @@ class OrderedItem extends Model
                 ->where('product_id', $this->product_id)
                 ->exists();
     }
+
+    public function hasReport(){
+        $userId = Auth::id();
+        $orderStatus = Status::OrderBuyerReceived;
+
+        return $this->whereHas('order', function ($query) use ($orderStatus) {
+                    $query->where('status', $orderStatus);
+                })
+                ->whereHas('product.reports', function ($query) use ($userId) {
+                    $query->where('reporter_id', $userId);
+                })
+                ->where('product_id', $this->product_id)
+                ->exists();
+    }
 }

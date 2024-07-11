@@ -41,7 +41,10 @@
                     <td class="px-6 py-4">
                         <div class="gap-3 flex flex-row items-center justify-center h-full">
                             @if($order->status == App\Enums\Status::OrderBuyerReceived)
-                                <x-button negative label="Report" />
+
+                                @if(!$orderProduct->hasReport())
+                                    <x-button negative label="Report" onclick="$openModal('productReportFormModal')" wire:click="$dispatch('open-product-report', { id: {{ $orderProduct->id }} })" />  
+                                @endif
 
                                 @if(!$orderProduct->hasFeedback())
                                     <x-button label="Review" onclick="$openModal('productFeedbackFormModal')" wire:click="$dispatch('open-product-feedback', { id: {{ $orderProduct->id }} })" />
