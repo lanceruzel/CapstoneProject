@@ -75,7 +75,11 @@
                             <td class="px-6 py-4">{{ $product->priceRange() }}</td>
                             <td class="px-6 py-4">
                                 @if($product->status == App\Enums\Status::Suspended)
-                                    <x-button label="Appeal" />
+                                    @if($product->appeal)
+                                        <x-button label="View Appeal" onclick="$openModal('reportAppealConversationModal')" wire:click="$dispatch('view-appeal-convo', { id: {{ $product->appeal->conversation_id }} })" />
+                                    @else
+                                        <x-button label="Make an Appeal" onclick="$openModal('productAppealFormModal')" wire:click="$dispatch('for-product-appeal', { id: {{ $product->id }} })" />
+                                    @endif
                                 @else
                                     <x-dropdown icon="bars-3">
                                         <x-dropdown.item label="Add Stock" onclick="$openModal('addStockFormModal')" wire:click="$dispatch('viewProductStocksInformation', { id: {{ $product->id }} })" />

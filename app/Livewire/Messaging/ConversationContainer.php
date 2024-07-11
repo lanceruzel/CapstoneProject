@@ -6,6 +6,8 @@ use App\Events\NewChatCreated;
 use App\Models\Message;
 use App\Models\Conversation;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
+use Livewire\Attributes\On;
 use Livewire\Component;
 use Livewire\Features\SupportFileUploads\WithFileUploads;
 
@@ -32,13 +34,14 @@ class ConversationContainer extends Component
         return [
             "echo:new-chat.{$this->userID},NewChatCreated" => '$refresh',
             'view-conversation' => 'retrieveMessages',
-            'view-appeal-convo' => 'getData',
-            'view-appeal-convo2' => 'getData2',
+            'view-appeal-convo' => 'getAppealData',
         ];
     }
     
     public function mount($selectedID){
-        $this->conversation = $this->getConversation($selectedID);
+        if($selectedID){
+            $this->conversation = $this->getConversation($selectedID);
+        }
     }
 
     public function getConversation($id){
@@ -111,20 +114,9 @@ class ConversationContainer extends Component
         ]);
     }
 
-    public function getData($data){
-        $selectedData = $data['selectedID'];
-        
-        if($selectedData != null){
-            $this->conversation = Conversation::findOrFail($selectedData);
-
-            $this->isAppeal = true;
-        }
-    }
-
-    public function getData2($id){
+    public function getAppealData($id){
         if($id != null){
             $this->conversation = Conversation::findOrFail($id);
-
             $this->isAppeal = true;
         }
     }
@@ -137,8 +129,7 @@ class ConversationContainer extends Component
         $this->conversation = Conversation::findOrFail($id);
     }
 
-    public function render()
-    {
+    public function render(){
         $this->userID = Auth::id();
         $this->dispatch('messagesUpdated');
 

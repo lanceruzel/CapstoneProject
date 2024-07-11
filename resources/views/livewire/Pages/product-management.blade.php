@@ -11,4 +11,6 @@
 
     <livewire:Product.product-form-modal />
     <livewire:Product.add-stock-form-modal />
+    <livewire:Appeal.product-appeal-form />
+    <livewire:Appeal.product-appeal-conversation-modal />
 </x-layouts.store-layout>
