@@ -116,7 +116,7 @@ class ConversationContainer extends Component
 
     public function getAppealData($id){
         if($id != null){
-            $this->conversation = Conversation::findOrFail($id);
+            $this->conversation = Conversation::findOrFail($id)->first();
             $this->isAppeal = true;
         }
     }
