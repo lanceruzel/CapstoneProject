@@ -27,8 +27,7 @@ class OrderedItem extends Model
         return $this->belongsTo(Product::class);
     }
 
-    public function hasFeedback()
-    {
+    public function hasFeedback(){
         $userId = Auth::id();
         $orderStatus = Status::OrderBuyerReceived;
 
@@ -38,6 +37,7 @@ class OrderedItem extends Model
                 ->whereHas('product.feedbacks', function ($query) use ($userId) {
                     $query->where('user_id', $userId);
                 })
+                ->where('product_id', $this->product_id)
                 ->exists();
     }
 }

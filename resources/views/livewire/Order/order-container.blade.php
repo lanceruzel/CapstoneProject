@@ -11,7 +11,7 @@
                 <th></th>
                 <th>Product</th>
                 <th class="text-center">Quantity</th>
-                <th class="text-center">Price</th>
+                <th class="text-center">SubTotal</th>
                 <th></th>
             </tr>
         </thead>
@@ -35,9 +35,9 @@
                             </p>
                         </div>
                     </td>
-            
+                    
                     <td class="px-6 py-4 text-center">x{{ $orderProduct->quantity }}</td>
-                    <td class="px-3 py-4 text-center">$4343</td>
+                    <td class="px-3 py-4 text-center">${{ number_format($orderProduct->subtotal, 2) }}</td>
                     <td class="px-6 py-4">
                         <div class="gap-3 flex flex-row items-center justify-center h-full">
                             @if($order->status == App\Enums\Status::OrderBuyerReceived)
