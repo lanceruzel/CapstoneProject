@@ -19,9 +19,6 @@ return new class extends Migration
             $table->unsignedBigInteger('seller_id');
             $table->foreign('seller_id')->references('id')->on('users')->cascadeOnDelete();
 
-            $table->unsignedBigInteger('attached_product_id')->nullable();
-            $table->foreign('attached_product_id')->references('id')->on('products')->cascadeOnDelete();
-
             $table->string('name');
             $table->string('category');
             $table->text('description');

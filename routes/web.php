@@ -90,6 +90,10 @@ Route::group([], function () {
     Route::get('/admin/product-registrations', function () {
         return view('livewire.Pages.product-registrations');
     })->name('admin.product-registrations');
+
+    Route::get('/admin/product-reports', function () {
+        return view('livewire.Pages.product-reports');
+    })->name('admin.product-reports');
 });
 
 Route::group([], function () {

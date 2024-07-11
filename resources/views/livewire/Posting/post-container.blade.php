@@ -58,7 +58,6 @@
                     <button type="button" class="absolute -right-3 -translate-y-1/2 bg-gray-100/50 backdrop-blur-xl rounded-full top-1/2 grid w-8 h-7 place-items-center border uk-invisible" uk-slideshow-item="next">
                         <x-icon name="chevron-right" class="w-5 h-5" />
                     </button>
-
                 </div>
             @endif
         @endif

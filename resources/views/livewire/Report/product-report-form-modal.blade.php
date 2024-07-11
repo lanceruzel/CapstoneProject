@@ -1,5 +1,4 @@
 <x-modal-card name="productReportFormModal" title="Product Report" align='center' x-cloak x-on:close="$dispatch('clearProductReportFormModalData')" blurless wire:ignore.self>  
-    {{-- @if($variations || $productUpdate) --}}
         <div class="flex flex-col gap-2 items-start text-gray-600 overflow-auto">
             <div class="flex flex-col gap-2 w-full">
                 <div class="flex justify-between items-center">
