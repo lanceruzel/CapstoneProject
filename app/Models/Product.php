@@ -66,6 +66,18 @@ class Product extends Model
         return $price;
     }
 
+    public function getVariationDetails($selectedVariation){
+        $retrieved = null;
+
+        foreach(json_decode($this->variations) as $variation){
+            if($variation->name == $selectedVariation){
+                $retrieved = $variation;
+            }
+        }
+
+        return $retrieved;
+    }
+
     public function seller(){
         return $this->belongsTo(User::class, 'seller_id');
     }
