@@ -51,10 +51,15 @@ class AdminViewAppealConversationModal extends Component
         ]);
     }
 
+    public function updateConversationStatus(){
+        $this->report->conversation->status = Status::Inactive;
+        return $this->report->conversation->save();
+    }
+
     public function unsuspendProduct(){
         $this->product->status = Status::Available;
 
-        if($this->product->save()){
+        if($this->product->save() && $this->updateConversationStatus()){
             $this->notification()->send([
                 'icon' => 'success',
                 'title' => 'Success!',

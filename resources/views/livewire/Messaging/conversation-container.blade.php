@@ -274,17 +274,19 @@
             </div> 
         @endif
 
-        <!-- sending message area -->
-        <div class="flex items-center max-md:pe-5 md:gap-4 gap-2 p-3 overflow-hidden">
-            <label class="py-5 flex flex-col justify-center items-center cursor-pointer">
-                <input class="hidden" type="file" multiple wire:model="images">
-                <x-icon name="photo" solid class="w-8 h-8" />
-            </label>
+        @if($conversation->status != App\Enums\Status::Inactive)
+            <!-- sending message area -->
+            <div class="flex items-center max-md:pe-5 md:gap-4 gap-2 p-3 overflow-hidden">
+                <label class="py-5 flex flex-col justify-center items-center cursor-pointer">
+                    <input class="hidden" type="file" multiple wire:model="images">
+                    <x-icon name="photo" solid class="w-8 h-8" />
+                </label>
 
-            <x-input label="" wire:model='message' shadowless placeholder="Message"/>
+                <x-input label="" wire:model='message' shadowless placeholder="Message"/>
 
-            <x-mini-button rounded flat black icon="paper-airplane" wire:click='sendMessage' />
-        </div>
+                <x-mini-button rounded flat black icon="paper-airplane" wire:click='sendMessage' />
+            </div>
+        @endif
     @else
         <div class="!w-full !h-screen flex items-center justify-center">
             No Selected Conversation

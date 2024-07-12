@@ -76,7 +76,7 @@
                             <td class="px-6 py-4">
                                 @if($product->status == App\Enums\Status::Suspended)
                                     @if($product->appeal)
-                                        <x-button label="View Appeal" onclick="$openModal('reportAppealConversationModal')" wire:click="$dispatch('view-appeal-convo', { id: {{ $product->appeal->conversation_id }} })" />
+                                        <x-button label="View Appeal" onclick="$openModal('reportAppealConversationModal')" wire:click="$dispatch('view-appeal-convo', { id: [{{ json_encode($product->appeal->conversation_id) }}] })"  />
                                     @else
                                         <x-button label="Make an Appeal" onclick="$openModal('productAppealFormModal')" wire:click="$dispatch('for-product-appeal', { id: {{ $product->id }} })" />
                                     @endif
