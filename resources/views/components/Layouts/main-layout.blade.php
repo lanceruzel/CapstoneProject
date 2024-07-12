@@ -147,7 +147,7 @@
                         <x-dropdown.item icon='building-storefront' label="Register Store" onclick="$openModal('storeRegistrationFormModal')" />
                     @endif
                 @else
-                    <x-dropdown.item icon='user-group' href="/" label="Affiliates" />
+                    <x-dropdown.item icon='user-group' label="Affiliates" onclick="$openModal('affiliateDashboardModal')" />
                 @endif
 
                 <x-dropdown.item separator icon='arrow-left-end-on-rectangle' href="{{ route('signout') }}" label="Sign out" />
@@ -163,6 +163,8 @@
 
     @if(auth()->user()->role == App\Enums\UserType::Store || auth()->user()->role == App\Enums\UserType::Travelpreneur)
         <livewire:StoreRegistration.store-register-form-modal />
+    @else
+        <livewire:Affiliate.affiliate-dashboard-modal />
     @endif
 
     <script>
