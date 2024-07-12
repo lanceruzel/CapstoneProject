@@ -2,7 +2,7 @@
     use App\Enums\UserType;
 @endphp
 
-<x-modal-card name="productViewModal" title="" width='LG' align='center' x-cloak x-on:close="$dispatch('clearProductViewModalData')" blurless wire:ignore.self>  
+<x-modal-card name="productViewModal" title="" width='6xl' align='center' x-cloak x-on:close="$dispatch('clearProductViewModalData')" blurless wire:ignore.self>  
     {{-- @if($variations || $productUpdate) --}}
     @if($product != null)
         <div class="max-w-[1100px] mx-auto max-lg:p-5 lg:p-7">
