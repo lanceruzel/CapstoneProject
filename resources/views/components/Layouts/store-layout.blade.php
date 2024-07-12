@@ -60,6 +60,14 @@
         <div class="py-3 px-2.5 flex items-center justify-between flex-col h-full">
             <ul class="space-y-2 w-full">
                 <li>
+                    @if(request()->routeIS('store.affiliates'))
+                        <x-button class='!justify-start font-medium' icon='folder' href="{{ route('store.affiliates') }}" solid flat full secondary label="Affiliate Management" />
+                    @else
+                        <x-button class='!justify-start font-medium' icon='folder' href="{{ route('store.affiliates') }}" flat full secondary label="Affiliate Management" /> 
+                    @endif
+                </li>
+
+                <li>
                     @if(request()->routeIS('store.product-management'))
                         <x-button class='!justify-start font-medium' icon='folder' href="{{ route('store.product-management') }}" solid flat full secondary label="Product Management" />
                     @else

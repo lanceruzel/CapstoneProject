@@ -101,6 +101,10 @@ Route::group([], function () {
 });
 
 Route::group([], function () {
+    Route::get('/store/affiliates', function () {
+        return view('livewire.Pages.affiliates');
+    })->name('store.affiliates');
+
     Route::get('/store/product-management', function () {
         return view('livewire.Pages.product-management');
     })->name('store.product-management');
