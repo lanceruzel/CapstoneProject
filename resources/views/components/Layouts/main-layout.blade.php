@@ -165,6 +165,8 @@
         <livewire:StoreRegistration.store-register-form-modal />
     @else
         <livewire:Affiliate.affiliate-dashboard-modal />
+        <livewire:Affiliate.affiliate-invitation-modal />
+        <livewire:Affiliate.view-terms-and-condition-modal />
     @endif
 
     <script>
@@ -182,14 +184,13 @@
             });
         });
 
-        function copyToClipboard(textToCopy) {
-            var $temp = $("<input>");
-            $("body").append($temp);
-            $temp.val(textToCopy).select();
-            document.execCommand("copy");
-            toast('success', 'Copied to clipboard.');
-            $temp.remove();
-        }
+        // function copyToClipboard(textToCopy) {
+        //     var $temp = $("<input>");
+        //     $("body").append($temp);
+        //     $temp.val(textToCopy).select();
+        //     document.execCommand("copy");
+        //     $temp.remove();
+        // }
 
         function scrollToBottom() {
             var chatContainer = document.getElementById("chat-container");

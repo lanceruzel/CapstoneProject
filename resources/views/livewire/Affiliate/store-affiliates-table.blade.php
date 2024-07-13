@@ -10,19 +10,15 @@
             
                 <x-dropdown.header label="Filter">
                     <x-dropdown.item>
-                        <x-checkbox label="For Review" wire:model.live="filterStatus" :value="App\Enums\Status::ForReview" />
+                        <x-checkbox label="Active" wire:model.live="filterStatus" :value="App\Enums\Status::Active" />
                     </x-dropdown.item>
 
                     <x-dropdown.item>
-                        <x-checkbox label="Available" wire:model.live="filterStatus" :value="App\Enums\Status::Available" />
+                        <x-checkbox label="Inactive" wire:model.live="filterStatus" :value="App\Enums\Status::Inactive" />
                     </x-dropdown.item>
 
                     <x-dropdown.item>
-                        <x-checkbox label="Unavailable" wire:model.live="filterStatus" :value="App\Enums\Status::Unavailable" />
-                    </x-dropdown.item>
-
-                    <x-dropdown.item>
-                        <x-checkbox label="Suspended" wire:model.live="filterStatus" :value="App\Enums\Status::Suspended" />
+                        <x-checkbox label="Invitation" wire:model.live="filterStatus" :value="App\Enums\Status::Invitation" />
                     </x-dropdown.item> 
                 </x-dropdown.header>
             </x-dropdown>
@@ -36,27 +32,41 @@
             <thead class="border-b-2">
                 <tr>
                     <th scope="col" class="px-6 py-3">Promoter</th>
-                    <th scope="col" class="px-6 py-3">Rate Per Order</th>
-                    <th scope="col" class="px-6 py-3">Total Commissioned</th>
                     <th scope="col" class="px-6 py-3">Affiliate Code</th>
+                    <th scope="col" class="px-6 py-3">Total Commissioned</th>
+                    <th scope="col" class="px-6 py-3">Rate Per Order</th>
+                    <th scope="col" class="px-6 py-3">Status</th>
                     <th scope="col" class="px-6 py-3"></th>
                 </tr>
             </thead>
 
             <tbody>
-                {{-- @if($affiliates && count($appeals) > 0)
+                @if($affiliates && count($affiliates) > 0)
                     @foreach ($affiliates as $affiliate)
                         <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-100">
-                            <td class="px-6 py-4">{{ $appeal->product->name }}</td>
-                            <td class="px-6 py-4">{{ $appeal->product->seller->storeInformation->name }}</td>
-                            <td class="px-6 py-4">{{ $appeal->product->seller->email}}</td>
-                            <td class="px-6 py-4">{{ $appeal->created_at }}</td>
+                            <td class="px-6 py-4">{{ $affiliate->user->userInformation->fullName() }}</td>
+                            <td class="px-6 py-4">{{ $affiliate->affiliate_code }}</td>
+                            <td class="px-6 py-4">{{ $affiliate->totalCommissioned }}</td>
+                            <td class="px-6 py-4">{{ $affiliate->rate }}%</td>
                             <td class="px-6 py-4">
-                                <x-button label="View Conversation" onclick="$openModal('reportAppealFormModal')" wire:click="$dispatch('view-report-appeal-conversation', { id: {{ $appeal->id }} })" />
+                                @if($affiliate->status == App\Enums\Status::Invitation)
+                                    <x-badge flat info label="Invitation" />
+                                @elseif($affiliate->status == App\Enums\Status::Active)
+                                    <x-badge flat positive label="Active" />
+                                @elseif($affiliate->status == App\Enums\Status::Inactive)
+                                    <x-badge flat negative label="Inactive" />
+                                @elseif($affiliate->status == App\Enums\Status::Declined)
+                                    <x-badge flat negative label="Declined" />
+                                @else
+                                    <x-badge flat warning label="{{ $affiliate->status }}" />
+                                @endif
+                            </td>
+                            <td class="px-6 py-4">
+                                <x-button label="View" onclick="$openModal('reportAppealFormModal')" wire:click="$dispatch('view-report-appeal-conversation', { id: {{ $affiliate->id }} })" />
                             </td>
                         </tr>
                     @endforeach 
-                @endif --}}
+                @endif
             </tbody>
         </table>
 
@@ -70,6 +80,6 @@
 
     <!-- Pagination -->
     <div class="w-full mt-5">
-        {{-- {{ $appeals->links() }} --}}
+        {{ $affiliates->links() }}
     </div>
 </div>

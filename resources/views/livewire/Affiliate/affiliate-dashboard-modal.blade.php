@@ -3,7 +3,7 @@
         <div class="flex items-center justify-between pb-4 w-full">
             <h1 class="text-2xl font-bold">Dashboard</h1>
     
-            <x-button label="View Invites" uk-toggle="target: #affiliate-invitation" />
+            <x-button label="View Invites" onclick="$openModal('affiliateInvitationsModal')" />
         </div>
     
         <div class="flex flex-col items-center justify-center border border-gray-200 p-7 rounded-lg shadow">
@@ -37,11 +37,11 @@
                 <thead class="border-b-2">
                     <tr>
                         <th scope="col" class="px-6 py-3 text-center">Store</th>
+                        <th scope="col" class="px-6 py-3 text-center">Affiliate Code</th>
                         <th scope="col" class="px-6 py-3 text-center">Commission Rate Per Order</th>
                         <th scope="col" class="px-6 py-3 text-center">Total Commissioned</th>
-                        <th scope="col" class="px-6 py-3 text-center">Affiliate Code</th>
                         <th scope="col" class="px-6 py-3 text-center">Status</th>
-                        <th scope="col" class="px-6 py-3 text-center"></th>
+                        {{-- <th scope="col" class="px-6 py-3 text-center"></th> --}}
                     </tr>
                 </thead>
     
@@ -49,15 +49,23 @@
                     @if(count($affiliates) > 0)
                         @foreach ($affiliates as $affiliate)
                             <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-100">
-                                <td class="px-6 py-4 text-center">PC HUB 1202</td>
-                                <td class="px-6 py-4 text-center">5%</td>
-                                <td class="px-6 py-4 text-center">$100.00</td>
-                                <td class="px-6 py-4 text-center">ABCDEF</td>
-                                <td class="px-6 py-4 text-center">Active</td>
-    
-                                <td class="px-6 py-4 flex items-center justify-center">
-                                    <x-button label="Copy Code"/>
+                                <td class="px-6 py-4 text-center">{{ $affiliate->store->storeInformation->name }}</td>
+                                <td class="px-6 py-4 text-center">{{ $affiliate->affiliate_code }}</td>
+                                <td class="px-6 py-4 text-center">{{ $affiliate->rate }}%</td>
+                                <td class="px-6 py-4 text-center">${{ number_format($affiliate->totalCommissioned, 2) }}</td>
+                                <td class="px-6 py-4 text-center">
+                                    @if($affiliate->status == App\Enums\Status::Active)
+                                        <x-badge flat positive label="Active" />
+                                    @elseif($affiliate->status == App\Enums\Status::Inactive)
+                                        <x-badge flat negative label="Inactive" />
+                                    @else
+                                        <x-badge flat warning label="{{ $affiliate->status }}" />
+                                    @endif
                                 </td>
+    
+                                {{-- <td class="px-6 py-4 flex items-center justify-center">
+                                    <x-button label="Copy Code" onclick="copyToClipboard('{{ $affiliate->affiliate_code }}')"/>
+                                </td> --}}
                             </tr>
                         @endforeach 
                     @else

@@ -29,4 +29,6 @@ enum Status: string
 
     const OrderBuyerReceived = 'Order has been received.';
     const OrderBuyerCancel = 'Buyer cancelled they\'re order.';
+
+    const Invitation = 'invitation';
 }
