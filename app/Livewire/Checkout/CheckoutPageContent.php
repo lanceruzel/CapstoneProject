@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Checkout;
 
+use App\Enums\Status;
 use App\Models\Affiliate;
 use App\Models\CartItem;
 use App\Models\Order;
@@ -58,7 +59,7 @@ class CheckoutPageContent extends Component
 
             if($this->affiliate[$seller->id] != null){
                 if(!$this->checkIfSellerHasAffiliateCode($seller->id, $this->affiliate[$seller->id])){
-                    $this->addError("affiliate." . $seller->id, 'This affiliate code does not exists on this store.');
+                    $this->addError("affiliate." . $seller->id, 'This affiliate code does not exists or this affiliate code is currently inactive.');
                     return false;
                 }
             }
@@ -101,8 +102,20 @@ class CheckoutPageContent extends Component
             $total = $checkedOutSeller['total'];
             $shippingInformation = $this->shippingInformation[0];
 
+            $commission = 0;
+
+            if($this->affiliate[$seller->id] != ''){
+                $rates = Affiliate::where('affiliate_code', $this->affiliate[$seller->id])
+                        ->where('status', Status::Active)
+                        ->pluck('rate');
+
+                $rate = floatval($rates[0]) / 100; 
+
+                $commission = $total * $rate;
+            }
+
             try{
-                $storeOrder = $this->storeOrder($seller, $shippingInformation, $paymentMethod, $isPaid, $total, $this->affiliate[$seller->id]);
+                $storeOrder = $this->storeOrder($seller, $shippingInformation, $paymentMethod, $isPaid, $total, $this->affiliate[$seller->id], $commission);
 
                 if($storeOrder){
                     //Store Ordered Product
@@ -153,7 +166,7 @@ class CheckoutPageContent extends Component
         return redirect()->route('orders');
     }
 
-    public function storeOrder($seller, $shippingInformation, $paymentMethod, $isPaid, $total, $code = null){
+    public function storeOrder($seller, $shippingInformation, $paymentMethod, $isPaid, $total, $code = null, $commission = null){
         return Order::create([
             'user_id' => Auth::id(),
             'seller_id' => $seller->id,
@@ -164,12 +177,13 @@ class CheckoutPageContent extends Component
             'total' => $total,
             'payment_method' => $paymentMethod,
             'is_paid' => $isPaid,
-            'affiliate_code' => $code
+            'affiliate_code' => $code,
+            'commission' => $commission
         ]);
     }
 
     public function checkIfSellerHasAffiliateCode($id, $code){
-        return Affiliate::where('store_id', $id)->where('affiliate_code', $code)->exists();
+        return Affiliate::where('store_id', $id)->where('affiliate_code', $code)->where('status', Status::Active)->exists();
     }
 
     public function storeOrderedProducts($orderId, $product){

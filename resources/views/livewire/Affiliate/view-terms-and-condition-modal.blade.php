@@ -76,8 +76,16 @@
             <x-button flat label="Close" x-on:click="close" />
 
             <div class="space-x-3">
-                <x-button flat negative wire:loading.attr="disabled" wire:click="decline" spinner="decline" label="Decline" />
-                <x-button wire:loading.attr="disabled" wire:click="accept" spinner="accept" label="Accept" />
+                @if($mode == 'promoter')
+                    <x-button flat negative wire:loading.attr="disabled" wire:click="decline" spinner="decline" label="Decline" />
+                    <x-button wire:loading.attr="disabled" wire:click="accept" spinner="accept" label="Accept" />
+                @elseif($mode == 'seller')
+                    @if($affiliate->status == App\Enums\Status::Active)
+                        <x-button negative wire:loading.attr="disabled" wire:click="inactiveConfirmation" spinner="inactiveConfirmation" label="Deactivate Affiliation" />
+                    @elseif($affiliate->status == App\Enums\Status::Inactive)
+                        <x-button positive wire:loading.attr="disabled" wire:click="activeConfirmation" spinner="activeConfirmation" label="Activate Affiliation" />
+                    @endif
+                @endif
             </div>
         </x-slot>
     @else

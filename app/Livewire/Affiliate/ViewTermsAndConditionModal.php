@@ -12,6 +12,7 @@ class ViewTermsAndConditionModal extends Component
     use WireUiActions;
 
     public $affiliate = null;
+    public $mode = 'promoter';
 
     protected $listeners = [
         'view-terms-and-condition-info' => 'getData',
@@ -20,10 +21,43 @@ class ViewTermsAndConditionModal extends Component
 
     public function clearData(){
         $this->affiliate = null;
+        $this->mode = 'promoter';
     }
 
-    public function getData($id){
+    public function getData($id, $mode = null){
         $this->affiliate = Affiliate::findOrFail($id);
+
+        if($mode){
+            $this->mode = $mode;
+        }
+    }
+
+    public function activeConfirmation(){
+        $this->notification()->confirm([
+            'title' => 'Are you Sure?',
+            'description' => 'Set this affiliate to active?',
+            'acceptLabel' => 'Yes',
+            'method' => 'active',
+        ]);
+    }
+
+    public function inactiveConfirmation(){
+        $this->notification()->confirm([
+            'title' => 'Are you Sure?',
+            'description' => 'Set this affiliate to inactive?',
+            'acceptLabel' => 'Yes',
+            'method' => 'inactive',
+        ]);
+    }
+
+    public function active(){
+        $this->affiliate->status = Status::Active;
+        $this->saveAffiliate();
+    }
+
+    public function inactive(){
+        $this->affiliate->status = Status::Inactive;
+        $this->saveAffiliate();
     }
 
     public function accept(){
@@ -46,6 +80,7 @@ class ViewTermsAndConditionModal extends Component
 
             $this->dispatch('close-modal', ['modal' => 'affiliateTermsAndConditionModal']);
             $this->dispatch('refresh-invitation-modals');
+            $this->dispatch('refresh-affiliate-tables');
         }
     }
 

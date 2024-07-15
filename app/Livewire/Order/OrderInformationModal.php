@@ -38,13 +38,6 @@ class OrderInformationModal extends Component
         $this->order = Order::findOrFail($id);
 
         if($this->order){
-            $this->orderNumber = $this->order->id;
-            $this->name = $this->order->name;
-            $this->address = $this->order->address;
-            $this->postal = $this->order->postal;
-            $this->contact = $this->order->contact;
-            $this->paymentMethod = $this->order->payment_method;
-            $this->paymentStatus = $this->order->is_paid ? 'Paid' : 'Not yet paid';
             $this->products = $this->order->orderedItems;
         }
     }

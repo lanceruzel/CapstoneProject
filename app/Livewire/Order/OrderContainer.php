@@ -39,9 +39,7 @@ class OrderContainer extends Component
         $affiliate = Affiliate::where('affiliate_code', $this->order->affiliate_code)->first();
 
         if($affiliate){
-            $rate = floatval($affiliate->rate) / 100;
-
-            $affiliate->totalCommissioned += ($rate * $this->order->total);
+            $affiliate->totalCommissioned += $this->order->commission;
             $affiliate->save();
         }
     }

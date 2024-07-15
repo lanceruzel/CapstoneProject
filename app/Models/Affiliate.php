@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\Status;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -28,5 +29,9 @@ class Affiliate extends Model
 
     public function orders(){
         return $this->hasMany(Order::class, 'affiliate_code');
+    }
+
+    public function totalCommissioned(){
+        return Order::where('affiliate_code', $this->affiliate_code)->where('status', Status::OrderBuyerReceived)->sum('commission');
     }
 }

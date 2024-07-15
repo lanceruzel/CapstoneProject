@@ -10,4 +10,5 @@
     </div>
 
     <livewire:Affiliate.affiliate-invite-form-modal />
+    <livewire:Affiliate.view-terms-and-condition-modal />
 </x-layouts.store-layout>

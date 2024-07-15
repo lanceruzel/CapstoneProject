@@ -62,7 +62,7 @@
                                 @endif
                             </td>
                             <td class="px-6 py-4">
-                                <x-button label="View" onclick="$openModal('reportAppealFormModal')" wire:click="$dispatch('view-report-appeal-conversation', { id: {{ $affiliate->id }} })" />
+                                <x-button label="View" onclick="$openModal('affiliateTermsAndConditionModal')" wire:click="$dispatch('view-terms-and-condition-info', { id: {{ $affiliate->id }}, mode: 'seller' })" />
                             </td>
                         </tr>
                     @endforeach 

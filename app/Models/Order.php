@@ -22,7 +22,8 @@ class Order extends Model
         'status',
         'is_paid',
         'courrier',
-        'affiliate_code'
+        'affiliate_code',
+        'commission'
     ];
 
     public function affiliate(){

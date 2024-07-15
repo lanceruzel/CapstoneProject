@@ -11,13 +11,17 @@ class StoreAffiliatesTable extends Component
 {
     use WithPagination;
 
+    protected $listeners = [
+        'refresh-affiliate-tables' => '$refresh'
+    ];
+
     public $filterStatus = [];
 
     public function getData(){
         $filter = $this->filterStatus;
 
         if(empty($filter)){
-            return Affiliate::orderBy('id', 'desc')->paginate(10);
+            return Affiliate::where('store_id', Auth::id())->orderBy('id', 'desc')->paginate(10);
         }else{
             return Affiliate::query()
             ->Where(function ($query) use($filter) {
@@ -25,6 +29,7 @@ class StoreAffiliatesTable extends Component
                     $query->orwhere('status', 'like',  '%' . $filter[$i] .'%');
                 }  
             })
+            ->where('store_id', Auth::id())
             ->orderBy('id', 'desc')
             ->paginate(10);
         }

@@ -7,47 +7,63 @@
                 <tbody>
                     <tr>
                         <td class="text-right pe-3 font-medium">Order Number:</td>
-                        <td>{{ $orderNumber }}</td>
+                        <td>{{ $order->id }}</td>
                     </tr>
 
                     <tr>
                         <td class="text-right pe-3 font-medium">Name:</td>
-                        <td>{{ $name }}</td>
+                        <td>{{ $order->name }}</td>
                     </tr>
 
                     <tr>
                         <td class="text-right pe-3 font-medium">Address:</td>
-                        <td>{{ $address }}</td>
+                        <td>{{ $order->address }}</td>
                     </tr>
 
                     <tr>
                         <td class="text-right pe-3 font-medium">Postal Code:</td>
-                        <td>{{ $postal }}</td>
+                        <td>{{ $order->postal }}</td>
                     </tr>
                     
                     <tr>
                         <td class="text-right pe-3 font-medium">Contact Number:</td>
-                        <td>{{ $contact }}</td>
+                        <td>{{ $order->contact }}</td>
                     </tr>
 
                     <tr>
                         <td class="text-right pe-3 font-medium">Payment Method:</td>
-                        <td>{{ $paymentMethod }}</td>
+                        <td>{{ $order->payment_method == 'COD' ? 'Cash on Delivery' : 'PayPal' }}</td>
                     </tr>
 
                     <tr>
                         <td class="text-right pe-3 font-medium">Payment Status:</td>
-                        <td>{{ $paymentStatus }}</td>
+                        <td>{{ $order->paymentStatus ? 'Paid' : 'Not Yet Paid' }}</td>
                     </tr>
 
                     <tr>
                         <td class="text-right pe-3 font-medium">Total:</td>
-                        <td>{{ $total }}</td>
+                        <td>${{ $order->total }}</td>
                     </tr>
 
                     <tr>
                         <td class="text-right pe-3 font-medium">Applied Affiliate Code:</td>
-                        <td>{{ $affiliateCode ? $affiliateCode : 'None' }}</td>
+                        <td>{{ $order->affiliate_code ? $order->affiliate_code : 'None' }}</td>
+                    </tr>
+
+                    <tr>
+                        <td class="text-right pe-3 font-medium">Commission:</td>
+                        <td>${{ $order->commission ? $order->commission : 'None' }}</td>
+                    </tr>
+
+                    <tr>
+                        <td class="text-right pe-3 font-medium">Deducted Total:</td>
+                        <td class="font-semibold">
+                            @if($order->commission)
+                                <span>${{ $order->total - $order->commission }}</span>
+                            @else
+                                <span>${{ $order->total }}</span>
+                            @endif
+                        </td>
                     </tr>
 
                     @if($order->status == App\Enums\Status::OrderSellerShipped)
