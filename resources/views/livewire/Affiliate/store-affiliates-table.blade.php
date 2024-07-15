@@ -46,7 +46,7 @@
                         <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-100">
                             <td class="px-6 py-4">{{ $affiliate->user->userInformation->fullName() }}</td>
                             <td class="px-6 py-4">{{ $affiliate->affiliate_code }}</td>
-                            <td class="px-6 py-4">{{ $affiliate->totalCommissioned }}</td>
+                            <td class="px-6 py-4">${{ number_format($affiliate->totalCommissioned, 2) }}</td>
                             <td class="px-6 py-4">{{ $affiliate->rate }}%</td>
                             <td class="px-6 py-4">
                                 @if($affiliate->status == App\Enums\Status::Invitation)

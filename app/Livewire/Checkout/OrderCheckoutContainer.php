@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\Checkout\Orders;
+namespace App\Livewire\Checkout;
 
 use Livewire\Component;
 
@@ -10,6 +10,6 @@ class OrderCheckoutContainer extends Component
 
     public function render()
     {
-        return view('livewire.Checkout.Orders.order-checkout-container');
+        return view('livewire.Checkout.order-checkout-container');
     }
 }

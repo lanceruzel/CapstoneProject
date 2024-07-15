@@ -3,6 +3,7 @@
 namespace App\Livewire\Order;
 
 use App\Enums\Status;
+use App\Models\Affiliate;
 use App\Models\ProductFeedback;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
@@ -26,8 +27,23 @@ class OrderContainer extends Component
     }
 
     public function receivedOrder(){
+        if($this->order->affiliate_code){
+            $this->updateAffiliateCommission();
+        }
+
         $this->order->status = Status::OrderBuyerReceived;
         $this->order->save();
+    }
+
+    public function updateAffiliateCommission(){
+        $affiliate = Affiliate::where('affiliate_code', $this->order->affiliate_code)->first();
+
+        if($affiliate){
+            $rate = floatval($affiliate->rate) / 100;
+
+            $affiliate->totalCommissioned += ($rate * $this->order->total);
+            $affiliate->save();
+        }
     }
 
     public function refreshOrderContainer($id)

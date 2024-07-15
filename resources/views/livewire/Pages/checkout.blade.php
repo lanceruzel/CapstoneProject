@@ -9,17 +9,19 @@
             <!-- content -->
 
             <div class="w-full">
-                <livewire:Checkout.ShippingInformation.shipping-information-container />
+                {{-- <livewire:Checkout.ShippingInformation.shipping-information-container />
 
                 <livewire:Checkout.Orders.orders-checkout-container />
 
                 <livewire:Checkout.Payment.payment-method-container />
                 
-                <livewire:Checkout.TotalSummary.order-total-summary />
+                <livewire:Checkout.TotalSummary.order-total-summary /> --}}
+
+                <livewire:Checkout.checkout-page-content />
             </div>
         </div>
     </div>
 
-    <livewire:Checkout.ShippingInformation.user-saved-shipping-addresses-modal />
-    <livewire:Checkout.ShippingInformation.shipping-address-form-modal />
+    <livewire:Checkout.user-saved-shipping-addresses-modal />
+    <livewire:Checkout.shipping-address-form-modal />
 </x-layouts.checkout-layout>

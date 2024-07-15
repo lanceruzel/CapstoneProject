@@ -21,8 +21,17 @@ class Order extends Model
         'tracking_number',
         'status',
         'is_paid',
-        'courrier'
+        'courrier',
+        'affiliate_code'
     ];
+
+    public function affiliate(){
+        if($this->affiliate_code){
+            return $this->hasOne(Affiliate::class, 'affiliate_code');
+        }
+
+        return null;
+    }
 
     public function user(){
         return $this->belongsTo(User::class);

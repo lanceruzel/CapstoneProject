@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Livewire\Checkout\TotalSummary;
+namespace App\Livewire\Checkout;
 
+use App\Models\Affiliate;
 use App\Models\CartItem;
 use App\Models\Order;
 use App\Models\OrderedItem;
@@ -10,25 +11,70 @@ use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 use WireUi\Traits\WireUiActions;
 
-class OrderTotalSummary extends Component
+class CheckoutPageContent extends Component
 {
     use WireUiActions;
+
+    public $shippingInformation = null;
+    public $checkedOutSellers = null;
 
     public $merchandiseTotal = 0;
     public $shippingTotal = 150;
 
-    public $shippingInformation = null;
+    public $affiliate = [];
 
     protected $listeners = [
-        'payment-completed' => 'placeOrder',
-        'selected-shipping-address' => 'getShippingInformation'
+        'selected-shipping-address' => 'getShippingInformationData',
+
     ];
 
-    public function getShippingInformation($id){
+    public function mount(){
+        $this->checkedOutSellers = CartItem::groupBySellerCheckout();
+
+        $this->merchandiseTotal = $this->getMerchandiseTotal();
+
+        foreach ($this->checkedOutSellers as $checkedOutSeller) {
+            $this->affiliate[$checkedOutSeller['seller']->id] = null; // Initialize the affiliate codes
+        }
+    }
+
+    public function getShippingInformationData($id){
         $this->shippingInformation = UserShippingInformation::findOrFail($id);
     }
 
+    public function validateAffiliateInputs(){
+        $rules = [];
+
+        foreach($this->checkedOutSellers as $checkedOutSeller){
+            $rules["affiliate." . $checkedOutSeller['seller']->id] = 'exists:affiliates,affiliate_code|min:10|max:15';
+        } 
+
+        return ($rules);
+    }
+
+    public function checkCodePerStore(){
+        foreach($this->checkedOutSellers as $checkedOutSeller){
+            $seller = $checkedOutSeller['seller'];
+
+            if($this->affiliate[$seller->id] != null){
+                if(!$this->checkIfSellerHasAffiliateCode($seller->id, $this->affiliate[$seller->id])){
+                    $this->addError("affiliate." . $seller->id, 'This affiliate code does not exists on this store.');
+                    return false;
+                }
+            }
+            
+        }
+
+        return true;
+    }
+    
     public function placeOrder($status = null){
+        $this->validateAffiliateInputs();
+
+        if (!$this->checkCodePerStore()) {
+            return; // Stop further execution if the affiliate code check fails
+        }
+
         //Check if user haven't select shipping information
         if($this->shippingInformation == null){
             $this->notification()->send([
@@ -40,8 +86,6 @@ class OrderTotalSummary extends Component
             return;
         }
 
-        $checkedOutSellers = CartItem::groupBySellerCheckout();
-
         $paymentMethod = 'COD';
         $isPaid = false;
 
@@ -50,14 +94,15 @@ class OrderTotalSummary extends Component
             $isPaid = true;
         }
 
-        foreach($checkedOutSellers as $checkedOutSeller){
+        //Per Seller
+        foreach($this->checkedOutSellers as $checkedOutSeller){
             $seller = $checkedOutSeller['seller'];
             $products = $checkedOutSeller['products'];
             $total = $checkedOutSeller['total'];
             $shippingInformation = $this->shippingInformation[0];
 
             try{
-                $storeOrder = $this->storeOrder($seller, $shippingInformation, $paymentMethod, $isPaid, $total);
+                $storeOrder = $this->storeOrder($seller, $shippingInformation, $paymentMethod, $isPaid, $total, $this->affiliate[$seller->id]);
 
                 if($storeOrder){
                     //Store Ordered Product
@@ -85,6 +130,7 @@ class OrderTotalSummary extends Component
 
                         return;
                     }
+
                 }
 
             }catch(\Exception $e){
@@ -107,7 +153,7 @@ class OrderTotalSummary extends Component
         return redirect()->route('orders');
     }
 
-    public function storeOrder($seller, $shippingInformation, $paymentMethod, $isPaid, $total){
+    public function storeOrder($seller, $shippingInformation, $paymentMethod, $isPaid, $total, $code = null){
         return Order::create([
             'user_id' => Auth::id(),
             'seller_id' => $seller->id,
@@ -117,8 +163,13 @@ class OrderTotalSummary extends Component
             'contact' => $shippingInformation['phone_number'],
             'total' => $total,
             'payment_method' => $paymentMethod,
-            'is_paid' => $isPaid
+            'is_paid' => $isPaid,
+            'affiliate_code' => $code
         ]);
+    }
+
+    public function checkIfSellerHasAffiliateCode($id, $code){
+        return Affiliate::where('store_id', $id)->where('affiliate_code', $code)->exists();
     }
 
     public function storeOrderedProducts($orderId, $product){
@@ -142,13 +193,12 @@ class OrderTotalSummary extends Component
     }
 
     public function render(){
-        $this->merchandiseTotal = $this->getMerchandiseTotal();
-
         $this->dispatch('getTotal', ['total' => ($this->merchandiseTotal + $this->shippingTotal)]);
 
-        return view('livewire.Checkout.TotalSummary.order-total-summary', [
+        return view('livewire.Checkout.checkout-page-content', [
             'merchandiseTotal' => $this->merchandiseTotal,
-            'shippingTotal' => $this->shippingTotal
+            'shippingTotal' => $this->shippingTotal,
+            'checkedOutSellers' => $this->checkedOutSellers
         ]);
     }
 }

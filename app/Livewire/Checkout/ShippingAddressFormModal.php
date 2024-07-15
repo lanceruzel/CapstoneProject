@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\Checkout\ShippingInformation;
+namespace App\Livewire\Checkout;
 
 use App\Models\UserShippingInformation;
 use Illuminate\Support\Facades\Auth;
@@ -138,6 +138,6 @@ class ShippingAddressFormModal extends Component
 
     public function render()
     {
-        return view('livewire.Checkout.ShippingInformation.shipping-address-form-modal');
+        return view('livewire.Checkout.shipping-address-form-modal');
     }
 }

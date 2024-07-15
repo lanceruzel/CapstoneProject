@@ -30,6 +30,7 @@ return new class extends Migration
             $table->string('payment_method');
             $table->string('tracking_number')->nullable();
             $table->string('status');
+            $table->string('affiliate_code')->nullable();
             $table->string('is_paid')->default(false);
 
             $table->timestamps();

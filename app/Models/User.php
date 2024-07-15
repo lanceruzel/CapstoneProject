@@ -5,6 +5,7 @@ namespace App\Models;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 
 use App\Enums\UserType;
+use App\Livewire\Pages\Affiliates;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -111,4 +112,14 @@ class User extends Authenticatable
     public function productReports(){
         return $this->hasMany(ProductReport::class);
     }
+
+    public function affiliates(){
+        if($this->role === UserType::ContentCreator){
+            return $this->hasMany(Affiliate::class, 'promoter_id');
+        }else{
+            return $this->hasMany(Affiliate::class, 'store_id');
+        }
+    }
 }
+
+

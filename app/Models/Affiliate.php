@@ -25,4 +25,8 @@ class Affiliate extends Model
     public function user(){
         return $this->belongsTo(User::class, 'promoter_id');
     }
+
+    public function orders(){
+        return $this->hasMany(Order::class, 'affiliate_code');
+    }
 }
