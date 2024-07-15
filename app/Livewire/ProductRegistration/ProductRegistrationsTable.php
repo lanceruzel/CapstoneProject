@@ -17,7 +17,7 @@ class ProductRegistrationsTable extends Component
         $filter = $this->filterStatus;
 
         if(empty($filter)){
-            return Product::orderBy('created_at', 'desc')->paginate(10);
+            return Product::orderBy('id', 'desc')->paginate(10);
         }else{
             return Product::query()
             ->Where(function ($query) use($filter) {
@@ -25,7 +25,7 @@ class ProductRegistrationsTable extends Component
                     $query->orwhere('status', 'like',  '%' . $filter[$i] .'%');
                 }  
             })
-            ->orderBy('created_at', 'desc')
+            ->orderBy('id', 'desc')
             ->paginate(10);
         }
     }

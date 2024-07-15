@@ -17,7 +17,7 @@ class ReportAppealsTable extends Component
     public function render()
     {
         return view('livewire.Appeal.report-appeals-table', [
-            'appeals' => ReportAppeal::paginate(10)
+            'appeals' => ReportAppeal::orderBy('id', 'desc')->paginate(10)
         ]);
     }
 }

@@ -21,7 +21,7 @@ class OrdersTable extends Component
         $filter = $this->filterStatus;
 
         if(empty($filter)){
-            return Order::orderBy('created_at', 'desc')->where('seller_id', Auth::id())->paginate(10);
+            return Order::orderBy('id', 'desc')->where('seller_id', Auth::id())->paginate(10);
         }else{
             return Order::query()
             ->Where(function ($query) use($filter) {
@@ -30,7 +30,7 @@ class OrdersTable extends Component
                 }  
             })
             ->where('seller_id', Auth::id())
-            ->orderBy('created_at', 'desc')
+            ->orderBy('id', 'desc')
             ->paginate(10);
         }
     }

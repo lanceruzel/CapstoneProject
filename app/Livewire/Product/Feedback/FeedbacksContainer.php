@@ -20,7 +20,7 @@ class FeedbacksContainer extends Component
     public function render()
     {
         return view('livewire.Product.Feedback.feedbacks-container', [
-            'feedbacks' => ProductFeedback::where('product_id', $this->id)->get(),
+            'feedbacks' => ProductFeedback::where('product_id', $this->id)->orderBy('id', 'desc')->get(),
         ]);
     }
 }
