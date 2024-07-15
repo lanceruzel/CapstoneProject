@@ -17,7 +17,7 @@ class ProductsContainer extends Component
     ];
 
     public function mount($userID = null){
-        $this->userID = $userID != null ? $userID : null;
+        $this->userID = $userID;
     }
 
     public function getSelectedCategory($category){
@@ -28,7 +28,7 @@ class ProductsContainer extends Component
         $products = null;
 
         if($this->userID){
-            if($this->userID == Auth::id()){
+            if($this->userID){
                 $products = Product::where('seller_id', $this->userID)->get();
             }else{
                 $products = Product::where('status', Status::Available)->get();
