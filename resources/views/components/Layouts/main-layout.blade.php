@@ -50,40 +50,22 @@
     <x-notifications />
     
     <nav class="bg-white shadow border-gray-200 fixed top-0 w-screen" style="z-index: 10">
-        <div class="flex flex-wrap items-center justify-between mx-auto p-4">
+        <div class="flex flex-wrap justify-between items-center space-x-3 p-4">
             <a href="/" class="flex items-center space-x-3">
                 {{-- <img src="https://flowbite.com/docs/images/logo.svg" class="h-8" alt="Flowbite Logo" /> --}}
                 <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">GlobeConnect</span>
             </a>
 
-            <div>
-                <ul class="w-full max-md:flex hidden items-center justify-center flex-row">
-                    <li>
-                        <x-mini-button rounded icon="user-circle" href='#' flat primary interaction:solid />
-                    </li>
-    
-                    <li>
-                        <x-mini-button rounded icon="Home" href='#' flat primary interaction:solid />
-                    </li>
-    
-                    <li>
-                        <x-mini-button rounded icon="bell" href='#' flat primary interaction:solid />
-                    </li>
-    
-                    <li>
-                        <x-mini-button rounded icon="magnifying-glass" href='#' flat primary interaction:solid />
-                    </li>
-    
-                    <li>
-                        <x-mini-button rounded icon="chat-bubble-bottom-center-text" href='#' flat primary interaction:solid />
-                    </li>
-                </ul>
+            <div class="md:hidden space-x-2">
+                <x-mini-button rounded icon="bell" href="{{ route('home') }}" flat gray />
+                <x-mini-button rounded icon="chat-bubble-bottom-center-text" href="{{ route('message') }}" flat gray />
+                <x-mini-button rounded icon="shopping-cart" href="{{ route('cart') }}" flat gray />
             </div>
         </div>
     </nav>
 
     <!-- Sidebar -->
-    <aside class="{{ request()->routeIS('message') ? 'max-lg:hidden' : 'max-md:hidden' }} fixed top-auto h-full w-64 left-0 border-e pt-16 bg-white z-[5]">
+    <aside class="{{ request()->routeIS('message') ? 'max-lg:hidden' : 'max-md:hidden' }} transition-all fixed top-auto h-full w-64 left-0 border-e pt-16 bg-white z-[5]">
         <div class="py-3 px-2.5 flex items-center justify-between flex-col h-full">
             <ul class="space-y-2 w-full">
                 <li>
@@ -155,11 +137,20 @@
         </div>
     </aside>
 
-    <main class=" {{ request()->routeIS('message') ? 'lg:ps-64' : 'md:ps-64' }} min-h-screen pt-16 bg-gray-50">
+    <main x-bind:class="sidebarOpened ? 'md:!ps-64' : ''" x-transition class="{{ request()->routeIS('message') ? 'lg:ps-64' : 'md:ps-64' }} min-h-screen pt-16 bg-gray-50 transition-all pb-16 md:pb-0">
         <div class="p-5 overflow-hidden">
             {{ $slot }}
         </div>
     </main>
+
+    <nav class="bg-white border-t shadow border-gray-200 fixed bottom-0 w-screen md:hidden" style="z-index: 10">
+        <div class="flex flex-wrap justify-around items-center space-x-3 p-4">
+            <x-mini-button rounded icon="home" href="{{ route('home') }}" flat gray />
+            <x-mini-button rounded icon="shopping-bag" href="{{ route('market') }}" flat gray />
+            <x-mini-button rounded icon="magnifying-glass" href="{{ route('home') }}" flat gray />
+            <x-mini-button rounded icon="user-circle" href="{{ route('profile') }}" flat gray />
+        </div>
+    </nav>
 
     @if(auth()->user()->role == App\Enums\UserType::Store || auth()->user()->role == App\Enums\UserType::Travelpreneur)
         <livewire:StoreRegistration.store-register-form-modal />
@@ -183,14 +174,6 @@
                 $openModal('postFormModal');
             });
         });
-
-        // function copyToClipboard(textToCopy) {
-        //     var $temp = $("<input>");
-        //     $("body").append($temp);
-        //     $temp.val(textToCopy).select();
-        //     document.execCommand("copy");
-        //     $temp.remove();
-        // }
 
         function scrollToBottom() {
             var chatContainer = document.getElementById("chat-container");
