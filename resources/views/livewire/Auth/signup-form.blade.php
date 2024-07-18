@@ -26,6 +26,6 @@
     <x-button wire:loading.attr="disabled" class="w-full" wire:click="signup" spinner="signup" label="Sign up" />
 
     <div class="w-full text-center">
-        <x-link label="Already have an account?" :href="route('signin')" secondary sm />
+        <x-link label="Already have an account?" :href="route('login')" secondary sm />
     </div>
 </div>

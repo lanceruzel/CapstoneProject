@@ -75,7 +75,7 @@ class StoreSignupForm extends Component
     }
 
     public function redirectToSignin(){
-        return redirect()->route('signin')->with('success', 'Your account has been successfully created. You may now signin to your account!');
+        return redirect()->route('login')->with('success', 'Your account has been successfully created. You may now signin to your account!');
     }
 
     public function createAccount($validated){

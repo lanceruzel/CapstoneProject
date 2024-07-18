@@ -62,7 +62,7 @@ class SignupForm extends Component
                         $storeInformation = $this->insertStoreInformation($account, $validated);
 
                         if($storeInformation){
-                            return redirect()->route('signin')->with('success', 'Your account has been successfully created.'); 
+                            return redirect()->route('login')->with('success', 'Your account has been successfully created.'); 
                         }else{
                             // Delete the user row
                             User::find($account->id)->destroy();
@@ -72,7 +72,7 @@ class SignupForm extends Component
                         }       
 
                     }else{
-                        return redirect()->route('signin')->with('success', 'Your account has been successfully created.');
+                        return redirect()->route('login')->with('success', 'Your account has been successfully created.');
                     }
                 }else{
                     // Delete the user row

@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Route;
 Route::group(['middleware' => 'guest'], function () {
     Route::get('/signin', function () {
         return view('livewire.Pages.signin');
-    })->name('signin');
+    })->name('login');
 
     Route::get('/signup/{type?}', function ($type = null) {
         return view('livewire.Pages.signup', [
@@ -23,7 +23,7 @@ Route::group(['middleware' => 'guest'], function () {
 
 Route::get('/signout', function () {
     Auth::logout();
-    return redirect()->route('signin');
+    return redirect()->route('login');
 })->name('signout');
 
 Route::group(['middleware' => 'auth'], function () {
@@ -113,3 +113,4 @@ Route::group([], function () {
         return view('livewire.Pages.order-management');
     })->name('store.order-management');
 });
+
