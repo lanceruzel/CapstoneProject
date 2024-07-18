@@ -14,7 +14,4 @@
             <livewire:Product.products-container />
         </div>
     </div>
-
-    <livewire:Product.product-view-modal />
-    <livewire:Product.product-view-variation-selection-modal />
 </x-layouts.main-layout>

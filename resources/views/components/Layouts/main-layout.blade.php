@@ -57,7 +57,7 @@
             </a>
 
             <div class="md:hidden space-x-2">
-                <x-mini-button rounded icon="bell" href="{{ route('home') }}" flat gray />
+                <x-mini-button rounded icon="bell" flat gray uk-toggle="target: #notification-slide" />
                 <x-mini-button rounded icon="chat-bubble-bottom-center-text" href="{{ route('message') }}" flat gray />
                 <x-mini-button rounded icon="shopping-cart" href="{{ route('cart') }}" flat gray />
             </div>
@@ -77,11 +77,11 @@
                 </li>
 
                 <li>
-                    <x-button class='!justify-start font-medium' xl icon='bell' href='#' flat full secondary label="Notification" />
+                    <x-button class='!justify-start font-medium' xl icon='bell' href='#' flat full secondary label="Notification" uk-toggle="target: #notification-slide" />
                 </li>
 
                 <li>
-                    <x-button class='!justify-start font-medium' xl icon='magnifying-glass' href='#' flat full secondary label="Search" />
+                    <x-button class='!justify-start font-medium' xl icon='magnifying-glass' href='#' flat full secondary label="Search" uk-toggle="target: #search-slide" />
                 </li>
 
                 <li>
@@ -143,14 +143,42 @@
         </div>
     </main>
 
+    <!-- Bottom bar -->
     <nav class="bg-white border-t shadow border-gray-200 fixed bottom-0 w-screen md:hidden" style="z-index: 10">
         <div class="flex flex-wrap justify-around items-center space-x-3 p-4">
             <x-mini-button rounded icon="home" href="{{ route('home') }}" flat gray />
             <x-mini-button rounded icon="shopping-bag" href="{{ route('market') }}" flat gray />
-            <x-mini-button rounded icon="magnifying-glass" href="{{ route('home') }}" flat gray />
+            <x-mini-button rounded icon="magnifying-glass" flat gray uk-toggle="target: #search-slide" />
             <x-mini-button rounded icon="user-circle" href="{{ route('profile') }}" flat gray />
         </div>
     </nav>
+
+    <!-- Search -->
+    <div id="search-slide" class="md:ml-[17rem] w-full overflow-hidden z-0" uk-offcanvas="overlay:true">
+        <div class="uk-offcanvas-bar !px-3 border-x max-md:w-full w-96 bg-white text-gray-700 pt-20">
+            <div class="w-full flex items-center justify-between">
+                <p class="text-lg">Search</p>
+                <x-mini-button rounded icon="x-mark" flat gray onclick="UIkit.offcanvas('#search-slide').hide();" />
+            </div>
+            
+            <livewire:Search.search-container />
+        </div>
+    </div>
+
+    <!-- Notification -->
+    <div id="notification-slide" class="md:ml-[17rem] w-full overflow-hidden z-0" uk-offcanvas="overlay:true">
+        <div class="uk-offcanvas-bar !px-3 border-x max-md:w-full w-96 bg-white text-gray-700 pt-20">
+            <div class="w-full flex items-center justify-between">
+                <p class="text-lg">Notification</p>
+                <x-mini-button rounded icon="x-mark" flat gray onclick="UIkit.offcanvas('#notification-slide').hide();" />
+            </div>
+            
+            <livewire:Notif.notifications-container />
+        </div>
+    </div>
+
+    <livewire:Product.product-view-modal />
+    <livewire:Product.product-view-variation-selection-modal />
 
     @if(auth()->user()->role == App\Enums\UserType::Store || auth()->user()->role == App\Enums\UserType::Travelpreneur)
         <livewire:StoreRegistration.store-register-form-modal />
