@@ -23,6 +23,10 @@ return new class extends Migration
             $table->date('birthdate');
             $table->string('country');
             $table->string('address');
+
+            $table->string('profile_bio');
+            $table->string('profile_picture');
+
             $table->timestamps();
         });
     }

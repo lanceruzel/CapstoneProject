@@ -47,7 +47,19 @@
             @foreach ($conversations as $convo)
                 <div class="relative flex items-center gap-4 p-2 duration-200 rounded-xl hover:bg-gray-100 cursor-pointer" wire:click="$dispatch('view-conversation', { id: {{ $convo->id }} })">
                     <div class="relative w-14 h-14 shrink-0"> 
-                        <img src="https://i.pravatar.cc" alt="" class="object-cover w-full h-full rounded-full">
+                        @if($convo->user1->id != Auth::id())
+                            @if($convo->user1->profilePicture() == null)
+                                <img src="https://static.everypixel.com/ep-pixabay/0329/8099/0858/84037/3298099085884037069-head.png" alt="" class="bg-gray-100 w-full h-full object-cover rounded-full">
+                            @else
+                                <img src="{{ asset('uploads') . '/' . $convo->user1->profilePicture() }}" class="w-full h-full object-cover rounded-full">
+                            @endif
+                        @else
+                            @if($convo->user2->profilePicture() == null)
+                                <img src="https://static.everypixel.com/ep-pixabay/0329/8099/0858/84037/3298099085884037069-head.png" alt="" class="bg-gray-100 w-full h-full object-cover rounded-full">
+                            @else
+                                <img src="{{ asset('uploads') . '/' . $convo->user2->profilePicture() }}" class="w-full h-full object-cover rounded-full">
+                            @endif
+                        @endif
                     </div>
                     
                     <div class="flex-1 min-w-0">

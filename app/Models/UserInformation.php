@@ -17,6 +17,8 @@ class UserInformation extends Model
         'birthdate',
         'country',
         'address',
+        'profile_bio',
+        'profile_picture',
     ];
 
     public function fullName(){

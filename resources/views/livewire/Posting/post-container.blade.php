@@ -2,8 +2,12 @@
 <div class="w-full border p-5 rounded-lg bg-white">
     <div wire:ignore class="flex flex-row justify-between items-center gap-3">
         <div class="flex gap-2 items-center">
-            <div class="size-10">
-                <div class="w-full h-full bg-red-500 rounded-full"></div>
+            <div class="size-10 rounded-full">
+                @if($post->user->profilePicture() == null)
+                    <img src="https://static.everypixel.com/ep-pixabay/0329/8099/0858/84037/3298099085884037069-head.png" alt="" class="bg-gray-100 w-full h-full object-cover rounded-full">
+                @else
+                    <img src="{{ asset('uploads') . '/' . $post->user->profilePicture() }}" class="w-full h-full object-cover rounded-full">
+                @endif
             </div>
 
             <div class="leading-none">
@@ -122,7 +126,13 @@
     <hr>
 
     <div class="flex gap-2 flex-row items-center justify-items-center mt-4">
-        <div class="size-4 bg-red-500 rounded-full p-4"></div>
+        <div class="h-7 min-w-7 rounded-full">
+            @if(auth()->user()->profilePicture() == null)
+                <img src="https://static.everypixel.com/ep-pixabay/0329/8099/0858/84037/3298099085884037069-head.png" alt="" class="bg-gray-100 w-full h-full object-cover rounded-full">
+            @else
+                <img src="{{ asset('uploads') . '/' . auth()->user()->profilePicture() }}" class="w-full h-full object-cover rounded-full">
+            @endif
+        </div>
 
         <input placeholder="Add Comment...." class="w-full resize-none text-sm !bg-transparent px-4 py-2 focus:outline-none focus:!border-transparent focus:!ring-transparent" wire:model="commentContent"></input>
 

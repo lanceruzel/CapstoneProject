@@ -18,12 +18,14 @@ return new class extends Migration
             $table->foreign('user_id')->references('id')->on('users')->cascadeOnDelete();
 
             $table->string('name');
-            $table->string('description')->default('Default description');
             $table->string('email')->nullable();
             $table->string('contact')->nullable();
             $table->string('country')->nullable();
             $table->string('address')->nullable();
             $table->json('requirements');
+
+            $table->string('profile_bio')->nullable();
+            $table->string('profile_picture')->nullable();
 
             $table->timestamps();
         });

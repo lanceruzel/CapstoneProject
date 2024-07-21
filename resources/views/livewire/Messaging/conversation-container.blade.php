@@ -8,8 +8,20 @@
                     <!-- toggle for mobile -->
                     <x-mini-button white rounded icon="chevron-left" class="md:hidden" uk-toggle="target: #side-chat ; cls: max-md:-translate-x-full" aria-expanded="false" />
                         
-                    <div class="relative cursor-pointer max-md:hidden">
-                        <img src="https://i.pravatar.cc" alt="" class="w-8 h-8 rounded-full shadow">
+                    <div class="relative cursor-pointer max-md:hidden h-10 w-10">
+                        @if($conversation->user1->id != Auth::id())
+                            @if($conversation->user1->profilePicture() == null)
+                                <img src="https://static.everypixel.com/ep-pixabay/0329/8099/0858/84037/3298099085884037069-head.png" alt="" class="bg-gray-100 w-full h-full object-cover rounded-full">
+                            @else
+                                <img src="{{ asset('uploads') . '/' . $conversation->user1->profilePicture() }}" class="w-full h-full object-cover rounded-full">
+                            @endif
+                        @else
+                            @if($conversation->user2->profilePicture() == null)
+                                <img src="https://static.everypixel.com/ep-pixabay/0329/8099/0858/84037/3298099085884037069-head.png" alt="" class="bg-gray-100 w-full h-full object-cover rounded-full">
+                            @else
+                                <img src="{{ asset('uploads') . '/' . $conversation->user2->profilePicture() }}" class="w-full h-full object-cover rounded-full">
+                            @endif
+                        @endif
                         {{-- <div class="w-2 h-2 bg-teal-500 rounded-full absolute right-0 bottom-0 m-px"></div> --}}
                     </div>
                     
@@ -52,7 +64,22 @@
             <div id="chat-container" class="w-full p-5 py-10 overflow-y-auto md:h-[calc(100vh-210px)] h-[calc(100vh-220px)]">
                 @if($isAppeal == false)
                     <div class="py-10 text-center text-sm lg:pt-8">
-                        <img src="https://i.pravatar.cc" class="w-24 h-24 rounded-full mx-auto mb-3" alt="">
+                        <div class="w-24 h-24 rounded-full mx-auto mb-3">
+                            @if($conversation->user1->id != Auth::id())
+                                @if($conversation->user1->profilePicture() == null)
+                                    <img src="https://static.everypixel.com/ep-pixabay/0329/8099/0858/84037/3298099085884037069-head.png" alt="" class="bg-gray-100 w-full h-full object-cover rounded-full">
+                                @else
+                                    <img src="{{ asset('uploads') . '/' . $conversation->user1->profilePicture() }}" class="w-full h-full object-cover rounded-full">
+                                @endif
+                            @else
+                                @if($conversation->user2->profilePicture() == null)
+                                    <img src="https://static.everypixel.com/ep-pixabay/0329/8099/0858/84037/3298099085884037069-head.png" alt="" class="bg-gray-100 w-full h-full object-cover rounded-full">
+                                @else
+                                    <img src="{{ asset('uploads') . '/' . $conversation->user2->profilePicture() }}" class="w-full h-full object-cover rounded-full">
+                                @endif
+                            @endif
+                        </div>
+                        
                         <div class="mt-8">
                             <div class="md:text-xl text-base font-medium text-black dark:text-white">
                                 @if($conversation->user2->id != Auth::id())
@@ -118,7 +145,22 @@
                                 </p>
 
                                 <div class="flex gap-3">
-                                    <img src="https://i.pravatar.cc" alt="" class="w-9 h-9 rounded-full shadow">
+                                    <div class="w-9 h-9 rounded-full shadow">
+                                        @if($conversation->user1->id != Auth::id())
+                                            @if($conversation->user1->profilePicture() == null)
+                                                <img src="https://static.everypixel.com/ep-pixabay/0329/8099/0858/84037/3298099085884037069-head.png" alt="" class="bg-gray-100 w-full h-full object-cover rounded-full">
+                                            @else
+                                                <img src="{{ asset('uploads') . '/' . $conversation->user1->profilePicture() }}" class="w-full h-full object-cover rounded-full">
+                                            @endif
+                                        @else
+                                            @if($conversation->user2->profilePicture() == null)
+                                                <img src="https://static.everypixel.com/ep-pixabay/0329/8099/0858/84037/3298099085884037069-head.png" alt="" class="bg-gray-100 w-full h-full object-cover rounded-full">
+                                            @else
+                                                <img src="{{ asset('uploads') . '/' . $conversation->user2->profilePicture() }}" class="w-full h-full object-cover rounded-full">
+                                            @endif
+                                        @endif
+                                    </div>
+
                                     <div class="px-4 py-2 rounded-[20px] max-w-sm bg-gray-100 break-words !text-wrap hyphens-auto space-y-3">
                                         <span>{{ $message->content }}</span>
 
@@ -217,7 +259,22 @@
                             <!-- received -->
                             <div>
                                 <div class="flex gap-3">
-                                    <img src="https://i.pravatar.cc" alt="" class="w-9 h-9 rounded-full shadow">
+                                    <div class="w-9 h-9 rounded-full shadow">
+                                        @if($conversation->user1->id != Auth::id())
+                                            @if($conversation->user1->profilePicture() == null)
+                                                <img src="https://static.everypixel.com/ep-pixabay/0329/8099/0858/84037/3298099085884037069-head.png" alt="" class="bg-gray-100 w-full h-full object-cover rounded-full">
+                                            @else
+                                                <img src="{{ asset('uploads') . '/' . $conversation->user1->profilePicture() }}" class="w-full h-full object-cover rounded-full">
+                                            @endif
+                                        @else
+                                            @if($conversation->user2->profilePicture() == null)
+                                                <img src="https://static.everypixel.com/ep-pixabay/0329/8099/0858/84037/3298099085884037069-head.png" alt="" class="bg-gray-100 w-full h-full object-cover rounded-full">
+                                            @else
+                                                <img src="{{ asset('uploads') . '/' . $conversation->user2->profilePicture() }}" class="w-full h-full object-cover rounded-full">
+                                            @endif
+                                        @endif
+                                    </div>
+                                    
                                     <div class="px-4 py-2 rounded-[20px] max-w-sm bg-gray-100 shadow break-words !text-wrap hyphens-auto space-y-3">
                                         <span>{{ $message->content }}</span>
 

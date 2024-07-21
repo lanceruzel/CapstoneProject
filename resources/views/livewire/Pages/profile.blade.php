@@ -1,19 +1,23 @@
 <x-layouts.main-layout>
     <div class="w-full" x-data="{ tabSelected: 1 }">
         <div class="w-full max-w-[1000px] mx-auto px-3 h-full">
-            <div class="w-full border-2 bg-white rounded-lg">
+            <div class="w-full border-2 bg-white rounded-lg relative">
+                @if($user->id == Auth::id())
+                    <x-mini-button class="absolute top-2 right-2" rounded icon="cog-6-tooth" flat gray wire:click="$dispatch('getProfileData')" onclick="$openModal('editProfileFormModal')" />
+                @endif
+
                 <!-- Header -->
                 <div class="flex gap-5 flex-col items-center p-8">
 
                     <!-- Profile Picture -->
                     <div class="relative h-28 w-28 md:h-40 md:w-40 rounded-full overflow-hidden border-[6px] bg-slate-400 border-gray-100 shrink-0"> 
-                        {{-- @if($account->userProfile->profile_dp == null) --}}
+                        @if($user->profilePicture() == null)
                             <div class="w-full h-full object-cover absolute bottom-10 right-1">
                                 <i class="ri-user-3-fill ri-10x"></i>
                             </div>
-                        {{-- @else
-                            <img src="{{ asset('uploads/all') . '/' . $account->userProfile->profile_dp }}" class="w-full h-full absolute object-cover">
-                        @endif --}}
+                        @else
+                            <img src="{{ asset('uploads') . '/' . $user->profilePicture() }}" class="w-full h-full absolute object-cover">
+                        @endif
                     </div>
                 
                     <div class="w-full">
@@ -25,7 +29,11 @@
                         
                         <!-- Bio -->
                         <p class="text-sm md:font-normal font-light text-center mt-2">
-                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Omnis iure vel magni repudiandae tempora voluptatum rem mollitia ab quo fuga ea sint, consequatur sed praesentium vitae! Animi molestias laboriosam minima.
+                            @if($user->role == App\Enums\UserType::Store)
+                                {{ $user->storeInformation->profile_bio }}
+                            @else
+                                {{ $user->userInformation->profile_bio }}
+                            @endif
                         </p>
                 
                         <div class="flex flex-col justify-center gap-3 mt-5">
@@ -35,18 +43,16 @@
                                 <p class="p-0 m-0">Posts</p>
                                 
                                 <h3 class="p-0 m-0 sm:text-xl font-bold text-black dark:text-white text-center">
-                                    4
+                                    {{ count($user->posts) }}
                                 </h3>
                             </div>
 
                             <!-- Options -->
-                            <div class="flex items-center justify-center flex-row gap-3">
-                                @if($user->id == Auth::id())
-                                   <x-button icon="user" label="Update Profile" />
-                                @else
+                            @if($user->id != Auth::id())
+                                <div class="flex items-center justify-center flex-row gap-3">
                                     <x-button icon="chat-bubble-oval-left" href="{{ route('message', $user->username) }}" label="Message" />
-                                @endif
-                            </div>
+                                </div>
+                            @endif
                         </div>
                     </div>
                 </div>
@@ -98,6 +104,5 @@
     </div>
 
     <livewire:Posting.post-form-modal />
-
-    
+    <livewire:Profile.edit-profile-form-modal />
 </x-layouts.main-layout>

@@ -17,6 +17,8 @@ class StoreInformation extends Model
         'country',
         'address',
         'requirements',
+        'profile_bio',
+        'profile_picture',
     ];
 
     public function user(){

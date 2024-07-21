@@ -49,6 +49,18 @@ class User extends Authenticatable
         ];
     }
 
+    public function profilePicture(){
+        $dp = null;
+
+        if($this->role == UserType::Store){
+            $dp = $this->storeInformation->profile_picture;
+        }else{
+            $dp = $this->userInformation->profile_picture;
+        }
+
+        return $dp;
+    }
+
     public function notifications(){
         return $this->hasMany(Notification::class);
     }
