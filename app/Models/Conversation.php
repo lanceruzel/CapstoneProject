@@ -36,4 +36,8 @@ class Conversation extends Model
     public function appeal(){
         return $this->hasOne(ReportAppeal::class);
     }
+
+    public function livestream(){
+        return $this->belongsTo(Livestream::class);
+    }
 }

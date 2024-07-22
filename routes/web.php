@@ -80,6 +80,10 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/checkout', function () {
         return view('livewire.Pages.checkout');
     })->name('checkout');
+
+    Route::get('/livestream/{id?}', function ($id = null) {
+        return view('livewire.Pages.livestream');
+    })->name('livestream');
 });
 
 Route::group([], function () {
