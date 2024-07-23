@@ -188,6 +188,37 @@
         <livewire:Affiliate.view-terms-and-condition-modal />
     @endif
 
+    @if(request()->routeIS('livestream') || request()->routeIS('home'))
+        <script src="https://sdk.videosdk.live/js-sdk/0.0.67/videosdk.js"></script>
+        <script src="{{ asset('livestreamScripts/config.js') }}"></script>
+
+        <!-- hls lib script  -->
+        <script src="https://cdn.jsdelivr.net/npm/hls.js"></script>
+
+        @if(request()->routeIS('home'))
+            <script>
+                const createButton = document.getElementById("createMeetingBtn");
+
+                createButton.addEventListener("click", async () => {
+                    const url = `https://api.videosdk.live/v2/rooms`;
+                    const options = {
+                    method: "POST",
+                    headers: { Authorization: TOKEN, "Content-Type": "application/json" },
+                    };
+                
+                    const { roomId } = await fetch(url, options)
+                    .then((response) => response.json())
+                    .catch((error) => alert("error", error));
+                    meetingId = roomId;
+                
+                    // initializeMeeting(Constants.modes.CONFERENCE);
+                
+                    Livewire.dispatch('room-created', { id: meetingId })
+                });
+            </script>
+        @endif
+    @endif
+    
     <script>
         document.addEventListener('livewire:init', () => {
             Livewire.on('close-modal', (event) => {
@@ -213,5 +244,7 @@
             scrollToBottom();
         }
     </script>
+
+    @stack('scripts')
 </body>
 </html>

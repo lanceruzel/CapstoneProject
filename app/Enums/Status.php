@@ -31,4 +31,6 @@ enum Status: string
     const OrderBuyerCancel = 'Buyer cancelled they\'re order.';
 
     const Invitation = 'invitation';
+
+    const Preparing = 'preparing';
 }

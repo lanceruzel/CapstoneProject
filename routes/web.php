@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Conversation;
+use App\Models\Livestream;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -82,7 +83,17 @@ Route::group(['middleware' => 'auth'], function () {
     })->name('checkout');
 
     Route::get('/livestream/{id?}', function ($id = null) {
-        return view('livewire.Pages.livestream');
+        $role = null;
+
+        if($id != null){
+            if(Livestream::where('id', $id)->pluck('user_id')->first() == Auth::id()){
+                $role = 'host';
+            }else{
+                $role = 'viewer';
+            }
+        }
+
+        return view('livewire.Pages.livestream',['role' => $role, 'meetingId' => $id, 'name' => auth()->user()->name()]);
     })->name('livestream');
 });
 

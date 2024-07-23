@@ -16,10 +16,7 @@ return new class extends Migration
 
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users')->cascadeOnDelete();
-
-            $table->unsignedBigInteger('conversation_id');
-            $table->foreign('conversation_id')->references('id')->on('conversations')->cascadeOnDelete();
-
+            
             $table->string('title');
             $table->string('status');
 

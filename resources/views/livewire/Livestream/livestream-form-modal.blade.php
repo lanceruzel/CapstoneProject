@@ -5,12 +5,12 @@
                 <p class="font-semibold">Title</p>
             </div>
 
-            <x-input shadowless />
+            <x-input wire:model='title' shadowless />
         </div>
         
         <x-slot name="footer" class="flex justify-end gap-x-4">
             <x-button flat label="Cancel" x-on:click="close" />
-            <x-button wire:loading.attr="disabled" wire:click="store" spinner="store" label="Create Livestream" />
+            <x-button wire:loading.attr="disabled" spinner="getRoomID" id="createMeetingBtn" label="Create Livestream" />
         </x-slot>
     </div>
 </x-modal-card>

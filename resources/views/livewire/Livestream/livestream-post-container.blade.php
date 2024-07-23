@@ -13,11 +13,11 @@
             <div class="leading-none">
                 <div class="flex items-center justify-start gap-1">
                     {{-- <a href="{{ route('profile', $post->user->username) }}" class="hover:text-gray-700 hover:no-underline py-0 font-medium">{{ $post->user->role == App\Enums\UserType::Store ? $post->user->storeInformation->name : $post->user->userInformation->fullname() }}</a> --}}
-                    <a href="/" class="hover:text-gray-700 hover:no-underline py-0 font-medium">Lance Ruzel</a>
+                    <a href="{{ route('profile', $livestream->user->username) }}" class="hover:text-gray-700 hover:no-underline py-0 font-medium">{{ $livestream->user->name() }}</a>
                 </div>
 
                 {{-- <small class="text-xs font-medium text-gray-600">{{ $this->getDateTimeDiff() }}</small> --}}
-                <small class="text-xs font-medium text-gray-600">1/2/3</small>
+                <small class="text-xs font-medium text-gray-600">{{ $livestream->created_at }}</small>
             </div>
         </div>
 
@@ -29,10 +29,10 @@
 
     <div class="flex flex-col items-center justify-center gap-3">
         <div class="leading-snug h-auto text-wrap text-ellipsis break-words hyphens-auto mt-3">
-            Testing Title
+            {{ $livestream->title }}
         </div>
 
-        <x-button label="Click here to watch"/>
+        <x-button href="{{ route('livestream', $livestream->id) }}" label="Click here to watch"/>
     </div>
 
     <!-- Post Actions -->

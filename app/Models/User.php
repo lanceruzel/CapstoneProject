@@ -61,6 +61,18 @@ class User extends Authenticatable
         return $dp;
     }
 
+    public function name(){
+        $name = null;
+
+        if($this->role == UserType::Store){
+            $name = $this->storeInformation->name;
+        }else{
+            $name = $this->userInformation->fullname();
+        }
+
+        return $name;
+    }
+
     public function notifications(){
         return $this->hasMany(Notification::class);
     }
