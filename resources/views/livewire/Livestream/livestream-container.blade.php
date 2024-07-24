@@ -119,7 +119,7 @@
             function setTrack() {}
 
             // Initialize meeting
-            function initializeMeeting(mode) {
+            function initializeMeeting(mode){
                 window.VideoSDK.config(TOKEN);
             
                 meeting = window.VideoSDK.initMeeting({
@@ -275,7 +275,7 @@
                 if(mode === Constants.modes.VIEWER){
                     // participants left
                     meeting.on("participant-left", (participant) => {
-                        Livewire.dispatch('notify-viewer');
+                        Livewire.dispatch('delete-livestream');
                     });
                 }
             }
