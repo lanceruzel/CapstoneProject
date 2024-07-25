@@ -22,6 +22,10 @@ return new class extends Migration
 
             $table->timestamps();
         });
+
+        Schema::table('post_comments', function (Blueprint $table) {
+            $table->foreign('livestream_id')->references('id')->on('livestreams')->cascadeOnDelete();
+        });
     }
 
     /**

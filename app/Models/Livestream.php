@@ -21,4 +21,8 @@ class Livestream extends Model
     public function user(){
         return $this->belongsTo(User::class);
     }
+
+    public function postComments(){
+        return $this->hasMany(PostComment::class);
+    }
 }

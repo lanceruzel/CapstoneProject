@@ -1,8 +1,8 @@
-<div class="h-full w-full md:-my-10 max-md:-mt-3 max-md:-mb-12 max-md:!h-fit p-3 md:p-5 max-md:pb-14">
-    <h1 class="text-2xl font-semibold pb-3 max-md:pt-2 !pt-5">{{ $name }}'s livestream</h1> 
+<div class="w-full max-md:h-full md:h-[calc(100vh-9rem)]">
+    <h1 class="text-2xl font-semibold pb-3 max-md:pt-2">{{ $name }}'s livestream</h1> 
 
     <div class="grid grid-cols-12 w-full h-full gap-3">
-        <div class="col-span-12 md:col-span-7" wire:ignore>
+        <div class="col-span-12 lg:col-span-7 2xl:col-span-8" wire:ignore>
             <!-- Loading Info -->
             <div class="w-full h-[24rem] flex items-center bg-white shadow rounded-lg justify-center gap-2" id="loadingInfoVideo">
                 <span>
@@ -15,8 +15,8 @@
             </div>
 
             <!-- Livestream pause Info -->
-            <div class="w-full h-[24rem] hidden items-center bg-white shadow rounded-lg justify-center gap-2" id="pausedInfoVideo">
-                <span class="text-xl font-semibold">
+            <div class="w-full h-[24rem] hidden items-center bg-white shadow rounded-lg justify-center gap-2 p-5" id="pausedInfoVideo">
+                <span class="text-xl font-semibold text-center">
                     Live stream has been stopped wait for the host to start the stream again
                 </span>
             </div>
@@ -42,53 +42,8 @@
         </div>
 
         <!-- Chat section -->
-        <div class="col-span-12 md:col-span-5">
-            <div class="w-full h-full bg-white rounded-lg shadow">
-                <div class="p-3 shadow">
-                    <div class="flex items-center justify-between">
-                        <p class="text-xl font-semibold">Chats</p>
-
-                        <p>Watching now: <span id="watchingCount">0</span></p>
-                    </div>
-                </div>
-
-                <div class="p-5 text-sm font-medium space-y-5 overflow-y-auto !h-[calc(100vh-120px)]">
-                    <!-- sent -->
-                    <div class="flex flex-col gap-1 items-end">
-                        {{-- <img src="https://i.pravatar.cc" alt="" class="w-5 h-5 rounded-full shadow"> --}}
-                        <div class="px-4 py-2 rounded-[20px] max-w-sm bg-gradient-to-tr from-sky-500 to-blue-500 text-white shadow break-words text-wrap hyphens-auto space-y-3 text-sm">
-                            <span>Testing</span>
-                        </div>
-                            <small class="pe-2">12:34 PM</small>
-                    </div> 
-
-                    <!-- received -->
-                    @for ($i = 0; $i < 10; $i++)
-                        <div>
-                            <div class="ms-12">
-                                <small class="font-semibold">Juan Dela Cruz</small>
-                            </div>
-
-                            <div class="flex gap-3">
-                                <img src="https://i.pravatar.cc" alt="" class="w-9 h-9 rounded-full shadow">
-                                <div class="px-4 py-2 rounded-[20px] max-w-sm bg-gray-100 break-words !text-wrap hyphens-auto space-y-3 text-sm">
-                                    <span>Testingdsadas</span>
-                                </div>
-                            </div>
-
-                            <div class="!ms-14">
-                                <small>12:34 PM</small>
-                            </div>
-                        </div>
-                    @endfor
-                </div>
-
-                <div class="flex items-center md:gap-4 gap-2 p-3 overflow-hidden">
-                    <x-input label="" wire:model='' placeholder="Message" />
-                    
-                    <x-mini-button rounded flat black icon="paper-airplane" wire:click='sendMessage' />
-                </div>
-            </div>
+        <div class="col-span-12 lg:col-span-5 2xl:col-span-4">
+            <livewire:Livestream.livestream-chat-container :meetingId="$meetingId" />
         </div>
     </div>
 

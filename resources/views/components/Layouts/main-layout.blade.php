@@ -138,7 +138,7 @@
     </aside>
 
     <main x-bind:class="sidebarOpened ? 'md:!ps-64' : ''" x-transition class="{{ request()->routeIS('message') ? 'lg:ps-64' : 'md:ps-64' }} min-h-screen pt-16 bg-gray-50 transition-all pb-16 md:pb-0">
-        <div class="p-5 overflow-hidden">
+        <div class="p-5">
             {{ $slot }}
         </div>
     </main>

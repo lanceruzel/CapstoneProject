@@ -36,7 +36,7 @@ class LivestreamContainer extends Component
         $this->dialog()->show([
             'icon' => 'info',
             'title' => 'Info!',
-            'description' => 'Livestream has already ended.',
+            'description' => 'Livestream has ended.',
         ]);
 
         return redirect()->route('home');
@@ -46,7 +46,7 @@ class LivestreamContainer extends Component
         $this->dialog()->show([
             'icon' => 'info',
             'title' => 'Info!',
-            'description' => 'Livestream has already ended.',
+            'description' => 'Livestream has ended.',
         ]);
 
         return redirect()->route('home');
