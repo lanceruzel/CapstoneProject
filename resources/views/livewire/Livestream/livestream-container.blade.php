@@ -45,7 +45,11 @@
         <div class="col-span-12 md:col-span-5">
             <div class="w-full h-full bg-white rounded-lg shadow">
                 <div class="p-3 shadow">
-                    <p class="text-xl font-semibold">Chats</p>
+                    <div class="flex items-center justify-between">
+                        <p class="text-xl font-semibold">Chats</p>
+
+                        <p>Watching now: <span id="watchingCount">0</span></p>
+                    </div>
                 </div>
 
                 <div class="p-5 text-sm font-medium space-y-5 overflow-y-auto !h-[calc(100vh-120px)]">
@@ -93,10 +97,12 @@
             let role = @js($role);
             let meetingId = @js($meetingId);
             let name = @js($name);
-            console.log(meetingId);
+
+            let watching = 0;
+
+            const watchingCount = document.getElementById("watchingCount");
 
             const pausedVideoContainer = document.getElementById("pausedInfoVideo");
-
             const videoContainer = document.getElementById("videoContainer");
             const loadingInfoVideo = document.getElementById("loadingInfoVideo");
             const hlsStatusHeading = document.getElementById("hlsStatusHeading");
@@ -238,46 +244,28 @@
                         //Hide loading
                         loadingInfoVideo.classList.add('hidden');
                     });
-                
-                    // participant joined
-                    meeting.on("participant-joined", (participant) => {
-                        if (participant.mode === Constants.modes.CONFERENCE) {
-                            participant.pin();
-                    
-                            let videoElement = createVideoElement(
-                                participant.id,
-                                participant.displayName
-                            );
-                    
-                            participant.on("stream-enabled", (stream) => {
-                                setTrack(stream, audioElement, participant, false);
-
-                                //Show video
-                                videoContainer.classList.remove('hidden');
-                            });
-                    
-                            let audioElement = createAudioElement(participant.id);
-                            videoContainer.appendChild(videoElement);
-                            videoContainer.appendChild(audioElement);
-                        }
-                    });
-                
-                    // participants left
-                    meeting.on("participant-left", (participant) => {
-                        let vElement = document.getElementById(`f-${participant.id}`);
-                        vElement.remove(vElement);
-                
-                        let aElement = document.getElementById(`a-${participant.id}`);
-                        aElement.remove(aElement);
-                    });
                 }
 
                 if(mode === Constants.modes.VIEWER){
                     // participants left
                     meeting.on("participant-left", (participant) => {
-                        Livewire.dispatch('live-ended-notify');
+                        if(participant.mode == Constants.modes.CONFERENCE){
+                            Livewire.dispatch('delete-livestream');
+                        }
                     });
                 }
+
+                // participant joined
+                meeting.on("participant-joined", (participant) => {
+                    watching++;
+                    watchingCount.innerHTML = watching;
+                });
+                
+                // participants left
+                meeting.on("participant-left", (participant) => {
+                    watching--;
+                    watchingCount.innerHTML = watching;
+                });
             }
 
             // creating video element

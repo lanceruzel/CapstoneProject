@@ -27,17 +27,19 @@ class LivestreamContainer extends Component
     }
 
     public function deleteLivestream(){
-        $livestream = Livestream::findOrFail($this->meetingId);
+        $livestream = Livestream::find($this->meetingId);
 
-        if($livestream->delete()){
-            $this->dialog()->show([
-                'icon' => 'info',
-                'title' => 'Info!',
-                'description' => 'Livestream has already ended.',
-            ]);
-
-            return redirect()->route('home');
+        if($livestream){
+            $livestream->delete();
         }
+
+        $this->dialog()->show([
+            'icon' => 'info',
+            'title' => 'Info!',
+            'description' => 'Livestream has already ended.',
+        ]);
+
+        return redirect()->route('home');
     }
 
     public function liveEndedNotify(){
