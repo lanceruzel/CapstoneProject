@@ -275,7 +275,7 @@
                 if(mode === Constants.modes.VIEWER){
                     // participants left
                     meeting.on("participant-left", (participant) => {
-                        Livewire.dispatch('delete-livestream');
+                        Livewire.dispatch('live-ended-notify');
                     });
                 }
             }

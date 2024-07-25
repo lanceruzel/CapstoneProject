@@ -16,7 +16,8 @@ class LivestreamContainer extends Component
 
     protected $listeners = [
         'delete-livestream' => 'deleteLivestream',
-        'host-leave-notify' => 'leavingRouteMessage'
+        'host-leave-notify' => 'leavingRouteMessage',
+        'live-ended-notify' => 'liveEndedNotify'
     ];
 
     public function mount($name, $role, $meetingId){
@@ -37,6 +38,16 @@ class LivestreamContainer extends Component
 
             return redirect()->route('home');
         }
+    }
+
+    public function liveEndedNotify(){
+        $this->dialog()->show([
+            'icon' => 'info',
+            'title' => 'Info!',
+            'description' => 'Livestream has already ended.',
+        ]);
+
+        return redirect()->route('home');
     }
 
     public function leaveConfirmation(){
