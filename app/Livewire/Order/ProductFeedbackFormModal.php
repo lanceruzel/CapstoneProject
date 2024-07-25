@@ -81,9 +81,23 @@ class ProductFeedbackFormModal extends Component
         return ProductFeedback::create([
             'product_id' => $this->product->id,
             'user_id' => Auth::id(),
-            'content' => $validated['feedbackContent'],
+            'content' => $this->updatedInputText($validated['feedbackContent']),
             'rating' => $validated['productRating'],
         ]);
+    }
+
+    public function updatedInputText($value){
+        $inputText = '';
+
+        $blockedWords = ['fuck'];
+        
+        foreach ($blockedWords as $word) {
+            if (strpos($value, $word) !== false) {
+                $inputText = str_replace($word, '****', $value);
+            }
+        }
+
+        return $inputText;
     }
 
     public function render()

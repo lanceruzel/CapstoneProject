@@ -50,7 +50,7 @@
                 {{ $product->name }}
             </div>
 
-            <div class="w-full">
+            <div class="w-full flex items-center justify-center">
                 <fieldset class="rating">
                     <input type="radio" wire:model="productRating" id="star5" name="rating" value="5" /><label class="full" for="star5" title="Awesome - 5 stars"></label>
                     <input type="radio" wire:model="productRating" id="star4half" name="rating" value="4.5" /><label class="half" for="star4half" title="Pretty good - 4.5 stars"></label>
