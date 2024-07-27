@@ -5,6 +5,7 @@ namespace App\Livewire\Affiliate;
 use App\Enums\Status;
 use App\Models\Affiliate;
 use App\Models\User;
+use App\Classes\UserNotif;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 use WireUi\Traits\WireUiActions;
@@ -42,6 +43,8 @@ class AffiliateInviteFormModal extends Component
             ]);
 
             if($affiliate){
+                UserNotif::sendNotif($promoterId[0], 'test');
+
                 $this->notification()->send([
                     'icon' => 'success',
                     'title' => 'Success!',

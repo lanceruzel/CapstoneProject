@@ -11,6 +11,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="user-id" content="{{ Auth::user()->id }}">
     <title>Document</title>
 
     <script src="https://cdn.jsdelivr.net/npm/uikit@3.21.5/dist/js/uikit.min.js"></script>
@@ -220,6 +221,8 @@
     @endif
     
     <script>
+        const userId = document.querySelector('meta[name="user-id"]').getAttribute('content');
+
         document.addEventListener('livewire:init', () => {
             Livewire.on('close-modal', (event) => {
                 $closeModal(event[0].modal);
@@ -232,6 +235,16 @@
             Livewire.on('update-post', function () {
                 $openModal('postFormModal');
             });
+
+            window.Echo.channel(`new-notification.${userId}`)
+                .listen('NotificationCreated', (e) => {
+                    $wireui.notify({
+                        icon: 'info',
+                        title: 'Info!',
+                        description: 'You have received new notification!'
+                    })
+                }
+            );
         });
 
         function scrollToBottom() {

@@ -21,3 +21,7 @@ Broadcast::channel('post-updated', function (){
 Broadcast::channel('new-chat', function ($userID, $id){
     return (int) $userID === (int) $id;
 });
+
+Broadcast::channel('new-notification', function ($userID, $id){
+    return (int) $userID === (int) $id;
+});
