@@ -25,7 +25,7 @@ Route::group(['middleware' => 'guest'], function () {
 Route::get('/signout', function () {
     Auth::logout();
     return redirect()->route('login');
-})->name('signout');
+})->middleware('auth')->name('signout');
 
 Route::group(['middleware' => 'auth'], function () {
     Route::get('/', function () {
@@ -97,7 +97,7 @@ Route::group(['middleware' => 'auth'], function () {
     })->name('livestream');
 });
 
-Route::group([], function () {
+Route::group(['middleware' => 'role:admin'], function () {
     Route::get('/admin/store-registrations', function () {
         return view('livewire.Pages.store-registrations');
     })->name('admin.store-registrations');
@@ -115,7 +115,7 @@ Route::group([], function () {
     })->name('admin.report-appeals');
 });
 
-Route::group([], function () {
+Route::group(['middleware' => 'role:store,travelpreneur'], function () {
     Route::get('/store/affiliates', function () {
         return view('livewire.Pages.affiliates');
     })->name('store.affiliates');

@@ -148,6 +148,20 @@ class User extends Authenticatable
             return $this->hasMany(Affiliate::class, 'store_id');
         }
     }
+
+    public function hasRole($desiredRole){
+        return $this->role === $desiredRole;
+    }
+
+    public function hasAnyRole(array $roles)
+    {
+        foreach ($roles as $role) {
+            if ($this->hasRole($role)) {
+                return true;
+            }
+        }
+        return false;
+    }
 }
 
 
