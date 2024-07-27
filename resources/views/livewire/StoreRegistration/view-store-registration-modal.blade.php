@@ -25,7 +25,7 @@
                     <tr class="border-b">
                         <td class="text-center py-3">Requirement 1</td>
                         <td class="text-center">
-                            <x-button info label="View" sm />
+                            <x-button info label="View" onclick="$openModal('pdfViewModal')" wire:click="$dispatch('view-pdf', { filename: '{{ $requirements->requirement_1->file_path }}' })" sm />
                         </td>
                         <td class="text-center">
                             @if($requirements->requirement_1->status == App\Enums\Status::ForReview)
@@ -47,7 +47,7 @@
                     <tr class="border-b">
                         <td class="text-center py-3">Requirement 2</td>
                         <td class="text-center">
-                            <x-button info label="View" sm />
+                            <x-button info label="View" onclick="$openModal('pdfViewModal')" wire:click="$dispatch('view-pdf', { filename: '{{ $requirements->requirement_2->file_path }}' })" sm />
                         </td>
                         <td class="text-center">
                             @if($requirements->requirement_2->status == App\Enums\Status::ForReview)
@@ -69,7 +69,7 @@
                     <tr class="border-b">
                         <td class="text-center py-3">Requirement 3</td>
                         <td class="text-center">
-                            <x-button info label="View" sm />
+                            <x-button info label="View" onclick="$openModal('pdfViewModal')" wire:click="$dispatch('view-pdf', { filename: '{{ $requirements->requirement_3->file_path }}' })" sm />
                         </td>
                         <td class="text-center">
                             @if($requirements->requirement_3->status == App\Enums\Status::ForReview)

@@ -8,4 +8,5 @@
     </div>
 
     <livewire:StoreRegistration.view-store-registration-modal />
+    <livewire:StoreRegistration.p-d-f-view-modal />
 </x-layouts.admin-layout>
