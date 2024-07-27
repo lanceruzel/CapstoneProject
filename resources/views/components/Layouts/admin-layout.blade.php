@@ -92,7 +92,7 @@
                 </li>
             </ul>
 
-            <x-button href='signout' icon='arrow-left-end-on-rectangle' white label="Sign Out" />
+            <x-button href="{{ route('signout') }}" icon='arrow-left-end-on-rectangle' white label="Sign Out" />
         </div>
     </aside>
 
