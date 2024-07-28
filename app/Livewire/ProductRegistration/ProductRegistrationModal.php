@@ -2,6 +2,8 @@
 
 namespace App\Livewire\ProductRegistration;
 
+use App\Classes\UserNotif;
+use App\Enums\NotificationType;
 use App\Enums\Status;
 use App\Models\Product;
 use Livewire\Component;
@@ -55,7 +57,6 @@ class ProductRegistrationModal extends Component
     }
 
     public function store($status){
-        
         if($status == 'accepted'){
             $this->product->status = Status::Available;
         }else{
@@ -76,6 +77,8 @@ class ProductRegistrationModal extends Component
 
             $this->dispatch('refresh-product-registrations-table');
             $this->dispatch('close-modal', ['modal' => 'productRegistrationModal']);
+
+            UserNotif::sendNotif($this->product->seller_id, $this->product->name . '\'s registration status has been updated.' , NotificationType::ProductRegistration);
         } else {
             $this->notification()->send([
                 'icon' => 'error',

@@ -2,6 +2,8 @@
 
 namespace App\Livewire\Posting;
 
+use App\Classes\UserNotif;
+use App\Enums\NotificationType;
 use App\Events\CommentCreated;
 use App\Models\Post;
 use App\Models\PostComment;
@@ -42,7 +44,7 @@ class PostContainer extends Component
 
     public function storeComment(){
         //Check post status first
-        if ($this->checkPostStatus()) {
+        if($this->checkPostStatus()) {
             return; 
         }
 
@@ -64,6 +66,8 @@ class PostContainer extends Component
             if(!$this->showAllComments){
                 $this->showAllComments = true;
             }
+
+            UserNotif::sendNotif($this->post->user_id, auth()->user()->name() . ' have commented on your post.' , NotificationType::Status);
         }
     }
 
@@ -84,6 +88,10 @@ class PostContainer extends Component
             'post_id' => $this->post->id,
             'user_id' => Auth::id(),
         ]);
+
+        if($store_like){
+            UserNotif::sendNotif($this->post->user_id, auth()->user()->name() . ' liked your post.' , NotificationType::Status);
+        }
     }
 
     public function checkPostStatus(){

@@ -6,6 +6,7 @@ use App\Enums\Status;
 use App\Models\Affiliate;
 use App\Models\User;
 use App\Classes\UserNotif;
+use App\Enums\NotificationType;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 use WireUi\Traits\WireUiActions;
@@ -43,7 +44,7 @@ class AffiliateInviteFormModal extends Component
             ]);
 
             if($affiliate){
-                UserNotif::sendNotif($promoterId[0], 'test');
+                UserNotif::sendNotif($promoterId[0], 'You have received an affiliate invitation.', NotificationType::Affiliate);
 
                 $this->notification()->send([
                     'icon' => 'success',

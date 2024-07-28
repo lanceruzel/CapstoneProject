@@ -2,6 +2,8 @@
 
 namespace App\Livewire\StoreRegistration;
 
+use App\Classes\UserNotif;
+use App\Enums\NotificationType;
 use App\Enums\Status;
 use App\Models\StoreInformation;
 use Illuminate\Support\Facades\Auth;
@@ -56,6 +58,8 @@ class ViewStoreRegistrationModal extends Component
             ]);
 
             $this->dispatch('refreshStoreRegistrationTable');
+
+            UserNotif::sendNotif($this->registration->user_id, 'Your store registration has been updated.' , NotificationType::StoreRegistration);
         }else{
             $this->notification()->send([
                 'icon' => 'error',

@@ -2,6 +2,8 @@
 
 namespace App\Livewire\Checkout;
 
+use App\Classes\UserNotif;
+use App\Enums\NotificationType;
 use App\Enums\Status;
 use App\Models\Affiliate;
 use App\Models\CartItem;
@@ -118,6 +120,9 @@ class CheckoutPageContent extends Component
                 $storeOrder = $this->storeOrder($seller, $shippingInformation, $paymentMethod, $isPaid, $total, $this->affiliate[$seller->id], $commission);
 
                 if($storeOrder){
+                    //Notify Seller
+                    UserNotif::sendNotif($seller, 'You have new order.' , NotificationType::Order);
+
                     //Store Ordered Product
                     foreach($products as $product){
                         $storeOrderedProduct = $this->storeOrderedProducts($storeOrder->id, $product);
@@ -154,7 +159,7 @@ class CheckoutPageContent extends Component
                 ]);
 
                 return;
-            }
+            } 
         }
 
         $this->notification()->send([

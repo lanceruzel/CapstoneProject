@@ -27,7 +27,7 @@ $seconds_ago = (time() - strtotime($notification->created_at));
                 @case(NotificationType::Order)
                         <x-icon name="truck" class="w-5 h-5" />
                     @break
-                @case(NotificationType::Product)
+                @case(NotificationType::Product || NotificationType::ProductRegistration)
                         <x-icon name="shopping-bag" class="w-5 h-5" />
                     @break
                 @case(NotificationType::Stock)
@@ -39,8 +39,15 @@ $seconds_ago = (time() - strtotime($notification->created_at));
                 @case(NotificationType::Affiliate)
                         <x-icon name="user-group" class="w-5 h-5" />
                     @break
+                @case(NotificationType::Appeal)
+                        <x-icon name="clipboard" class="w-5 h-5" />
+                    @break
+                @case(NotificationType::StoreRegistration)
+                        <x-icon name="document-text" class="w-5 h-5" />
+                    @break
                 @default
-                    <div class="bg-red-500 w-full h-full rounded-full"></div>
+                        <x-icon name="user" class="w-5 h-5" />
+                    @break
             @endswitch
         </div>
     </div>

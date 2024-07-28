@@ -2,6 +2,8 @@
 
 namespace App\Livewire\Appeal;
 
+use App\Classes\UserNotif;
+use App\Enums\NotificationType;
 use App\Enums\Status;
 use App\Models\Product;
 use App\Models\ReportAppeal;
@@ -68,6 +70,8 @@ class AdminViewAppealConversationModal extends Component
 
             $this->dispatch('close-modal', ['modal' => 'reportAppealFormModal']);
             $this->dispatch('refresh-report-appeals-table');
+
+            UserNotif::sendNotif($this->product->seller_id, $this->product->name . ' has been unsuspended and is now available again.' , NotificationType::Appeal);
         }
     }
     

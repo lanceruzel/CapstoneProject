@@ -2,6 +2,8 @@
 
 namespace App\Livewire\Order;
 
+use App\Classes\UserNotif;
+use App\Enums\NotificationType;
 use App\Enums\Status;
 use App\Models\Affiliate;
 use App\Models\ProductFeedback;
@@ -32,6 +34,9 @@ class OrderContainer extends Component
         }
 
         $this->order->status = Status::OrderBuyerReceived;
+
+        UserNotif::sendNotif($this->order->seller_id, 'Order #' . $this->order->id . ' has been received buy the buyer.' , NotificationType::Order);
+
         $this->order->save();
     }
 
@@ -40,7 +45,10 @@ class OrderContainer extends Component
 
         if($affiliate){
             $affiliate->totalCommissioned += $this->order->commission;
-            $affiliate->save();
+
+            if($affiliate->save()){
+                UserNotif::sendNotif($affiliate->promoter_id, 'You have received a commission.' , NotificationType::Affiliate);
+            }
         }
     }
 

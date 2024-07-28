@@ -10,10 +10,10 @@ class UserNotif{
         //
     }
 
-    public static function sendNotif($userID, $content){
+    public static function sendNotif($userID, $content, $type){
         $notif = Notification::create([
             'user_id' => $userID,
-            'type' => 'status',
+            'type' => $type,
             'content' => $content,
             'status' => 'unread',
         ]);

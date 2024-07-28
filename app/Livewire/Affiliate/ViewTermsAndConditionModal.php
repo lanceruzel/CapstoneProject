@@ -2,6 +2,8 @@
 
 namespace App\Livewire\Affiliate;
 
+use App\Classes\UserNotif;
+use App\Enums\NotificationType;
 use App\Enums\Status;
 use App\Models\Affiliate;
 use Livewire\Component;
@@ -62,11 +64,13 @@ class ViewTermsAndConditionModal extends Component
 
     public function accept(){
         $this->affiliate->status = Status::Active;
+        UserNotif::sendNotif($this->affiliate->store_id, 'Promoter ' . $this->affiliate->user->name() . ' have accepted your affiliate invitation.' , NotificationType::Affiliate);
         $this->saveAffiliate();
     }
 
     public function decline(){
         $this->affiliate->status = Status::Declined;
+        UserNotif::sendNotif($this->affiliate->store_id, 'Promoter ' . $this->affiliate->user->name() . ' have accepted your declined invitation.', NotificationType::Affiliate);
         $this->saveAffiliate();
     }
 
