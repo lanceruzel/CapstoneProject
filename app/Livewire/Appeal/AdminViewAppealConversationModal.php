@@ -74,6 +74,10 @@ class AdminViewAppealConversationModal extends Component
             UserNotif::sendNotif($this->product->seller_id, $this->product->name . ' has been unsuspended and is now available again.' , NotificationType::Appeal);
         }
     }
+
+    public function exportReport(){
+        
+    }
     
     public function render()
     {
