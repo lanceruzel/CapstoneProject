@@ -84,16 +84,21 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::get('/livestream/{id?}', function ($id = null) {
         $role = null;
+        $livestream = null;
+        $userId = null;
 
         if($id != null){
-            if(Livestream::where('id', $id)->pluck('user_id')->first() == Auth::id()){
+            $livestream = Livestream::findOrFail($id);
+            $userId = $livestream['user_id'];
+
+            if($userId == Auth::id()){
                 $role = 'host';
             }else{
                 $role = 'viewer';
             }
         }
 
-        return view('livewire.Pages.livestream',['role' => $role, 'meetingId' => $id, 'name' => e()]);
+        return view('livewire.Pages.livestream',['role' => $role, 'meetingId' => $livestream->id, 'name' => $livestream->user->name()]);
     })->name('livestream');
 });
 
