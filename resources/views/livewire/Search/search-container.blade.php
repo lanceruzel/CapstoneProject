@@ -15,8 +15,12 @@
                         @foreach ($users as $user)
                             <!-- user -->
                             <div class="w-full flex items-center gap-3 hover:no-underline py-2">
-                                <div>
-                                    <img src="https://static.everypixel.com/ep-pixabay/0329/8099/0858/84037/3298099085884037069-head.png" alt="" class="bg-gray-200 rounded-full w-10 h-10">
+                                <div class="size-10 rounded-full">
+                                    @if($user->user->profilePicture() == null)
+                                        <img src="https://static.everypixel.com/ep-pixabay/0329/8099/0858/84037/3298099085884037069-head.png" alt="" class="bg-gray-100 w-full h-full object-cover rounded-full">
+                                    @else
+                                        <img src="{{ asset('uploads') . '/' . $user->user->profilePicture() }}" class="w-full h-full object-cover rounded-full">
+                                    @endif
                                 </div>
             
                                 <div class="flex-1">
@@ -49,22 +53,26 @@
                         @foreach($stores as $store)
                             <!-- user -->
                             <div class="w-full flex items-center gap-3 hover:no-underline py-2">
-                                    <div>
-                                        <img src="https://static.everypixel.com/ep-pixabay/0329/8099/0858/84037/3298099085884037069-head.png" alt="" class="bg-gray-200 rounded-full w-10 h-10">
-                                    </div>
-                
-                                    <div class="flex-1">
-                                        <a href="{{ route('profile', $store->username) }}" class="leading-snug hover:no-underline">
-                                            <p class="font-semibold text-md text-gray-700">{{ $store->name }}</p>
-
-                                            <small class="text-gray-700">
-                                                <span class="font-semibold me-1">{{ count($store->user->products) }}</span>products
-                                            </small>
-                                        </a>
-                                    </div>
-                
-                                    <x-button white class="!text-slate-500" label="Message" href="{{ route('message', $store->user->username) }}" />
+                                <div class="size-10 rounded-full">
+                                    @if($store->user->profilePicture() == null)
+                                        <img src="https://static.everypixel.com/ep-pixabay/0329/8099/0858/84037/3298099085884037069-head.png" alt="" class="bg-gray-100 w-full h-full object-cover rounded-full">
+                                    @else
+                                        <img src="{{ asset('uploads') . '/' . $store->user->profilePicture() }}" class="w-full h-full object-cover rounded-full">
+                                    @endif
                                 </div>
+                               
+                                <div class="flex-1">
+                                    <a href="{{ route('profile', $store->username) }}" class="leading-snug hover:no-underline">
+                                        <p class="font-semibold text-md text-gray-700">{{ $store->name }}</p>
+
+                                        <small class="text-gray-700">
+                                            <span class="font-semibold me-1">{{ count($store->user->products) }}</span>products
+                                        </small>
+                                    </a>
+                                </div>
+            
+                                <x-button white class="!text-slate-500" label="Message" href="{{ route('message', $store->user->username) }}" />
+                            </div>
                         @endforeach
                     @endif
                 </div>
