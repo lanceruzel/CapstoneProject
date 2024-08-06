@@ -13,4 +13,5 @@ enum NotificationType: string
     const Invitation = 'invitation';
     const Affiliate = 'affiliate';
     const Appeal = 'appeal';
+    const ReturnRequest = 'return-request';
 }

@@ -2,6 +2,8 @@
 
 namespace App\Enums;
 
+use App\Models\ReturnRequest;
+
 enum Status: string
 {
     const Available = 'available';
@@ -33,4 +35,9 @@ enum Status: string
     const Invitation = 'invitation';
 
     const Preparing = 'preparing';
+
+    const ReturnRequestReview = 'seller-review';
+    const ReturnRequestReceieved = 'seller-receieved';
+    const ReturnRequestBuyerShipped = 'buyer-shipped';
+    const ReturnRequestSellerOrderCreated = 'seller-created-order';
 }

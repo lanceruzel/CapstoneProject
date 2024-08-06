@@ -77,6 +77,14 @@
                 </li>
 
                 <li>
+                    @if(request()->routeIS('store.return-products'))
+                        <x-button class='!justify-start font-medium' icon='folder' href="{{ route('store.return-products') }}" solid flat full secondary label="Return Products Requests" />
+                    @else
+                        <x-button class='!justify-start font-medium' icon='folder' href="{{ route('store.return-products') }}" flat full secondary label="Return Products Requests" /> 
+                    @endif
+                </li>
+
+                <li>
                     @if(request()->routeIS('store.order-management'))
                         <x-button class='!justify-start font-medium' icon='folder' href="{{ route('store.order-management') }}" solid flat full secondary label="Order Management" />
                     @else

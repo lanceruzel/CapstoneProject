@@ -45,6 +45,9 @@ $seconds_ago = (time() - strtotime($notification->created_at));
                 @case(NotificationType::StoreRegistration)
                         <x-icon name="document-text" class="w-5 h-5" />
                     @break
+                @case(NotificationType::ReturnRequest)
+                        <x-icon name="clipboard-document-list" class="w-5 h-5" />
+                    @break
                 @default
                         <x-icon name="user" class="w-5 h-5" />
                     @break

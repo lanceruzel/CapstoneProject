@@ -23,6 +23,10 @@
                     <li>
                         <a href="#" class="!text-sm font-medium">Cancelled</a>
                     </li>
+
+                    <li>
+                        <a href="#" class="!text-sm font-medium">Return</a>
+                    </li>
                 </ul>
             </div>
 
@@ -46,6 +50,11 @@
                 <li class="w-full md:px-5">
                     <livewire:Order.orders-container status="cancelled" />
                 </li>
+
+                <!-- Return -->
+                <li class="w-full md:px-5">
+                    <livewire:Order.Return.return-orders-container />
+                </li>
             </ul>
 
             <!-- content -->
@@ -54,4 +63,6 @@
 
     <livewire:Order.product-feedback-form-modal />
     <livewire:Report.product-report-form-modal />
+    <livewire:Return.return-product-form-modal />
+    <livewire:Order.Return.update-return-tracking-number-modal />
 </x-layouts.main-layout>

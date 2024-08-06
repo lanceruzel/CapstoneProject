@@ -121,7 +121,7 @@ class CheckoutPageContent extends Component
 
                 if($storeOrder){
                     //Notify Seller
-                    UserNotif::sendNotif($seller, 'You have new order.' , NotificationType::Order);
+                    UserNotif::sendNotif($seller->id, 'You have new order.' , NotificationType::Order);
 
                     //Store Ordered Product
                     foreach($products as $product){

@@ -41,7 +41,6 @@
                     <td class="px-6 py-4">
                         <div class="gap-3 flex flex-row items-center justify-center h-full">
                             @if($order->status == App\Enums\Status::OrderBuyerReceived)
-
                                 @if(!$orderProduct->hasReport())
                                     <x-button negative label="Report" onclick="$openModal('productReportFormModal')" wire:click="$dispatch('open-product-report', { id: {{ $orderProduct->id }} })" />  
                                 @endif
@@ -56,12 +55,16 @@
             @endforeach
         </tbody>
     </table>
-
+    {{--  --}}
     <div class="border-t pt-3 flex items-center justify-between max-md:flex-col">
         <div>
             <p>{{ $order->status }} 
                 @if(($order->tracking_number != null || $order->tracking_number != '') && $order->status != App\Enums\Status::OrderBuyerReceived)
                     <x-link label="View Tracking" href="https://parcelsapp.com/en/tracking/{{ $order->tracking_number }}" target="_blank" />
+                @endif
+                
+                @if($order->status == App\Enums\Status::OrderBuyerReceived && !$hasRequest)
+                    <x-button flat label="Return Order" onclick="$openModal('productReturnFormModal')" wire:click="$dispatch('openReturnRequestForm', { id: {{ $order->id }} })" />
                 @endif
             </p>
         </div>

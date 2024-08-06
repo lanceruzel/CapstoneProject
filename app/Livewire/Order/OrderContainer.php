@@ -7,12 +7,14 @@ use App\Enums\NotificationType;
 use App\Enums\Status;
 use App\Models\Affiliate;
 use App\Models\ProductFeedback;
+use App\Models\ReturnRequest;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 
 class OrderContainer extends Component
 {
     public $order;
+    public $hasRequest;
 
     public $orderedProducts = [];
 
@@ -25,6 +27,7 @@ class OrderContainer extends Component
 
         if($order){
             $this->orderedProducts = $order->orderedItems;
+            $this->hasRequest = $this->hasReturnRequest();
         }
     }
 
@@ -34,6 +37,7 @@ class OrderContainer extends Component
         }
 
         $this->order->status = Status::OrderBuyerReceived;
+        $this->order->is_paid = true;
 
         UserNotif::sendNotif($this->order->seller_id, 'Order #' . $this->order->id . ' has been received buy the buyer.' , NotificationType::Order);
 
@@ -52,6 +56,10 @@ class OrderContainer extends Component
         }
     }
 
+    public function hasReturnRequest(){
+        return ReturnRequest::where('order_id', $this->order->id)->exists();
+    }
+
     public function refreshOrderContainer($id)
     {
         if ($this->order->id == $id) {
@@ -59,8 +67,7 @@ class OrderContainer extends Component
         }
     }
 
-    public function render()
-    {
+    public function render(){
         return view('livewire.Order.order-container');
     }
 }

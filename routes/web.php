@@ -129,6 +129,10 @@ Route::group(['middleware' => 'role:store,travelpreneur'], function () {
         return view('livewire.Pages.product-management');
     })->name('store.product-management');
 
+    Route::get('/store/return-products', function () {
+        return view('livewire.Pages.return-products');
+    })->name('store.return-products');
+
     Route::get('/store/order-management', function () {
         return view('livewire.Pages.order-management');
     })->name('store.order-management');
