@@ -37,7 +37,7 @@
 
                     <tr>
                         <td class="text-right pe-3 font-medium">Payment Status:</td>
-                        <td>{{ $order->paymentStatus ? 'Paid' : 'Not Yet Paid' }}</td>
+                        <td>{{ $order->is_paid ? 'Paid' : 'Not Yet Paid' }}</td>
                     </tr>
 
                     <tr>
@@ -52,7 +52,7 @@
 
                     <tr>
                         <td class="text-right pe-3 font-medium">Commission:</td>
-                        <td>${{ $order->commission ? $order->commission : 'None' }}</td>
+                        <td>{{ $order->commission ? '$'. $order->commission : 'None' }}</td>
                     </tr>
 
                     <tr>
