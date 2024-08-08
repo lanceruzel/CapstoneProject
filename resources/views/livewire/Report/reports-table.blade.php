@@ -50,7 +50,7 @@
                             <td class="px-6 py-4">{{ $report->user->userInformation->fullname() }}</td>
                             <td class="px-6 py-4">{{ $report->product->name }}</td>
                             <td class="px-6 py-4">{{ $report->product->seller->storeInformation->name }}</td>
-                            <td class="px-6 py-4">{{ $report->created_at }}</td>
+                            <td class="px-6 py-4">{{ date_format($report->created_at, "M d, Y") }}</td>
                             <td class="px-6 py-4">
                                 <x-button label="View" onclick="$openModal('productReportModal')" wire:click="$dispatch('viewReportInformation', { id: {{ $report->id }} })" />
                             </td>

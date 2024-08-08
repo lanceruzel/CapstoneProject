@@ -33,7 +33,7 @@
 
                     <tr>
                         <td class="p-2 font-medium border border-gray-300">Requested By: </td>
-                        <td class="p-2 border border-gray-300">{{ $request->created_at }}</td>
+                        <td class="p-2 border border-gray-300">{{ date_format($request->created_at, "M d, Y") }}</td>
                     </tr>
 
                     <tr>

@@ -70,7 +70,7 @@
                                     <span>{{ $request->status }}</span>
                                 @endif
                             </td>
-                            <td class="px-6 py-4">{{ $request->created_at }}</td>
+                            <td class="px-6 py-4">{{ date_format($request->created_at, "M d, Y") }}</td>
                             <td class="px-6 py-4">
                                 <x-button label="View" onclick="$openModal('viewReturnRequestModal')" wire:click="$dispatch('viewReturnProductInformation', { id: {{ $request->id }} })" />
                             </td>

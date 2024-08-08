@@ -131,7 +131,7 @@
                                     @endif
                                 </div>
 
-                                <small>{{ $message->created_at }}</small> 
+                                <small>{{ date_format($message->created_at, "m/d/Y g:i A") }}</small> 
                             </div> 
                         @else
                             <!-- received -->
@@ -192,7 +192,7 @@
                                 </div>
 
                                 <div class="!ms-12">
-                                    <small class="text-gray-400">{{ $message->created_at }}</small>
+                                    <small class="text-gray-400">{{ date_format($message->created_at, "m/d/Y g:i A") }}</small>
                                 </div>
                             </div>
                         @endif
@@ -252,7 +252,7 @@
                                         @endif
                                     @endif
                                 </div>
-                                <small>{{ $message->created_at }}</small> 
+                                <small>{{ date_format($message->created_at, "m/d/Y g:i A") }}</small> 
                             </div> 
 
                         @else
@@ -306,7 +306,7 @@
                                 </div>
 
                                 <div class="!ms-12">
-                                    <small>{{ $message->created_at }}</small>
+                                    <small>{{ date_format($message->created_at, "m/d/Y g:i A") }}</small>
                                 </div>
                             </div>
                         @endif

@@ -2,7 +2,7 @@
     <div class="flex justify-between border-b pb-3">
         <p class="text-xl font-semibold">{{ $order->seller->storeInformation->name }}</p>
 
-        <p class="text-sm">{{ $order->created_at }}</p>
+        <p class="text-sm">{{ date_format($order->created_at, "M d, Y") }}</p>
     </div>
 
     <table class="table-auto w-full border-spacing-y-4 text-sm text-left mt-5 over">

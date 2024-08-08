@@ -13,19 +13,19 @@ class OrdersContainer extends Component
 
     public function mount($status){
         if($status == 'all'){
-            $this->orders = Order::where('user_id', Auth::id())->orderBy('created_at', 'DESC')->get();
+            $this->orders = Order::where('user_id', Auth::id())->orderBy('id', 'DESC')->get();
         }else if($status == 'to_receieved'){
             $this->orders = Order::where('user_id', Auth::id())
                 ->where('status', Status::OrderSellerShipped)
                 ->orWhere('status', Status::OrderSellerShipped)
                 ->orWhere('status', Status::OrderSellerPreparing)
-                ->orderBy('created_at', 'DESC')->get();
+                ->orderBy('id', 'DESC')->get();
         }else if($status == 'cancelled'){
-            $this->orders = Order::where('user_id', Auth::id())->where('status', Status::OrderSellerCancel)->orWhere('status', Status::OrderBuyerCancel)->orderBy('created_at', 'DESC')->get();
+            $this->orders = Order::where('user_id', Auth::id())->where('status', Status::OrderSellerCancel)->orWhere('status', Status::OrderBuyerCancel)->orderBy('id', 'DESC')->get();
         }else if($status == 'received'){
-            $this->orders = Order::where('user_id', Auth::id())->where('status', Status::OrderBuyerReceived)->orderBy('created_at', 'DESC')->get();
+            $this->orders = Order::where('user_id', Auth::id())->where('status', Status::OrderBuyerReceived)->orderBy('id', 'DESC')->get();
         }else{
-            $this->orders = Order::where('user_id', Auth::id())->orderBy('created_at', 'DESC')->get();
+            $this->orders = Order::where('user_id', Auth::id())->orderBy('id', 'DESC')->get();
         }
     }
 

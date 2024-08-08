@@ -38,7 +38,7 @@
             </div>
 
             <div>
-                <p class="text-xs text-gray-500">{{ $feedback->created_at }}</p>
+                <p class="text-xs text-gray-500">{{ date_format($feedback->created_at, "M d, Y") }}</p>
             </div>
         </div>
 

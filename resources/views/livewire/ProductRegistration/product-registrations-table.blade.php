@@ -68,7 +68,7 @@
                                 @endif
                             </td>
 
-                            <td class="px-6 py-4">{{ date_format($product->created_at, "M d, Y g:i a") }}</td>
+                            <td class="px-6 py-4">{{ date_format($product->created_at, "M d, Y") }}</td>
 
                             <td class="-mr-1 px-6 py-4">
                                 <x-button label="View Product" icon="eye" flat interaction:solid="info" x-on:click="$openModal('productRegistrationModal')" wire:click="$dispatch('viewProductRegistration', { id: {{ $product->id }} })"/>

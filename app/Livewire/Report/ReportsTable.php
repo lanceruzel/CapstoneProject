@@ -11,7 +11,7 @@ class ReportsTable extends Component
     use WithPagination;
 
     public function getReports(){
-        return ProductReport::orderBy('created_at', 'desc')->paginate(10);
+        return ProductReport::orderBy('id', 'desc')->paginate(10);
     }
 
     public function render()

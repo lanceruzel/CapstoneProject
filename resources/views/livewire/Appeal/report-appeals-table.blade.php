@@ -50,7 +50,7 @@
                             <td class="px-6 py-4">{{ $appeal->product->name }}</td>
                             <td class="px-6 py-4">{{ $appeal->product->seller->storeInformation->name }}</td>
                             <td class="px-6 py-4">{{ $appeal->product->seller->email}}</td>
-                            <td class="px-6 py-4">{{ $appeal->created_at }}</td>
+                            <td class="px-6 py-4">{{ date_format($appeal->created_at, "M d, Y") }}</td>
                             <td class="px-6 py-4">
                                 <x-button label="View Conversation" onclick="$openModal('reportAppealFormModal')" wire:click="$dispatch('view-report-appeal-conversation', { id: {{ $appeal->id }} })" />
                             </td>

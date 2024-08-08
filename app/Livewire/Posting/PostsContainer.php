@@ -26,7 +26,7 @@ class PostsContainer extends Component
                             ->when($this->userID, function ($query, $userID) {
                                 return $query->where('user_id', $userID);
                             })
-                            ->orderBy('created_at', 'desc')
+                            ->orderBy('id', 'desc')
                             ->get()
         ]);
     }

@@ -65,8 +65,8 @@
                                 @endif
                             </td>
 
-                            <td class="px-6 py-4">{{ date_format($registration->updated_at, "M d, Y g:i a") }}</td>
-                            <td class="px-6 py-4">{{ date_format($registration->created_at, "M d, Y g:i a") }}</td>
+                            <td class="px-6 py-4">{{ date_format($registration->updated_at, "M d, Y") }}</td>
+                            <td class="px-6 py-4">{{ date_format($registration->created_at, "M d, Y") }}</td>
 
                             <td class="-mr-1 px-6 py-4">
                                 <x-button label="View Registration" icon="eye" flat interaction:solid="info" x-on:click="$openModal('storeRegistrationModal')" wire:click="$dispatch('viewRegistration', { id: {{ $registration->id }} })"/>
