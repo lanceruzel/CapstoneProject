@@ -52,12 +52,16 @@
                 @endif
             </div>
 
-            <x-slot name="footer" class="flex justify-end gap-x-4">
-            <x-button flat label="Close" x-on:click="close" />
+            <x-slot name="footer" class="flex justify-between gap-x-3">
+                <x-button flat wire:loading.attr="disabled" wire:click="exportReport" spinner="exportReport" label="Export Report" />
 
-            @if($report->product->status != App\Enums\Status::Suspended)
-                <x-button outline negative wire:loading.attr="disabled" wire:click="suspensionConfirmation" spinner="declineOrder" label="Suspend Product" />
-            @endif
+                <div class="flex gap-3">
+                    <x-button flat label="Close" x-on:click="close" />
+
+                    @if($report->product->status != App\Enums\Status::Suspended)
+                        <x-button negative wire:loading.attr="disabled" wire:click="suspensionConfirmation" spinner="declineOrder" label="Suspend Product" />
+                    @endif
+                </div>
             </x-slot>
         </div>
     @else

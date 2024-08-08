@@ -5,6 +5,7 @@ namespace App\Livewire\Report;
 use App\Enums\Status;
 use App\Models\Product;
 use App\Models\ProductReport;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Livewire\Component;
 use WireUi\Traits\WireUiActions;
 
@@ -52,6 +53,14 @@ class ViewReportModal extends Component
                 }
             }
         }
+    }
+
+    public function exportReport(){
+        $pdf = Pdf::loadView('pdf.productReport', ['report' => $this->report]);
+
+        return response()->streamDownload(function () use ($pdf) {
+            echo $pdf->stream();
+        }, 'invoice.pdf');
     }
 
     public function getData($id){

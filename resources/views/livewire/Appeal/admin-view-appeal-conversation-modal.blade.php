@@ -25,7 +25,8 @@
             @if($product && $product->status == App\Enums\Status::Suspended)
                 <x-button wire:loading.attr="disabled" wire:click="unsuspendedConfirmation" spinner="unsuspendedConfirmation" label="Unsuspended Product" />
             @else
-                <x-button wire:loading.attr="disabled" wire:click="unsuspendedConfirmation" spinner="unsuspendedConfirmation" label="Print Report" />
+                {{-- <x-button wire:loading.attr="disabled" wire:click="exportReport" spinner="exportReport" label="Export Appeal" /> --}}
+                <x-button flat label="Close" x-on:click="close" />
             @endif
         </x-slot>
     </div>

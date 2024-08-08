@@ -7,6 +7,7 @@ use App\Enums\NotificationType;
 use App\Enums\Status;
 use App\Models\Product;
 use App\Models\ReportAppeal;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Log;
 use Livewire\Component;
 use WireUi\Traits\WireUiActions;
@@ -76,7 +77,11 @@ class AdminViewAppealConversationModal extends Component
     }
 
     public function exportReport(){
-        
+        $pdf = Pdf::loadView('pdf.invoice', ['product' => $this->product, 'report' => $this->report]);
+
+        return response()->streamDownload(function () use ($pdf) {
+            echo $pdf->stream();
+        }, 'invoice.pdf');
     }
     
     public function render()
