@@ -125,7 +125,7 @@
                 
                 @if(auth()->user()->role == App\Enums\UserType::Store || auth()->user()->role == App\Enums\UserType::Travelpreneur)
                     @if($storeRegistration->isRegistered())
-                        <x-dropdown.item href="{{ route('store.product-management') }}" icon='building-storefront' label="Store Management" />
+                        <x-dropdown.item href="{{ route('store.dashboard') }}" icon='building-storefront' label="Store Management" />
                     @else
                         <x-dropdown.item icon='building-storefront' label="Register Store" onclick="$openModal('storeRegistrationFormModal')" />
                     @endif

@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Auth;
 
+use App\Enums\UserType;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Livewire\Component;
@@ -22,6 +23,10 @@ class SigninForm extends Component
             if(Auth::attempt($validated)){
                 session()->regenerate();
     
+                if(auth()->user()->role == UserType::Admin){
+                    return redirect()->route('admin.dashboard');
+                }
+
                 return redirect()->route('home');
             }else{
                 session()->flash('fail', 'These credentials do not match our records.');

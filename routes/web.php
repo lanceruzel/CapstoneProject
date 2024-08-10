@@ -103,6 +103,10 @@ Route::group(['middleware' => 'auth'], function () {
 });
 
 Route::group(['middleware' => 'role:admin'], function () {
+    Route::get('/admin/dashboard', function () {
+        return view('livewire.Pages.admin-dashboard');
+    })->name('admin.dashboard');
+
     Route::get('/admin/store-registrations', function () {
         return view('livewire.Pages.store-registrations');
     })->name('admin.store-registrations');
@@ -121,6 +125,10 @@ Route::group(['middleware' => 'role:admin'], function () {
 });
 
 Route::group(['middleware' => 'role:store,travelpreneur'], function () {
+    Route::get('/store/dashboard', function () {
+        return view('livewire.Pages.store-dashboard');
+    })->name('store.dashboard');
+
     Route::get('/store/affiliates', function () {
         return view('livewire.Pages.affiliates');
     })->name('store.affiliates');
