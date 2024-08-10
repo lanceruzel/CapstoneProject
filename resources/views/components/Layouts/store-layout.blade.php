@@ -14,6 +14,8 @@
     <meta name="user-id" content="{{ Auth::user()->id }}">
     <title>Document</title>
 
+    @stack('head-js')
+
     <script src="https://cdn.jsdelivr.net/npm/uikit@3.21.5/dist/js/uikit.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/uikit@3.21.5/dist/css/uikit.min.css" />
     
@@ -110,6 +112,8 @@
             {{ $slot }}
         </div>
     </main>
+
+    @stack('body-js')
 
     <script>
         const userId = document.querySelector('meta[name="user-id"]').getAttribute('content');
