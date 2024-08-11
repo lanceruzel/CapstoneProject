@@ -4,11 +4,13 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 
+use App\Enums\Status;
 use App\Enums\UserType;
 use App\Livewire\Pages\Affiliates;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Auth;
 
 class User extends Authenticatable
 {
@@ -153,14 +155,29 @@ class User extends Authenticatable
         return $this->role === $desiredRole;
     }
 
-    public function hasAnyRole(array $roles)
-    {
+    public function hasAnyRole(array $roles){
         foreach ($roles as $role) {
             if ($this->hasRole($role)) {
                 return true;
             }
         }
         return false;
+    }
+
+    public function getTotalDeliveredOrders(){
+        return $this->orders()->where('status', Status::OrderBuyerReceived)->count();
+    }
+
+    public function getTotalProducts(){
+        return $this->products()->count();
+    }
+
+    public function getTotalSales(){
+        return $this->orders()->where('status', Status::OrderBuyerReceived)->sum('total');
+    }
+
+    public function getTotalAffiliates(){
+        return $this->affiliates()->count();
     }
 }
 
