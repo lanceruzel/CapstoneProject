@@ -50,21 +50,25 @@
     </div>
 
     <!-- Charts -->
-    <div class="grid grid-cols-12 h-[400px] gap-7">
-        <div class="col-span-8 bg-white rounded-md shadow flex items-center justify-center p-5 relative">
-            <canvas id="lineChart"></canvas>
+    <div class="grid grid-cols-12 gap-7 lg:max-h-[400px]">
+        <div class="col-span-12 lg:col-span-8 bg-white rounded-md shadow flex items-center justify-center">
+            <div class="flex items-center justify-center min-w-[90%] min-h-[90%]">
+                <x-chartjs-component :chart="$chart" />
+            </div>
         </div>
 
-        <div class="col-span-4 bg-white rounded-md shadow flex items-center justify-center p-5">
-            <canvas id="lineChart"></canvas>
+        <div class="col-span-12 lg:col-span-4 bg-white rounded-md shadow flex items-center justify-center">
+            <div class="flex items-center justify-center min-w-[90%] min-h-[90%]">
+                <x-chartjs-component :chart="$chart2" />
+            </div>
         </div>
     </div>
 
     <!-- Other Stats -->
-    <div class="grid grid-cols-12 h-[400px] gap-7">
+    <div class="grid grid-cols-12 lg:h-[400px] gap-7">
 
         <!-- Orders -->
-        <div class="col-span-8 p-5 bg-white rounded-md shadow">
+        <div class="col-span-12 lg:col-span-8 p-5 bg-white rounded-md shadow">
             <p class="font-bold text-lg">Recent Orders Orders</p>
 
             <table class="table-fixed w-full mt-3">
@@ -106,7 +110,7 @@
         </div>
 
         <!-- Top Selling -->
-        <div class="col-span-4 p-5 bg-white rounded-md shadow">
+        <div class="col-span-12 lg:col-span-4 p-5 bg-white rounded-md shadow">
             <p class="font-bold text-lg">Top Sold Products</p>
 
             <div class="overflow-auto">
@@ -132,7 +136,7 @@
 
     @push('body-js')
         <script>
-
+            
         </script>
     @endpush
 </div>
