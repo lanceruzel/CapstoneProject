@@ -61,15 +61,6 @@
             
                     <div class="line-clamp-4 text-wrap"> {!! $product->description !!} </div>
     
-                    <div> {{ 'Stocks Available: x' . $product->stocks }} </div>
-                    <div> Seller: 
-                        @if($product->seller->role == UserType::Travelpreneur)
-                            {{ $product->seller->userInformation->first_name . ' ' . $product->seller->userInformation->fullname() }}
-                        @elseif($product->seller->role == UserType::Store)
-                            {{ $product->seller->storeInformation->name }}
-                        @endif
-                    </div>
-    
                     <div class="flex max-lg:justify-center lg:justify-end items-center gap-3">
                         @if(auth()->user()->role != UserType::Store)
                             @if(count($variations) > 1)
@@ -82,6 +73,47 @@
                 </div>  
             </div>
     
+            <div class="max-lg:p-5 lg:p-7 border rounded-lg mt-3 grid grid-cols-12 gap-3">
+                <div class="col-span-12 md:col-span-6 lg:col-span-4 flex max-sm:flex-col items-center justify-center gap-3">
+                    <img src="{{ asset('uploads') . '/' . $product->seller->profilePicture() }}" class="h-20 w-20 object-cover rounded-full shadow">
+
+                    <div class="flex flex-col items-start justify-center gap-1">
+                        <p class="text-lg font-medium">{{ $product->seller->name() }}</p>
+                        
+                        <div>
+                            <x-button flat label="Chat Now" href="{{ route('message', $product->seller->username) }}" />
+                            <x-button outline label="View Shop" href="{{ route('profile', $product->seller->username) }}" />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-span-12 md:col-span-6 lg:col-span-4 flex flex-col items-center justify-center gap-3">
+                    <div class="flex items-center justify-between w-2/4">
+                        <p class="text-gray-500">Ratings</p>
+                        <p class="text-purple-500 font-semibold">{{ $product->seller->getTotalProductRatings() }}</p>
+                    </div>
+
+                    <div class="flex items-center justify-between w-2/4">
+                        <p class="text-gray-500">Products</p>
+                        <p class="text-purple-500 font-semibold">{{ $product->seller->products()->count() }}</p>
+                    </div>
+                </div>
+
+                <div class="lg:hidden md:col-span-6"></div>
+
+                <div class="col-span-12 md:col-span-6 lg:col-span-4 flex flex-col items-center justify-center gap-3">
+                    <div class="flex items-center justify-between w-2/4">
+                        <p class="text-gray-500">Joined</p>
+                        <p class="text-purple-500 font-semibold">{{ date_format($product->seller->created_at, "M d, Y") }}</p>
+                    </div>
+
+                    <div class="flex items-center justify-between w-2/4">
+                        <p class="text-gray-500">Posts</p>
+                        <p class="text-purple-500 font-semibold">{{ $product->seller->posts()->count() }}</p>
+                    </div>
+                </div>
+            </div>
+
             <!-- Ratings -->
             <div class="max-lg:p-5 lg:p-7 border rounded-lg mt-3">
                 <div class="flex gap-5 divide-x-2 flex-wrap">

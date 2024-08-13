@@ -179,6 +179,21 @@ class User extends Authenticatable
     public function getTotalAffiliates(){
         return $this->affiliates()->count();
     }
+
+
+    public function getTotalProductRatings(){
+        $totalRating = 0;
+
+        foreach ($this->products as $product) {
+            $totalRating += $product->getTotalRatings();
+        }
+
+        if ($totalRating >= 1000) {
+            return number_format($totalRating / 1000, 1) . 'k';
+        }
+
+        return $totalRating;
+    }
 }
 
 
