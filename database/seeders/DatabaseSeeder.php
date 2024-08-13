@@ -33,6 +33,8 @@ class DatabaseSeeder extends Seeder
             'birthdate' => '2002-12-02',
             'country' => 'Philippines',
             'address' => 'Bataan',
+            'profile_bio' => null,
+            'profile_picture' => null
         ]);
     }
 }

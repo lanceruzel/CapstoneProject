@@ -24,8 +24,8 @@ return new class extends Migration
             $table->string('country');
             $table->string('address');
 
-            $table->string('profile_bio');
-            $table->string('profile_picture');
+            $table->string('profile_bio')->nullable();
+            $table->string('profile_picture')->nullable();
 
             $table->timestamps();
         });
