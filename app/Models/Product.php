@@ -60,7 +60,7 @@ class Product extends Model
 
             $price = count($prices) === 1 ? '$' . number_format($prices[0], 2) : '$' . number_format(min($prices), 2) . ' ~ ' . '$' . number_format(max($prices), 2);
         }else{
-            $price = '$' . json_decode($this->variations)[0]->price;
+            $price = '$' . number_format(json_decode($this->variations)[0]->price, 2);
         }
         
         return $price;
