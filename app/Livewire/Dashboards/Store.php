@@ -8,6 +8,7 @@ use App\Models\Order;
 use App\Models\OrderedItem;
 use IcehouseVentures\LaravelChartjs\Facades\Chartjs;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 
 class Store extends Component{
@@ -121,9 +122,17 @@ class Store extends Component{
         return Order::where('seller_id', Auth::id())->orderBy('id', 'desc')->take(6)->get();
     }
 
+    public function getTotalOrders(){
+        return Order::where('seller_id' , Auth::id())->where('status', Status::OrderBuyerReceived)->count();
+    }
+
+    public function getTotalSales(){
+        return Order::where('seller_id', Auth::id())->where('status', Status::OrderBuyerReceived)->sum('total');
+    }
+
     public function topSoldProduct(){
         $sellerId = Auth::id();
-        return OrderedItem::select('product_id', \DB::raw('COUNT(*) as total_count'))
+        return OrderedItem::select('product_id', DB::raw('COUNT(*) as total_count'))
                       ->whereHas('order', function ($query) use ($sellerId) {
                           $query->where('seller_id', $sellerId);
                       })
@@ -139,7 +148,9 @@ class Store extends Component{
             'recentOrders' => $this->recentOrders(),
             'topSold' => $this->topSoldProduct(),
             'chart' => $this->salesChart(),
-            'chart2' => $this->salesStat()
+            'chart2' => $this->salesStat(),
+            'totalOrders' => $this->getTotalOrders(),
+            'totalSales' => $this->getTotalSales()
         ]);
     }
 }

@@ -9,7 +9,7 @@
             </div>
 
             <div>
-                <p class="text-xl font-medium">{{ auth()->user()->getTotalDeliveredOrders() }}</p>
+                <p class="text-xl font-medium">{{ $totalOrders }}</p>
                 <p>Total Orders</p>
             </div>
         </div>
@@ -31,7 +31,7 @@
             </div>
 
             <div>
-                <p class="text-xl font-medium">${{ auth()->user()->getTotalSales() }}</p>
+                <p class="text-xl font-medium">${{ number_format($totalSales, 2) }}</p>
                 <p>Total Sales</p>
             </div>
         </div>
