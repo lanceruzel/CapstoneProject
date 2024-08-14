@@ -26,7 +26,7 @@
     </div>
     
     <!-- Orders -->
-    <div class="w-full bg-white p-5 rounded-lg shadow mt-3">
+    <div class="w-full bg-white p-5 rounded-lg shadow mt-3" x-on:totalUpdated="$refresh">
         <div class="space-y-3">
             <p class="font-semibold text-lg">Order Summary</p>
             @if(count($checkedOutSellers))
@@ -45,10 +45,24 @@
                                 @endforeach
                             </tbody>
                         </table>
-    
-                        <div class="flex items-end justify-center flex-col">
-                            <p class="pb-3 font-medium">Total: ${{ number_format($checkedOutSeller['total'], 2) }}</p>
+                    </div>
+
+                    <div class="flex items-end justify-center flex-col">
+                        <p class="pb-3 font-medium">
+                            Total: @isset($checkedOutSeller['original_total']) 
+                                        <span class="line-through">${{ number_format($checkedOutSeller['original_total'], 2) }}</span> 
+                                    @endisset 
+                                ${{ number_format($checkedOutSeller['total'], 2) }}
+                        </p>
+
+                        <div class="flex items-center justify-center gap-3">
                             <x-input placeholder="Apply affiliate code" class="!w-[200px]" shadowless wire:model="affiliate.{{ $checkedOutSeller['seller']->id }}" />
+
+                            @if(isset($checkedOutSeller['original_total']))
+                                <x-button label="Applied" disabled />
+                            @else
+                                <x-button wire:loading.attr="disabled" wire:click="applyAffiliate('{{ $checkedOutSeller['seller']->id }}')" label="Apply" />
+                            @endif
                         </div>
                     </div>
                 @endforeach
@@ -62,7 +76,7 @@
     </div>
     
     <!-- Payment -->
-    <div class="w-full bg-white p-5 rounded-lg shadow mt-3">
+    {{-- <div class="w-full bg-white p-5 rounded-lg shadow mt-3">
         <div class="space-y-3">
             <div>
                 <p class="font-semibold text-lg">Payment Method</p>
@@ -93,22 +107,12 @@
                     <div id="paypal-button-container"></div>
                     <p id="result-message"></p>
                 </div>
-
-                {{-- <div class="border-2 p-5 first-line:p-5 rounded-lg cursor-pointer hover:bg-slate-50 active:scale-95 transition-all">
-                    <div class="flex items-center justify-center gap-1">
-                        <span>
-                            <i class="ri-bank-card-2-line ri-lg"></i>
-                        </span>
-    
-                        <p class="text-sm font-semibold">Credit/Debit Card</p>
-                    </div>
-                </div> --}}
             </div>
         </div>
-    </div> 
+    </div>  --}}
 
     <!-- Order Summary -->
-    <div class="w-full bg-white p-5 rounded-lg shadow space-y-3 flex flex-col items-end justify-center mt-3">
+    <div class="w-full bg-white p-5 rounded-lg shadow space-y-3 flex flex-col items-center justify-center mt-3" x-on:totalUpdated="$refresh">
         <table class="border-separate border-spacing-3">
             <tbody>
                 <tr>
@@ -133,6 +137,13 @@
             </tbody>
         </table>
     
-        <x-button class="!px-10" wire:loading.attr="disabled" wire:click='placeOrder' label="Place Order" />
+        <div class="flex gap-3 flex-col">
+            <x-button class="!px-10 w-full" wire:loading.attr="disabled" wire:click='placeOrder' label="Place Order | Cash On Delivery" />
+            
+            <div wire:ignore>
+                <div id="paypal-button-container"></div>
+                <p id="result-message"></p>
+            </div>
+        </div>
     </div> 
 </div>

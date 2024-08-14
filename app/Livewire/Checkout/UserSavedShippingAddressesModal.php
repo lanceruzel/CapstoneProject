@@ -16,6 +16,7 @@ class UserSavedShippingAddressesModal extends Component
 
     public function updateSelectedAddress(){
         $this->dispatch('selected-shipping-address' , ['id' => $this->selectedAddress]);
+        $this->dispatch('enable-paypal-button');
         $this->dispatch('close-modal', ['modal' => 'viewShippingAddressesModal']);
     }
 

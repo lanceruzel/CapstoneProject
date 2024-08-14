@@ -11,6 +11,7 @@ use App\Models\Order;
 use App\Models\OrderedItem;
 use App\Models\UserShippingInformation;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\Rule;
 use Livewire\Component;
 use WireUi\Traits\WireUiActions;
 
@@ -22,13 +23,14 @@ class CheckoutPageContent extends Component
     public $checkedOutSellers = null;
 
     public $merchandiseTotal = 0;
-    public $shippingTotal = 150;
+    public $shippingTotal = 25;
+    public $discountRate = 0.05;
 
     public $affiliate = [];
 
     protected $listeners = [
         'selected-shipping-address' => 'getShippingInformationData',
-
+        'totalUpdated' => '$refresh'
     ];
 
     public function mount(){
@@ -53,6 +55,42 @@ class CheckoutPageContent extends Component
         } 
 
         return ($rules);
+    }
+
+    public function applyAffiliate($sellerId){
+        //Validate affiliate code
+        $this->validate([
+            "affiliate.$sellerId" => [
+                'required',
+                'string',
+                'min:10',
+                'max:15',
+                Rule::exists('affiliates', 'affiliate_code')
+                    ->where(function ($query) use ($sellerId) {
+                        $query->where('store_id', $sellerId);
+                    }),
+            ],
+        ]);
+
+        $affiliateInfo = Affiliate::where('affiliate_code', $this->affiliate[$sellerId])->first();
+
+        if($affiliateInfo){
+            foreach($this->checkedOutSellers as $key => $checkedOutSeller){
+                if($checkedOutSeller['seller']->id == $sellerId){
+                    $originalTotal = $checkedOutSeller['total'];
+                    $discount = $originalTotal * $this->discountRate; // 5% discount
+                    $newTotal = $originalTotal - $discount;
+
+                    // Store both the original total and the discounted total
+                    $this->checkedOutSellers[$key]['original_total'] = $originalTotal;
+                    $this->checkedOutSellers[$key]['discount'] = $discount;
+                    $this->checkedOutSellers[$key]['total'] = $newTotal;
+
+                    $this->merchandiseTotal = $this->getMerchandiseTotal();
+                    $this->dispatch('totalUpdated');
+                }
+            }
+        }
     }
 
     public function checkCodePerStore(){
@@ -101,7 +139,7 @@ class CheckoutPageContent extends Component
         foreach($this->checkedOutSellers as $checkedOutSeller){
             $seller = $checkedOutSeller['seller'];
             $products = $checkedOutSeller['products'];
-            $total = $checkedOutSeller['total'];
+            $total = $checkedOutSeller['total'] + $this->shippingTotal;
             $shippingInformation = $this->shippingInformation[0];
 
             $commission = 0;
@@ -204,7 +242,7 @@ class CheckoutPageContent extends Component
     public function getMerchandiseTotal(){
         $total = 0;
 
-        foreach(CartItem::groupBySellerCheckout() as $item){
+        foreach($this->checkedOutSellers as $item){
             $total += $item['total'];
         }
 

@@ -224,8 +224,20 @@ $storeRegistration = new StoreRegistration();
                     return actions.order.capture().then(function(details){
                         Livewire.dispatch('payment-completed', { status: details.status });
                     })
-                }
-            }).render('#paypal-button-container');
+                },
+                // onClick: function(){
+                //     alert('fdsf');
+                // }
+            }).render('#paypal-button-container').then(() => {
+                // Disable the button after rendering
+                document.querySelector('#paypal-button-container').style.pointerEvents = 'none';
+                document.querySelector('#paypal-button-container').style.opacity = '0.5'; 
+            });
+
+            Livewire.on('enable-paypal-button', function() {
+                document.querySelector('#paypal-button-container').style.pointerEvents = 'auto';
+                document.querySelector('#paypal-button-container').style.opacity = '1'; 
+            });
         });
     </script>
 </body>
