@@ -15,6 +15,10 @@ class AffiliateDashboardModal extends Component
     public $lastWeekCommissioned = 0;
     public $thisMonthCommissioned = 0;
 
+    protected $listeners = [
+        'refresh-affiliate-tables' => '$refresh'
+    ];
+
     public function retrieve_commissions(){
         $affiliates = Affiliate::where('promoter_id', Auth::id())->get();
 

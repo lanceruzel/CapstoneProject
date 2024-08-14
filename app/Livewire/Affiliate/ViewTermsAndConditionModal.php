@@ -66,6 +66,8 @@ class ViewTermsAndConditionModal extends Component
         $this->affiliate->status = Status::Active;
         UserNotif::sendNotif($this->affiliate->store_id, 'Promoter ' . $this->affiliate->user->name() . ' have accepted your affiliate invitation.' , NotificationType::Affiliate);
         $this->saveAffiliate();
+
+        $this->dispatch('refresh-affiliate-tables');
     }
 
     public function decline(){
