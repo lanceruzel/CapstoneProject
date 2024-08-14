@@ -42,7 +42,11 @@
                                     </td>
 
                                     <td class="py-3">
-                                        <x-maskable class="w-[100px]" label="" icon="truck" mask="####" wire:model="variations.{{ $key }}.stocks" shadowless />
+                                        @if($productUpdate)
+                                            <x-maskable disabled class="w-[100px]" label="" icon="truck" mask="####" wire:model="variations.{{ $key }}.stocks" shadowless />
+                                        @else
+                                            <x-maskable class="w-[100px]" label="" icon="truck" mask="####" wire:model="variations.{{ $key }}.stocks" shadowless />
+                                        @endif
                                     </td>
 
                                     <td class="py-3">
