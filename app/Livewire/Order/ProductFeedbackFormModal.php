@@ -97,7 +97,7 @@ class ProductFeedbackFormModal extends Component
             }
         }
 
-        return $inputText;
+        return $inputText == '' ? $value : $inputText;
     }
 
     public function render()
