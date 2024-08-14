@@ -60,7 +60,10 @@
             <div class="md:hidden space-x-2">
                 <x-mini-button rounded icon="bell" flat gray uk-toggle="target: #notification-slide" />
                 <x-mini-button rounded icon="chat-bubble-bottom-center-text" href="{{ route('message') }}" flat gray />
-                <x-mini-button rounded icon="shopping-cart" href="{{ route('cart') }}" flat gray />
+
+                @if(auth()->user()->role != App\Enums\UserType::Store)
+                    <x-mini-button rounded icon="shopping-cart" href="{{ route('cart') }}" flat gray />
+                @endif
             </div>
         </div>
     </nav>
@@ -93,13 +96,15 @@
                     @endif
                 </li>
 
-                <li>
-                    @if(request()->routeIS('cart'))
-                        <x-button class='!justify-start font-medium' xl icon='shopping-cart' href="{{ route('cart') }}" solid flat full secondary label="My Cart" />
-                    @else
-                        <x-button class='!justify-start font-medium' xl icon='shopping-cart' href="{{ route('cart') }}" flat full secondary label="My Cart" /> 
-                    @endif
-                </li>
+                @if(auth()->user()->role != App\Enums\UserType::Store)
+                    <li>
+                        @if(request()->routeIS('cart'))
+                            <x-button class='!justify-start font-medium' xl icon='shopping-cart' href="{{ route('cart') }}" solid flat full secondary label="My Cart" />
+                        @else
+                            <x-button class='!justify-start font-medium' xl icon='shopping-cart' href="{{ route('cart') }}" flat full secondary label="My Cart" /> 
+                        @endif
+                    </li>
+                @endif
 
                 <li>
                     @if(request()->routeIS('message'))
