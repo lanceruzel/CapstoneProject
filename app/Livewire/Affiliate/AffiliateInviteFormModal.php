@@ -53,6 +53,7 @@ class AffiliateInviteFormModal extends Component
                 ]);
 
                 $this->dispatch('close-modal', ['modal' => 'affiliateInviteFormModal']);
+                $this->dispatch('refresh-affiliate-tables');
             }
         }else{
             $this->notification()->send([
