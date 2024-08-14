@@ -22,7 +22,10 @@
                     </x-radio>   
                 @endforeach
             @else
-                <p>Empty</p>
+                <div class="flex flex-col items-center justify-center">
+                    <h1 class="text-2xl font-semibold">No saved address found</h1>
+                    <img class="h-[400px]" src="{{ asset('assets/svg/no-data-2.svg') }}" alt="No data found"/>
+                </div>
             @endif
         </div>
 

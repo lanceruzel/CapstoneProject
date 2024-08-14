@@ -53,11 +53,10 @@
                     </div>
                 @endforeach
             @else
-                <tr>
-                    <td colspan="8" class="text-center px-6 py-4 bg-gray-50">
-                        No products found.
-                    </td>
-                </tr>
+                <div class="flex flex-col items-center justify-center mt-5">
+                    <h1 class="text-2xl font-semibold">No products found</h1>
+                    <img class="h-[400px]" src="{{ asset('assets/svg/no-data-2.svg') }}" alt="No data found"/>
+                </div>
             @endif
         </div>
     </div>
@@ -118,7 +117,7 @@
                 </tr>
     
                 {{-- <tr>
-                    <td class="text-end">Tax Total:</td>
+                    <td class="text-end">Affiliate Discount:</td>
                     <td>₱3232 (2%)</td>
                 </tr> --}}
     
