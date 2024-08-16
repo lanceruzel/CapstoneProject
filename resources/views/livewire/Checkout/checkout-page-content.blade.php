@@ -25,125 +25,95 @@
         </div>
     </div>
     
-    <!-- Orders -->
-    <div class="w-full bg-white p-5 rounded-lg shadow mt-3" x-on:totalUpdated="$refresh">
-        <div class="space-y-3">
-            <p class="font-semibold text-lg">Order Summary</p>
-            @if(count($checkedOutSellers))
-                @foreach($checkedOutSellers as $seller => $checkedOutSeller)
-                    <div class="w-full mt-4 overflow-auto px-3">
-                        <div class="border-b p-3 text-lg flex items-center gap-2">
-                            <a href="{{ route('profile', $checkedOutSeller['seller']->username) }}" class="font-semibold">{{ $seller }}</a>
-    
-                            <x-icon name="chevron-right" class="w-5 h-5" />
-                        </div>
-    
-                        <table class="w-full">
-                            <tbody class="divide-y">
-                                @foreach ($checkedOutSeller['products'] as $key => $product)
-                                    <livewire:Checkout.order-checkout-container :order="$product" :id="$product->id" wire:key="{{ $key }}-checkout-{{ $product->id }}">
-                                @endforeach
-                            </tbody>
-                        </table>
-                    </div>
-
-                    <div class="flex items-end justify-center flex-col">
-                        <p class="pb-3 font-medium">
-                            Total: @isset($checkedOutSeller['original_total']) 
-                                        <span class="line-through">${{ number_format($checkedOutSeller['original_total'], 2) }}</span> 
-                                    @endisset 
-                                ${{ number_format($checkedOutSeller['total'], 2) }}
-                        </p>
-
-                        <div class="flex items-center justify-center gap-3">
-                            <x-input placeholder="Apply affiliate code" class="!w-[200px]" shadowless wire:model="affiliate.{{ $checkedOutSeller['seller']->id }}" />
-
-                            @if(isset($checkedOutSeller['original_total']))
-                                <x-button label="Applied" disabled />
-                            @else
-                                <x-button wire:loading.attr="disabled" wire:click="applyAffiliate('{{ $checkedOutSeller['seller']->id }}')" label="Apply" />
-                            @endif
-                        </div>
-                    </div>
-                @endforeach
-            @else
-                <div class="flex flex-col items-center justify-center mt-5">
-                    <h1 class="text-2xl font-semibold">No products found</h1>
-                    <img class="h-[400px]" src="{{ asset('assets/svg/no-data-2.svg') }}" alt="No data found"/>
-                </div>
-            @endif
-        </div>
-    </div>
-    
-    <!-- Payment -->
-    {{-- <div class="w-full bg-white p-5 rounded-lg shadow mt-3">
-        <div class="space-y-3">
-            <div>
-                <p class="font-semibold text-lg">Payment Method</p>
-            </div>
-    
-            <div class="flex flex-row gap-3 flex-wrap max-md:justify-center">
-                <div class="border-2 p-5 rounded-lg cursor-pointer hover:bg-slate-50 active:scale-95 transition-all">
-                    <div class="flex items-center justify-center gap-1">
-                        <span>
-                            <i class="ri-cash-line ri-lg"></i>
-                        </span>
+    <div class="grid grid-cols-12 gap-3">
+        <!-- Orders -->
+        <div class="col-span-12 lg:col-span-8 bg-white p-5 rounded-lg shadow mt-3" x-on:totalUpdated="$refresh">
+            <div class="space-y-3">
+                <p class="font-semibold text-lg">Order Summary</p>
+                @if(count($checkedOutSellers))
+                    @foreach($checkedOutSellers as $seller => $checkedOutSeller)
+                        <div class="w-full mt-4 overflow-auto px-3">
+                            <div class="border-b p-3 text-lg flex items-center gap-2">
+                                <a href="{{ route('profile', $checkedOutSeller['seller']->username) }}" class="font-semibold">{{ $seller }}</a>
         
-                        <p class="text-sm font-semibold">Cash on delivery</p>
+                                <x-icon name="chevron-right" class="w-5 h-5" />
+                            </div>
+        
+                            <table class="w-full">
+                                <tbody class="divide-y">
+                                    @foreach ($checkedOutSeller['products'] as $key => $product)
+                                        <livewire:Checkout.order-checkout-container :order="$product" :id="$product->id" wire:key="{{ $key }}-checkout-{{ $product->id }}">
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="flex items-end justify-center flex-col">
+                            <p class="pb-3 font-medium">
+                                Total: @isset($checkedOutSeller['original_total']) 
+                                            <span class="line-through">${{ number_format($checkedOutSeller['original_total'], 2) }}</span> 
+                                        @endisset 
+                                    ${{ number_format($checkedOutSeller['total'], 2) }}
+                            </p>
+
+                            <div class="flex items-center justify-center gap-3">
+                                @if(isset($checkedOutSeller['original_total']))
+                                    <x-input disabled placeholder="Apply affiliate code" class="!w-[200px]" shadowless wire:model="affiliate.{{ $checkedOutSeller['seller']->id }}" />
+                                @else
+                                    <x-input placeholder="Apply affiliate code" class="!w-[200px]" shadowless wire:model="affiliate.{{ $checkedOutSeller['seller']->id }}" />
+                                @endif
+
+                                @if(isset($checkedOutSeller['original_total']))
+                                    <x-button label="Applied" disabled />
+                                @else
+                                    <x-button wire:loading.attr="disabled" wire:click="applyAffiliate('{{ $checkedOutSeller['seller']->id }}')" label="Apply" />
+                                @endif
+                            </div>
+                        </div>
+                    @endforeach
+                @else
+                    <div class="flex flex-col items-center justify-center mt-5">
+                        <h1 class="text-2xl font-semibold">No products found</h1>
+                        <img class="h-[400px]" src="{{ asset('assets/svg/no-data-2.svg') }}" alt="No data found"/>
                     </div>
-                </div>
-    
-                <div class="border-2 p-5 rounded-lg cursor-pointer hover:bg-slate-50 active:scale-95 transition-all">
-                    <div class="flex items-center justify-center gap-1">
-                        <span>
-                            <i class="ri-paypal-line ri-lg"></i>
-                        </span>
-    
-                        <p class="text-sm font-semibold">Paypal</p>
-                    </div>
-                </div>
-    
+                @endif
+            </div>
+        </div>
+
+        <!-- Order Summary -->
+        <div class="col-span-12 lg:col-span-4 bg-white p-5 rounded-lg shadow space-y-3 flex flex-col items-center justify-center mt-3" x-on:totalUpdated="$refresh">
+            <table class="border-separate border-spacing-3">
+                <tbody>
+                    <tr>
+                        <td class="text-end">Subtotal:</td>
+                        <td>${{ number_format($merchandiseTotal, 2) }}</td>
+                    </tr>
+        
+                    {{-- <tr>
+                        <td class="text-end">Affiliate Discount:</td>
+                        <td>₱3232 (2%)</td>
+                    </tr> --}}
+        
+                    <tr>
+                        <td class="text-end">Shipping Total:</td>
+                        <td>${{ $shippingTotal }}</td>
+                    </tr>
+        
+                    <tr>
+                        <td class="text-end">Total Payment:</td>
+                        <td class="text-xl font-semibold">${{ number_format($merchandiseTotal + $shippingTotal, 2) }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        
+            <div class="flex gap-3 flex-col">
+                <x-button class="!px-10 w-full" wire:loading.attr="disabled" wire:click='placeOrder' label="Place Order | Cash On Delivery" />
+                
                 <div wire:ignore>
                     <div id="paypal-button-container"></div>
                     <p id="result-message"></p>
                 </div>
             </div>
         </div>
-    </div>  --}}
-
-    <!-- Order Summary -->
-    <div class="w-full bg-white p-5 rounded-lg shadow space-y-3 flex flex-col items-center justify-center mt-3" x-on:totalUpdated="$refresh">
-        <table class="border-separate border-spacing-3">
-            <tbody>
-                <tr>
-                    <td class="text-end">Merchandise Subtotal:</td>
-                    <td>${{ number_format($merchandiseTotal, 2) }}</td>
-                </tr>
-    
-                {{-- <tr>
-                    <td class="text-end">Affiliate Discount:</td>
-                    <td>₱3232 (2%)</td>
-                </tr> --}}
-    
-                <tr>
-                    <td class="text-end">Shipping Total:</td>
-                    <td>${{ $shippingTotal }}</td>
-                </tr>
-    
-                <tr>
-                    <td class="text-end">Total Payment:</td>
-                    <td class="text-xl font-semibold">${{ number_format($merchandiseTotal + $shippingTotal, 2) }}</td>
-                </tr>
-            </tbody>
-        </table>
-    
-        <div class="flex gap-3 flex-col">
-            <x-button class="!px-10 w-full" wire:loading.attr="disabled" wire:click='placeOrder' label="Place Order | Cash On Delivery" />
-            
-            <div wire:ignore>
-                <div id="paypal-button-container"></div>
-                <p id="result-message"></p>
-            </div>
-        </div>
-    </div> 
+    </div>
 </div>

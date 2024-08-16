@@ -5,8 +5,8 @@
         </div>
     </td>
 
-    <td class="py-4 align-top">
-        <div class="flex flex-col items-start justify-start pt-1 min-w-[300px] max-w-[300px]">
+    <td class="py-4 align-top w-full">
+        <div class="flex flex-col items-start justify-start pt-1">
             <p class="font-semibold break-words">
                 {{ $order->product->name }}
             </p>
@@ -17,7 +17,7 @@
         </div>
     </td>
 
-    <td class="px-3 py-4 text-center min-w-[150px] max-w-[150px]">${{ number_format($order->getTotal(), 2) }}</td>
+    <td class="px-3 py-4 text-center min-w-[80px] max-w-[80px]">${{ number_format($order->getTotal(), 2) }}</td>
 
-    <td class="px-6 py-4">x {{ $order->quantity }}</td>
+    <td class="px-6 py-4 text-center min-w-[80px] max-w-[80px]">x {{ $order->quantity }}</td>
 </tr>
