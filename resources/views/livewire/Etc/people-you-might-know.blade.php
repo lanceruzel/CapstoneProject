@@ -4,7 +4,7 @@
     <div class="flex justify-between items-center">
         <h3 class="font-bold"> People You might know </h3>
         
-        <x-mini-button rounded icon="arrow-path" wire:click='$refresh' spinner outline flat primary interaction:solid />
+        <x-mini-button flat rounded icon="arrow-path" wire:click='$refresh' spinner outline flat primary interaction:solid />
     </div>
 
     <!-- Content -->

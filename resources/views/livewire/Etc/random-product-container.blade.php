@@ -3,7 +3,7 @@
     <div class="flex justify-between text-black dark:text-white">
         <h3 class="font-bold text-base">Products you might want</h3>
 
-        <x-mini-button rounded icon="arrow-path" wire:click='$refresh' spinner outline flat primary interaction:solid />
+        <x-mini-button flat rounded icon="arrow-path" wire:click='$refresh' spinner outline flat primary interaction:solid />
     </div>
 
     <div class="relative capitalize font-medium text-sm text-center mt-4 mb-2 uk-slider" tabindex="-1" uk-slider="autoplay: true;finite: true">
@@ -15,7 +15,7 @@
                 @if(count($products) > 0)
                     @foreach ($products as $product)
                         <li class="w-1/2 pr-2" tabindex="-1">
-                            <div uk-toggle="target: #view-product" wire:click="$dispatch('view-product-info', { id: {{ $product->id }}, feedback: true })">
+                            <div class="cursor-pointer" onclick="$openModal('productViewModal')" wire:click="$dispatch('view-product-info', { id: {{ $product->id }} })">
                                 <div class="relative overflow-hidden rounded-lg">
                                     <div class="relative w-full md:h-40 h-full">
                                         <img src="{{ asset('uploads/products') . '/' . json_decode($product->images)[0] }}" alt="" class="object-cover w-full h-full inset-0">

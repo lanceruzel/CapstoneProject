@@ -59,7 +59,7 @@
                         {{ $product->priceRange() }}
                     </p>
             
-                    <div class="line-clamp-4 text-wrap"> {!! $product->description !!} </div>
+                    <div class="text-wrap min-h-[250px] max-h-[250px] overflow-hidden overflow-y-auto"> {!! $product->description !!} </div>
     
                     <div class="flex max-lg:justify-center lg:justify-end items-center gap-3">
                         @if(auth()->user()->role != UserType::Store)

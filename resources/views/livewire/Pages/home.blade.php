@@ -39,7 +39,7 @@
         
     
         <!-- Rightbar -->
-        <div class="lg:max-w-[370px] max-md:max-w-[510px] max-sm:px-7" style="z-index: 0">
+        <div class="min-w-[370px] lg:max-w-[370px] max-md:max-w-[510px] max-sm:px-7" style="z-index: 0">
             <div class="space-y-5 uk-sticky" uk-sticky="end: #js-oversized; offset: 40; media:992;">
                 <livewire:Etc.people-you-might-know />
                 <livewire:Etc.random-product-container />
@@ -48,5 +48,6 @@
     </div>
 
     <livewire:Posting.post-form-modal />
+    <livewire:Product.product-view-modal />
     <livewire:Livestream.livestream-form-modal />
 </x-layouts.main-layout>
