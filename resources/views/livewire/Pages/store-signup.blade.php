@@ -15,7 +15,7 @@
     
     <main class="w-screen h-screen grid grid-cols-12">
         <div class="max-lg:hidden lg:col-span-7 xl:col-span-6 overflow-hidden flex items-start justify-center">
-            <img src="{{ asset('assets/svg/7010830_3326653.svg') }}" alt="Traveling-cuate"/>
+            <img src="{{ asset('assets/svg/Thrift shop-amico.svg') }}" alt="Traveling-cuate"/>
         </div>
 
         <div class="col-span-12 lg:col-span-5 xl:col-span-6 relative">

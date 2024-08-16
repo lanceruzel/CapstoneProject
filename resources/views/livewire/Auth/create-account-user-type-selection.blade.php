@@ -3,15 +3,10 @@
         
         <h1 class="text-2xl font-semibold">What are you?</h1>
 
-        <div class="flex gap-5">
-            <x-radio name="account" label="Travelpreneur" wire:model="userType" value="{{ App\Enums\UserType::Travelpreneur }}" />
-            <x-radio name="account" label="Store Owner" wire:model="userType" value="{{ App\Enums\UserType::Store }}" />
-        </div>
-        
-        <x-slot name="footer" class="flex justify-end gap-x-4">
-            <x-button flat label="Cancel" x-on:click="close" />
+        <x-button flat black label="I am a traveller that sells product from other country" href="{{ route('signup', App\Enums\UserType::Travelpreneur) }}" />
 
-            <x-button wire:loading.attr="disabled" wire:click="proceed" spinner="proceed" label="Proceed" />
-        </x-slot>
+        <p class="text-sm">or</p>
+
+        <x-button flat black label="I am a store owner" href="{{ route('store-signup', App\Enums\UserType::Travelpreneur) }}" />
     </div>
 </x-modal-card>
