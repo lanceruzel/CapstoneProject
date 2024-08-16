@@ -38,13 +38,33 @@
                 
                         <div class="flex flex-col justify-center gap-3 mt-5">
 
-                            <!-- Total Post -->
-                            <div class="text-center leading-snug">
-                                <p class="p-0 m-0">Posts</p>
-                                
-                                <h3 class="p-0 m-0 sm:text-xl font-bold text-black dark:text-white text-center">
-                                    {{ count($user->posts) }}
-                                </h3>
+                            <div class="flex items-center justify-center gap-5">
+                                <!-- Total Post -->
+                                <div class="text-center leading-snug">
+                                    <p class="p-0 m-0">Posts</p>
+                                    
+                                    <h3 class="p-0 m-0 sm:text-xl font-bold text-black dark:text-white text-center">
+                                        {{ count($user->posts) }}
+                                    </h3>
+                                </div>
+
+                                <!-- Total Comments -->
+                                <div class="text-center leading-snug">
+                                    <p class="p-0 m-0">Comments</p>
+                                    
+                                    <h3 class="p-0 m-0 sm:text-xl font-bold text-black dark:text-white text-center">
+                                        {{ $user->getTotalPostCommentsReceived() }}
+                                    </h3>
+                                </div>
+
+                                <!-- Total Likes -->
+                                <div class="text-center leading-snug">
+                                    <p class="p-0 m-0">Likes</p>
+                                    
+                                    <h3 class="p-0 m-0 sm:text-xl font-bold text-black dark:text-white text-center">
+                                        {{ $user->getTotalPostLikesReceived() }}
+                                    </h3>
+                                </div>
                             </div>
 
                             <!-- Options -->

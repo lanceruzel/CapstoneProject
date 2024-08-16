@@ -194,6 +194,26 @@ class User extends Authenticatable
 
         return $totalRating;
     }
+
+    public function getTotalPostLikesReceived(){
+        $total = 0;
+
+        foreach($this->posts as $post){
+            $total += count($post->postLikes);
+        }
+
+        return $total;
+    }
+
+    public function getTotalPostCommentsReceived(){
+        $total = 0;
+
+        foreach($this->posts as $post){
+            $total += count($post->postComments);
+        }
+
+        return $total;
+    }
 }
 
 
