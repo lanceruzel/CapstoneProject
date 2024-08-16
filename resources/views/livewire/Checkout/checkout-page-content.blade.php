@@ -25,9 +25,9 @@
         </div>
     </div>
     
-    <div class="grid grid-cols-12 gap-3">
+    <div class="grid grid-cols-12 gap-3" x-on:totalUpdated="$refresh">
         <!-- Orders -->
-        <div class="col-span-12 lg:col-span-8 bg-white p-5 rounded-lg shadow mt-3" x-on:totalUpdated="$refresh">
+        <div class="col-span-12 lg:col-span-8 bg-white p-5 rounded-lg shadow mt-3">
             <div class="space-y-3">
                 <p class="font-semibold text-lg">Order Summary</p>
                 @if(count($checkedOutSellers))
@@ -81,7 +81,7 @@
         </div>
 
         <!-- Order Summary -->
-        <div class="col-span-12 lg:col-span-4 bg-white p-5 rounded-lg shadow space-y-3 flex flex-col items-center justify-center mt-3" x-on:totalUpdated="$refresh">
+        <div class="col-span-12 lg:col-span-4 bg-white p-5 rounded-lg shadow space-y-3 flex flex-col items-center justify-center mt-3">
             <table class="border-separate border-spacing-3">
                 <tbody>
                     <tr>
