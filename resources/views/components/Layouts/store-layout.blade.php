@@ -101,6 +101,14 @@
                         <x-button class='!justify-start font-medium' icon='folder' href="{{ route('store.order-management') }}" flat full secondary label="Order Management" /> 
                     @endif
                 </li>
+
+                <li>
+                    @if(request()->routeIS('store.ordered-products'))
+                        <x-button class='!justify-start font-medium' icon='folder' href="{{ route('store.ordered-products') }}" solid flat full secondary label="Ordered Products" />
+                    @else
+                        <x-button class='!justify-start font-medium' icon='folder' href="{{ route('store.ordered-products') }}" flat full secondary label="Ordered Products" /> 
+                    @endif
+                </li>
             </ul>
 
             <x-button href='/' icon='arrow-left-end-on-rectangle' white label="Go Home" />
