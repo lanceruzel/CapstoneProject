@@ -13,8 +13,7 @@ class OrderedProductsTable extends Component
 {
     use WithPagination;
 
-    // public $filterStatus = [];
-    public $search;
+    public $search = '';
 
     protected $listeners = [
         'refresh-ordered-table' => '$refresh'

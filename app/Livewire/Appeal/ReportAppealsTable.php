@@ -10,6 +10,8 @@ class ReportAppealsTable extends Component
 {
     use WithPagination;
 
+    public $search = '';
+
     protected $listeners = [
         'refresh-report-appeals-table' => '$refresh',
     ];

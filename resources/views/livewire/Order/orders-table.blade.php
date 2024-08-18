@@ -14,15 +14,19 @@
                     </x-dropdown.item>
 
                     <x-dropdown.item>
-                        <x-checkbox label="Available" wire:model.live="filterStatus" :value="App\Enums\Status::Available" />
+                        <x-checkbox label="For Confirmation" wire:model.live="filterStatus" :value="App\Enums\Status::OrderSellerConfirmation" />
                     </x-dropdown.item>
 
                     <x-dropdown.item>
-                        <x-checkbox label="Unavailable" wire:model.live="filterStatus" :value="App\Enums\Status::Unavailable" />
+                        <x-checkbox label="Preparing" wire:model.live="filterStatus" :value="App\Enums\Status::OrderSellerPreparing" />
                     </x-dropdown.item>
 
                     <x-dropdown.item>
-                        <x-checkbox label="Suspended" wire:model.live="filterStatus" :value="App\Enums\Status::Suspended" />
+                        <x-checkbox label="Shipped" wire:model.live="filterStatus" :value="App\Enums\Status::OrderSellerShipped" />
+                    </x-dropdown.item> 
+
+                    <x-dropdown.item>
+                        <x-checkbox label="Cancelled" wire:model.live="filterStatus" :value="App\Enums\Status::OrderSellerCancel" />
                     </x-dropdown.item> 
                 </x-dropdown.header>
             </x-dropdown>

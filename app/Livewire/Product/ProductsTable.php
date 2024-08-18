@@ -13,6 +13,8 @@ class ProductsTable extends Component
 
     public $filterStatus = [];
 
+    public $search = '';
+
     protected $listeners = [
         'refresh-product-table' => '$refresh'
     ];
@@ -21,7 +23,7 @@ class ProductsTable extends Component
         $filter = $this->filterStatus;
 
         if(empty($filter)){
-            return Product::orderBy('id', 'desc')->where('seller_id', Auth::id())->paginate(10);
+            return Product::where('name', 'like', '%' . $this->search . '%')->orderBy('id', 'desc')->where('seller_id', Auth::id())->paginate(10);
         }else{
             return Product::query()
             ->Where(function ($query) use($filter) {
@@ -30,6 +32,7 @@ class ProductsTable extends Component
                 }  
             })
             ->where('seller_id', Auth::id())
+            ->where('name', 'like', '%' . $this->search . '%')
             ->orderBy('id', 'desc')
             ->paginate(10);
         }

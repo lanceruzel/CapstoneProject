@@ -13,11 +13,21 @@ class ProductRegistrationsTable extends Component
 
     public $filterStatus = ['for-review', 'for-resubmission'];
 
+    public $search = '';
+
     public function getProducts(){
         $filter = $this->filterStatus;
 
         if(empty($filter)){
-            return Product::orderBy('id', 'desc')->paginate(10);
+            return Product::whereHas('seller', function($query){
+                $query->whereHas('userinformation', function($query){
+                    $query->where('first_name', 'like', '%' . $this->search . '%')
+                    ->orWhere('last_name', 'like', '%' . $this->search . '%');
+                });
+            })
+            ->where('name', 'like', '%' . $this->search . '%')
+            ->orderBy('id', 'desc')
+            ->paginate(10);
         }else{
             return Product::query()
             ->Where(function ($query) use($filter) {
@@ -25,6 +35,13 @@ class ProductRegistrationsTable extends Component
                     $query->orwhere('status', 'like',  '%' . $filter[$i] .'%');
                 }  
             })
+            ->whereHas('seller', function($query){
+                $query->whereHas('userinformation', function($query){
+                    $query->where('first_name', 'like', '%' . $this->search . '%')
+                    ->orWhere('last_name', 'like', '%' . $this->search . '%');
+                });
+            })
+            ->orWhere('name', 'like', '%' . $this->search . '%')
             ->orderBy('id', 'desc')
             ->paginate(10);
         }

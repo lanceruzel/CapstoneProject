@@ -14,6 +14,8 @@ class StoreRegistrationsTable extends Component
 
     public $filterStatus = [];
 
+    public $search = '';
+
     protected $listeners = [
         'refreshStoreRegistrationTable' => '$refresh',
     ];
@@ -22,7 +24,7 @@ class StoreRegistrationsTable extends Component
         $filter = $this->filterStatus;
 
         if(empty($filter)){
-            return StoreInformation::orderBy('id', 'desc')->paginate(10);
+            return StoreInformation::where('name', 'like', '%' . $this->search . '%')->orderBy('id', 'desc')->paginate(10);
         }else{
             return StoreInformation::query()
             ->Where(function ($query) use($filter) {
@@ -30,6 +32,7 @@ class StoreRegistrationsTable extends Component
                     $query->orwhere('requirements', 'like',  '%' . $filter[$i] .'%');
                 }  
             })
+            ->where('name', 'like', '%' . $this->search . '%')
             ->orderBy('id', 'desc')
             ->paginate(10);
         }

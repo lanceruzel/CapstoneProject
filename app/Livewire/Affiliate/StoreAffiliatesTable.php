@@ -15,19 +15,34 @@ class StoreAffiliatesTable extends Component
         'refresh-affiliate-tables' => '$refresh'
     ];
 
+    public $search = '';
+
     public $filterStatus = [];
 
     public function getData(){
         $filter = $this->filterStatus;
 
         if(empty($filter)){
-            return Affiliate::where('store_id', Auth::id())->orderBy('id', 'desc')->paginate(10);
+            return Affiliate::whereHas('user', function($query){
+                $query->whereHas('userinformation', function($query){
+                    $query->where('first_name', 'like', '%' . $this->search . '%')
+                    ->orWhere('last_name', 'like', '%' . $this->search . '%');
+                });
+            })
+            ->where('store_id', Auth::id())->orderBy('id', 'desc')
+            ->paginate(10);
         }else{
             return Affiliate::query()
             ->Where(function ($query) use($filter) {
                 for ($i = 0; $i < count($filter); $i++){
                     $query->orwhere('status', 'like',  '%' . $filter[$i] .'%');
                 }  
+            })
+            ->whereHas('user', function($query){
+                $query->whereHas('user_information', function($query){
+                    $query->where('first_name', 'like', '%' . $this->search . '%')
+                    ->orWhere('last_name', 'like', '%' . $this->search . '%');
+                });
             })
             ->where('store_id', Auth::id())
             ->orderBy('id', 'desc')

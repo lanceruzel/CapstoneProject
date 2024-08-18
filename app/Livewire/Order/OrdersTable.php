@@ -13,6 +13,8 @@ class OrdersTable extends Component
 
     public $filterStatus = [];
 
+    public $search = '';
+
     protected $listeners = [
         'refresh-order-table' => '$refresh'
     ];
@@ -21,7 +23,15 @@ class OrdersTable extends Component
         $filter = $this->filterStatus;
 
         if(empty($filter)){
-            return Order::orderBy('id', 'desc')->where('seller_id', Auth::id())->paginate(10);
+            return Order::whereHas('user', function($query){
+                $query->whereHas('userinformation', function($query){
+                    $query->where('first_name', 'like', '%' . $this->search . '%')
+                    ->orWhere('last_name', 'like', '%' . $this->search . '%');
+                });
+            })
+            ->where('seller_id', Auth::id())
+            ->orderBy('id', 'desc')
+            ->paginate(10);
         }else{
             return Order::query()
             ->Where(function ($query) use($filter) {
@@ -30,6 +40,12 @@ class OrdersTable extends Component
                 }  
             })
             ->where('seller_id', Auth::id())
+            ->whereHas('user', function($query){
+                $query->whereHas('userinformation', function($query){
+                    $query->where('first_name', 'like', '%' . $this->search . '%')
+                    ->orWhere('last_name', 'like', '%' . $this->search . '%');
+                });
+            })
             ->orderBy('id', 'desc')
             ->paginate(10);
         }

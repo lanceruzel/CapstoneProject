@@ -3,7 +3,7 @@
         <p class="font-semibold text-xl">Report Appeal lists</p>
 
         <div class="w-60 flex items-center justify-center gap-3">
-            <x-dropdown>
+            {{-- <x-dropdown>
                 <x-slot name="trigger">
                     <x-mini-button rounded icon="funnel" flat gray interaction="gray" />
                 </x-slot>
@@ -25,7 +25,7 @@
                         <x-checkbox label="Suspended" wire:model.live="filterStatus" :value="App\Enums\Status::Suspended" />
                     </x-dropdown.item> 
                 </x-dropdown.header>
-            </x-dropdown>
+            </x-dropdown> --}}
 
             <x-input icon="magnifying-glass" wire:model.live.debounce.200ms="search" placeholder="Search" shadowless />
         </div>
