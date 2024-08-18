@@ -27,7 +27,7 @@
                 <h3 id="hlsStatusHeading"></h3>
 
                 <div class="flex items-center justify-center gap-3">
-                    <x-mini-button id="leaveBtn" negative rounded icon="power" wire:click='leaveConfirmation' />
+                    <x-button label="End live" id="leaveBtn" negative wire:click='leaveConfirmation' />
 
                     <x-mini-button class="hidden" id="openMicBtn" negative rounded icon="microphone" />
                     <x-mini-button id="closeMicBtn" rounded icon="microphone" />
