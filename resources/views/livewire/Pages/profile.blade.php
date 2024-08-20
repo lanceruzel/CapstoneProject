@@ -91,7 +91,7 @@
                 @endif
             </div>
 
-            @if(!empty($user->getTravelledCountry()))
+            @if($user->role != App\Enums\UserType::Store && !empty($user->getTravelledCountry()))
                 <div class="uk-position-relative uk-visible-toggle uk-light flex items-center justify-center flex-col bg-white mt-5 rounded-lg shadow p-5" tabindex="-1" uk-slider="finite: true;">
                     <p class="pb-3 text-lg text-slate-700">My Travels</p>
 
