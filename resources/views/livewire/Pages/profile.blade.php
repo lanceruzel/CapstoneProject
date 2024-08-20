@@ -99,7 +99,7 @@
                         @foreach ($user->getTravelledCountry() as $country)
                             <x-button flat lg label="{{ $country }}" onclick="$openModal('viewTravel')" @click="$dispatch('get-travel-info', { country: '{{ $country }}', userId: {{ $user->id }} })">
                                 <x-slot name="prepend">
-                                    <img src="{{ 'https://flagsapi.com/' . App\Classes\Location::getCountryCode($country) . '/flat/64.png' }}" alt="flag">
+                                    <img width="35" height="35" class="object-fit" src="{{ 'https://flagsapi.com/' . App\Classes\Location::getCountryCode($country) . '/flat/64.png' }}" alt="flag">
                                 </x-slot>
                             </x-button>
                         @endforeach
