@@ -19,9 +19,12 @@ return new class extends Migration
 
             $table->text('content');
             $table->json('images')->nullable();
-
+            
             $table->string('type');
             $table->string('status');
+
+            $table->string('country');
+            $table->boolean('include_compilation');
 
             $table->timestamps();
         });

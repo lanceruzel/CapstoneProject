@@ -16,6 +16,10 @@
                 </div>
 
                 <small class="text-xs font-medium text-gray-600">{{ $this->getDateTimeDiff() }}</small>
+
+                - 
+
+                <small> in {{ $post->country }}</small>
             </div>
         </div>
 
@@ -27,11 +31,11 @@
         @endif
     </div>
 
-    <div class="leading-snug h-auto text-wrap text-ellipsis break-words hyphens-auto mt-3">
+    <div class="ml-2 leading-snug h-auto text-wrap text-ellipsis break-words hyphens-auto mt-3">
         {!! nl2br($post->content) !!}
     </div>
 
-    <div wire:ignore>
+    <div wire:ignore class="mt-3">
         @if(json_decode($post->images) != null)
             @if(count(json_decode($post->images)) === 1)
                 <!-- post image -->
@@ -126,7 +130,7 @@
     <hr>
 
     <div class="flex gap-2 flex-row items-center justify-items-center mt-4">
-        <div class="h-7 min-w-7 rounded-full">
+        <div class="min-w-7 h-7 max-w-7 max-h-7 rounded-full">
             @if(auth()->user()->profilePicture() == null)
                 <img src="https://static.everypixel.com/ep-pixabay/0329/8099/0858/84037/3298099085884037069-head.png" alt="" class="bg-gray-100 w-full h-full object-cover rounded-full">
             @else

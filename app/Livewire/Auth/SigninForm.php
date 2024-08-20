@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Auth;
 
+use App\Classes\Location;
 use App\Enums\UserType;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
@@ -25,6 +26,9 @@ class SigninForm extends Component
     
                 if(auth()->user()->role == UserType::Admin){
                     return redirect()->route('admin.dashboard');
+                }elseif(auth()->user()->role != UserType::Store){
+                    Auth::user()->userInformation->current_country = Location::getLocation();
+                    Auth::user()->userInformation->save();
                 }
 
                 return redirect()->route('home');

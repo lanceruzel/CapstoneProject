@@ -19,6 +19,7 @@ class UserInformation extends Model
         'address',
         'profile_bio',
         'profile_picture',
+        'current_country'
     ];
 
     public function fullName(){

@@ -214,6 +214,18 @@ class User extends Authenticatable
 
         return $total;
     }
+
+    public function getTravelledCountry(){
+        $countries = [];
+
+        foreach($this->posts as $post){
+            if(!in_array($post->country, $countries)){
+                array_push($countries, $post->country);
+            }
+        }
+
+        return $countries;
+    }
 }
 
 

@@ -4,6 +4,8 @@
             <div class="flex flex-col gap-2 w-full">
                 <div class="flex justify-between items-center">
                     <p class="font-semibold">What do you have in mind?</p>
+
+                    <x-checkbox label="Include in compilation" wire:model='isIncluded' />
                 </div>
 
                 <label class="w-full">

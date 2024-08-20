@@ -15,7 +15,8 @@ class Post extends Model
         'images',
         'type',
         'status',
-        'attached_product_id'
+        'country',
+        'include_compilation'
     ];
 
     public function user(){
@@ -28,9 +29,5 @@ class Post extends Model
 
     public function postComments(){
         return $this->hasMany(PostComment::class);
-    }
-
-    public function product(){
-        return $this->belongsTo(Product::class, 'attached_product_id');
     }
 }

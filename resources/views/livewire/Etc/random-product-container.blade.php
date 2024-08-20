@@ -27,7 +27,7 @@
                         </li>
                     @endforeach
                 @else
-                    <div class="flex items-center justify-center">
+                    <div class="flex items-center justify-center text-gray-500 text-xs">
                         There are currently no products available at the moment
                     </div>
                 @endif

@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Posting;
 
+use App\Classes\Location;
 use App\Enums\PostType;
 use App\Enums\Status;
 use App\Events\PostUpdated;
@@ -20,6 +21,7 @@ class PostFormModal extends Component
 
     public $content;
     public $images = [];
+    public $isIncluded = true;
 
     public $postUpdate = null;
 
@@ -35,6 +37,7 @@ class PostFormModal extends Component
             if($this->postUpdate){
                 $this->content = $this->postUpdate->content;
                 $this->images = json_decode($this->postUpdate->images);
+                $this->isIncluded = $this->postUpdate->include_compilation == 1 ? true : false;
             }
         }
     }
@@ -77,7 +80,11 @@ class PostFormModal extends Component
                 ]);
             }
         }catch (\Exception $e){
-            Log::error('Error on store post: ' . $e->getMessage());
+            $this->notification()->send([
+                'icon' => 'error',
+                'title' => 'Error Notification!',
+                'description' => 'Woops, its an error. ' . $e->getMessage(),
+            ]);
         }
     }
 
@@ -102,7 +109,9 @@ class PostFormModal extends Component
                 'type' => $postType,
                 'content' => $validated['content'],
                 'images' => json_encode($this->storeImages($this->images)),
-                'status' => Status::Available
+                'status' => Status::Available,
+                'country' => Location::getLocation(),
+                'include_compilation' => $this->isIncluded
             ]
         );      
     }

@@ -1,7 +1,7 @@
 <x-layouts.main-layout>
     <div class="w-full" x-data="{ tabSelected: 1 }">
         <div class="w-full max-w-[1000px] mx-auto px-3 h-full">
-            <div class="w-full border-2 bg-white rounded-lg relative">
+            <div class="w-full bg-white rounded-lg relative shadow">
                 @if($user->id == Auth::id())
                     <x-mini-button class="absolute top-2 right-2" rounded icon="cog-6-tooth" flat gray wire:click="$dispatch('getProfileData')" onclick="$openModal('editProfileFormModal')" />
                 @endif
@@ -36,7 +36,13 @@
                             @endif
                         </p>
                 
-                        <div class="flex flex-col justify-center gap-3 mt-5">
+                        <div class="flex flex-col items-center justify-center gap-3 mt-5">
+
+                            @if($user->role != App\Enums\UserType::Store)
+                                <div class="pb-2">
+                                    <p>Currently in <span class="font-semibold">{{ $user->userInformation->current_country }}</span></p>
+                                </div>
+                            @endif
 
                             <div class="flex items-center justify-center gap-5">
                                 <!-- Total Post -->
@@ -85,6 +91,25 @@
                 @endif
             </div>
 
+            @if(!empty($user->getTravelledCountry()))
+                <div class="uk-position-relative uk-visible-toggle uk-light flex items-center justify-center flex-col bg-white mt-5 rounded-lg shadow p-5" tabindex="-1" uk-slider="finite: true;">
+                    <p class="pb-3 text-lg text-slate-700">My Travels</p>
+
+                    <div class="uk-slider-items uk-width-auto">
+                        @foreach ($user->getTravelledCountry() as $country)
+                            <x-button flat lg label="{{ $country }}" onclick="$openModal('viewTravel')" @click="$dispatch('get-travel-info', { country: '{{ $country }}', userId: {{ $user->id }} })">
+                                <x-slot name="prepend">
+                                    <img src="{{ 'https://flagsapi.com/' . App\Classes\Location::getCountryCode($country) . '/flat/64.png' }}" alt="flag">
+                                </x-slot>
+                            </x-button>
+                        @endforeach
+                    </div>
+
+                    <a class="uk-position-center-left uk-position-small uk-hidden-hover" href uk-slidenav-previous uk-slider-item="previous"></a>
+                    <a class="uk-position-center-right uk-position-small uk-hidden-hover" href uk-slidenav-next uk-slider-item="next"></a>
+                </div>
+            @endif
+
             <!-- Content -->
             <div class="w-full flex flex-col items-center justify-center">
                 <div x-show='tabSelected == 1' x-cloak x-transition class="w-[510px] max-w-[510px] min-h-screen rounded-lg max-sm:px-7 space-y-5 mt-5"> <!-- Posts -->
@@ -93,10 +118,6 @@
                     
                         <i class="py-1 px-2 text-xl bg-blue-200 text-blue-800 rounded-lg">
                             <x-icon name="photo" class="w-full h-full" />
-                        </i>
-        
-                        <i class="py-1 px-2 text-xl bg-rose-200 text-rose-800 rounded-lg">
-                            <x-icon name="video-camera" class="w-full h-full" />
                         </i>
                     </div>
         
@@ -125,4 +146,5 @@
 
     <livewire:Posting.post-form-modal />
     <livewire:Profile.edit-profile-form-modal />
-</x-layouts.main-layout>
+    <livewire:TravelProfile.view-travel-modal />
+</x-layouts.main-layout>    
