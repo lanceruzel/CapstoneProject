@@ -1,4 +1,4 @@
-<div class="bg-white rounded-xl shadow-sm p-5 px-6 border1 dark:bg-dark2">
+<div class="bg-white rounded-xl shadow-sm p-5 px-6 border1 dark:bg-dark2 border">
                     
     <div class="flex justify-between text-black dark:text-white">
         <h3 class="font-bold text-base">Products you might want</h3>
@@ -15,7 +15,7 @@
                 @if(count($products) > 0)
                     @foreach ($products as $product)
                         <li class="w-1/2 pr-2" tabindex="-1">
-                            <div class="cursor-pointer" onclick="$openModal('productViewModal')" wire:click="$dispatch('view-product-info', { id: {{ $product->id }} })">
+                            <div class="border p-2 rounded cursor-pointer" onclick="$openModal('productViewModal')" wire:click="$dispatch('view-product-info', { id: {{ $product->id }} })">
                                 <div class="relative overflow-hidden rounded-lg">
                                     <div class="relative w-full md:h-40 h-full">
                                         <img src="{{ asset('uploads/products') . '/' . json_decode($product->images)[0] }}" alt="" class="object-cover w-full h-full inset-0">

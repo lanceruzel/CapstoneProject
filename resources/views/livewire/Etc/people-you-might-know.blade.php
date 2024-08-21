@@ -1,4 +1,4 @@
-<div class="bg-white rounded-xl shadow-sm p-5 px-6">
+<div class="bg-white rounded-xl shadow-sm p-5 px-6 border">
 
     <!-- Header -->
     <div class="flex justify-between items-center">
