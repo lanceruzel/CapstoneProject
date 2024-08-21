@@ -15,7 +15,7 @@
                     <a href="{{ route('profile', $livestream->user->username) }}" class="hover:text-gray-700 hover:no-underline py-0 font-medium">{{ $livestream->user->name() }}</a>
                 </div>
 
-                <small class="text-xs font-medium text-gray-600">{{ $this->getDateTimeDiff() }}</small>
+                <small class="text-xs font-medium text-gray-600">{{ App\Classes\CustomDateTimeFormat::formatAgo($livestream->created_at) }}</small>
             </div>
         </div>
 

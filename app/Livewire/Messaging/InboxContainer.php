@@ -21,29 +21,6 @@ class InboxContainer extends Component
         $this->userID = Auth::id();
     }
 
-    public function getDateTimeDiff($datetime){
-        $seconds_ago = (time() - strtotime($datetime));
-        $dateTimeDisplay = '';
-
-        if ($seconds_ago >= 31536000) {
-            $dateTimeDisplay = intval($seconds_ago / 31536000) . " years ago";
-        } elseif ($seconds_ago >= 2419200) {
-            $dateTimeDisplay = intval($seconds_ago / 2419200) . " months ago";
-        } elseif ($seconds_ago >= 86400) {
-            $dateTimeDisplay = intval($seconds_ago / 86400) . " days ago";
-        } elseif ($seconds_ago >= 3600) {
-            $dateTimeDisplay = intval($seconds_ago / 3600) . " hours ago";
-        } elseif ($seconds_ago >= 120) {
-            $dateTimeDisplay = intval($seconds_ago / 60) . " minutes ago";
-        } elseif ($seconds_ago >= 60) {
-            $dateTimeDisplay = "1 minute ago";
-        } else {
-            $dateTimeDisplay = "Less than a minute ago";
-        }
-
-        return $dateTimeDisplay;
-    }
-
     public function getConversations(){
         return Conversation::where(function($query) {
             $query->where('user_1', '<>', 1)

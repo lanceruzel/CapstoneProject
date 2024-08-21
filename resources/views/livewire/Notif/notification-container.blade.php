@@ -1,24 +1,5 @@
 <?php
-use App\Enums\NotificationType;
-
-$seconds_ago = (time() - strtotime($notification->created_at));
-        $dateTimeDisplay = '';
-
-        if ($seconds_ago >= 31536000) {
-            $dateTimeDisplay = intval($seconds_ago / 31536000) . " years ago";
-        } elseif ($seconds_ago >= 2419200) {
-            $dateTimeDisplay = intval($seconds_ago / 2419200) . " months ago";
-        } elseif ($seconds_ago >= 86400) {
-            $dateTimeDisplay = intval($seconds_ago / 86400) . " days ago";
-        } elseif ($seconds_ago >= 3600) {
-            $dateTimeDisplay = intval($seconds_ago / 3600) . " hours ago";
-        } elseif ($seconds_ago >= 120) {
-            $dateTimeDisplay = intval($seconds_ago / 60) . " minutes ago";
-        } elseif ($seconds_ago >= 60) {
-            $dateTimeDisplay = "1 minute ago";
-        } else {
-            $dateTimeDisplay = "Less than a minute ago";
-        }
+    use App\Enums\NotificationType;
 ?>
 <div class="w-full p-3 flex items-start justify-start flex-row gap-2 @if($notification->status == 'unread') bg-gray-502 @endif">
     <div>
@@ -61,7 +42,7 @@ $seconds_ago = (time() - strtotime($notification->created_at));
         </div>
 
         <div class="text-sm text-gray-500">
-            {{ $dateTimeDisplay }}
+            {{ App\Classes\CustomDateTimeFormat::formatAgo($notification->created_at) }}
         </div>
     </div>
 </div>

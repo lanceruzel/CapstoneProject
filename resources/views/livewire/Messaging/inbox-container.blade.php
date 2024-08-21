@@ -70,7 +70,7 @@
                                 <div class="mr-auto text-sm text-black dark:text-white font-medium">{{ $convo->user2->role == App\Enums\UserType::Store ? $convo->user2->storeInformation->name : $convo->user2->userInformation->fullname() }}</div>
                             @endif
                             
-                            <div class="text-xs font-light text-gray-500 dark:text-white/70">{{ $convo->last_message_id ? $this->getDateTimeDiff($convo->lastMessage->updated_at) : null }}</div> 
+                            <div class="text-xs font-light text-gray-500 dark:text-white/70">{{ $convo->last_message_id ? App\Classes\CustomDateTimeFormat::formatAgo($convo->lastMessage->updated_at) : null }}</div> 
                         </div>
 
                         <!-- Last Chat Preview -->

@@ -16,7 +16,7 @@
                     <div class="px-4 py-2 rounded-[20px] max-w-sm bg-gradient-to-tr from-sky-500 to-blue-500 text-white shadow break-words text-wrap hyphens-auto space-y-3 text-sm">
                         <span>{{ $comment->content }}</span>
                     </div>
-                        <small class="pe-2">{{ $comment->getDateTimeDiff() }}</small>
+                        <small class="pe-2">{{ App\Classes\CustomDateTimeFormat::formatAgo($comment->created_at) }}</small>
                 </div> 
             @else
                 <!-- received -->
@@ -33,7 +33,7 @@
                     </div>
 
                     <div class="!ms-14">
-                        <small>{{ $comment->getDateTimeDiff() }}</small>
+                        <small>{{ App\Classes\CustomDateTimeFormat::formatAgo($comment->created_at) }}</small>
                     </div>
                 </div>
             @endif
