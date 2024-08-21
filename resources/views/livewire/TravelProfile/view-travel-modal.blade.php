@@ -1,7 +1,7 @@
 <x-modal-card name="viewTravel" title="{{ $selectedCountry }}" align='center' width='2xl' x-cloak x-on:close="$dispatch('clearViewTravelModal')" blurless wire:ignore.self>  
     @if($posts)
         <div class="w-full flex flex-col items-center justify-center gap-3">
-            @if(count($posts) > 1)
+            @if(count($posts) > 0)
                 @foreach($posts as $post)
                     <div class="border-b py-4 w-full">
                         <div class="flex gap-2 items-center w-full">

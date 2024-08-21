@@ -18,7 +18,7 @@ class ViewTravelModal extends Component
     public function getData($country, $userId){
         $this->selectedCountry = $country;
         
-        $this->posts = Post::where('user_id', $userId)->where('country', $country)->where('include_compilation', 1)->orderBy('id', 'desc')->get();
+        $this->posts = Post::where('user_id', $userId)->where('country', $country)->where('include_compilation', true)->orderBy('id', 'desc')->get();
     }
 
     public function clearData(){
