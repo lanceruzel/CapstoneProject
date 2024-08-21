@@ -115,7 +115,7 @@ class SignupForm extends Component
             'password' => [
                 'required', 
                 'confirmed', 
-                // Password::min(8)->letters()->mixedCase()->numbers()->symbols()->uncompromised(), //disabled for the meantime for development stage
+                Password::min(8)->letters()->mixedCase()->numbers()->symbols()->uncompromised(), //disabled for the meantime for development stage
             ],
             'password_confirmation' => 'required'
         ]);

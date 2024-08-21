@@ -7,6 +7,7 @@ use App\Enums\UserType;
 use App\Models\StoreInformation;
 use App\Models\User;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Validation\Rules\Password;
 use Livewire\Component;
 use WireUi\Traits\WireUiActions;
 
@@ -131,7 +132,7 @@ class StoreSignupForm extends Component
             'password' => [
                 'required', 
                 'confirmed', 
-                // Password::min(8)->letters()->mixedCase()->numbers()->symbols()->uncompromised(), //disabled for the meantime for development stage
+                Password::min(8)->letters()->mixedCase()->numbers()->symbols()->uncompromised(), //disabled for the meantime for development stage
             ],
             'password_confirmation' => 'required'
         ]);
