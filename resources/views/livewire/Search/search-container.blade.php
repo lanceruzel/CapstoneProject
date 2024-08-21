@@ -17,7 +17,7 @@
                             <div class="w-full flex items-center gap-3 hover:no-underline py-2">
                                 <div class="size-10 rounded-full">
                                     @if($user->user->profilePicture() == null)
-                                        <img src="https://static.everypixel.com/ep-pixabay/0329/8099/0858/84037/3298099085884037069-head.png" alt="" class="bg-gray-100 w-full h-full object-cover rounded-full">
+                                        <x-icon name="user" solid class="w-full h-full bg-gray-200 rounded-full p-2" />
                                     @else
                                         <img src="{{ asset('uploads') . '/' . $user->user->profilePicture() }}" class="w-full h-full object-cover rounded-full">
                                     @endif
@@ -55,7 +55,7 @@
                             <div class="w-full flex items-center gap-3 hover:no-underline py-2">
                                 <div class="size-10 rounded-full">
                                     @if($store->user->profilePicture() == null)
-                                        <img src="https://static.everypixel.com/ep-pixabay/0329/8099/0858/84037/3298099085884037069-head.png" alt="" class="bg-gray-100 w-full h-full object-cover rounded-full">
+                                        <x-icon name="user" solid class="w-full h-full bg-gray-200 rounded-full p-2" />
                                     @else
                                         <img src="{{ asset('uploads') . '/' . $store->user->profilePicture() }}" class="w-full h-full object-cover rounded-full">
                                     @endif

@@ -11,13 +11,13 @@
                     <div class="relative cursor-pointer max-md:hidden h-10 w-10">
                         @if($conversation->user1->id != Auth::id())
                             @if($conversation->user1->profilePicture() == null)
-                                <img src="https://static.everypixel.com/ep-pixabay/0329/8099/0858/84037/3298099085884037069-head.png" alt="" class="bg-gray-100 w-full h-full object-cover rounded-full">
+                                <x-icon name="user" solid class="w-full h-full bg-gray-200 rounded-full p-2" />
                             @else
                                 <img src="{{ asset('uploads') . '/' . $conversation->user1->profilePicture() }}" class="w-full h-full object-cover rounded-full">
                             @endif
                         @else
                             @if($conversation->user2->profilePicture() == null)
-                                <img src="https://static.everypixel.com/ep-pixabay/0329/8099/0858/84037/3298099085884037069-head.png" alt="" class="bg-gray-100 w-full h-full object-cover rounded-full">
+                                <x-icon name="user" solid class="w-full h-full bg-gray-200 rounded-full p-2" />
                             @else
                                 <img src="{{ asset('uploads') . '/' . $conversation->user2->profilePicture() }}" class="w-full h-full object-cover rounded-full">
                             @endif
@@ -67,13 +67,13 @@
                         <div class="w-24 h-24 rounded-full mx-auto mb-3">
                             @if($conversation->user1->id != Auth::id())
                                 @if($conversation->user1->profilePicture() == null)
-                                    <img src="https://static.everypixel.com/ep-pixabay/0329/8099/0858/84037/3298099085884037069-head.png" alt="" class="bg-gray-100 w-full h-full object-cover rounded-full">
+                                    <x-icon name="user" solid class="w-full h-full bg-gray-200 rounded-full p-2" />
                                 @else
                                     <img src="{{ asset('uploads') . '/' . $conversation->user1->profilePicture() }}" class="w-full h-full object-cover rounded-full">
                                 @endif
                             @else
                                 @if($conversation->user2->profilePicture() == null)
-                                    <img src="https://static.everypixel.com/ep-pixabay/0329/8099/0858/84037/3298099085884037069-head.png" alt="" class="bg-gray-100 w-full h-full object-cover rounded-full">
+                                    <x-icon name="user" solid class="w-full h-full bg-gray-200 rounded-full p-2" />
                                 @else
                                     <img src="{{ asset('uploads') . '/' . $conversation->user2->profilePicture() }}" class="w-full h-full object-cover rounded-full">
                                 @endif
@@ -148,13 +148,13 @@
                                     <div class="w-9 h-9 rounded-full shadow">
                                         @if($conversation->user1->id != Auth::id())
                                             @if($conversation->user1->profilePicture() == null)
-                                                <img src="https://static.everypixel.com/ep-pixabay/0329/8099/0858/84037/3298099085884037069-head.png" alt="" class="bg-gray-100 w-full h-full object-cover rounded-full">
+                                                <x-icon name="user" solid class="w-full h-full bg-gray-200 rounded-full p-2" />
                                             @else
                                                 <img src="{{ asset('uploads') . '/' . $conversation->user1->profilePicture() }}" class="w-full h-full object-cover rounded-full">
                                             @endif
                                         @else
                                             @if($conversation->user2->profilePicture() == null)
-                                                <img src="https://static.everypixel.com/ep-pixabay/0329/8099/0858/84037/3298099085884037069-head.png" alt="" class="bg-gray-100 w-full h-full object-cover rounded-full">
+                                                <x-icon name="user" solid class="w-full h-full bg-gray-200 rounded-full p-2" />    
                                             @else
                                                 <img src="{{ asset('uploads') . '/' . $conversation->user2->profilePicture() }}" class="w-full h-full object-cover rounded-full">
                                             @endif
@@ -262,13 +262,13 @@
                                     <div class="w-9 h-9 rounded-full shadow">
                                         @if($conversation->user1->id != Auth::id())
                                             @if($conversation->user1->profilePicture() == null)
-                                                <img src="https://static.everypixel.com/ep-pixabay/0329/8099/0858/84037/3298099085884037069-head.png" alt="" class="bg-gray-100 w-full h-full object-cover rounded-full">
+                                                <x-icon name="user" solid class="w-full h-full bg-gray-200 rounded-full p-2" />
                                             @else
                                                 <img src="{{ asset('uploads') . '/' . $conversation->user1->profilePicture() }}" class="w-full h-full object-cover rounded-full">
                                             @endif
                                         @else
                                             @if($conversation->user2->profilePicture() == null)
-                                                <img src="https://static.everypixel.com/ep-pixabay/0329/8099/0858/84037/3298099085884037069-head.png" alt="" class="bg-gray-100 w-full h-full object-cover rounded-full">
+                                                <x-icon name="user" solid class="w-full h-full bg-gray-200 rounded-full p-2" />
                                             @else
                                                 <img src="{{ asset('uploads') . '/' . $conversation->user2->profilePicture() }}" class="w-full h-full object-cover rounded-full">
                                             @endif

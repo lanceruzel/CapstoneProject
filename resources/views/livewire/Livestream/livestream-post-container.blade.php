@@ -4,7 +4,7 @@
         <div class="flex gap-2 items-center">
             <div class="size-10 rounded-full">
                 @if($livestream->user->profilePicture() == null)
-                    <img src="https://static.everypixel.com/ep-pixabay/0329/8099/0858/84037/3298099085884037069-head.png" alt="" class="bg-gray-100 w-full h-full object-cover rounded-full">
+                    <x-icon name="user" solid class="w-full h-full bg-gray-200 rounded-full p-2" />
                 @else
                     <img src="{{ asset('uploads') . '/' . $livestream->user->profilePicture() }}" class="w-full h-full object-cover rounded-full">
                 @endif

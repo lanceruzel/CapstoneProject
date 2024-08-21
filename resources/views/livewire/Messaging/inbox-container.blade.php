@@ -49,13 +49,13 @@
                     <div class="relative w-14 h-14 shrink-0"> 
                         @if($convo->user1->id != Auth::id())
                             @if($convo->user1->profilePicture() == null)
-                                <img src="https://static.everypixel.com/ep-pixabay/0329/8099/0858/84037/3298099085884037069-head.png" alt="" class="bg-gray-100 w-full h-full object-cover rounded-full">
+                                <x-icon name="user" solid class="w-full h-full bg-gray-200 rounded-full p-2" />
                             @else
                                 <img src="{{ asset('uploads') . '/' . $convo->user1->profilePicture() }}" class="w-full h-full object-cover rounded-full">
                             @endif
                         @else
                             @if($convo->user2->profilePicture() == null)
-                                <img src="https://static.everypixel.com/ep-pixabay/0329/8099/0858/84037/3298099085884037069-head.png" alt="" class="bg-gray-100 w-full h-full object-cover rounded-full">
+                                <x-icon name="user" solid class="w-full h-full bg-gray-200 rounded-full p-2" />
                             @else
                                 <img src="{{ asset('uploads') . '/' . $convo->user2->profilePicture() }}" class="w-full h-full object-cover rounded-full">
                             @endif

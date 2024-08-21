@@ -14,7 +14,7 @@
                 <div class="flex items-center gap-3">
                     <a href="{{ route('profile', $user->username) }}">
                         @if($user->profilePicture() == null)
-                            <img src="https://static.everypixel.com/ep-pixabay/0329/8099/0858/84037/3298099085884037069-head.png" alt="" class="bg-gray-100 object-cover rounded-full h-10 w-10">
+                            <x-icon name="user" solid class="w-10 h-10 bg-gray-200 rounded-full p-2" />
                         @else
                             <img src="{{ asset('uploads') . '/' . $user->profilePicture() }}" class="object-cover rounded-full w-10 h-10">
                         @endif
