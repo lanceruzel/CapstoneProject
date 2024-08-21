@@ -11,15 +11,15 @@
                     <div class="relative cursor-pointer max-md:hidden h-10 w-10">
                         @if($conversation->user1->id != Auth::id())
                             @if($conversation->user1->profilePicture() == null)
-                                <x-icon name="user" solid class="w-full h-full bg-gray-200 rounded-full p-2" />
+                                <x-icon name="user" solid class="w-full h-full bg-gray-200 rounded-full p-2 border" />
                             @else
-                                <img src="{{ asset('uploads') . '/' . $conversation->user1->profilePicture() }}" class="w-full h-full object-cover rounded-full">
+                                <img src="{{ asset('uploads') . '/' . $conversation->user1->profilePicture() }}" class="w-full h-full object-cover rounded-full border">
                             @endif
                         @else
                             @if($conversation->user2->profilePicture() == null)
-                                <x-icon name="user" solid class="w-full h-full bg-gray-200 rounded-full p-2" />
+                                <x-icon name="user" solid class="w-full h-full bg-gray-200 rounded-full p-2 border" />
                             @else
-                                <img src="{{ asset('uploads') . '/' . $conversation->user2->profilePicture() }}" class="w-full h-full object-cover rounded-full">
+                                <img src="{{ asset('uploads') . '/' . $conversation->user2->profilePicture() }}" class="w-full h-full object-cover rounded-full border">
                             @endif
                         @endif
                         {{-- <div class="w-2 h-2 bg-teal-500 rounded-full absolute right-0 bottom-0 m-px"></div> --}}
@@ -67,15 +67,15 @@
                         <div class="w-24 h-24 rounded-full mx-auto mb-3">
                             @if($conversation->user1->id != Auth::id())
                                 @if($conversation->user1->profilePicture() == null)
-                                    <x-icon name="user" solid class="w-full h-full bg-gray-200 rounded-full p-2" />
+                                    <x-icon name="user" solid class="w-full h-full bg-gray-200 rounded-full p-2 border" />
                                 @else
-                                    <img src="{{ asset('uploads') . '/' . $conversation->user1->profilePicture() }}" class="w-full h-full object-cover rounded-full">
+                                    <img src="{{ asset('uploads') . '/' . $conversation->user1->profilePicture() }}" class="w-full h-full object-cover rounded-full border">
                                 @endif
                             @else
                                 @if($conversation->user2->profilePicture() == null)
-                                    <x-icon name="user" solid class="w-full h-full bg-gray-200 rounded-full p-2" />
+                                    <x-icon name="user" solid class="w-full h-full bg-gray-200 rounded-full p-2 border" />
                                 @else
-                                    <img src="{{ asset('uploads') . '/' . $conversation->user2->profilePicture() }}" class="w-full h-full object-cover rounded-full">
+                                    <img src="{{ asset('uploads') . '/' . $conversation->user2->profilePicture() }}" class="w-full h-full object-cover rounded-full border">
                                 @endif
                             @endif
                         </div>
@@ -148,15 +148,15 @@
                                     <div class="w-9 h-9 rounded-full shadow">
                                         @if($conversation->user1->id != Auth::id())
                                             @if($conversation->user1->profilePicture() == null)
-                                                <x-icon name="user" solid class="w-full h-full bg-gray-200 rounded-full p-2" />
+                                                <x-icon name="user" solid class="w-full h-full bg-gray-200 rounded-full p-2 border" />
                                             @else
-                                                <img src="{{ asset('uploads') . '/' . $conversation->user1->profilePicture() }}" class="w-full h-full object-cover rounded-full">
+                                                <img src="{{ asset('uploads') . '/' . $conversation->user1->profilePicture() }}" class="w-full h-full object-cover rounded-full border">
                                             @endif
                                         @else
                                             @if($conversation->user2->profilePicture() == null)
-                                                <x-icon name="user" solid class="w-full h-full bg-gray-200 rounded-full p-2" />    
+                                                <x-icon name="user" solid class="w-full h-full bg-gray-200 rounded-full p-2 border" />    
                                             @else
-                                                <img src="{{ asset('uploads') . '/' . $conversation->user2->profilePicture() }}" class="w-full h-full object-cover rounded-full">
+                                                <img src="{{ asset('uploads') . '/' . $conversation->user2->profilePicture() }}" class="w-full h-full object-cover rounded-full border">
                                             @endif
                                         @endif
                                     </div>
@@ -262,15 +262,15 @@
                                     <div class="w-9 h-9 rounded-full shadow">
                                         @if($conversation->user1->id != Auth::id())
                                             @if($conversation->user1->profilePicture() == null)
-                                                <x-icon name="user" solid class="w-full h-full bg-gray-200 rounded-full p-2" />
+                                                <x-icon name="user" solid class="w-full h-full bg-gray-200 rounded-full p-2 border" />
                                             @else
-                                                <img src="{{ asset('uploads') . '/' . $conversation->user1->profilePicture() }}" class="w-full h-full object-cover rounded-full">
+                                                <img src="{{ asset('uploads') . '/' . $conversation->user1->profilePicture() }}" class="w-full h-full object-cover rounded-full border">
                                             @endif
                                         @else
                                             @if($conversation->user2->profilePicture() == null)
-                                                <x-icon name="user" solid class="w-full h-full bg-gray-200 rounded-full p-2" />
+                                                <x-icon name="user" solid class="w-full h-full bg-gray-200 rounded-full p-2 border" />
                                             @else
-                                                <img src="{{ asset('uploads') . '/' . $conversation->user2->profilePicture() }}" class="w-full h-full object-cover rounded-full">
+                                                <img src="{{ asset('uploads') . '/' . $conversation->user2->profilePicture() }}" class="w-full h-full object-cover rounded-full border">
                                             @endif
                                         @endif
                                     </div>

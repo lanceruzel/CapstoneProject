@@ -4,9 +4,9 @@
         <div class="flex gap-2 items-center">
             <div class="size-10 rounded-full">
                 @if($post->user->profilePicture() == null)
-                    <x-icon name="user" solid class="w-full h-full bg-gray-200 rounded-full p-2" />
+                    <x-icon name="user" solid class="w-full h-full bg-gray-200 rounded-full p-2 border" />
                 @else
-                    <img src="{{ asset('uploads') . '/' . $post->user->profilePicture() }}" class="w-full h-full object-cover rounded-full">
+                    <img src="{{ asset('uploads') . '/' . $post->user->profilePicture() }}" class="w-full h-full object-cover rounded-full border">
                 @endif
             </div>
 
@@ -132,9 +132,9 @@
     <div class="flex gap-2 flex-row items-center justify-items-center mt-4">
         <div class="min-w-7 h-7 max-w-7 max-h-7 rounded-full">
             @if(auth()->user()->profilePicture() == null)
-                <x-icon name="user" solid class="w-full h-full bg-gray-200 rounded-full p-2" />
+                <x-icon name="user" solid class="w-full h-full bg-gray-200 rounded-full p-2 border" />
             @else
-                <img src="{{ asset('uploads') . '/' . auth()->user()->profilePicture() }}" class="w-full h-full object-cover rounded-full">
+                <img src="{{ asset('uploads') . '/' . auth()->user()->profilePicture() }}" class="w-full h-full object-cover rounded-full border">
             @endif
         </div>
 

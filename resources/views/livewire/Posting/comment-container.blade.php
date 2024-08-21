@@ -6,9 +6,9 @@
    {{-- User Avatar --}}
    <div class="min-w-5 h-5 max-w-5 max-h-5 rounded-full">
       @if($comment->user->profilePicture() == null)
-          <x-icon name="user" solid class="w-full h-full bg-gray-200 rounded-full p-2" />
+          <x-icon name="user" solid class="w-full h-full bg-gray-200 rounded-full p-2 border" />
       @else
-          <img src="{{ asset('uploads') . '/' . $comment->user->profilePicture() }}" class="w-full h-full object-cover rounded-full">
+          <img src="{{ asset('uploads') . '/' . $comment->user->profilePicture() }}" class="w-full h-full object-cover rounded-full border">
       @endif
   </div>
 

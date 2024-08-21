@@ -14,9 +14,9 @@
                 <div class="flex items-center gap-3">
                     <a href="{{ route('profile', $user->username) }}">
                         @if($user->profilePicture() == null)
-                            <x-icon name="user" solid class="w-10 h-10 bg-gray-200 rounded-full p-2" />
+                            <x-icon name="user" solid class="w-10 h-10 bg-gray-200 rounded-full p-2 border" />
                         @else
-                            <img src="{{ asset('uploads') . '/' . $user->profilePicture() }}" class="object-cover rounded-full w-10 h-10">
+                            <img src="{{ asset('uploads') . '/' . $user->profilePicture() }}" class="object-cover rounded-full w-10 h-10 border">
                         @endif
                     </a>
 

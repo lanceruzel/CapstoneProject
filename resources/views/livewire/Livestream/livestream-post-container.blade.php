@@ -4,9 +4,9 @@
         <div class="flex gap-2 items-center">
             <div class="size-10 rounded-full">
                 @if($livestream->user->profilePicture() == null)
-                    <x-icon name="user" solid class="w-full h-full bg-gray-200 rounded-full p-2" />
+                    <x-icon name="user" solid class="w-full h-full bg-gray-200 rounded-full p-2 border" />
                 @else
-                    <img src="{{ asset('uploads') . '/' . $livestream->user->profilePicture() }}" class="w-full h-full object-cover rounded-full">
+                    <img src="{{ asset('uploads') . '/' . $livestream->user->profilePicture() }}" class="w-full h-full object-cover rounded-full border">
                 @endif
             </div>
 

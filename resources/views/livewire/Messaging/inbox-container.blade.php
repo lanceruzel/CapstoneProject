@@ -49,15 +49,15 @@
                     <div class="relative w-14 h-14 shrink-0"> 
                         @if($convo->user1->id != Auth::id())
                             @if($convo->user1->profilePicture() == null)
-                                <x-icon name="user" solid class="w-full h-full bg-gray-200 rounded-full p-2" />
+                                <x-icon name="user" solid class="w-full h-full bg-gray-200 rounded-full p-2 border" />
                             @else
-                                <img src="{{ asset('uploads') . '/' . $convo->user1->profilePicture() }}" class="w-full h-full object-cover rounded-full">
+                                <img src="{{ asset('uploads') . '/' . $convo->user1->profilePicture() }}" class="w-full h-full object-cover rounded-full border">
                             @endif
                         @else
                             @if($convo->user2->profilePicture() == null)
-                                <x-icon name="user" solid class="w-full h-full bg-gray-200 rounded-full p-2" />
+                                <x-icon name="user" solid class="w-full h-full bg-gray-200 rounded-full p-2 border" />
                             @else
-                                <img src="{{ asset('uploads') . '/' . $convo->user2->profilePicture() }}" class="w-full h-full object-cover rounded-full">
+                                <img src="{{ asset('uploads') . '/' . $convo->user2->profilePicture() }}" class="w-full h-full object-cover rounded-full border">
                             @endif
                         @endif
                     </div>
