@@ -83,8 +83,10 @@ class PostFormModal extends Component
             $this->notification()->send([
                 'icon' => 'error',
                 'title' => 'Error Notification!',
-                'description' => 'Woops, its an error. ' . $e->getMessage(),
+                'description' => 'Woops, its an error. '
             ]);
+
+            Log::error('Error storing post: ' . $e->getMessage());
         }
     }
 

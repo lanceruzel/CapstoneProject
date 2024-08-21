@@ -72,8 +72,10 @@ class ProductFeedbackFormModal extends Component
             $this->notification()->send([
                 'icon' => 'error',
                 'title' => 'Error!',
-                'description' => $e->getMessage(),
+                'description' => 'Woops, its an error.',
             ]);
+
+            Log::error('Error storing feedback: ' . $e->getMessage());
         }
     }
 

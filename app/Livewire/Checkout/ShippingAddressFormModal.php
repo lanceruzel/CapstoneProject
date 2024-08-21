@@ -88,7 +88,7 @@ class ShippingAddressFormModal extends Component
                 ]);
             }
         } catch (\Exception $e) {
-            // Log::error('Error store address: ' . $e->getMessage());
+            Log::error('Error store address: ' . $e->getMessage());
 
             $this->notification()->send([
                 'icon' => 'error',

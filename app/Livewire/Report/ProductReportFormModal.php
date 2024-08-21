@@ -6,6 +6,7 @@ use App\Models\OrderedItem;
 use App\Models\Product;
 use App\Models\ProductReport;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Livewire\Component;
 use Livewire\Features\SupportFileUploads\WithFileUploads;
 use WireUi\Traits\WireUiActions;
@@ -76,8 +77,10 @@ class ProductReportFormModal extends Component
             $this->notification()->send([
                 'icon' => 'error',
                 'title' => 'Error!',
-                'description' => 'Woops, its an error. ' . $e->getMessage(),
+                'description' => 'Woops, its an error.',
             ]);
+
+            Log::error('Error store product report: ' . $e->getMessage());
 
             return;
         }

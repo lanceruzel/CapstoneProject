@@ -5,6 +5,7 @@ namespace App\Livewire\Product;
 use App\Models\CartItem;
 use App\Models\Product;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Livewire\Component;
 use WireUi\Traits\WireUiActions;
 
@@ -38,46 +39,56 @@ class ProductViewVariationSelectionModal extends Component
             'quantity' => 'required',
         ]);
 
-        $existingCartItem = CartItem::where('user_id', Auth::id())->where('product_id', $this->product->id)->where('variation', $this->selectedVariation)->first();
+        try{
+            $existingCartItem = CartItem::where('user_id', Auth::id())->where('product_id', $this->product->id)->where('variation', $this->selectedVariation)->first();
 
-        if($existingCartItem){
-            $this->notification()->send([
-                'icon' => 'success',
-                'title' => 'Success!',
-                'description' => 'Added to your cart.',
+            if($existingCartItem){
+                $this->notification()->send([
+                    'icon' => 'success',
+                    'title' => 'Success!',
+                    'description' => 'Added to your cart.',
+                ]);
+    
+                $existingCartItem->increment('quantity', $this->quantity);
+    
+                $this->dispatch('close-modal', ['modal' => 'variationSelectionModal']);
+                $this->dispatch('close-modal', ['modal' => 'productViewModal']);
+                return;
+            }
+    
+            $store = CartItem::create([
+                'user_id' => Auth::id(),
+                'seller_id' => $this->product->seller_id,
+                'product_id' => $this->product->id,
+                'variation' => $this->selectedVariation,
+                'quantity' => $validated['quantity'],
             ]);
-
-            $existingCartItem->increment('quantity', $this->quantity);
-
+    
+            if($store){
+                $this->notification()->send([
+                    'icon' => 'success',
+                    'title' => 'Success!',
+                    'description' => 'Added to your cart.',
+                ]);
+            }else{
+                $this->notification()->send([
+                    'icon' => 'error',
+                    'title' => 'Error Notification!',
+                    'description' => 'Woops, its an error. There seems to be a problem inserting this product to your cart.',
+                ]);
+            }
+    
             $this->dispatch('close-modal', ['modal' => 'variationSelectionModal']);
             $this->dispatch('close-modal', ['modal' => 'productViewModal']);
-            return;
-        }
-
-        $store = CartItem::create([
-            'user_id' => Auth::id(),
-            'seller_id' => $this->product->seller_id,
-            'product_id' => $this->product->id,
-            'variation' => $this->selectedVariation,
-            'quantity' => $validated['quantity'],
-        ]);
-
-        if($store){
-            $this->notification()->send([
-                'icon' => 'success',
-                'title' => 'Success!',
-                'description' => 'Added to your cart.',
-            ]);
-        }else{
+        }catch(\Exception $e){
             $this->notification()->send([
                 'icon' => 'error',
-                'title' => 'Error Notification!',
-                'description' => 'Woops, its an error. There seems to be a problem inserting this product to your cart.',
+                'title' => 'Error!',
+                'description' => 'Woops, its an error.',
             ]);
-        }
 
-        $this->dispatch('close-modal', ['modal' => 'variationSelectionModal']);
-        $this->dispatch('close-modal', ['modal' => 'productViewModal']);
+            Log::error('Error AffiliateInvite: ' . $e->getMessage());
+        }
     }
 
     public function clearData(){

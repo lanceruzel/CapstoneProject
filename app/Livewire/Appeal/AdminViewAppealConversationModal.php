@@ -60,19 +60,29 @@ class AdminViewAppealConversationModal extends Component
     }
 
     public function unsuspendProduct(){
-        $this->product->status = Status::Available;
+        try{
+            $this->product->status = Status::Available;
 
-        if($this->product->save() && $this->updateConversationStatus()){
+            if($this->product->save() && $this->updateConversationStatus()){
+                $this->notification()->send([
+                    'icon' => 'success',
+                    'title' => 'Success!',
+                    'description' => 'Product has been successfully unsuspended.',
+                ]);
+    
+                $this->dispatch('close-modal', ['modal' => 'reportAppealFormModal']);
+                $this->dispatch('refresh-report-appeals-table');
+    
+                UserNotif::sendNotif($this->product->seller_id, $this->product->name . ' has been unsuspended and is now available again.' , NotificationType::Appeal);
+            }
+        }catch(\Exception $e){
             $this->notification()->send([
-                'icon' => 'success',
-                'title' => 'Success!',
-                'description' => 'Product has been successfully unsuspended.',
+                'icon' => 'error',
+                'title' => 'Error!',
+                'description' => 'Woops, its an error.',
             ]);
 
-            $this->dispatch('close-modal', ['modal' => 'reportAppealFormModal']);
-            $this->dispatch('refresh-report-appeals-table');
-
-            UserNotif::sendNotif($this->product->seller_id, $this->product->name . ' has been unsuspended and is now available again.' , NotificationType::Appeal);
+            Log::error('Error UnsuspendProduct: ' . $e->getMessage());
         }
     }
 

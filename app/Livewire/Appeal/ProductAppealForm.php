@@ -7,6 +7,7 @@ use App\Models\Message;
 use App\Models\Product;
 use App\Models\ReportAppeal;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Livewire\Component;
 use Livewire\Features\SupportFileUploads\WithFileUploads;
 use WireUi\Traits\WireUiActions;
@@ -44,48 +45,58 @@ class ProductAppealForm extends Component
             'images.*' => 'image|mimes:png,jpg,jpeg',
         ]);
 
-        if($this->product){
-            $conversation = Conversation::create([
-                'user_1' => Auth::id(),
-                'user_2' => 1, //admin acc
-                'status' => 'active'
-            ]);
-
-            if($conversation){
-                $message = Message::create([
-                    'user_id' => Auth::id(),
-                    'conversation_id' => $conversation->id,
-                    'content' => $validated['content'],
-                    'images' => json_encode($this->storeImages($this->images)),
+        try{
+            if($this->product){
+                $conversation = Conversation::create([
+                    'user_1' => Auth::id(),
+                    'user_2' => 1, //admin acc
+                    'status' => 'active'
                 ]);
-
-                if($message){
-                    $report = ReportAppeal::create([
-                        'product_id' => $this->product->id,
-                        'conversation_id' => $conversation->id
+    
+                if($conversation){
+                    $message = Message::create([
+                        'user_id' => Auth::id(),
+                        'conversation_id' => $conversation->id,
+                        'content' => $validated['content'],
+                        'images' => json_encode($this->storeImages($this->images)),
                     ]);
-
-                    $conversation->last_message_id = $message->id;
-                    $conversation->save();
-
-                    if($report){
-                        $this->dispatch('refresh-product-table');
-                        $this->dispatch('close-modal', ['modal' => 'productAppealFormModal']);
-
-                        $this->notification()->send([
-                            'icon' => 'success',
-                            'title' => 'Success!',
-                            'description' => 'Your appeal has been successfully sent.',
+    
+                    if($message){
+                        $report = ReportAppeal::create([
+                            'product_id' => $this->product->id,
+                            'conversation_id' => $conversation->id
                         ]);
-                    }else{
-                        $this->notification()->send([
-                            'icon' => 'error',
-                            'title' => 'Error!',
-                            'description' => 'Woops, its an error. There seem to be a problem sending your appeal.',
-                        ]);
+    
+                        $conversation->last_message_id = $message->id;
+                        $conversation->save();
+    
+                        if($report){
+                            $this->dispatch('refresh-product-table');
+                            $this->dispatch('close-modal', ['modal' => 'productAppealFormModal']);
+    
+                            $this->notification()->send([
+                                'icon' => 'success',
+                                'title' => 'Success!',
+                                'description' => 'Your appeal has been successfully sent.',
+                            ]);
+                        }else{
+                            $this->notification()->send([
+                                'icon' => 'error',
+                                'title' => 'Error!',
+                                'description' => 'Woops, its an error. There seem to be a problem sending your appeal.',
+                            ]);
+                        }
                     }
                 }
             }
+        }catch(\Exception $e){
+            $this->notification()->send([
+                'icon' => 'error',
+                'title' => 'Error!',
+                'description' => 'Woops, its an error.',
+            ]);
+
+            Log::error('Error product appeal: ' . $e->getMessage());
         }
     }
 

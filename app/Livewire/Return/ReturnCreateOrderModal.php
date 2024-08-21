@@ -9,6 +9,7 @@ use App\Models\Order;
 use App\Models\OrderedItem;
 use App\Models\Product;
 use App\Models\ReturnRequest;
+use Illuminate\Support\Facades\Log;
 use Livewire\Component;
 use WireUi\Traits\WireUiActions;
 
@@ -75,38 +76,48 @@ class ReturnCreateOrderModal extends Component
     public function createOrder(){
         $this->formValidate();
 
-        if($this->order){
-            $order = $this->storeOrder($this->order);
-
-            if($order){
-                foreach($this->requestedItems as $index => $item){
-                    $storeOrderedProduct = $this->storeOrderedProducts($order->id, $this->requestedItems[$index]);
+        try{
+            if($this->order){
+                $order = $this->storeOrder($this->order);
     
-                    if(!$storeOrderedProduct){
-                        $this->notification()->send([
-                            'icon' => 'error',
-                            'title' => 'Error!',
-                            'description' => 'Woops, theres an error submitting your ordered products.',
-                        ]);
+                if($order){
+                    foreach($this->requestedItems as $index => $item){
+                        $storeOrderedProduct = $this->storeOrderedProducts($order->id, $this->requestedItems[$index]);
         
-                        return;
+                        if(!$storeOrderedProduct){
+                            $this->notification()->send([
+                                'icon' => 'error',
+                                'title' => 'Error!',
+                                'description' => 'Woops, theres an error submitting your ordered products.',
+                            ]);
+            
+                            return;
+                        }
                     }
+        
+                    $this->notification()->send([
+                        'icon' => 'success',
+                        'title' => 'Success!',
+                        'description' => 'Order has successfully created.',
+                    ]);
+        
+                    $this->request->status = Status::ReturnRequestSellerOrderCreated;
+                    $this->request->save();
+    
+                    $this->dispatch('close-modal', ['modal' => 'returnCreateOrderModal']);
+                    $this->dispatch('close-modal', ['modal' => 'viewReturnRequestModal']);
+                    $this->dispatch('refresh-return-product-table');
+                    UserNotif::sendNotif($this->order->user_id, 'Your return request has been fulfilled.' , NotificationType::ReturnRequest);
                 }
-    
-                $this->notification()->send([
-                    'icon' => 'success',
-                    'title' => 'Success!',
-                    'description' => 'Order has successfully created.',
-                ]);
-    
-                $this->request->status = Status::ReturnRequestSellerOrderCreated;
-                $this->request->save();
-
-                $this->dispatch('close-modal', ['modal' => 'returnCreateOrderModal']);
-                $this->dispatch('close-modal', ['modal' => 'viewReturnRequestModal']);
-                $this->dispatch('refresh-return-product-table');
-                UserNotif::sendNotif($this->order->user_id, 'Your return request has been fulfilled.' , NotificationType::ReturnRequest);
             }
+        }catch(\Exception $e){
+            $this->notification()->send([
+                'icon' => 'error',
+                'title' => 'Error!',
+                'description' => 'Woops, its an error.',
+            ]);
+
+            Log::error('Error create order: ' . $e->getMessage());
         }
     }
 

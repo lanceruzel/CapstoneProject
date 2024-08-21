@@ -55,32 +55,42 @@ class ConversationContainer extends Component
     }
 
     public function sendMessage(){
-        if($this->message){
-            $validated = $this->formValidate();
-
-            $messageStore = $this->storeMessage($validated);
-
-            if($messageStore){
-                if($this->images){
-                    foreach($this->images as $key=>$image){
-                        $this->deleteImage($key);
+        try{
+            if($this->message){
+                $validated = $this->formValidate();
+    
+                $messageStore = $this->storeMessage($validated);
+    
+                if($messageStore){
+                    if($this->images){
+                        foreach($this->images as $key=>$image){
+                            $this->deleteImage($key);
+                        }
                     }
+                    
+                    $this->images = [];
+    
+                    //Update Conversation last message
+                    $this->conversation->last_message_id = $messageStore->id;
+                    $this->conversation->save();
+    
+                    //Notify users
+                    NewChatCreated::dispatch($this->conversation->user_1);
+                    NewChatCreated::dispatch($this->conversation->user_2);
+    
+                    $this->dispatch('messagesUpdated');
+    
+                    $this->reset('message');
                 }
-                
-                $this->images = [];
-
-                //Update Conversation last message
-                $this->conversation->last_message_id = $messageStore->id;
-                $this->conversation->save();
-
-                //Notify users
-                NewChatCreated::dispatch($this->conversation->user_1);
-                NewChatCreated::dispatch($this->conversation->user_2);
-
-                $this->dispatch('messagesUpdated');
-
-                $this->reset('message');
             }
+        }catch(\Exception $e){
+            $this->notification()->send([
+                'icon' => 'error',
+                'title' => 'Error!',
+                'description' => 'Woops, its an error.',
+            ]);
+
+            Log::error('Error send message: ' . $e->getMessage());
         }
     }
 

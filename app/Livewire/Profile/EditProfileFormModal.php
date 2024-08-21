@@ -5,6 +5,7 @@ namespace App\Livewire\Profile;
 use App\Enums\UserType;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Request;
 use Livewire\Component;
 use Livewire\Features\SupportFileUploads\WithFileUploads;
@@ -100,8 +101,10 @@ class EditProfileFormModal extends Component{
             $this->notification()->send([
                 'icon' => 'error',
                 'title' => 'Error Notification!',
-                'description' => 'Woops, its an error. ' . $e->getMessage(),
+                'description' => 'Woops, its an error.',
             ]);
+
+            Log::error('Error update profile: ' . $e->getMessage());
         }
         
     }

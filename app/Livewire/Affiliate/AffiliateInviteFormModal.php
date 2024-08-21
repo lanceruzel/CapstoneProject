@@ -8,6 +8,7 @@ use App\Models\User;
 use App\Classes\UserNotif;
 use App\Enums\NotificationType;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Livewire\Component;
 use WireUi\Traits\WireUiActions;
 
@@ -31,37 +32,48 @@ class AffiliateInviteFormModal extends Component
             'affiliateCode' => 'required|min:10|max:15|alpha_num|unique:affiliates,affiliate_code'
         ]);
 
-        //Check if email is existing
-        if(User::where('email', $validated['email'])->exists()){
-            $promoterId = User::where('email', $validated['email'])->pluck('id');
+        try{
+            //Check if email is existing
+            if(User::where('email', $validated['email'])->exists()){
+                $promoterId = User::where('email', $validated['email'])->pluck('id');
 
-            $affiliate = Affiliate::create([
-                'store_id' => Auth::id(),
-                'promoter_id' => $promoterId[0],
-                'affiliate_code' => $validated['affiliateCode'],
-                'rate' => $validated['commissionRate'],
-                'status' => Status::Invitation
-            ]);
-
-            if($affiliate){
-                UserNotif::sendNotif($promoterId[0], 'You have received an affiliate invitation.', NotificationType::Affiliate);
-
-                $this->notification()->send([
-                    'icon' => 'success',
-                    'title' => 'Success!',
-                    'description' => 'Your invitation has been successfully sent.',
+                $affiliate = Affiliate::create([
+                    'store_id' => Auth::id(),
+                    'promoter_id' => $promoterId[0],
+                    'affiliate_code' => $validated['affiliateCode'],
+                    'rate' => $validated['commissionRate'],
+                    'status' => Status::Invitation
                 ]);
 
-                $this->dispatch('close-modal', ['modal' => 'affiliateInviteFormModal']);
-                $this->dispatch('refresh-affiliate-tables');
+                if($affiliate){
+                    UserNotif::sendNotif($promoterId[0], 'You have received an affiliate invitation.', NotificationType::Affiliate);
+
+                    $this->notification()->send([
+                        'icon' => 'success',
+                        'title' => 'Success!',
+                        'description' => 'Your invitation has been successfully sent.',
+                    ]);
+
+                    $this->dispatch('close-modal', ['modal' => 'affiliateInviteFormModal']);
+                    $this->dispatch('refresh-affiliate-tables');
+                }
+            }else{
+                $this->notification()->send([
+                    'icon' => 'info',
+                    'title' => 'Info!',
+                    'description' => 'This email does not exists on our records.',
+                ]);
             }
-        }else{
+        }catch(\Exception $e){
             $this->notification()->send([
-                'icon' => 'info',
-                'title' => 'Info!',
-                'description' => 'This email does not exists on our records.',
+                'icon' => 'error',
+                'title' => 'Error!',
+                'description' => 'Woops, its an error.',
             ]);
+
+            Log::error('Error AffiliateInvite: ' . $e->getMessage());
         }
+        
     }
 
     public function clearData(){

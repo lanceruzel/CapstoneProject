@@ -6,6 +6,7 @@ use App\Classes\UserNotif;
 use App\Enums\NotificationType;
 use App\Enums\Status;
 use App\Models\Affiliate;
+use Illuminate\Support\Facades\Log;
 use Livewire\Component;
 use WireUi\Traits\WireUiActions;
 
@@ -77,16 +78,26 @@ class ViewTermsAndConditionModal extends Component
     }
 
     public function saveAffiliate(){
-        if($this->affiliate->save()){
+        try{
+            if($this->affiliate->save()){
+                $this->notification()->send([
+                    'icon' => 'success',
+                    'title' => 'Success!',
+                    'description' => 'Successfully updated.',
+                ]);
+    
+                $this->dispatch('close-modal', ['modal' => 'affiliateTermsAndConditionModal']);
+                $this->dispatch('refresh-invitation-modals');
+                $this->dispatch('refresh-affiliate-tables');
+            }
+        }catch(\Exception $e){
             $this->notification()->send([
-                'icon' => 'success',
-                'title' => 'Success!',
-                'description' => 'Successfully updated.',
+                'icon' => 'error',
+                'title' => 'Error!',
+                'description' => 'Woops, its an error.',
             ]);
 
-            $this->dispatch('close-modal', ['modal' => 'affiliateTermsAndConditionModal']);
-            $this->dispatch('refresh-invitation-modals');
-            $this->dispatch('refresh-affiliate-tables');
+            Log::error('Error ViewTermsAndConfition: ' . $e->getMessage());
         }
     }
 

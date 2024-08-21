@@ -8,6 +8,7 @@ use App\Models\OrderedItem;
 use App\Models\Product;
 use App\Models\ProductFeedback;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Livewire\Component;
 use WireUi\Traits\WireUiActions;
 
@@ -54,39 +55,49 @@ class ProductViewModal extends Component
             'quantity' => 'required',
         ]);
 
-        $existingCartItem = CartItem::where('user_id', Auth::id())->where('product_id', $this->product->id)->where('variation', 'Default')->first();
+        try{
+            $existingCartItem = CartItem::where('user_id', Auth::id())->where('product_id', $this->product->id)->where('variation', 'Default')->first();
 
-        if($existingCartItem){
-            $this->notification()->send([
-                'icon' => 'success',
-                'title' => 'Success!',
-                'description' => 'Added to your cart.',
+            if($existingCartItem){
+                $this->notification()->send([
+                    'icon' => 'success',
+                    'title' => 'Success!',
+                    'description' => 'Added to your cart.',
+                ]);
+    
+                $existingCartItem->increment('quantity', 1);
+                return;
+            }
+    
+            $store = CartItem::create([
+                'user_id' => Auth::id(),
+                'seller_id' => $this->product->seller_id,
+                'product_id' => $this->product->id,
+                'variation' => 'Default',
+                'quantity' => $validated['quantity'],
             ]);
-
-            $existingCartItem->increment('quantity', 1);
-            return;
-        }
-
-        $store = CartItem::create([
-            'user_id' => Auth::id(),
-            'seller_id' => $this->product->seller_id,
-            'product_id' => $this->product->id,
-            'variation' => 'Default',
-            'quantity' => $validated['quantity'],
-        ]);
-
-        if($store){
-            $this->notification()->send([
-                'icon' => 'success',
-                'title' => 'Success!',
-                'description' => 'Added to your cart.',
-            ]);
-        }else{
+    
+            if($store){
+                $this->notification()->send([
+                    'icon' => 'success',
+                    'title' => 'Success!',
+                    'description' => 'Added to your cart.',
+                ]);
+            }else{
+                $this->notification()->send([
+                    'icon' => 'error',
+                    'title' => 'Error Notification!',
+                    'description' => 'Woops, its an error. There seems to be a problem inserting this product to your cart.',
+                ]);
+            }
+        }catch(\Exception $e){
             $this->notification()->send([
                 'icon' => 'error',
-                'title' => 'Error Notification!',
-                'description' => 'Woops, its an error. There seems to be a problem inserting this product to your cart.',
+                'title' => 'Error!',
+                'description' => 'Woops, its an error.',
             ]);
+
+            Log::error('Error storing cart item: ' . $e->getMessage());
         }
     }
 

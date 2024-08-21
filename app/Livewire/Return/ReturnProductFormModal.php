@@ -9,6 +9,7 @@ use App\Models\Order;
 use App\Models\Product;
 use App\Models\ReturnRequest;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Livewire\Component;
 use Livewire\Features\SupportFileUploads\WithFileUploads;
 use WireUi\Traits\WireUiActions;
@@ -82,8 +83,10 @@ class ReturnProductFormModal extends Component
             $this->notification()->send([
                 'icon' => 'error',
                 'title' => 'Error!',
-                'description' => 'Woops, its an error. ' . $e->getMessage(),
+                'description' => 'Woops, its an error.',
             ]);
+
+            Log::error('Error send request: ' . $e->getMessage());
         }
     }
 
