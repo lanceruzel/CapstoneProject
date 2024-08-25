@@ -29,6 +29,7 @@ class AffiliateInviteFormModal extends Component
             // 'email' => 'required|email|exists:users,email',
             'email' => 'required|email',
             'commissionRate' => 'required|numeric',
+            'discount' => 'required|numeric',
             'affiliateCode' => 'required|min:10|max:15|alpha_num|unique:affiliates,affiliate_code'
         ]);
 
@@ -42,6 +43,7 @@ class AffiliateInviteFormModal extends Component
                     'promoter_id' => $promoterId[0],
                     'affiliate_code' => $validated['affiliateCode'],
                     'rate' => $validated['commissionRate'],
+                    'discount' => $validated['discount'],
                     'status' => Status::Invitation
                 ]);
 

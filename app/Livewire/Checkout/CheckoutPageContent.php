@@ -24,7 +24,6 @@ class CheckoutPageContent extends Component
 
     public $merchandiseTotal = 0;
     public $shippingTotal = 25;
-    public $discountRate = 0.05;
 
     public $affiliate = [];
 
@@ -79,12 +78,12 @@ class CheckoutPageContent extends Component
             foreach($this->checkedOutSellers as $key => $checkedOutSeller){
                 if($checkedOutSeller['seller']->id == $sellerId){
                     $originalTotal = $checkedOutSeller['total'];
-                    $discount = $originalTotal * $this->discountRate; // 5% discount
+                    $discount = $originalTotal * ($affiliateInfo->discount/100); // discount
                     $newTotal = $originalTotal - $discount;
 
                     // Store both the original total and the discounted total
                     $this->checkedOutSellers[$key]['original_total'] = $originalTotal;
-                    $this->checkedOutSellers[$key]['discount'] = $discount;
+                    $this->checkedOutSellers[$key]['discount'] = $affiliateInfo->discount;
                     $this->checkedOutSellers[$key]['total'] = $newTotal;
 
                     $this->merchandiseTotal = $this->getMerchandiseTotal();

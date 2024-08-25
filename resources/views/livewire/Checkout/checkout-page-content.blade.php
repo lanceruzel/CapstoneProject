@@ -25,7 +25,7 @@
         </div>
     </div>
     
-    <div class="grid grid-cols-12 gap-3" x-on:totalUpdated="$refresh">
+    <div class="grid grid-cols-12 grid-rows-12 gap-3" x-on:totalUpdated="$refresh">
         <!-- Orders -->
         <div class="col-span-12 lg:col-span-8 bg-white p-5 rounded-lg shadow mt-3">
             <div class="space-y-3">
@@ -49,12 +49,17 @@
                         </div>
 
                         <div class="flex items-end justify-center flex-col">
-                            <p class="pb-3 font-medium">
-                                Total: @isset($checkedOutSeller['original_total']) 
-                                            <span class="line-through">${{ number_format($checkedOutSeller['original_total'], 2) }}</span> 
-                                        @endisset 
-                                    ${{ number_format($checkedOutSeller['total'], 2) }}
-                            </p>
+                            <div class="pb-3 text-end">
+                                <p class="font-medium">
+                                    Total: @isset($checkedOutSeller['original_total']) 
+                                                <span class="line-through">${{ number_format($checkedOutSeller['original_total'], 2) }}</span> 
+                                            @endisset 
+                                        ${{ number_format($checkedOutSeller['total'], 2) }}
+                                </p>
+                                @isset($checkedOutSeller['discount']) 
+                                    <small>{{ $checkedOutSeller['discount'] }}% discount applied</small>
+                                @endisset 
+                            </div>
 
                             <div class="flex items-center justify-center gap-3">
                                 @if(isset($checkedOutSeller['original_total']))
@@ -81,37 +86,39 @@
         </div>
 
         <!-- Order Summary -->
-        <div class="col-span-12 lg:col-span-4 bg-white p-5 rounded-lg shadow space-y-3 flex flex-col items-center justify-center mt-3">
-            <table class="border-separate border-spacing-3">
-                <tbody>
-                    <tr>
-                        <td class="text-end">Subtotal:</td>
-                        <td>${{ number_format($merchandiseTotal, 2) }}</td>
-                    </tr>
-        
-                    {{-- <tr>
-                        <td class="text-end">Affiliate Discount:</td>
-                        <td>₱3232 (2%)</td>
-                    </tr> --}}
-        
-                    <tr>
-                        <td class="text-end">Shipping Total:</td>
-                        <td>${{ $shippingTotal }}</td>
-                    </tr>
-        
-                    <tr>
-                        <td class="text-end">Total Payment:</td>
-                        <td class="text-xl font-semibold">${{ number_format($merchandiseTotal + $shippingTotal, 2) }}</td>
-                    </tr>
-                </tbody>
-            </table>
-        
-            <div class="flex gap-3 flex-col">
-                <x-button class="!px-10 w-full" wire:loading.attr="disabled" wire:click='placeOrder' label="Place Order | Cash On Delivery" />
-                
-                <div wire:ignore>
-                    <div id="paypal-button-container"></div>
-                    <p id="result-message"></p>
+        <div class="col-span-12 lg:col-span-4 ">
+            <div class="bg-white p-5 rounded-lg shadow space-y-3 flex flex-col items-center justify-center mt-3">
+                <table class="border-separate border-spacing-3">
+                    <tbody>
+                        <tr>
+                            <td class="text-end">Subtotal:</td>
+                            <td>${{ number_format($merchandiseTotal, 2) }}</td>
+                        </tr>
+            
+                        {{-- <tr>
+                            <td class="text-end">Affiliate Discount:</td>
+                            <td>₱3232 (2%)</td>
+                        </tr> --}}
+            
+                        <tr>
+                            <td class="text-end">Shipping Total:</td>
+                            <td>${{ $shippingTotal }}</td>
+                        </tr>
+            
+                        <tr>
+                            <td class="text-end">Total Payment:</td>
+                            <td class="text-xl font-semibold">${{ number_format($merchandiseTotal + $shippingTotal, 2) }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            
+                <div class="flex gap-3 flex-col">
+                    <x-button class="!px-10 w-full" wire:loading.attr="disabled" wire:click='placeOrder' label="Place Order | Cash On Delivery" />
+                    
+                    <div wire:ignore>
+                        <div id="paypal-button-container"></div>
+                        <p id="result-message"></p>
+                    </div>
                 </div>
             </div>
         </div>

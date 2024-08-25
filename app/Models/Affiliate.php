@@ -16,6 +16,7 @@ class Affiliate extends Model
         'affiliate_code',
         'totalCommissioned',
         'rate',
+        'discount',
         'status',
     ];
 

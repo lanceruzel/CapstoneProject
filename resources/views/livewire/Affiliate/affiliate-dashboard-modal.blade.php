@@ -38,7 +38,8 @@
                     <tr>
                         <th scope="col" class="px-6 py-3 text-center">Store</th>
                         <th scope="col" class="px-6 py-3 text-center">Affiliate Code</th>
-                        <th scope="col" class="px-6 py-3 text-center">Commission Rate Per Order</th>
+                        <th scope="col" class="px-6 py-3 text-center">Discount %</th>
+                        <th scope="col" class="px-6 py-3 text-center">Commission % Per Order</th>
                         <th scope="col" class="px-6 py-3 text-center">Total Commissioned</th>
                         <th scope="col" class="px-6 py-3 text-center">Status</th>
                         {{-- <th scope="col" class="px-6 py-3 text-center"></th> --}}
@@ -52,6 +53,7 @@
                                 <td class="px-6 py-4 text-center">{{ $affiliate->store->storeInformation->name }}</td>
                                 <td class="px-6 py-4 text-center">{{ $affiliate->affiliate_code }}</td>
                                 <td class="px-6 py-4 text-center">{{ $affiliate->rate }}%</td>
+                                <td class="px-6 py-4 text-center">{{ $affiliate->discount }}%</td>
                                 <td class="px-6 py-4 text-center">${{ number_format($affiliate->totalCommissioned, 2) }}</td>
                                 <td class="px-6 py-4 text-center">
                                     @if($affiliate->status == App\Enums\Status::Active)
