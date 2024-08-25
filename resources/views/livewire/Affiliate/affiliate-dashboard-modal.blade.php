@@ -52,8 +52,8 @@
                             <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-100">
                                 <td class="px-6 py-4 text-center">{{ $affiliate->store->storeInformation->name }}</td>
                                 <td class="px-6 py-4 text-center">{{ $affiliate->affiliate_code }}</td>
-                                <td class="px-6 py-4 text-center">{{ $affiliate->rate }}%</td>
                                 <td class="px-6 py-4 text-center">{{ $affiliate->discount }}%</td>
+                                <td class="px-6 py-4 text-center">{{ $affiliate->rate }}%</td>
                                 <td class="px-6 py-4 text-center">${{ number_format($affiliate->totalCommissioned, 2) }}</td>
                                 <td class="px-6 py-4 text-center">
                                     @if($affiliate->status == App\Enums\Status::Active)
