@@ -113,13 +113,15 @@
             <!-- Content -->
             <div class="w-full flex flex-col items-center justify-center">
                 <div x-show='tabSelected == 1' x-cloak x-transition class="w-[510px] max-w-[510px] min-h-screen rounded-lg max-sm:px-7 space-y-5 mt-5"> <!-- Posts -->
-                    <div class="border w-full bg-white rounded-lg p-4 gap-3 shadow-sm flex justify-stretch items-stretch hover:cursor-pointer active:scale-95 transition-all" onclick="$openModal('postFormModal')">
-                        <div class="w-full text-center bg-gray-200 rounded-lg py-2 font-medium text-sm select-none text-gray-600">What do you have in mind?</div>
-                    
-                        <i class="py-1 px-2 text-xl bg-blue-200 text-blue-800 rounded-lg">
-                            <x-icon name="photo" class="w-full h-full" />
-                        </i>
-                    </div>
+                    @if($user->id == Auth::id())
+                        <div class="border w-full bg-white rounded-lg p-4 gap-3 shadow-sm flex justify-stretch items-stretch hover:cursor-pointer active:scale-95 transition-all" onclick="$openModal('postFormModal')">
+                            <div class="w-full text-center bg-gray-200 rounded-lg py-2 font-medium text-sm select-none text-gray-600">What do you have in mind?</div>
+                        
+                            <i class="py-1 px-2 text-xl bg-blue-200 text-blue-800 rounded-lg">
+                                <x-icon name="photo" class="w-full h-full" />
+                            </i>
+                        </div>
+                    @endif
         
                     <!-- Posts Container -->
                     <livewire:Posting.posts-container userID="{{ $user->id }}"/>

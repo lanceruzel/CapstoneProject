@@ -12,7 +12,7 @@ $storeRegistration = new StoreRegistration();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="user-id" content="{{ Auth::user()->id }}">
-    <title>Document</title>
+    <title>GlobeConnect</title>
 
     <script src="https://cdn.jsdelivr.net/npm/uikit@3.21.5/dist/js/uikit.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/uikit@3.21.5/dist/css/uikit.min.css" />

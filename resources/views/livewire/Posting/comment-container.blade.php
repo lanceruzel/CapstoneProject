@@ -4,7 +4,7 @@
 
 <div class="flex flex-row items-start gap-3">
    {{-- User Avatar --}}
-   <div class="min-w-5 h-5 max-w-5 max-h-5 rounded-full">
+   <div class="min-w-7 h-7 max-w-7 max-h-7 rounded-full">
       @if($comment->user->profilePicture() == null)
           <x-icon name="user" solid class="w-full h-full bg-gray-200 rounded-full p-2 border" />
       @else
