@@ -2,8 +2,7 @@
     use App\Enums\UserType;
 @endphp
 
-<x-modal-card name="productViewModal" title="" width='6xl' align='center' x-cloak x-on:close="$dispatch('clearProductViewModalData')" blurless wire:ignore.self>  
-    {{-- @if($variations || $productUpdate) --}}
+<x-modal-card name="productViewModal" title="Product" width='6xl' align='center' x-cloak x-on:close="$dispatch('clearProductViewModalData')" blurless wire:ignore.self>  
     @if($product != null)
         <div class="max-w-[1100px] mx-auto max-lg:p-5 lg:p-7">
             <div class="grid grid-cols-2 gap-5">
@@ -14,7 +13,7 @@
                                 @foreach($images as $image)
                                     <li class="w-full sm:rounded-md" tabindex="-1" style="">
                                         <a href="{{ asset('uploads/products') . '/' . $image }}">
-                                            <img src="{{ asset('uploads/products') . '/' . $image }}" class="w-full h-full object-contain inset-0" alt="">
+                                            <img src="{{ asset('uploads/products') . '/' . $image }}" class="w-full max-h-[500px] object-cover inset-0" alt="">
                                         </a>
                                     </li>
                                 @endforeach
@@ -32,7 +31,7 @@
                     @else
                         <div class="relative w-full h-full" uk-lightbox>
                             <a href="{{ asset('uploads/products') . '/' . $images[0] }}">
-                                <img src="{{ asset('uploads/products') . '/' . $images[0] }}" alt="" class="sm:rounded-lg w-full h-full object-contain">
+                                <img src="{{ asset('uploads/products') . '/' . $images[0] }}" alt="" class="sm:rounded-lg w-full max-h-[500px] object-cover">
                             </a>
                         </div>
                     @endif

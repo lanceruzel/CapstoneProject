@@ -48,6 +48,5 @@
     </div>
 
     <livewire:Posting.post-form-modal />
-    <livewire:Product.product-view-modal />
     <livewire:Livestream.livestream-form-modal />
 </x-layouts.main-layout>

@@ -3,12 +3,18 @@
 ?>
 <div class="w-full p-3 flex items-start justify-start flex-row gap-2 @if($notification->status == 'unread') bg-gray-502 @endif">
     <div>
-        <div class="w-8 h-8 flex items-center justify-center rounded-full border">
+        <div class="w-8 h-8 flex items-center justify-center rounded-full border border-slate-700">
             @switch($notification->type)
+                @case(NotificationType::Status)
+                        <x-icon name="user" class="w-5 h-5" />
+                    @break
                 @case(NotificationType::Order)
                         <x-icon name="truck" class="w-5 h-5" />
                     @break
-                @case(NotificationType::Product || NotificationType::ProductRegistration)
+                @case(NotificationType::Product)
+                        <x-icon name="shopping-bag" class="w-5 h-5" />
+                    @break
+                @case(NotificationType::ProductRegistration)
                         <x-icon name="shopping-bag" class="w-5 h-5" />
                     @break
                 @case(NotificationType::Stock)

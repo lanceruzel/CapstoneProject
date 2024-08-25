@@ -24,8 +24,8 @@
                                 </div>
             
                                 <div class="flex-1">
-                                    <a href="{{ route('profile', $user->username) }}" class="leading-snug hover:no-underline">
-                                        <p class="font-semibold text-md text-gray-700">{{ $user->first_name . ' ' . $user->last_name }}</p>
+                                    <a href="{{ route('profile', $user->user->username) }}" class="leading-snug hover:no-underline">
+                                        <p class="font-semibold text-md text-gray-700">{{ $user->user->name() }}</p>
                                         <small class="text-gray-700">
                                             <span class="font-semibold me-1">12.3k</span>followers
                                         </small>
@@ -62,7 +62,7 @@
                                 </div>
                                
                                 <div class="flex-1">
-                                    <a href="{{ route('profile', $store->username) }}" class="leading-snug hover:no-underline">
+                                    <a href="{{ route('profile', $store->user->username) }}" class="leading-snug hover:no-underline">
                                         <p class="font-semibold text-md text-gray-700">{{ $store->name }}</p>
 
                                         <small class="text-gray-700">
