@@ -30,7 +30,8 @@ class CheckoutPageContent extends Component
 
     protected $listeners = [
         'selected-shipping-address' => 'getShippingInformationData',
-        'totalUpdated' => '$refresh'
+        'totalUpdated' => '$refresh',
+        'payment-completed' => 'placeOrder'
     ];
 
     public function mount(){
