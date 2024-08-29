@@ -169,7 +169,11 @@ class ProductFormModal extends Component
 
             foreach($this->variations as $key => $i){
                 $rules["variations.$key.name"] = 'required';
-                $rules["variations.$key.stocks"] = 'required|numeric|min:20|max:9999';
+
+                if(!$this->productUpdate){
+                    $rules["variations.$key.stocks"] = 'required|numeric|min:20|max:9999';
+                }
+                
                 $rules["variations.$key.price"] = 'required|numeric';
             }   
         } else {

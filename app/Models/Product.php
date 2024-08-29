@@ -42,7 +42,12 @@ class Product extends Model
         $totalStocks = 0;
 
         foreach (json_decode($this->variations) as $variation) {
-            $totalStocks += $variation->stocks;
+
+            if($variation->stocks == ''){
+                $totalStocks += 0;
+            }else{
+                $totalStocks += $variation->stocks;
+            }
         }
 
         return $totalStocks;
