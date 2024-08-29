@@ -99,7 +99,7 @@ class ProductFormModal extends Component
                 $this->notification()->send([
                     'icon' => 'success',
                     'title' => 'Success!',
-                    'description' => 'Your product has been successfully submitted for review.',
+                    'description' => $this->productUpdate == true ? 'Your product has been successfully updated.' : 'Your product has been successfully submitted for review.',
                 ]);
 
                 $this->dispatch('refresh-product-table');
@@ -133,6 +133,31 @@ class ProductFormModal extends Component
             }
         }
 
+        $variations = null;
+
+        if($this->hasVariation == true){
+
+            if(count($this->variations) > 1){
+                $variations = $this->variations;
+            }else{
+                $variations = [
+                    0 => [
+                        'name' => 'Default',
+                        'stocks' => $this->variations[0]['stocks'],
+                        'price' => $this->variations[0]['price'],
+                    ]
+                ];
+            }
+        }else{
+            $variations = [
+                0 => [
+                    'name' => 'Default',
+                    'stocks' => $validated['stocks'],
+                    'price' => $validated['price'],
+                ]
+            ];
+        }
+
         return Product::updateOrCreate(
             [
                 'id' => $this->productUpdate ? $this->productUpdate->id : null,
@@ -144,13 +169,7 @@ class ProductFormModal extends Component
                 'description' => $validated['description'],
                 'status' => $status,
                 'images' => $this->productUpdate != null && json_decode($this->productUpdate->images) == $this->images ? json_encode($this->images) : $this->storeImages($this->images),
-                'variations' => $this->hasVariation == true ? json_encode($this->variations) : json_encode([
-                    0 => [
-                        'name' => 'Default',
-                        'stocks' => $validated['stocks'],
-                        'price' => $validated['price'],
-                    ]
-                ])
+                'variations' => $variations
             ]
         );
     }
@@ -263,6 +282,14 @@ class ProductFormModal extends Component
     }
 
     public function render(){
+        if($this->hasVariation && count($this->variations) == 1){
+            $this->variations[1] =  [
+                'name' => '',
+                'stocks' => '',
+                'price' => '',
+            ];
+        }
+
         return view('livewire.Product.product-form-modal', [
             'categories' => $this->getCategories()
         ]);
