@@ -190,12 +190,11 @@ $storeRegistration = new StoreRegistration();
                 },
                 onApprove: function(data, actions){
                     return actions.order.capture().then(function(details){
-                        Livewire.dispatch('payment-completed', { status: details.status });
+                        //reference number
+                        // console.log(details.purchase_units[0].payments.captures[0].id);
+                        Livewire.dispatch('payment-completed', { status: details.status, referenceID: details.purchase_units[0].payments.captures[0].id });
                     })
                 },
-                // onClick: function(){
-                //     alert('fdsf');
-                // }
             }).render('#paypal-button-container').then(() => {
                 // Disable the button after rendering
                 document.querySelector('#paypal-button-container').style.pointerEvents = 'none';

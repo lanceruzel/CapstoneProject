@@ -8,11 +8,16 @@ use App\Enums\Status;
 use App\Models\Affiliate;
 use App\Models\ProductFeedback;
 use App\Models\ReturnRequest;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Livewire\Component;
+use WireUi\Traits\WireUiActions;
 
 class OrderContainer extends Component
 {
+    use WireUiActions;
+
     public $order;
     public $hasRequest;
 
@@ -31,6 +36,15 @@ class OrderContainer extends Component
         }
     }
 
+    public function orderReceivedConfirmation(){
+        $this->dialog()->confirm([
+            'title' => 'Are you Sure?',
+            'description' => 'You have received this order?',
+            'acceptLabel' => 'Yes',
+            'method' => 'receivedOrder',
+        ]);
+    }
+
     public function receivedOrder(){
         if($this->order->affiliate_code){
             $this->updateAffiliateCommission();
@@ -42,6 +56,25 @@ class OrderContainer extends Component
         UserNotif::sendNotif($this->order->seller_id, 'Order #' . $this->order->id . ' has been received buy the buyer.' , NotificationType::Order);
 
         $this->order->save();
+
+        $this->dialog()->show([
+            'icon' => 'info',
+            'title' => 'Return Policy!',
+            'description' => 'To facilitate a smooth return, please return items within 24 hours of receipt. If the item is damaged or defective, kindly include photos or other proof with your return request. Thank you for your cooperation!',
+        ]);
+    }
+
+    public function isReturnOrderApplicable(){
+        if($this->order->status == Status::OrderBuyerReceived){
+            $orderedDate = Carbon::parse($this->order->updated_at);
+            $isWithinLast24Hours = $orderedDate->greaterThanOrEqualTo(Carbon::now()->subDay());
+
+            if($isWithinLast24Hours){
+                return true;
+            }
+        }
+
+        return false;
     }
 
     public function updateAffiliateCommission(){

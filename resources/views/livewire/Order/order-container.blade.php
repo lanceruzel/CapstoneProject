@@ -1,6 +1,13 @@
 <div class="bg-white p-5 rounded-lg shadow">
     <div class="flex justify-between border-b pb-3">
-        <p class="text-xl font-semibold">{{ $order->seller->storeInformation->name }}</p>
+        <div class="flex items-center justify-center gap-3">
+            <p class="text-xl font-semibold">#{{ $order->id . ' ' . $order->seller->storeInformation->name }}</p>
+            @if($order->referenceNumber != null) 
+                <small class="text-sm text-gray-600 font-normal">
+                    Reference# {{ $order->referenceNumber}}
+                </small> 
+            @endif
+        </div>
 
         <p class="text-sm">{{ date_format($order->created_at, "M d, Y") }}</p>
     </div>
@@ -64,7 +71,9 @@
                 @endif
                 
                 @if($order->status == App\Enums\Status::OrderBuyerReceived && !$hasRequest)
-                    <x-button flat label="Return Order" onclick="$openModal('productReturnFormModal')" wire:click="$dispatch('openReturnRequestForm', { id: {{ $order->id }} })" />
+                    {{-- @if($this->isReturnOrderApplicable()) --}}
+                        <x-button flat label="Return Order" onclick="$openModal('productReturnFormModal')" wire:click="$dispatch('openReturnRequestForm', { id: {{ $order->id }} })" />
+                    {{-- @endif --}}
                 @endif
             </p>
         </div>
@@ -73,7 +82,7 @@
             <p class="font-bold">${{ number_format($order->total, 2) }}</p>
 
             @if($order->status == App\Enums\Status::OrderSellerShipped)
-                <x-button label="Received" wire:click="receivedOrder" />
+                <x-button label="Received" wire:click="orderReceivedConfirmation" />
             @endif
         </div>
     </div>

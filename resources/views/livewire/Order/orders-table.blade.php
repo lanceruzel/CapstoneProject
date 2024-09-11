@@ -1,6 +1,6 @@
 <div class="bg-white shadow rounded-lg p-5">
     <div class="flex items-center justify-between">
-        <p class="font-semibold text-xl">Product lists</p>
+        <p class="font-semibold text-xl">Order lists</p>
 
         <div class="w-60 flex items-center justify-center gap-3">
             <x-dropdown>

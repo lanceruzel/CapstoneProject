@@ -88,15 +88,16 @@
                     <x-button class='!justify-start font-medium' xl icon='magnifying-glass' href='#' flat full secondary label="Search" uk-toggle="target: #search-slide" />
                 </li>
 
-                <li>
-                    @if(request()->routeIS('market'))
-                        <x-button class='!justify-start font-medium' xl icon='shopping-bag' href="{{ route('market') }}" solid flat full secondary label="Market" />
-                    @else
-                        <x-button class='!justify-start font-medium' xl icon='shopping-bag' href="{{ route('market') }}" flat full secondary label="Market" /> 
-                    @endif
-                </li>
-
                 @if(auth()->user()->role != App\Enums\UserType::Store)
+                    <li>
+                        @if(request()->routeIS('market'))
+                            <x-button class='!justify-start font-medium' xl icon='shopping-bag' href="{{ route('market') }}" solid flat full secondary label="Market" />
+                        @else
+                            <x-button class='!justify-start font-medium' xl icon='shopping-bag' href="{{ route('market') }}" flat full secondary label="Market" /> 
+                        @endif
+                    </li>
+
+                
                     <li>
                         @if(request()->routeIS('cart'))
                             <x-button class='!justify-start font-medium' xl icon='shopping-cart' href="{{ route('cart') }}" solid flat full secondary label="My Cart" />

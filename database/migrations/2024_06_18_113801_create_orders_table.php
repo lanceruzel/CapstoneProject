@@ -33,7 +33,7 @@ return new class extends Migration
             $table->string('affiliate_code')->nullable();
             $table->float('commission')->nullable();
             $table->string('is_paid')->default(false);
-
+            $table->string('referenceNumber')->nullable();
             $table->timestamps();
         });
 

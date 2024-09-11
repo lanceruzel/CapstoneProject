@@ -32,8 +32,15 @@
 
                     <tr>
                         <td class="text-right pe-3 font-medium">Payment Method:</td>
-                        <td>{{ $order->payment_method == 'COD' ? 'Cash on Delivery' : 'PayPal' }}</td>
+                        <td>{{ $order->payment_method == 'COD' ? 'Cash on Delivery' : 'PayPal' }} {{ $order->payment_method == 'PayPal' ? '(Reference #:' . $order->referenceNumber . ')' : null }}</td>
                     </tr>
+
+                    @if($order->referenceNumber)
+                        <tr>
+                            <td class="text-right pe-3 font-medium">Payment Reference Number:</td>
+                            <td>{{ $order->referenceNumber }}</td>
+                        </tr>
+                    @endif
 
                     <tr>
                         <td class="text-right pe-3 font-medium">Payment Status:</td>

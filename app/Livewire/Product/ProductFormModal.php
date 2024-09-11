@@ -169,7 +169,7 @@ class ProductFormModal extends Component
                 'description' => $validated['description'],
                 'status' => $status,
                 'images' => $this->productUpdate != null && json_decode($this->productUpdate->images) == $this->images ? json_encode($this->images) : $this->storeImages($this->images),
-                'variations' => $variations
+                'variations' => json_encode($variations)
             ]
         );
     }

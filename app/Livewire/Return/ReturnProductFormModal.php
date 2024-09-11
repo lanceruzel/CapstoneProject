@@ -8,6 +8,7 @@ use App\Enums\Status;
 use App\Models\Order;
 use App\Models\Product;
 use App\Models\ReturnRequest;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Livewire\Component;
@@ -53,6 +54,27 @@ class ReturnProductFormModal extends Component
 
         $this->selectedProducts = [];
         $this->orderedProducts = [];
+    }
+
+    public function isReturnOrderApplicable(){
+        if($this->order->status == Status::OrderBuyerReceived){
+            $orderedDate = Carbon::parse($this->order->updated_at);
+            $isWithinLast24Hours = $orderedDate->greaterThanOrEqualTo(Carbon::now()->subDay());
+
+            if($isWithinLast24Hours){
+                return true;
+            }else{
+                $this->dispatch('close-modal', ['modal' => 'productReturnFormModal']);
+
+                $this->dialog()->show([
+                    'icon' => 'info',
+                    'title' => 'Return Policy!',
+                    'description' => 'Unfortunately, your return request cannot be processed because the order was placed more than 24 hours ago. Our return policy allows returns within 24 hours of receipt. Thank you for your understanding',
+                ]);
+            }
+        }
+
+        return false;
     }
 
     public function sendRequest(){

@@ -109,7 +109,7 @@ class CheckoutPageContent extends Component
         return true;
     }
     
-    public function placeOrder($status = null){
+    public function placeOrder($status = null, $referenceID = null){
         $this->validateAffiliateInputs();
 
         if (!$this->checkCodePerStore()) {
@@ -155,11 +155,15 @@ class CheckoutPageContent extends Component
             }
 
             try{
-                $storeOrder = $this->storeOrder($seller, $shippingInformation, $paymentMethod, $isPaid, $total, $this->affiliate[$seller->id], $commission);
+                $storeOrder = $this->storeOrder($seller, $shippingInformation, $paymentMethod, $isPaid, $total, $this->affiliate[$seller->id], $commission, $referenceID);
 
                 if($storeOrder){
                     //Notify Seller
                     UserNotif::sendNotif($seller->id, 'You have new order.' , NotificationType::Order);
+
+                    if($paymentMethod == 'Paypal' && $isPaid){
+                        UserNotif::sendNotif(Auth::id(), 'You have successfully paid Order #' . $storeOrder->id . ' . Your payment reference number is #' . $referenceID . '.' , NotificationType::Order);
+                    }
 
                     //Store Ordered Product
                     foreach($products as $product){
@@ -209,7 +213,7 @@ class CheckoutPageContent extends Component
         return redirect()->route('orders');
     }
 
-    public function storeOrder($seller, $shippingInformation, $paymentMethod, $isPaid, $total, $code = null, $commission = null){
+    public function storeOrder($seller, $shippingInformation, $paymentMethod, $isPaid, $total, $code = null, $commission = null, $referenceID = null){
         return Order::create([
             'user_id' => Auth::id(),
             'seller_id' => $seller->id,
@@ -221,7 +225,8 @@ class CheckoutPageContent extends Component
             'payment_method' => $paymentMethod,
             'is_paid' => $isPaid,
             'affiliate_code' => $code,
-            'commission' => $commission
+            'commission' => $commission,
+            'referenceNumber' => $referenceID
         ]);
     }
 
