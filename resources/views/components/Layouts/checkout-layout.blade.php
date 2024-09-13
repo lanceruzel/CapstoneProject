@@ -142,7 +142,7 @@ $storeRegistration = new StoreRegistration();
     </main>
 
     <script
-      src="https://www.paypal.com/sdk/js?client-id=AWxtV3bV0lL7eyKn8zDw2hlpb-6qlgI-hJMCqD5i44C1lwlETjwpEsQUB_X6-KXthC1x0XEqkF7YavS7&currency=USD"
+      src="https://www.paypal.com/sdk/js?client-id=AZVVsNkGV7NS6SL25L-l2mG9qelgsvcuURxGMNlcEIk4xqlmUuGSek5kJYe2np3Z_ew2kLdEmj4Hy6tx&currency=USD"
       data-sdk-integration-source="developer-studio"
     ></script>
 

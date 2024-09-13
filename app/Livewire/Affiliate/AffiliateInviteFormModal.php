@@ -19,6 +19,7 @@ class AffiliateInviteFormModal extends Component
     public $commissionRate;
     public $email; 
     public $affiliateCode;
+    public $discount;
 
     protected $listeners = [
         'clearAffiliateInviteFormModalData' => 'clearData'
