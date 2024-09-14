@@ -1,6 +1,6 @@
 <!-- Sidebar -->
 <aside class="max-md:hidden transition-all fixed top-auto h-full w-64 left-0 border-e pt-16 bg-white z-[5]">
-    <div class="pb-3 pt-4 px-2.5 flex items-center justify-between flex-col h-full">
+    <div class="py-3 px-2.5 flex items-center justify-between flex-col h-full">
         <ul class="space-y-2 w-full">
             <li>
                 @if(request()->routeIS('home'))
@@ -116,7 +116,7 @@
         </ul>
 
         <div class="border-t-2 w-full pt-2">
-            <x-dropdown position="top">
+            <x-dropdown position="top" fullwidth>
                 <x-slot name="trigger">
                     <div class='transition-all flex items-center justify-start gap-2 font-medium px-7 py-2 w-full hover:text-gray-700 hover:font-bold hover:bg-gray-100'> 
                         <x-icon name="cog-6-tooth" class="w-5 h-5" solid />

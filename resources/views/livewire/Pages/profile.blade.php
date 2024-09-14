@@ -1,7 +1,7 @@
 <x-layouts.main-layout>
     <div class="w-full" x-data="{ tabSelected: 1 }">
         <div class="w-full max-w-[1000px] mx-auto px-3 h-full">
-            <div class="w-full bg-white rounded-lg relative shadow">
+            {{-- <div class="w-full bg-white rounded-lg relative shadow">
                 @if($user->id == Auth::id())
                     <div class="absolute top-2 right-2">
                         <x-dropdown>
@@ -92,6 +92,100 @@
                     </div>
                 </div>
 
+                @if($user->role == App\Enums\UserType::Travelpreneur || $user->role == App\Enums\UserType::Store)
+                    <div class="flex items-center justify-center">
+                        <div class="cursor-pointer px-10 py-3 transition-all" x-bind:class="tabSelected == 1 ? 'border-b-2 border-gray-500 font-semibold' : ''" x-on:click="tabSelected = 1">Posts</div>
+                        <div class="cursor-pointer px-10 py-3 transition-all" x-bind:class="tabSelected == 2 ? 'border-b-2 border-gray-500 font-semibold' : ''" x-on:click='tabSelected = 2'>Products</div>
+                    </div>
+                @endif
+            </div> --}}
+
+            <!-- Header -->
+            <div class="w-full bg-white rounded-lg relative shadow">
+                @if($user->id == Auth::id())
+                    <div class="absolute top-2 right-2">
+                        <x-dropdown>
+                            <x-slot name="trigger">
+                                <x-mini-button  rounded icon="cog-6-tooth" flat gray />
+                            </x-slot>
+
+                            <x-dropdown.item label="Profile" wire:click="$dispatch('getProfileData')" onclick="$openModal('editProfileFormModal')"/>
+                            <x-dropdown.item label="Change Password" onclick="$openModal('updatePasswordModal')"/>
+                        </x-dropdown>
+                    </div>
+                @endif
+
+                <!-- Header -->
+                <div class="grid grid-cols-12 p-5">
+                    <!-- Left Side -->
+                    <div class="col-span-12 lg:col-span-4 flex flex-col items-center justify-start gap-3">
+                        <!-- Profile Picture -->
+                        <div class="relative h-28 w-28 md:h-40 md:w-40 rounded-full overflow-hidden border-[6px] bg-slate-400 border-gray-100">
+                            @if($user->profilePicture() == null)
+                                <div class="w-full h-full object-cover absolute bottom-10 right-1">
+                                    <i class="ri-user-3-fill ri-10x"></i>
+                                </div>
+                            @else
+                                <img src="{{ asset('uploads') . '/' . $user->profilePicture() }}" class="w-full h-full absolute object-cover">
+                            @endif
+                        </div>
+                        
+                        <!-- User Location -->
+                        @if($user->role != App\Enums\UserType::Store)
+                            <div class="pb-2">
+                                <p>Currently in <span class="font-semibold">{{ $user->userInformation->current_country }}</span></p>
+                            </div>
+                        @else
+                            <div class="pb-2">
+                                <p>Located at <span class="font-semibold">{{ $user->storeInformation->country }}</span></p>
+                            </div>
+                        @endif
+                    </div>
+
+                    <!-- Right Side -->
+                    <div class="col-span-12 lg:col-span-8 flex flex-col just gap-3 flex-grow h-full">
+                        <div class="flex flex-col justify-between h-full">
+                            <!-- Name -->
+                            <div class="flex max-lg:flex-col items-center lg:gap-3">
+                                <h3 class="text-xl lg:text-3xl font-semibold text-black dark:text-white text-center">
+                                    {{ $user->role == App\Enums\UserType::Store ? $user->storeInformation->name : $user->userInformation->fullname() }}
+                                </h3>
+                                <small class="text-gray-500 font-normal text-center lg:text-base">{{ '@' . $user->username }}</small>
+                            </div>
+
+                            <!-- Bio -->
+                            <div class="flex-grow h-full">
+                                <div class="text-sm mt-2 max-lg:text-center">
+                                    @if($user->role == App\Enums\UserType::Store)
+                                        @if($user->storeInformation->profile_bio)
+                                            {{ $user->storeInformation->profile_bio  }}
+                                        @else
+                                            <p>We’re excited to have you here and look forward to offering you a great experience. Our goal is to provide you with excellent products and top-notch service.</p>
+                                            <p class="mt-1">Feel free to browse our collection, and don’t hesitate to reach out if you have any questions or need assistance. Thank you for visiting, and we hope you enjoy what we have to offer!</p>
+                                        @endif
+                                    @else
+                                        @if($user->userInformation->profile_bio)
+                                            {{ $user->userInformation->profile_bio  }}
+                                        @else
+                                            <p>I’m new here and excited to be a part of this community! I’m looking forward to exploring and connecting with all of you. Whether it’s discovering new interests, sharing ideas, or just having a good conversation, I’m here for it.</p>
+                                            <p class="mt-1">Feel free to say hi, share your favorite tips, or drop a recommendation. Let’s make the most of this journey together!</p>
+                                        @endif
+                                    @endif
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center justify-center">
+                            <!-- Options -->
+                            @if($user->id != Auth::id())
+                                <div class="flex items-center justify-center gap-3">
+                                    <x-button icon="chat-bubble-oval-left" href="{{ route('message', $user->username) }}" label="Message" />
+                                </div>
+                            @endif
+                        </div>
+                    </div>
+                </div>
+         
                 @if($user->role == App\Enums\UserType::Travelpreneur || $user->role == App\Enums\UserType::Store)
                     <div class="flex items-center justify-center">
                         <div class="cursor-pointer px-10 py-3 transition-all" x-bind:class="tabSelected == 1 ? 'border-b-2 border-gray-500 font-semibold' : ''" x-on:click="tabSelected = 1">Posts</div>

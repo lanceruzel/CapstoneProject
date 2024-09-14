@@ -32,7 +32,7 @@
 
     <x-dropdown.header label="Store">
         @foreach($stores as $store)
-            <x-dropdown.item separator onclick="location.href='{{ route('profile', $user->user->username) }}'">
+            <x-dropdown.item separator onclick="location.href='{{ route('profile', $store->user->username) }}'">
                 <div class="w-full flex items-center justify-between cursor-pointer gap-3">
                     <div class="flex items-center justify-center gap-3">
                         <div class="flex items-center justify-center">

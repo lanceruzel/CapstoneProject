@@ -1,5 +1,5 @@
 <aside x-bind:class="sidebarOpened ? 'translate-x-0' : '-translate-x-full'" x-transition class="md:hidden transition-all fixed top-auto h-full w-64 left-0 border-e pt-16 bg-white z-[5]">
-    <div class="pb-3 pt-4 px-2.5 flex items-center justify-between flex-col h-full">
+    <div class="py-3 px-2.5 flex items-center justify-between flex-col h-full">
         <ul class="space-y-2 w-full">
             <li>
                 @if(request()->routeIS('home'))

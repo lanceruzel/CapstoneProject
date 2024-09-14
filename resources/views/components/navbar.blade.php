@@ -1,5 +1,5 @@
 <nav class="bg-indigo-500 shadow border-gray-200 fixed top-0 w-screen" style="z-index: 10">
-    <div class="flex items-center justify-stretch p-4 gap-5">
+    <div class="flex items-center justify-stretch px-4 py-3 gap-5">
         <div class="flex items-center justify-center gap-1">
             <x-mini-button rounded icon="bars-3" class="md:hidden" x-on:click="toggleSidebar"/>
 
