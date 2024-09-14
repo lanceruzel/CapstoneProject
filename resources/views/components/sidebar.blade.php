@@ -116,12 +116,12 @@
         </ul>
 
         <div class="border-t-2 w-full pt-2">
-            <x-dropdown position="top" fullwidth>
+            <x-dropdown position="top">
                 <x-slot name="trigger">
                     <div class='transition-all flex items-center justify-start gap-2 font-medium px-7 py-2 w-full hover:text-gray-700 hover:font-bold hover:bg-gray-100'> 
                         <x-icon name="cog-6-tooth" class="w-5 h-5" solid />
                         
-                        <span class="text-sm font-medium text-center line-clamp-1">
+                        <span class="text-sm font-medium text-center line-clamp-1 w-full">
                             {{ auth()->user()->name() }}
                         </span>
                     </div>
