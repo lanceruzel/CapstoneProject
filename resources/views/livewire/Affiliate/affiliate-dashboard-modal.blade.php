@@ -12,22 +12,22 @@
             <div class="w-full flex items-center justify-center gap-5">
                 <div class="p-5 w-fit min-w-48 h-32 shadow flex flex-col items-center justify-center rounded-md border border-gray-200">
                     <h1 class="text-xl font-semibold">Total</h1>
-                    <h1>${{ number_format($overallCommissioned, 2); }}</h1>
+                    <h1>${{ number_format($overallCommissioned, 2) }}</h1>
                 </div>
         
                 <div class="p-5 w-fit min-w-48 h-32 shadow flex flex-col items-center justify-center rounded-md border border-gray-200">
                     <h1 class="text-xl font-semibold">Today</h1>
-                    <h1>${{ number_format($todayCommissioned, 2); }}</h1>
+                    <h1>${{ number_format($todayCommissioned, 2) }}</h1>
                 </div>
         
                 <div class="p-5 w-fit min-w-48 h-32 shadow flex flex-col items-center justify-center rounded-md border border-gray-200">
                     <h1 class="text-xl font-semibold">Last Week</h1>
-                    <h1>${{ number_format($lastWeekCommissioned, 2); }}</h1>
+                    <h1>${{ number_format($lastWeekCommissioned, 2) }}</h1>
                 </div>
         
                 <div class="p-5 w-fit min-w-48 h-32 shadow flex flex-col items-center justify-center rounded-md border border-gray-200">
                     <h1 class="text-xl font-semibold">This month</h1>
-                    <h1>${{ number_format($thisMonthCommissioned, 2); }}</h1>
+                    <h1>${{ number_format($thisMonthCommissioned, 2) }}</h1>
                 </div>
             </div>
         </div>
