@@ -6,9 +6,9 @@
         <x-mini-button flat rounded icon="arrow-path" wire:click='$refresh' spinner outline flat primary interaction:solid />
     </div>
 
-    <div class="relative capitalize font-medium text-sm text-center mt-4 mb-2 uk-slider" tabindex="-1" uk-slider="autoplay: true;finite: true">
+    <div class="relative font-medium text-sm text-center mt-4 mb-2 uk-slider" tabindex="-1" uk-slider="autoplay: true;finite: true">
 
-        <div class="overflow-hidden uk-slider-container">
+        <div class="overflow-hidden uk-slider-container capitalize">
            
             <ul class="-ml-2 uk-slider-items w-[calc(100%+0.5rem)]" style="transform: translate3d(-164.2px, 0px, 0px);">
                 

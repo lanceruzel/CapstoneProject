@@ -3,7 +3,16 @@
         <div class="w-full max-w-[1000px] mx-auto px-3 h-full">
             <div class="w-full bg-white rounded-lg relative shadow">
                 @if($user->id == Auth::id())
-                    <x-mini-button class="absolute top-2 right-2" rounded icon="cog-6-tooth" flat gray wire:click="$dispatch('getProfileData')" onclick="$openModal('editProfileFormModal')" />
+                    <div class="absolute top-2 right-2">
+                        <x-dropdown>
+                            <x-slot name="trigger">
+                                <x-mini-button  rounded icon="cog-6-tooth" flat gray />
+                            </x-slot>
+    
+                            <x-dropdown.item label="Profile" wire:click="$dispatch('getProfileData')" onclick="$openModal('editProfileFormModal')"/>
+                            <x-dropdown.item label="Change Password" onclick="$openModal('updatePasswordModal')"/>
+                        </x-dropdown>
+                    </div>
                 @endif
 
                 <!-- Header -->
@@ -149,4 +158,5 @@
     <livewire:Posting.post-form-modal />
     <livewire:Profile.edit-profile-form-modal />
     <livewire:TravelProfile.view-travel-modal />
+    <livewire:Auth.change-password-modal />
 </x-layouts.main-layout>    

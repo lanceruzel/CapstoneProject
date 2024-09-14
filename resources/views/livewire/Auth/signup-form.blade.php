@@ -20,7 +20,7 @@
 
     <div class="grid grid-cols-2 gap-3">
         <x-password class="max-lg:col-span-2" label="Password" wire:model="password" shadowless />
-        <x-password class="max-lg:col-span-2" label="Confirm Password" wire:model="password_confirmation" shadowless />
+        <x-input type="password" class="max-lg:col-span-2" label="Confirm Password" wire:model="password_confirmation" shadowless />
     </div>
 
     <x-button wire:loading.attr="disabled" class="w-full" wire:click="signup" spinner="signup" label="Sign up" />

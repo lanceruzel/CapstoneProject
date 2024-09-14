@@ -8,10 +8,10 @@
     </div>
 
     <!-- Content -->
-    <div class="space-y-4 capitalize text-xs font-normal mt-5 mb-2 text-gray-500">
+    <div class="space-y-4 text-xs font-normal mt-5 mb-2 text-gray-500">
         @if(count($users) > 0)
             @foreach ($users as $user)
-                <div class="flex items-center gap-3">
+                <div class="flex items-center gap-3 capitalize">
                     <a href="{{ route('profile', $user->username) }}">
                         @if($user->profilePicture() == null)
                             <x-icon name="user" solid class="w-10 h-10 bg-gray-200 rounded-full p-2 border" />
@@ -34,7 +34,7 @@
                 </div>
             @endforeach
         @else
-            <div class="flex items-center justify-center">
+            <div class="flex items-center justify-center text-gray-500 text-xs font-medium">
                 There are currently no users
             </div>
         @endif
