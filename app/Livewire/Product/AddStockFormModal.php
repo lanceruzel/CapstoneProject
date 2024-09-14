@@ -49,6 +49,10 @@ class AddStockFormModal extends Component
         foreach ($this->variations as $key => $variation){
             $stockToAdd = (int) $this->stocks[$key]['stocks'];
 
+            if($variation->stocks == '' || $variation->stocks == ' ' || $variation->stocks == null){
+                $variation->stocks = 0; 
+            }
+
             if($stockToAdd > 0 || empty($stockToAdd)){
                 $variation->stocks += $stockToAdd; // Add stock to each variation
             }

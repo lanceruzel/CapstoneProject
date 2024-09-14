@@ -3,7 +3,7 @@
         <div class="flex flex-col gap-2 items-start text-gray-600 overflow-auto">
             @if($variations)
                 @foreach ($variations as $key => $variation)
-                    <x-maskable label="Variation: {{ $variation->name }}" corner="Current Stock: x{{ $variation->stocks }}" icon="truck" mask="####" wire:model="stocks.{{ $key }}.stocks" shadowless />
+                    <x-maskable label="Variation: {{ $variation->name }}" corner="Current Stock: x{{ $variation->stocks == '' || $variation->stocks == ' ' || $variation->stocks == null ? 0 : $variation->stocks }}" icon="truck" mask="####" wire:model="stocks.{{ $key }}.stocks" shadowless />
                 @endforeach
             @endif
             

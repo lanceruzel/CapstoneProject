@@ -8,12 +8,12 @@
             <div class="grid grid-cols-2 gap-5">
                 <div class="max-lg:col-span-2 lg:col-span-1">   
                     @if(count($images) > 1)
-                        <div class="relative uk-visible-toggle uk-slideshow w-full" tabindex="-1" uk-slideshow="animation: push;finite: true;min-height: 300; max-height: 350">
-                            <ul class="uk-slideshow-items" uk-lightbox="" style="min-height: 350px;">
+                        <div class="relative uk-visible-toggle uk-slideshow w-full" tabindex="-1" uk-slideshow="animation: push;finite: true;min-height: 500; max-height: 500">
+                            <ul class="uk-slideshow-items" uk-lightbox="">
                                 @foreach($images as $image)
                                     <li class="w-full sm:rounded-md" tabindex="-1" style="">
                                         <a href="{{ asset('uploads/products') . '/' . $image }}">
-                                            <img src="{{ asset('uploads/products') . '/' . $image }}" class="w-full max-h-[500px] object-cover inset-0" alt="">
+                                            <img src="{{ asset('uploads/products') . '/' . $image }}" class="w-full h-full object-fit inset-0" alt="">
                                         </a>
                                     </li>
                                 @endforeach
@@ -31,7 +31,7 @@
                     @else
                         <div class="relative w-full h-full" uk-lightbox>
                             <a href="{{ asset('uploads/products') . '/' . $images[0] }}">
-                                <img src="{{ asset('uploads/products') . '/' . $images[0] }}" alt="" class="sm:rounded-lg w-full max-h-[500px] object-cover">
+                                <img src="{{ asset('uploads/products') . '/' . $images[0] }}" alt="" class="sm:rounded-lg w-full h-full object-fit">
                             </a>
                         </div>
                     @endif
