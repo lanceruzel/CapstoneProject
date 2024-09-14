@@ -38,13 +38,16 @@ $storeRegistration = new StoreRegistration();
     </style>
 </head>
 
-<body class="font-inter text-gray-700 antialiased p-0 m-0">
+<body class="font-inter text-gray-700 antialiased p-0 m-0" x-data='{ 
+    sidebarOpened: false,
+    toggleSidebar() { this.sidebarOpened = ! this.sidebarOpened },
+}'>
     <x-dialog />
     <x-notifications />
 
     <x-navbar />
-
     <x-sidebar />
+    <x-mobile-sidebar />
 
     <main class=" {{ request()->routeIS('message') ? 'lg:ps-64' : 'md:ps-64' }} min-h-screen pt-16 bg-gray-50">
         <div class="p-5 overflow-hidden">

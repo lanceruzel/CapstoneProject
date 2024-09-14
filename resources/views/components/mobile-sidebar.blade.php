@@ -1,5 +1,4 @@
-<!-- Sidebar -->
-<aside class="max-md:hidden transition-all fixed top-auto h-full w-64 left-0 border-e pt-16 bg-white z-[5]">
+<aside x-bind:class="sidebarOpened ? 'translate-x-0' : '-translate-x-full'" x-transition class="md:hidden transition-all fixed top-auto h-full w-64 left-0 border-e pt-16 bg-white z-[5]">
     <div class="pb-3 pt-4 px-2.5 flex items-center justify-between flex-col h-full">
         <ul class="space-y-2 w-full">
             <li>
@@ -31,7 +30,7 @@
                     </span>
                 </a>
             </li>
-
+            
             <li>
                 @if(request()->routeIS('market'))
                     <a href="{{ route('market') }}" class='transition-all flex items-center gap-3 font-bold bg-gray-100 px-7 py-2 w-full hover:text-gray-700 hover:font-bold hover:bg-gray-100'> 
@@ -139,18 +138,6 @@
     
                 <x-dropdown.item separator icon='arrow-left-end-on-rectangle' href="{{ route('signout') }}" label="Sign out" />
             </x-dropdown>
-        </div>
-    </div>
-
-    <!-- Notification -->
-    <div id="notification-slide" class="md:ml-[17rem] w-full overflow-hidden z-0" uk-offcanvas="overlay:true">
-        <div class="uk-offcanvas-bar !px-3 border-x max-md:w-full w-96 bg-white text-gray-700 pt-20">
-            <div class="w-full flex items-center justify-between">
-                <p class="text-lg">Notification</p>
-                <x-mini-button rounded icon="x-mark" flat gray onclick="UIkit.offcanvas('#notification-slide').hide();" />
-            </div>
-            
-            <livewire:Notif.notifications-container />
         </div>
     </div>
 </aside>

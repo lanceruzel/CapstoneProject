@@ -46,28 +46,22 @@
     </style>
 </head>
 
-<body class="font-inter text-gray-700 antialiased p-0 m-0">
+<body class="font-inter text-gray-700 antialiased p-0 m-0" x-data='{ 
+    sidebarOpened: false,
+    toggleSidebar() { this.sidebarOpened = ! this.sidebarOpened },
+}'>
     <x-dialog />
     <x-notifications />
     
     <x-navbar />
     <x-sidebar />
+    <x-mobile-sidebar />
 
     <main x-bind:class="sidebarOpened ? 'md:!ps-64' : ''" x-transition class="{{ request()->routeIS('message') ? 'lg:ps-64' : 'md:ps-64' }} min-h-screen pt-16 bg-gray-50 transition-all pb-16 md:pb-0">
         <div class="p-5">
             {{ $slot }}
         </div>
     </main>
-
-    <!-- Bottom bar -->
-    <nav class="bg-white border-t shadow border-gray-200 fixed bottom-0 w-screen md:hidden" style="z-index: 10">
-        <div class="flex flex-wrap justify-around items-center space-x-3 p-4">
-            <x-mini-button rounded icon="home" href="{{ route('home') }}" flat gray />
-            <x-mini-button rounded icon="shopping-bag" href="{{ route('market') }}" flat gray />
-            <x-mini-button rounded icon="magnifying-glass" flat gray uk-toggle="target: #search-slide" />
-            <x-mini-button rounded icon="user-circle" href="{{ route('profile') }}" flat gray />
-        </div>
-    </nav>
 
     <livewire:Product.product-view-modal />
     <livewire:Product.product-view-variation-selection-modal />
