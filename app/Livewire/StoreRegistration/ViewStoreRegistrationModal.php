@@ -74,14 +74,13 @@ class ViewStoreRegistrationModal extends Component
 
     public function updateRegistrationStatus(){
         $isAccepted = true;
-        $requirements = ['requirement_1', 'requirement_2', 'requirement_3'];
 
-        foreach ($requirements as $requirement) {
-            if ($this->requirements->{$requirement}->status == Status::Declined) {
+        foreach(array_slice((array) $this->requirements, 0, -2) as $key => $requirement) {
+            if ($this->requirements->{$key}->status == Status::Declined) {
                 $isAccepted = false;
             }
 
-            if ($this->requirements->{$requirement}->status == Status::ForReview) { 
+            if ($this->requirements->{$key}->status == Status::ForReview) { 
                 return $this->dialog()->show([
                     'icon' => 'info',
                     'title' => 'Information!',

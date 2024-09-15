@@ -1,62 +1,80 @@
 <x-modal-card name="storeRegistrationFormModal" title="Store Registration" align='center' x-cloak x-on:close="$dispatch('clearstoreRegistrationData')" blurless wire:ignore.self>
     @if($registrationStatus == App\Enums\Status::ForSubmission)
-        <div class="flex flex-col gap-2 items-start text-gray-600">
-            <div class="grid grid-cols-2 gap-3 w-full">
-                <h1 class="col-span-2 text-xl font-semibold">Store Information <span class="text-sm text-gray-500">(Note: The following information will be used to contact your store)</span></h1>
-
-                <x-input class="max-lg:col-span-2" label="Store Contact" wire:model="contact" shadowless />
-                <x-input class="max-lg:col-span-2" label="Store Email" wire:model="email" shadowless />
-
-                <x-select class="max-lg:col-span-2" label="Country" wire:model="country" placeholder="Select Country" :options="$countries" searchable shadowless />
-                <x-input class="max-lg:col-span-2" label="Address" wire:model="address" shadowless />
-            </div>
-
-            <div class="grid grid-cols-2 gap-3 w-full">
-                <h1 class="col-span-2 text-xl font-semibold">Store Requirements</h1>
-
-                <x-input class="col-span-2" type="file" label="Requirement 1" wire:model="requirement_1" shadowless>
-                    <x-slot name='corner' wire:target='requirement_1' wire:loading>
-                        <div class="flex items-center justify-center gap-2">
-                            <span>
-                                <x-icon name="arrow-path" class="w-5 h-5 animate-spin" />
-                            </span>
-                            
-                            <span>
-                                Uploading...
-                            </span>
-                        </div>
-                    </x-slot>
-                </x-input>
-
-                <x-input class="col-span-2" type="file" label="Requirement 2" wire:model="requirement_2" shadowless>
-                    <x-slot name='corner' wire:target='requirement_2' wire:loading>
-                        <div class="flex items-center justify-center gap-2">
-                            <span>
-                                <x-icon name="arrow-path" class="w-5 h-5 animate-spin" />
-                            </span>
-                            
-                            <span>
-                                Uploading...
-                            </span>
-                        </div>
-                    </x-slot>
-                </x-input>
-
-                <x-input class="col-span-2" type="file" label="Requirement 3" wire:model="requirement_3" shadowless>
-                    <x-slot name='corner' wire:target='requirement_3' wire:loading>
-                        <div class="flex items-center justify-center gap-2">
-                            <span>
-                                <x-icon name="arrow-path" class="w-5 h-5 animate-spin" />
-                            </span>
-                            
-                            <span>
-                                Uploading...
-                            </span>
-                        </div>
-                    </x-slot>
-                </x-input>
-            </div>
+        <div class="flex flex-col items-start justify-center gap-5 text-gray-600">
             
+            <div class="flex flex-col gap-1 w-full">
+                <div>
+                    <h1 class="col-span-2 text-xl font-semibold">Store Information</h1>
+                    <small class="text-gray-500">(Note: The following information will be used to contact your store)</small>
+                </div>
+                
+                <div class="grid grid-cols-2 gap-3 w-full">
+                    <x-input class="max-lg:col-span-2" label="Store Contact" wire:model="contact" shadowless />
+                    <x-input class="max-lg:col-span-2" label="Store Email" wire:model="email" shadowless />
+
+                    <x-select class="max-lg:col-span-2" label="Country" wire:model="country" placeholder="Select Country" :options="$countries" searchable shadowless />
+                    <x-input class="max-lg:col-span-2" label="Address" wire:model="address" shadowless />
+                </div>
+            </div>
+
+            <div class="flex flex-col gap-1 w-full">
+                <div>
+                    <h1 class="col-span-2 text-xl font-semibold">Paypal Account Information</h1>
+                    <small class="text-gray-500">(Note: Make sure you enter correct details)</small>
+                </div>
+            
+                <div class="grid grid-cols-2 gap-3 w-full">
+                    <x-input class="max-lg:col-span-2" label="Account Name" wire:model="paypalAccountName" shadowless />
+                    <x-input class="max-lg:col-span-2" label="Email" wire:model="paypalEmail" shadowless />
+                </div>
+            </div>
+
+            <div class="flex flex-col gap-1">
+                <div>
+                    <h1 class="col-span-2 text-xl font-semibold">Store Requirements</h1>
+                    {{-- <small class="text-gray-500">(Note: The following information will be used to contact your store)</small> --}}
+                </div>
+                
+                <div class="grid grid-cols-2 gap-3 w-full">
+                    @foreach(array_slice((array) $savedRequirements, 0, -2) as $key => $requirement)
+                        <x-input type="file" class="max-lg:col-span-2" wire:model='{{ $key }}' shadowless>
+                            <x-slot name='label'>
+                                @switch($key)
+                                    @case('validId')
+                                        Valid ID
+                                        @break
+
+                                    @case('businessPermit')
+                                        Business Permit
+                                        @break
+
+                                    @case('registrationDTI')
+                                        Certificate of Registration (<span class="font-semibold underline underline-offset-2">DTI</span>)
+                                        @break
+
+                                    @case('registrationBIR')
+                                        Certificate of Registration (<span class="font-semibold underline underline-offset-2">BIR</span>)
+                                        @break
+                                
+                                    @default
+                                @endswitch
+                            </x-slot>
+
+                            <x-slot name='corner' wire:target='{{ $key }}' wire:loading>
+                                <div class="flex items-center justify-center gap-2">
+                                    <span>
+                                        <x-icon name="arrow-path" class="w-5 h-5 animate-spin" />
+                                    </span>
+                                    
+                                    <span>
+                                        Uploading...
+                                    </span>
+                                </div>
+                            </x-slot>
+                        </x-input>
+                    @endforeach
+                </div>
+            </div>
             <x-slot name="footer" class="flex justify-end gap-x-4">
                 <x-button flat label="Cancel" x-on:click="close" />
                 <x-button wire:loading.attr="disabled" wire:click="store" spinner="store" label="Submit" />
@@ -75,54 +93,45 @@
             </x-alert>
 
             <div class="pt-5 w-full space-y-3">
+                @foreach (array_slice((array) $savedRequirements, 0, -2) as $key => $requirement)
+                    @if($requirement->status == App\Enums\Status::Declined)
+                        <x-input type="file" class="max-lg:col-span-2" wire:model='{{ $key }}' shadowless>
+                            <x-slot name='label'>
+                                @switch($key)
+                                    @case('validId')
+                                        Valid ID
+                                        @break
 
-                @if($savedRequirements->requirement_1->status == App\Enums\Status::Declined)
-                    <x-input type="file" label="Requirement 1" wire:model="requirement_1" shadowless>
-                        <x-slot name='corner' wire:target='requirement_1' wire:loading>
-                            <div class="flex items-center justify-center gap-2">
-                                <span>
-                                    <x-icon name="arrow-path" class="w-5 h-5 animate-spin" />
-                                </span>
-                                
-                                <span>
-                                    Uploading...
-                                </span>
-                            </div>
-                        </x-slot>
-                    </x-input>
-                @endif
+                                    @case('businessPermit')
+                                        Business Permit
+                                        @break
 
-                @if($savedRequirements->requirement_2->status == App\Enums\Status::Declined)
-                    <x-input type="file" label="Requirement 2" wire:model="requirement_2" shadowless>
-                        <x-slot name='corner' wire:target='requirement_2' wire:loading>
-                            <div class="flex items-center justify-center gap-2">
-                                <span>
-                                    <x-icon name="arrow-path" class="w-5 h-5 animate-spin" />
-                                </span>
-                                
-                                <span>
-                                    Uploading...
-                                </span>
-                            </div>
-                        </x-slot>
-                    </x-input>
-                @endif
+                                    @case('registrationDTI')
+                                        Certificate of Registration (<span class="font-semibold underline underline-offset-2">DTI</span>)
+                                        @break
 
-                @if($savedRequirements->requirement_3->status == App\Enums\Status::Declined)
-                    <x-input type="file" label="Requirement 3" wire:model="requirement_3" shadowless>
-                        <x-slot name='corner' wire:target='requirement_3' wire:loading>
-                            <div class="flex items-center justify-center gap-2">
-                                <span>
-                                    <x-icon name="arrow-path" class="w-5 h-5 animate-spin" />
-                                </span>
+                                    @case('registrationBIR')
+                                        Certificate of Registration (<span class="font-semibold underline underline-offset-2">BIR</span>)
+                                        @break
                                 
-                                <span>
-                                    Uploading...
-                                </span>
-                            </div>
-                        </x-slot>
-                    </x-input>
-                @endif
+                                    @default
+                                @endswitch
+                            </x-slot>
+
+                            <x-slot name='corner' wire:target='{{ $key }}' wire:loading>
+                                <div class="flex items-center justify-center gap-2">
+                                    <span>
+                                        <x-icon name="arrow-path" class="w-5 h-5 animate-spin" />
+                                    </span>
+                                    
+                                    <span>
+                                        Uploading...
+                                    </span>
+                                </div>
+                            </x-slot>
+                        </x-input>
+                    @endif
+                @endforeach
             </div>
 
             <x-slot name="footer" class="flex justify-end gap-x-4">

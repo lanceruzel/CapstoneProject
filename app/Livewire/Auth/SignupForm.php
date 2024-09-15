@@ -65,10 +65,10 @@ class SignupForm extends Component
                             return redirect()->route('login')->with('success', 'Your account has been successfully created.'); 
                         }else{
                             // Delete the user row
-                            User::find($account->id)->destroy();
+                            User::destroy($account->id);
 
                             //Delete the userinformation row
-                            UserInformation::where('user_id', $account->id)->destroy();
+                            UserInformation::where('user_id', $account->id)->delete();
                         }       
 
                     }else{
@@ -76,7 +76,7 @@ class SignupForm extends Component
                     }
                 }else{
                     // Delete the user row
-                    User::find($account->id)->destroy();
+                    User::destroy($account->id);
                 }
             }
 
@@ -88,7 +88,7 @@ class SignupForm extends Component
             ]);
         }catch (\Exception $e){
             // Delete the user row
-            User::find($account->id)->destroy();
+            User::destroy($account->id);
             
             //Log the error for debugging
             Log::error('Error signup: ' . $e->getMessage());
@@ -143,17 +143,11 @@ class SignupForm extends Component
 
     public function storeRequirementsFormat(){
         $format = [
-            'requirement_1' => [
-                'name' => 'Valid ID',
+            'validId' => [
                 'file_path' => '',
                 'status' => '',
             ],
-            'requirement_2' => [
-                'name' => 'Bank Account',
-                'file_path' => '',
-                'status' => '',
-            ],
-            'requirement_3' => [
+            'registrationDTI' => [
                 'file_path' => '',
                 'status' => '',
             ],

@@ -21,16 +21,11 @@ class StoreRegistration
     public function isRegistered(){
         $isRegistered = true;
 
-        if($this->registrations->requirement_1->status != Status::Accepted){
-            $isRegistered = false;
-        }
-
-        if($this->registrations->requirement_2->status != Status::Accepted){
-            $isRegistered = false;
-        }
-
-        if($this->registrations->requirement_3->status != Status::Accepted){
-            $isRegistered = false;
+        foreach(array_slice((array) $this->registrations, 0, -2) as $key => $registration) {
+            if($registration->status != Status::Accepted){
+                $isRegistered = false;
+                break;
+            }
         }
 
         return $isRegistered;

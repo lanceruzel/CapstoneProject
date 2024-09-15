@@ -56,12 +56,12 @@ class StoreSignupForm extends Component
                     ]);
                 }else{
                     // Delete the user row
-                    User::find($account->id)->destroy();
+                    User::destroy($account->id);
                 }
             }
         }catch (\Exception $e){
             // Delete the user row
-            User::find($account->id)->destroy();
+            User::destroy($account->id);
 
             //Log the error for debugging
             Log::error('Error signup: ' . $e->getMessage());
@@ -90,15 +90,15 @@ class StoreSignupForm extends Component
 
     public function storeRequirementsFormat(){
         $format = [
-            'requirement_1' => [
+            'businessPermit' => [
                 'file_path' => '',
                 'status' => '',
             ],
-            'requirement_2' => [
+            'registrationDTI' => [
                 'file_path' => '',
                 'status' => '',
             ],
-            'requirement_3' => [
+            'registrationBIR' => [
                 'file_path' => '',
                 'status' => '',
             ],

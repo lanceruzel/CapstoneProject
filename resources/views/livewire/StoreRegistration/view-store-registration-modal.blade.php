@@ -22,71 +22,49 @@
                 </thead>
 
                 <tbody>
-                    <tr class="border-b">
-                        <td class="text-center py-3">Requirement 1</td>
-                        <td class="text-center">
-                            <x-button info label="View" onclick="$openModal('pdfViewModal')" wire:click="$dispatch('view-pdf', { filename: '{{ $requirements->requirement_1->file_path }}' })" sm />
-                        </td>
-                        <td class="text-center">
-                            @if($requirements->requirement_1->status == App\Enums\Status::ForReview)
-                                <x-badge flat info label="For Review" />
-                            @elseif($requirements->requirement_1->status == App\Enums\Status::Accepted)
-                                <x-badge flat positive label="Accepted" />
-                            @elseif($requirements->requirement_1->status == App\Enums\Status::Declined)
-                                <x-badge flat negative label="Declined" />
-                            @endif
-                        </td>
-                        <td class="flex flex-row items-center justify-center gap-3">
-                            @if($requirements->status != App\Enums\Status::Accepted)
-                                <x-mini-button rounded negative icon="x-mark" wire:click="declineDocument('requirement_1')" />
-                                <x-mini-button rounded positive icon="check" wire:click="acceptDocument('requirement_1')" />
-                            @endif
-                        </td>
-                    </tr>
+                    @foreach(array_slice((array) $requirements, 0, -2) as $key => $requirement)
+                        <tr class="border-b">
+                            <td class="text-center py-3">
+                                @switch($key)
+                                    @case('validId')
+                                        Valid ID
+                                        @break
 
-                    <tr class="border-b">
-                        <td class="text-center py-3">Requirement 2</td>
-                        <td class="text-center">
-                            <x-button info label="View" onclick="$openModal('pdfViewModal')" wire:click="$dispatch('view-pdf', { filename: '{{ $requirements->requirement_2->file_path }}' })" sm />
-                        </td>
-                        <td class="text-center">
-                            @if($requirements->requirement_2->status == App\Enums\Status::ForReview)
-                                <x-badge flat info label="For Review" />
-                            @elseif($requirements->requirement_2->status == App\Enums\Status::Accepted)
-                                <x-badge flat positive label="Accepted" />
-                            @elseif($requirements->requirement_2->status == App\Enums\Status::Declined)
-                                <x-badge flat negative label="Declined" />
-                            @endif
-                        </td>
-                        <td class="flex flex-row items-center justify-center gap-3">
-                            @if($requirements->status != App\Enums\Status::Accepted)
-                                <x-mini-button rounded negative icon="x-mark" wire:click="declineDocument('requirement_2')" />
-                                <x-mini-button rounded positive icon="check" wire:click="acceptDocument('requirement_2')" />
-                            @endif
-                        </td>
-                    </tr>
+                                    @case('businessPermit')
+                                        Business Permit
+                                        @break
 
-                    <tr class="border-b">
-                        <td class="text-center py-3">Requirement 3</td>
-                        <td class="text-center">
-                            <x-button info label="View" onclick="$openModal('pdfViewModal')" wire:click="$dispatch('view-pdf', { filename: '{{ $requirements->requirement_3->file_path }}' })" sm />
-                        </td>
-                        <td class="text-center">
-                            @if($requirements->requirement_3->status == App\Enums\Status::ForReview)
-                                <x-badge flat info label="For Review" />
-                            @elseif($requirements->requirement_3->status == App\Enums\Status::Accepted)
-                                <x-badge flat positive label="Accepted" />
-                            @elseif($requirements->requirement_3->status == App\Enums\Status::Declined)
-                                <x-badge flat negative label="Declined" />
-                            @endif
-                        </td>
-                        <td class="flex flex-row items-center justify-center gap-3">
-                            @if($requirements->status != App\Enums\Status::Accepted)
-                                <x-mini-button rounded negative icon="x-mark" wire:click="declineDocument('requirement_3')" />
-                                <x-mini-button rounded positive icon="check" wire:click="acceptDocument('requirement_3')" />
-                            @endif
-                        </td>
-                    </tr>
+                                    @case('registrationDTI')
+                                        Certificate of Registration (<span class="font-semibold underline underline-offset-2">DTI</span>)
+                                        @break
+
+                                    @case('registrationBIR')
+                                        Certificate of Registration (<span class="font-semibold underline underline-offset-2">BIR</span>)
+                                        @break
+                                
+                                    @default
+                                @endswitch
+                            </td>
+                            <td class="text-center">
+                                <x-button info label="View" onclick="$openModal('pdfViewModal')" wire:click="$dispatch('view-pdf', { filename: '{{ $requirements->$key->file_path }}' })" sm />
+                            </td>
+                            <td class="text-center">
+                                @if($requirements->$key->status == App\Enums\Status::ForReview)
+                                    <x-badge flat info label="For Review" />
+                                @elseif($requirements->$key->status == App\Enums\Status::Accepted)
+                                    <x-badge flat positive label="Accepted" />
+                                @elseif($requirements->$key->status == App\Enums\Status::Declined)
+                                    <x-badge flat negative label="Declined" />
+                                @endif
+                            </td>
+                            <td class="flex flex-row items-center justify-center gap-3">
+                                @if($requirements->status != App\Enums\Status::Accepted)
+                                    <x-mini-button rounded negative icon="x-mark" wire:click="declineDocument('{{ $key }}')" />
+                                    <x-mini-button rounded positive icon="check" wire:click="acceptDocument('{{ $key }}')" />
+                                @endif
+                            </td>
+                        </tr>
+                    @endforeach
                 </tbody>
             </table>
 

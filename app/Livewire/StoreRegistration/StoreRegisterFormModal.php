@@ -27,6 +27,14 @@ class StoreRegisterFormModal extends Component
 
     public $savedRequirements;
 
+    public $paypalAccountName;
+    public $paypalEmail;
+
+    public $validId;
+    public $businessPermit;
+    public $registrationDTI;
+    public $registrationBIR;
+
     protected $listeners = [
         'clearstoreRegistrationData' => 'clearData'
     ];
@@ -53,6 +61,8 @@ class StoreRegisterFormModal extends Component
             $storeInformation->contact = $validated['contact'];
             $storeInformation->country = $validated['country'];
             $storeInformation->address = $validated['address'];
+            $storeInformation->paypal_name = $validated['paypalAccountName'];
+            $storeInformation->paypal_email = $validated['paypalEmail'];
 
             if($this->email != $this->user->storeInformation->email){
                 $storeInformation->email = $validated['email'];
@@ -72,29 +82,55 @@ class StoreRegisterFormModal extends Component
 
     public function updateRequirements($id, $validated){
         if($this->savedRequirements->status == Status::ForSubmission){
-            //Save paths
-            $this->savedRequirements->requirement_1->file_path = $this->storeDocument($id, $validated['requirement_1']);
-            $this->savedRequirements->requirement_2->file_path = $this->storeDocument($id, $validated['requirement_2']);
-            $this->savedRequirements->requirement_3->file_path = $this->storeDocument($id, $validated['requirement_3']);
 
-            //Update document status
-            $this->savedRequirements->requirement_1->status = Status::ForReview;
-            $this->savedRequirements->requirement_2->status = Status::ForReview;
-            $this->savedRequirements->requirement_3->status = Status::ForReview;
+            if(auth()->user()->role == UserType::Store){
+                $this->savedRequirements->businessPermit->file_path = $this->storeDocument($id, $validated['businessPermit']);
+                $this->savedRequirements->businessPermit->status = Status::ForReview;
+
+                $this->savedRequirements->registrationDTI->file_path = $this->storeDocument($id, $validated['registrationDTI']);
+                $this->savedRequirements->registrationDTI->status = Status::ForReview;
+
+                $this->savedRequirements->registrationBIR->file_path = $this->storeDocument($id, $validated['registrationBIR']);
+                $this->savedRequirements->registrationBIR->status = Status::ForReview;
+            }
+
+            if(auth()->user()->role == UserType::Travelpreneur){
+                $this->savedRequirements->validId->file_path = $this->storeDocument($id, $validated['validId']);
+                $this->savedRequirements->validId->status = Status::ForReview;
+
+                $this->savedRequirements->registrationDTI->file_path = $this->storeDocument($id, $validated['registrationDTI']);
+                $this->savedRequirements->registrationDTI->status = Status::ForReview;
+            }
+
         }elseif($this->savedRequirements->status == Status::ForReSubmission){
-            if($this->savedRequirements->requirement_1->status == Status::Declined){
-                $this->savedRequirements->requirement_1->file_path = $this->storeDocument($id, $validated['requirement_1']);
-                $this->savedRequirements->requirement_1->status = Status::ForReview;
+
+            if(auth()->user()->role == UserType::Store){
+                if($this->savedRequirements->businessPermit->status == Status::Declined){
+                    $this->savedRequirements->businessPermit->file_path = $this->storeDocument($id, $validated['businessPermit']);
+                    $this->savedRequirements->businessPermit->status = Status::ForReview;
+                }
+
+                if($this->savedRequirements->registrationDTI->status == Status::Declined){
+                    $this->savedRequirements->registrationDTI->file_path = $this->storeDocument($id, $validated['registrationDTI']);
+                    $this->savedRequirements->registrationDTI->status = Status::ForReview;
+                }
+
+                if($this->savedRequirements->registrationBIR->status == Status::Declined){
+                    $this->savedRequirements->registrationBIR->file_path = $this->storeDocument($id, $validated['registrationBIR']);
+                    $this->savedRequirements->registrationBIR->status = Status::ForReview;
+                }
             }
 
-            if($this->savedRequirements->requirement_2->status == Status::Declined){
-                $this->savedRequirements->requirement_2->file_path = $this->storeDocument($id, $validated['requirement_2']);
-                $this->savedRequirements->requirement_2->status = Status::ForReview;
-            }
+            if(auth()->user()->role == UserType::Travelpreneur){
+                if($this->savedRequirements->registrationDTI->status == Status::Declined){
+                    $this->savedRequirements->registrationDTI->file_path = $this->storeDocument($id, $validated['registrationDTI']);
+                    $this->savedRequirements->registrationDTI->status = Status::ForReview;
+                }
 
-            if($this->savedRequirements->requirement_3->status == Status::Declined){
-                $this->savedRequirements->requirement_3->file_path = $this->storeDocument($id, $validated['requirement_3']);
-                $this->savedRequirements->requirement_3->status = Status::ForReview;
+                if($this->savedRequirements->validId->status == Status::Declined){
+                    $this->savedRequirements->validId->file_path = $this->storeDocument($id, $validated['validId']);
+                    $this->savedRequirements->validId->status = Status::ForReview;
+                }
             }
         }
 
@@ -112,10 +148,20 @@ class StoreRegisterFormModal extends Component
                 'country' => 'required',
                 'contact' => 'required|min:5',
                 'address' => 'required|min:5',
-                'requirement_1' => 'required|mimes:pdf',
-                'requirement_2' => 'required|mimes:pdf',
-                'requirement_3' => 'required|mimes:pdf',
+                'paypalAccountName' => 'required|min:5',
+                'paypalEmail' => 'required|email|min:5',
             ];
+
+            if(auth()->user()->role == UserType::Store){
+                $rules['businessPermit'] = 'required|mimes:pdf';
+                $rules['registrationDTI'] = 'required|mimes:pdf';
+                $rules['registrationBIR'] = 'required|mimes:pdf';
+            }
+
+            if(auth()->user()->role == UserType::Travelpreneur){
+                $rules['validId'] = 'required|mimes:pdf';
+                $rules['registrationDTI'] = 'required|mimes:pdf';
+            }
 
             // Add email validation if it is different from the stored email
             if ($this->email != $this->user->storeInformation->email) {
@@ -127,12 +173,9 @@ class StoreRegisterFormModal extends Component
         }elseif($this->savedRequirements->status == Status::ForReSubmission){
             $rules = [];
 
-            // Validate only declined requirements
-            $requirements = ['requirement_1', 'requirement_2', 'requirement_3'];
-
-            foreach ($requirements as $requirement) {
-                if ($this->savedRequirements->{$requirement}->status == Status::Declined) {
-                    $rules[$requirement] = 'required|mimes:pdf';
+            foreach (array_slice((array) $this->savedRequirements, 0, -2) as $key => $requirement) {
+                if ($requirement->status == Status::Declined) {
+                    $rules[$key] = 'required|mimes:pdf';
                 }
             }
 
