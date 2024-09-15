@@ -37,7 +37,7 @@ class ProductReportFormModal extends Component
 
     public function store(){
         $validated = $this->validate([
-            'images.*' => 'image|mimes:png,jpg,jpeg',
+            'images.*' => 'image|mimes:png,jpg,jpeg|max:2048',
             'content' => 'required'
         ]);
 

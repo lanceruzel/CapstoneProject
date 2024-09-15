@@ -120,7 +120,7 @@ class ConversationContainer extends Component
     public function formValidate(){
         return $this->validate([
             'message' => 'required',
-            'images.*' => 'image|mimes:png,jpg,jpeg',
+            'images.*' => 'image|mimes:png,jpg,jpeg|max:2048',
         ]);
     }
 

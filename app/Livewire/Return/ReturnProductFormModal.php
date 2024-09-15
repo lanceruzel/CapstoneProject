@@ -115,7 +115,7 @@ class ReturnProductFormModal extends Component
     public function validateForm(){
         return $this->validate([
             'content' => 'required|min:10',
-            'images.*' => 'image|mimes:png,jpg,jpeg',
+            'images.*' => 'image|mimes:png,jpg,jpeg|max:2048',
             'selectedProducts' => 'required'
         ]);
     }

@@ -179,7 +179,7 @@ class ProductFormModal extends Component
             'name' => 'required|min:10',
             'category' => 'required',
             'description' => 'required|min:50',
-            'images.*' => $this->productUpdate != null ? '' : 'required|image|mimes:png,jpg,jpeg',
+            'images.*' => $this->productUpdate != null ? '' : 'required|image|mimes:png,jpg,jpeg|max:2048',
         ];
 
         if ($this->hasVariation) {

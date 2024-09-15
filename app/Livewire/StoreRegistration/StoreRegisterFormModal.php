@@ -152,15 +152,10 @@ class StoreRegisterFormModal extends Component
                 'paypalEmail' => 'required|email|min:5',
             ];
 
-            if(auth()->user()->role == UserType::Store){
-                $rules['businessPermit'] = 'required|mimes:pdf';
-                $rules['registrationDTI'] = 'required|mimes:pdf';
-                $rules['registrationBIR'] = 'required|mimes:pdf';
-            }
-
-            if(auth()->user()->role == UserType::Travelpreneur){
-                $rules['validId'] = 'required|mimes:pdf';
-                $rules['registrationDTI'] = 'required|mimes:pdf';
+            foreach (array_slice((array) $this->savedRequirements, 0, -2) as $key => $requirement) {
+                if($requirement->status == Status::Declined) {
+                    $rules[$key] = 'required|mimes:pdf,png,jpg,jpeg,doc,docx';
+                }
             }
 
             // Add email validation if it is different from the stored email
@@ -174,8 +169,8 @@ class StoreRegisterFormModal extends Component
             $rules = [];
 
             foreach (array_slice((array) $this->savedRequirements, 0, -2) as $key => $requirement) {
-                if ($requirement->status == Status::Declined) {
-                    $rules[$key] = 'required|mimes:pdf';
+                if($requirement->status == Status::Declined) {
+                    $rules[$key] = 'required|mimes:pdf,png,jpg,jpeg,doc,docx';
                 }
             }
 

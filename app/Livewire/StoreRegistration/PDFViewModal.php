@@ -6,7 +6,8 @@ use Livewire\Component;
 
 class PDFViewModal extends Component
 {
-    public $pdf = 0;
+    public $file = 0;
+    public $fileType = '';
     
     protected $listeners = [
         'clearpdfViewModalData' => 'clearData',
@@ -14,12 +15,14 @@ class PDFViewModal extends Component
     ];
 
     public function getPDF($filename){
-        // dd(public_path('uploads/documents/' . $filename));
-        $this->pdf = asset('uploads/documents/' . $filename);
+        //Only works in hosting
+        $this->file = str_replace('https://', 'http://', url('uploads/documents/' . $filename));
+
+        $this->fileType = pathinfo($this->file, PATHINFO_EXTENSION);
     }
 
     public function clearData(){
-        $this->reset(['pdf']);
+        $this->reset(['file', 'fileType']);
     }
 
     public function render()
