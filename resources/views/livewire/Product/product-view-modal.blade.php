@@ -58,7 +58,7 @@
                         {{ $product->priceRange() }}
                     </p>
             
-                    <div class="text-wrap min-h-[250px] max-h-[250px] overflow-hidden overflow-y-auto"> {!! $product->description !!} </div>
+                    <div class="text-wrap min-h-[250px] max-h-[250px] overflow-hidden overflow-y-auto p-5 border rounded-lg break-words"> {!! $product->description !!} </div>
     
                     <div class="flex max-lg:justify-center lg:justify-end items-center gap-3">
                         @if(auth()->user()->role != UserType::Store)
@@ -121,7 +121,7 @@
             <div class="max-lg:p-5 lg:p-7 border rounded-lg mt-3">
                 <div class="flex gap-5 divide-x-2 flex-wrap">
                     <p class="text-md font-medium">Product Ratings</p>
-                
+                    
                     <div class="flex flex-row max-sm:flex-col max-sm:gap-1 gap-3 px-5">
                         <div>
                             <span class="font-semibold">{{ $product->getAverageRate() }}</span> out of 5.0

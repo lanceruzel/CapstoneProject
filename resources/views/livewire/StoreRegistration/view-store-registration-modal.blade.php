@@ -11,6 +11,18 @@
                 <x-input class="max-lg:col-span-2" disabled label="Address" wire:model="address" shadowless />
             </div>
 
+            <div class="flex flex-col gap-1 w-full">
+                <div>
+                    <h1 class="col-span-2 text-xl font-semibold">Paypal Account Information</h1>
+                    {{-- <small class="text-gray-500">(Note: Make sure you enter correct details)</small> --}}
+                </div>
+            
+                <div class="grid grid-cols-2 gap-3 w-full">
+                    <x-input class="max-lg:col-span-2" disabled label="Account Name" wire:model="paypalAccountName" shadowless />
+                    <x-input class="max-lg:col-span-2" disabled label="Email" wire:model="paypalEmail" shadowless />
+                </div>
+            </div>
+
             <table class="table-auto w-full border-spacing-y-4 text-sm text-left">
                 <thead class="border-b-2">
                     <tr>

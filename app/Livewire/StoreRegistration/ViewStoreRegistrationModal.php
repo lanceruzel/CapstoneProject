@@ -24,6 +24,8 @@ class ViewStoreRegistrationModal extends Component
     public $remarks;
 
     public $requirements;
+    public $paypalAccountName;
+    public $paypalEmail;
 
     protected $listeners = [
         'clearStoreRegistrationData' => 'clearData',
@@ -38,6 +40,8 @@ class ViewStoreRegistrationModal extends Component
             $this->email = $this->registration->email;
             $this->country = $this->registration->country;
             $this->address = $this->registration->address;
+            $this->paypalAccountName = $this->registration->paypal_name;
+            $this->paypalEmail = $this->registration->paypal_email;
             $this->requirements = json_decode($this->registration->requirements);
         }
     }
