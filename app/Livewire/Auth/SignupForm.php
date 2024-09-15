@@ -144,10 +144,12 @@ class SignupForm extends Component
     public function storeRequirementsFormat(){
         $format = [
             'requirement_1' => [
+                'name' => 'Valid ID',
                 'file_path' => '',
                 'status' => '',
             ],
             'requirement_2' => [
+                'name' => 'Bank Account',
                 'file_path' => '',
                 'status' => '',
             ],

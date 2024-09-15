@@ -1,9 +1,3 @@
-@php
-    use App\Classes\StoreRegistration;
-
-    $storeRegistration = new StoreRegistration();
-@endphp
-
 <!DOCTYPE html>
 <html lang="en">
 

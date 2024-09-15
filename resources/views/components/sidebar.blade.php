@@ -1,3 +1,9 @@
+@php
+    use App\Classes\StoreRegistration;
+
+    $storeRegistration = new StoreRegistration();
+@endphp
+
 <!-- Sidebar -->
 <aside class="max-md:hidden transition-all fixed top-auto h-full w-64 left-0 border-e pt-16 bg-white z-[5]">
     <div class="py-3 px-2.5 flex items-center justify-between flex-col h-full">
