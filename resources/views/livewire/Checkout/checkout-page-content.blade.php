@@ -57,7 +57,7 @@
                                         ${{ number_format($checkedOutSeller['total'], 2) }}
                                 </p>
                                 @isset($checkedOutSeller['discount']) 
-                                    <small>{{ $checkedOutSeller['discount'] }}% discount applied</small>
+                                    <small>{{ $checkedOutSeller['applied_discount'] }}% discount applied</small>
                                 @endisset 
                             </div>
 

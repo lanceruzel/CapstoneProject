@@ -1,12 +1,15 @@
 <div class="bg-white p-5 rounded-lg shadow">
     <div class="flex justify-between border-b pb-3">
-        <div class="flex items-center justify-center gap-3">
-            <p class="text-xl font-semibold">#{{ $order->id . ' ' . $order->seller->storeInformation->name }}</p>
-            @if($order->referenceNumber != null) 
-                <small class="text-sm text-gray-600 font-normal">
-                    Reference# {{ $order->referenceNumber}}
-                </small> 
-            @endif
+        <div class="flex max-sm:flex-col max-sm:items-start items-center max-sm:justify-start justify-center gap-0 sm:gap-3">
+            <p class="text-xl font-semibold p-0">#{{ $order->id . ' ' . $order->seller->storeInformation->name }}</p>
+
+            <div class="flex items-center justify-center max-sm:flex-col sm:gap-3">
+                @if($order->is_paid) 
+                    {{-- <x-button sm flat black label="View Receipt" onclick="$openModal('viewReceiptModal')" wire:click="$dispatch('view-receipt-order', { id: {{ $order->id }} })"/> --}}
+                    <x-button sm flat black label="Download Receipt" wire:click="downloadReceipt"/>
+                @endif
+            </div> 
+
         </div>
 
         <p class="text-sm">{{ date_format($order->created_at, "M d, Y") }}</p>

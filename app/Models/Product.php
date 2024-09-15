@@ -38,6 +38,22 @@ class Product extends Model
         return $stocks;
     }
 
+    public function getPrice($selected){
+        $variations = json_decode($this->variations);
+
+        $price = null;
+
+        foreach($variations as $variation){
+            // $stocks[$variation->name] = $variation->stocks;
+
+            if($variation->name == $selected){
+                $price = $variation->price;
+            }
+        }
+
+        return $price;
+    }
+
     public function totalStocks(){
         $totalStocks = 0;
 

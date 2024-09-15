@@ -60,7 +60,7 @@ class ViewReportModal extends Component
 
         return response()->streamDownload(function () use ($pdf) {
             echo $pdf->stream();
-        }, 'invoice.pdf');
+        }, 'report.pdf');
     }
 
     public function getData($id){

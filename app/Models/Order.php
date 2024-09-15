@@ -19,6 +19,8 @@ class Order extends Model
         'postal',
         'contact',
         'total',
+        'discount',
+        'discount_percentage',
         'payment_method',
         'tracking_number',
         'status',

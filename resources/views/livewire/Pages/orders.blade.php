@@ -65,4 +65,5 @@
     <livewire:Report.product-report-form-modal />
     <livewire:Return.return-product-form-modal />
     <livewire:Order.Return.update-return-tracking-number-modal />
+    <livewire:Order.view-receipt-modal />
 </x-layouts.main-layout>

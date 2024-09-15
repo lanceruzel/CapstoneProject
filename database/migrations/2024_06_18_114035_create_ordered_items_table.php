@@ -20,6 +20,8 @@ return new class extends Migration
             $table->unsignedBigInteger('product_id');
             $table->foreign('product_id')->references('id')->on('products')->cascadeOnDelete();
 
+            $table->float('price');
+
             $table->string('variation');
             
             $table->float('quantity');

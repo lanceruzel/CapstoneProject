@@ -8,6 +8,7 @@ use App\Enums\Status;
 use App\Models\Affiliate;
 use App\Models\ProductFeedback;
 use App\Models\ReturnRequest;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
@@ -43,6 +44,14 @@ class OrderContainer extends Component
             'acceptLabel' => 'Yes',
             'method' => 'receivedOrder',
         ]);
+    }
+
+    public function downloadReceipt(){
+        $pdf = Pdf::loadView('pdf.orderReceipt', ['order' => $this->order]);
+
+        return response()->streamDownload(function () use ($pdf) {
+            echo $pdf->stream();
+        }, 'receipt.pdf');
     }
 
     public function receivedOrder(){

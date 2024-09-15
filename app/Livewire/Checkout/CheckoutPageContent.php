@@ -83,7 +83,8 @@ class CheckoutPageContent extends Component
 
                     // Store both the original total and the discounted total
                     $this->checkedOutSellers[$key]['original_total'] = $originalTotal;
-                    $this->checkedOutSellers[$key]['discount'] = $affiliateInfo->discount;
+                    $this->checkedOutSellers[$key]['discount'] = $originalTotal - $newTotal;
+                    $this->checkedOutSellers[$key]['applied_discount'] = $affiliateInfo->discount;
                     $this->checkedOutSellers[$key]['total'] = $newTotal;
 
                     $this->merchandiseTotal = $this->getMerchandiseTotal();
@@ -138,6 +139,8 @@ class CheckoutPageContent extends Component
         //Per Seller
         foreach($this->checkedOutSellers as $checkedOutSeller){
             $seller = $checkedOutSeller['seller'];
+            $discount = isset($checkedOutSeller['discount']) ? $checkedOutSeller['discount'] : 0;
+            $discountPercentage = isset($checkedOutSeller['applied_discount']) ? $checkedOutSeller['applied_discount'] : 0;
             $products = $checkedOutSeller['products'];
             $total = $checkedOutSeller['total'] + $this->shippingTotal;
             $shippingInformation = $this->shippingInformation[0];
@@ -155,7 +158,7 @@ class CheckoutPageContent extends Component
             }
 
             try{
-                $storeOrder = $this->storeOrder($seller, $shippingInformation, $paymentMethod, $isPaid, $total, $this->affiliate[$seller->id], $commission, $referenceID);
+                $storeOrder = $this->storeOrder($seller, $shippingInformation, $paymentMethod, $isPaid, $total, $this->affiliate[$seller->id], $commission, $referenceID, $discount, $discountPercentage);
 
                 if($storeOrder){
                     //Notify Seller
@@ -213,7 +216,7 @@ class CheckoutPageContent extends Component
         return redirect()->route('orders');
     }
 
-    public function storeOrder($seller, $shippingInformation, $paymentMethod, $isPaid, $total, $code = null, $commission = null, $referenceID = null){
+    public function storeOrder($seller, $shippingInformation, $paymentMethod, $isPaid, $total, $code = null, $commission = null, $referenceID = null, $discount, $discountPercentage){
         return Order::create([
             'user_id' => Auth::id(),
             'seller_id' => $seller->id,
@@ -226,7 +229,9 @@ class CheckoutPageContent extends Component
             'is_paid' => $isPaid,
             'affiliate_code' => $code,
             'commission' => $commission,
-            'referenceNumber' => $referenceID
+            'referenceNumber' => $referenceID,
+            'discount' => $discount,
+            'discount_percentage' => $discountPercentage,
         ]);
     }
 
@@ -238,6 +243,7 @@ class CheckoutPageContent extends Component
         return OrderedItem::create([
             'order_id' => $orderId,
             'product_id' => $product['product_id'],
+            'price' => $product->product->getPrice($product['variation']),
             'variation' => $product['variation'],
             'quantity' => $product['quantity'],
             'subtotal' => $product->getTotal()
