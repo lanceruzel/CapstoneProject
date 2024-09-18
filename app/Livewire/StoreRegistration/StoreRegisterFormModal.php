@@ -82,55 +82,14 @@ class StoreRegisterFormModal extends Component
 
     public function updateRequirements($id, $validated){
         if($this->savedRequirements->status == Status::ForSubmission){
-
-            if(auth()->user()->role == UserType::Store){
-                $this->savedRequirements->businessPermit->file_path = $this->storeDocument($id, $validated['businessPermit']);
-                $this->savedRequirements->businessPermit->status = Status::ForReview;
-
-                $this->savedRequirements->registrationDTI->file_path = $this->storeDocument($id, $validated['registrationDTI']);
-                $this->savedRequirements->registrationDTI->status = Status::ForReview;
-
-                $this->savedRequirements->registrationBIR->file_path = $this->storeDocument($id, $validated['registrationBIR']);
-                $this->savedRequirements->registrationBIR->status = Status::ForReview;
+            foreach (array_slice((array) $this->savedRequirements, 0, -2) as $key => $requirement) {
+                $this->savedRequirements->$key->file_path = $this->storeDocument($id, $validated[$key]);
+                $this->savedRequirements->$key->status = Status::ForReview;
             }
-
-            if(auth()->user()->role == UserType::Travelpreneur){
-                $this->savedRequirements->validId->file_path = $this->storeDocument($id, $validated['validId']);
-                $this->savedRequirements->validId->status = Status::ForReview;
-
-                $this->savedRequirements->registrationDTI->file_path = $this->storeDocument($id, $validated['registrationDTI']);
-                $this->savedRequirements->registrationDTI->status = Status::ForReview;
-            }
-
         }elseif($this->savedRequirements->status == Status::ForReSubmission){
-
-            if(auth()->user()->role == UserType::Store){
-                if($this->savedRequirements->businessPermit->status == Status::Declined){
-                    $this->savedRequirements->businessPermit->file_path = $this->storeDocument($id, $validated['businessPermit']);
-                    $this->savedRequirements->businessPermit->status = Status::ForReview;
-                }
-
-                if($this->savedRequirements->registrationDTI->status == Status::Declined){
-                    $this->savedRequirements->registrationDTI->file_path = $this->storeDocument($id, $validated['registrationDTI']);
-                    $this->savedRequirements->registrationDTI->status = Status::ForReview;
-                }
-
-                if($this->savedRequirements->registrationBIR->status == Status::Declined){
-                    $this->savedRequirements->registrationBIR->file_path = $this->storeDocument($id, $validated['registrationBIR']);
-                    $this->savedRequirements->registrationBIR->status = Status::ForReview;
-                }
-            }
-
-            if(auth()->user()->role == UserType::Travelpreneur){
-                if($this->savedRequirements->registrationDTI->status == Status::Declined){
-                    $this->savedRequirements->registrationDTI->file_path = $this->storeDocument($id, $validated['registrationDTI']);
-                    $this->savedRequirements->registrationDTI->status = Status::ForReview;
-                }
-
-                if($this->savedRequirements->validId->status == Status::Declined){
-                    $this->savedRequirements->validId->file_path = $this->storeDocument($id, $validated['validId']);
-                    $this->savedRequirements->validId->status = Status::ForReview;
-                }
+            foreach (array_slice((array) $this->savedRequirements, 0, -2) as $key => $requirement) {
+                $this->savedRequirements->$key->file_path = $this->storeDocument($id, $validated[$key]);
+                $this->savedRequirements->$key->status = Status::ForReview;
             }
         }
 
@@ -153,7 +112,7 @@ class StoreRegisterFormModal extends Component
             ];
 
             foreach (array_slice((array) $this->savedRequirements, 0, -2) as $key => $requirement) {
-                if($requirement->status == Status::Declined) {
+                if($requirement->status == Status::Declined || $requirement->status == '' || $requirement->status == null) {
                     $rules[$key] = 'required|mimes:pdf,png,jpg,jpeg,doc,docx';
                 }
             }
