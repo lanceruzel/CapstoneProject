@@ -33,7 +33,7 @@ class SelectCurrencyModal extends Component
 
         $this->dialog()->show([
             'icon' => 'success',
-            'title' => 'Success Dialog!',
+            'title' => 'Success!',
             'description' => 'Currency has been successfully changed. The website will will now reload.',
         ]);
 
