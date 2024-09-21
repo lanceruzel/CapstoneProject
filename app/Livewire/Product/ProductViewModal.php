@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Product;
 
+use App\Classes\CurrencyConverter;
 use App\Enums\Status;
 use App\Models\CartItem;
 use App\Models\OrderedItem;
@@ -25,6 +26,8 @@ class ProductViewModal extends Component
     public $description;
 
     public $variations;
+
+    public $currencyData = [];
 
     protected $listeners = [
         'view-product-info' => 'getData',

@@ -133,16 +133,20 @@
                     </div>
                 </x-slot>
                 
+                <x-dropdown.item icon="arrow-path" onclick="$openModal('changeCurrencyModal')">
+                    <p>Currency: {{ auth()->user()->currency }}</p> 
+                </x-dropdown.item>
+
                 @if(auth()->user()->role == App\Enums\UserType::Store || auth()->user()->role == App\Enums\UserType::Travelpreneur)
                     @if($storeRegistration->isRegistered())
-                        <x-dropdown.item href="{{ route('store.dashboard') }}" icon='building-storefront' label="Store Management" />
+                        <x-dropdown.item separator href="{{ route('store.dashboard') }}" icon='building-storefront' label="Store Management" />
                     @else
-                        <x-dropdown.item icon='building-storefront' label="Register Store" onclick="$openModal('storeRegistrationFormModal')" />
+                        <x-dropdown.item separator icon='building-storefront' label="Register Store" onclick="$openModal('storeRegistrationFormModal')" />
                     @endif
                 @else
-                    <x-dropdown.item icon='user-group' label="Affiliates" onclick="$openModal('affiliateDashboardModal')" />
+                    <x-dropdown.item separator icon='user-group' label="Affiliates" onclick="$openModal('affiliateDashboardModal')" />
                 @endif
-    
+
                 <x-dropdown.item separator icon='arrow-left-end-on-rectangle' href="{{ route('signout') }}" label="Sign out" />
             </x-dropdown>
         </div>

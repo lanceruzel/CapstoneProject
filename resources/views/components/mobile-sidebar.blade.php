@@ -131,7 +131,11 @@
                         </span>
                     </div>
                 </x-slot>
-                
+
+                <x-dropdown.item icon="arrow-path" onclick="$openModal('changeCurrencyModal')">
+                    <p>Currency: {{ auth()->user()->currency }}</p> 
+                </x-dropdown.item>
+
                 @if(auth()->user()->role == App\Enums\UserType::Store || auth()->user()->role == App\Enums\UserType::Travelpreneur)
                     @if($storeRegistration->isRegistered())
                         <x-dropdown.item href="{{ route('store.dashboard') }}" icon='building-storefront' label="Store Management" />

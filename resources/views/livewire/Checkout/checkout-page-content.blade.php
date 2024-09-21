@@ -52,7 +52,7 @@
                             <div class="pb-3 text-end">
                                 <p class="font-medium">
                                     Total: @isset($checkedOutSeller['original_total']) 
-                                                <span class="line-through">${{ number_format($checkedOutSeller['original_total'], 2) }}</span> 
+                                                <span class="line-through">{{ App\Classes\CurrencyConverter::formatPrice($checkedOutSeller['original_total']) }}</span> 
                                             @endisset 
                                         ${{ number_format($checkedOutSeller['total'], 2) }}
                                 </p>
@@ -92,7 +92,7 @@
                     <tbody>
                         <tr>
                             <td class="text-end">Subtotal:</td>
-                            <td>${{ number_format($merchandiseTotal, 2) }}</td>
+                            <td>{{ App\Classes\CurrencyConverter::formatPrice($merchandiseTotal) }}</td>
                         </tr>
             
                         {{-- <tr>
@@ -102,12 +102,12 @@
             
                         <tr>
                             <td class="text-end">Shipping Total:</td>
-                            <td>${{ $shippingTotal }}</td>
+                            <td>{{ App\Classes\CurrencyConverter::formatPrice($shippingTotal) }}</td>
                         </tr>
             
                         <tr>
                             <td class="text-end">Total Payment:</td>
-                            <td class="text-xl font-semibold">${{ number_format($merchandiseTotal + $shippingTotal, 2) }}</td>
+                            <td class="text-xl font-semibold">{{ App\Classes\CurrencyConverter::formatPrice($merchandiseTotal + $shippingTotal) }}</td>
                         </tr>
                     </tbody>
                 </table>

@@ -17,7 +17,7 @@
                                     <x-radio label="{{ $variation->name }}" wire:model.live="selectedVariation" lg value="{{ $variation->name }}" />
                                 </td>
                                 <td class="text-center">x{{ $variation->stocks }}</td>
-                                <td class="text-center">${{ number_format($variation->price, 2) }}</td>
+                                <td class="text-center">{{ App\Classes\CurrencyConverter::formatPrice($variation->price) }}</td>
                             </tr>
                     @endforeach
                 </tbody>
