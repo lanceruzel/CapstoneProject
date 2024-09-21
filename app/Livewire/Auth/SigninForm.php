@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Auth;
 
+use App\Classes\CurrencyConverter;
 use App\Classes\Location;
 use App\Enums\UserType;
 use Illuminate\Support\Facades\Auth;
@@ -31,6 +32,7 @@ class SigninForm extends Component
                     Auth::user()->userInformation->save();
                 }
 
+                CurrencyConverter::loadCurrencyData();
                 return redirect()->route('home');
             }else{
                 session()->flash('fail', 'These credentials do not match our records.');

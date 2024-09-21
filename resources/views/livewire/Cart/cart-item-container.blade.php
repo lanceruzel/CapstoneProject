@@ -21,7 +21,7 @@
         </div>
     </td>
 
-    <td class="px-3 py-4 text-center min-w-[150px] max-w-[150px]">${{ number_format($price * $cartItem->quantity, 2) }}</td>
+    <td class="px-3 py-4 text-center min-w-[150px] max-w-[150px]">{{ App\Classes\CurrencyConverter::formatPrice($price * $cartItem->quantity) }}</td>
 
     <td class="px-6 py-4">
         <div class="flex items-center gap-x-3 p-3 justify-center w-[160px]" x-data="{

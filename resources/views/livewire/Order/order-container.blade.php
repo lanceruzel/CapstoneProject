@@ -47,7 +47,7 @@
                     </td>
                     
                     <td class="px-6 py-4 text-center">x{{ $orderProduct->quantity }}</td>
-                    <td class="px-3 py-4 text-center">${{ number_format($orderProduct->subtotal, 2) }}</td>
+                    <td class="px-3 py-4 text-center">{{ App\Classes\CurrencyConverter::formatPrice($orderProduct->subtotal) }}</td>
                     <td class="px-6 py-4">
                         <div class="gap-3 flex flex-row items-center justify-center h-full">
                             @if($order->status == App\Enums\Status::OrderBuyerReceived)
@@ -82,7 +82,7 @@
         </div>
 
         <div class="flex items-center justify-center flex-col gap-3 max-md:pt-3">
-            <p class="font-bold">${{ number_format($order->total, 2) }}</p>
+            <p class="font-bold">{{ App\Classes\CurrencyConverter::formatPrice($order->total) }}</p>
 
             @if($order->status == App\Enums\Status::OrderSellerShipped)
                 <x-button label="Received" wire:click="orderReceivedConfirmation" />

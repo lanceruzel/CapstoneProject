@@ -55,7 +55,7 @@
                     </div>
             
                     <p class="text-xl font-semibold">
-                        {{ $product->priceRange() }}
+                        {{ $product->formattedPriceRage() }}
                     </p>
             
                     <div class="text-wrap min-h-[250px] max-h-[250px] overflow-hidden overflow-y-auto p-5 border rounded-lg break-words"> {!! $product->description !!} </div>

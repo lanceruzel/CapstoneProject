@@ -8,9 +8,6 @@ use Illuminate\View\Component;
 
 class MobileSidebar extends Component
 {
-    /**
-     * Create a new component instance.
-     */
     public function __construct()
     {
         //

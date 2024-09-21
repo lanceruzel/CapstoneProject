@@ -2,10 +2,12 @@
 
 namespace App\Models;
 
+use App\Classes\CurrencyConverter;
 use App\Enums\Status;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Log;
+use WireUi\Components\TextField\Currency;
 
 class Product extends Model
 {
@@ -82,6 +84,45 @@ class Product extends Model
             $price = count($prices) === 1 ? '$' . number_format($prices[0], 2) : '$' . number_format(min($prices), 2) . ' ~ ' . '$' . number_format(max($prices), 2);
         }else{
             $price = '$' . number_format(json_decode($this->variations)[0]->price, 2);
+        }
+        
+        return $price;
+    }
+
+    public function formattedPriceRage(){
+        $moneySign = '$';
+        $currencyRate = CurrencyConverter::getRate(auth()->user()->currency);
+
+        switch(auth()->user()->currency){
+            case 'USD':
+                $moneySign = '$';
+                break;
+            case 'PHP':
+                $moneySign = '₱';
+                break;
+            case 'EUR':
+                $moneySign = '€';
+                break;
+            case 'JPY':
+                $moneySign = '¥';
+                break;
+            case 'KRW':
+                $moneySign = '₩';
+                break;
+        }
+
+        $prices = [];
+
+        $price = null;
+
+        if(count(json_decode($this->variations)) > 1){
+            foreach (json_decode($this->variations) as $variation) {
+                $prices[] += (float) ($variation->price * $currencyRate);
+            }
+
+            $price = count($prices) === 1 ? $moneySign . number_format($prices[0], 2) : $moneySign . number_format(min($prices), 2) . ' ~ ' . $moneySign . number_format(max($prices), 2);
+        }else{
+            $price = $moneySign . number_format(json_decode($this->variations)[0]->price, 2);
         }
         
         return $price;

@@ -57,6 +57,7 @@
         </div>
     </main>
 
+    <livewire:Etc.select-currency-modal />
     <livewire:Product.product-view-modal />
     <livewire:Product.product-view-variation-selection-modal />
 
@@ -98,7 +99,14 @@
             </script>
         @endif
     @endif
-    
+
+    @stack('scripts')
+
+    <script
+        src="https://www.paypal.com/sdk/js?client-id=ATe6XOxr_O16kSbwVRv-dMnInI2E4BmCD32_GepoFj1irtqU1XwkkkUmegHh21h6-UNhCLwMvNCSAQvo&currency=USD"
+        data-sdk-integration-source="developer-studio"
+    ></script>
+
     <script>
         const userId = document.querySelector('meta[name="user-id"]').getAttribute('content');
 
@@ -107,8 +115,13 @@
                 $closeModal(event[0].modal);
             });
 
-            Livewire.on('messagesUpdated', function () {
+            Livewire.on('messagesUpdated', () => {
                 scrollToBottom();
+            });
+
+            Livewire.on('updatedCurrency', () => {
+                $closeModal('changeCurrencyModal');
+                location.reload();
             });
 
             Livewire.on('update-post', function () {
@@ -126,17 +139,14 @@
             );
         });
 
+        document.addEventListener('livewire:initialized', () => {
+            Livewire.dispatch('currencySelectedUpdated', { currency: localStorage.getItem('currency') });
+        });
+
         function scrollToBottom() {
             var chatContainer = document.getElementById("chat-container");
             chatContainer.scrollTop = chatContainer.scrollHeight;
         }
-
-        // Call scrollToBottom when the page loads
-        window.onload = function() {
-            scrollToBottom();
-        }
     </script>
-
-    @stack('scripts')
 </body>
 </html>

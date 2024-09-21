@@ -7,7 +7,7 @@
         <div class="px-3 py-2 space-y-1">
             <p class="line-clamp-2 break-words font-medium">{{ $product->name }}</p>
     
-            <p class="text-sm">{{ $product->priceRange() }}</p>
+            <p class="text-sm">{{ $product->formattedPriceRage() }}</p>
     
             <div class="flex justify-between items-center">
                 <div class="pe-2">

@@ -8,17 +8,24 @@ use Illuminate\View\Component;
 
 class Sidebar extends Component
 {
-    /**
-     * Create a new component instance.
-     */
-    public function __construct()
-    {
-        //
+    public $selectedCurrency = 'USD';
+    
+    protected $listeners = [
+        'currencySelectedUpdated' => 'getSelectedCurrency'
+    ];
+
+    public function getSelectedCurrency($currency){
+        if($currency){
+            $this->selectedCurrency = $currency;
+        }
     }
 
-    /**
-     * Get the view / contents that represent the component.
-     */
+    
+    public function __construct()
+    {
+
+    }
+
     public function render(): View|Closure|string
     {
         return view('components.sidebar');

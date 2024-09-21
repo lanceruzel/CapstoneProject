@@ -51,7 +51,7 @@
                         </div>
                     </div>
                  
-                    <span class="inline text-slate-500 hover:text-slate-600 text-sm font-semibold" onclick="location.href='{{ route('message', $user->user->username) }}'">Message</span>
+                    <span class="inline text-slate-500 hover:text-slate-600 text-sm font-semibold" onclick="location.href='{{ route('message', $store->user->username) }}'">Message</span>
                 </div>
             </x-dropdown.item>
         @endforeach
