@@ -61,7 +61,7 @@
                                 @elseif($status == App\Enums\Status::Accepted)
                                     <x-badge flat positive label="Accepted" />
                                 @else
-                                    {{ $status }}
+                                <x-badge flat warning label="For Submission" />
                                 @endif
                             </td>
 

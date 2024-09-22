@@ -1,0 +1,149 @@
+<?php
+
+namespace App\Livewire\Report;
+
+use App\Classes\UserNotif;
+use App\Enums\NotificationType;
+use App\Enums\Status;
+use App\Models\Order;
+use App\Models\Report;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
+use Livewire\Component;
+use Livewire\WithFileUploads;
+use WireUi\Traits\WireUiActions;
+
+class ProductReportForm extends Component
+{
+    use WithFileUploads;
+    use WireUiActions;
+
+    public $images;
+    public $description;
+
+    public $order;
+    public $orderedProducts = [];
+    public $selectedProducts = [];
+    public $selectedAction;
+
+    protected $listeners = [
+        'get-order-info' => 'getData',
+        'clearProductReportFormModalData' => 'clearData'
+    ];
+
+    public function getData($id){
+        $this->order = Order::findOrFail($id);
+        
+        if($this->order){
+            $this->orderedProducts = $this->order->orderedItems->map(function ($item) {
+                return [
+                    'id' => ['id' => $item->product->id, 'name' => $item->product->name],
+                    'name' => $item->product->name,
+                ];
+            })
+            ->unique('id')
+            ->toArray();
+        }
+    }
+
+    public function send(){
+        $validated = $this->validateForm();
+
+        try{
+            $store = $this->storeReport($validated);
+
+            if($store){
+                if($this->selectedAction == 'return'){
+                    $this->notification()->send([
+                        'icon' => 'success',
+                        'title' => 'Success!',
+                        'description' => 'Your return request has been sent.',
+                    ]);
+
+                    UserNotif::sendNotif($this->order->seller_id, 'Your have received a return request.' , NotificationType::ReturnRequest);
+                }else{
+                    $this->notification()->send([
+                        'icon' => 'success',
+                        'title' => 'Success!',
+                        'description' => 'Your return report has been sent.',
+                    ]);
+                }
+                
+                $this->dispatch('close-modal', ['modal' => 'productReportFormModal']);
+                $this->dispatch('refresh-order-container', ['id' => $this->order->id]);
+            }else{
+                $this->notification()->send([
+                    'icon' => 'error',
+                    'title' => 'Error!',
+                    'description' => 'Woops, its an error. There seems to be a problem sending your request.',
+                ]);
+            }
+        }catch(\Exception $e){
+            $this->notification()->send([
+                'icon' => 'error',
+                'title' => 'Error!',
+                'description' => 'Woops, its an error.',
+            ]);
+
+            Log::error('Error send request in product report: ' . $e->getMessage());
+        }
+    }
+
+    public function storeReport($validated){
+        return Report::create([
+            'reporter_id' => Auth::id(),
+            'seller_id' => $this->order->seller_id,
+            'order_id' => $this->order->id,
+            'type' => $validated['selectedAction'],
+            'products' => json_encode($validated['selectedProducts']),
+            'description' => $validated['description'],
+            'images' => json_encode($this->storeImages($validated['images'])),
+            'status' => $validated['selectedAction'] == 'return' ? Status::ReturnRequestReview : Status::ForReview
+        ]);
+    }
+
+    public function deleteImage($index){
+        array_splice($this->images, $index, 1);
+    }
+
+    public function storeImages($images){
+        $imagePaths = [];
+
+        if($images){
+            foreach ($images as $key => $image) {
+                // New image, store and get path
+                $filename = $key . '_' . time() . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
+                $image->storeAs('report', $filename);
+                array_push($imagePaths, $filename);
+            }
+        }
+
+        return $imagePaths;
+    }
+
+    public function validateForm(){
+        return $this->validate([
+            'selectedAction' => 'required',
+            'description' => 'required|min:10',
+            'images.*' => 'image|mimes:png,jpg,jpeg|max:2048',
+            'selectedProducts' => 'required'
+        ]);
+    }
+
+    public function clearData(){
+        $this->reset([
+            'images',
+            'description',
+            'order',
+            'selectedAction',
+        ]);
+
+        $this->selectedProducts = [];
+        $this->orderedProducts = [];
+    }
+
+    public function render()
+    {
+        return view('livewire.Report.product-report-form');
+    }
+}

@@ -5,7 +5,9 @@ namespace App\Livewire\Order\Return;
 use App\Classes\UserNotif;
 use App\Enums\NotificationType;
 use App\Enums\Status;
+use App\Models\Report;
 use App\Models\ReturnRequest;
+use GuzzleHttp\Psr7\Request;
 use Livewire\Component;
 use WireUi\Traits\WireUiActions;
 
@@ -28,7 +30,7 @@ class UpdateReturnTrackingNumberModal extends Component
     }
 
     public function getData($id){
-        $this->returnRequest = ReturnRequest::findOrFail($id);
+        $this->returnRequest = Report::findOrFail($id);
 
         $this->courrier = $this->returnRequest->courrier;
         $this->trackingNumber = $this->returnRequest->tracking_number;

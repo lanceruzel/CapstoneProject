@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\Return;
+namespace App\Livewire\Report;
 
 use App\Classes\UserNotif;
 use App\Enums\NotificationType;
@@ -8,6 +8,7 @@ use App\Enums\Status;
 use App\Models\Order;
 use App\Models\OrderedItem;
 use App\Models\Product;
+use App\Models\Report;
 use App\Models\ReturnRequest;
 use Illuminate\Support\Facades\Log;
 use Livewire\Component;
@@ -28,7 +29,7 @@ class ReturnCreateOrderModal extends Component
 
     public function getData($orderId, $requestId){
         $this->order = Order::findOrFail($orderId);
-        $this->request = ReturnRequest::findOrFail($requestId);
+        $this->request = Report::findOrFail($requestId);
 
         $this->requestedItems = $this->getRequestedItems();
     }
@@ -137,7 +138,8 @@ class ReturnCreateOrderModal extends Component
             'product_id' => $product['id'],
             'variation' => $product['selectedVariation'],
             'quantity' => $product['quantity'],
-            'subtotal' => '0'
+            'price' => 0,
+            'subtotal' => 0
         ]);
     }
 
@@ -152,11 +154,12 @@ class ReturnCreateOrderModal extends Component
             'total' => 0,
             'payment_method' => 'Paypal',
             'is_paid' => true,
+            'status' => Status::OrderSellerPreparing
         ]);
     }
 
     public function render()
     {
-        return view('livewire.Return.return-create-order-modal');
+        return view('livewire.Report.return-create-order-modal');
     }
 }

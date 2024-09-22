@@ -115,9 +115,9 @@ Route::group(['middleware' => 'role:admin'], function () {
         return view('livewire.Pages.product-registrations');
     })->name('admin.product-registrations');
 
-    Route::get('/admin/product-reports', function () {
-        return view('livewire.Pages.product-reports');
-    })->name('admin.product-reports');
+    Route::get('/admin/reports', function () {
+        return view('livewire.Pages.reports');
+    })->name('admin.reports');
 
     Route::get('/admin/report-appeals', function () {
         return view('livewire.Pages.report-appeals');

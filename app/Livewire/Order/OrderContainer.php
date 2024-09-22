@@ -7,6 +7,7 @@ use App\Enums\NotificationType;
 use App\Enums\Status;
 use App\Models\Affiliate;
 use App\Models\ProductFeedback;
+use App\Models\Report;
 use App\Models\ReturnRequest;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
@@ -33,8 +34,11 @@ class OrderContainer extends Component
 
         if($order){
             $this->orderedProducts = $order->orderedItems;
-            $this->hasRequest = $this->hasReturnRequest();
         }
+    }
+
+    public function hasReported(){
+        return Report::where('order_id', $this->order->id)->exists();
     }
 
     public function orderReceivedConfirmation(){
@@ -98,10 +102,6 @@ class OrderContainer extends Component
         }
     }
 
-    public function hasReturnRequest(){
-        return ReturnRequest::where('order_id', $this->order->id)->exists();
-    }
-
     public function refreshOrderContainer($id)
     {
         if ($this->order->id == $id) {
@@ -110,6 +110,8 @@ class OrderContainer extends Component
     }
 
     public function render(){
-        return view('livewire.Order.order-container');
+        return view('livewire.Order.order-container',[
+            'hasReported' => $this->hasReported()
+        ]);
     }
 }

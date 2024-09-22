@@ -11,9 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('return_requests', function (Blueprint $table) {
+        Schema::create('reports', function (Blueprint $table) {
             $table->id();
-
             $table->unsignedBigInteger('reporter_id');
             $table->foreign('reporter_id')->references('id')->on('users')->cascadeOnDelete();
 
@@ -23,16 +22,17 @@ return new class extends Migration
             $table->unsignedBigInteger('order_id');
             $table->foreign('order_id')->references('id')->on('orders')->cascadeOnDelete();
 
+            $table->string('type');
+
             $table->json('products');
 
-            $table->text('content');
-            $table->json('images')->nullable();
+            $table->text('description');
+            $table->json('images');
 
             $table->text('status');
 
             $table->string('courrier')->nullable();
             $table->string('tracking_number')->nullable();
-
             $table->timestamps();
         });
     }
@@ -42,6 +42,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('return_requests');
+        Schema::dropIfExists('reports');
     }
 };

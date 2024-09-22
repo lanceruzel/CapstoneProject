@@ -1,30 +1,28 @@
 <?php
 
-namespace App\Livewire\Return;
+namespace App\Livewire\Report;
 
 use App\Classes\UserNotif;
 use App\Enums\NotificationType;
 use App\Enums\Status;
-use App\Models\Order;
-use App\Models\OrderedItem;
-use App\Models\ReturnRequest;
+use App\Models\Report;
 use Livewire\Component;
 use WireUi\Traits\WireUiActions;
 
-class ReturnRequestViewModal extends Component
+class ViewReturnRequestModal extends Component
 {
     use WireUiActions;
-
-    public $request = null;
+    
+    public $request;
     public $images;
 
     protected $listeners = [
-        'clearViewReturnRequestModalData' => 'clearData',
-        'viewReturnProductInformation' => 'getData'
+        'viewReturnRequest' => 'getData',
+        'clearvViewReturnRequestModal' => 'clearData'
     ];
-    
+
     public function getData($id){
-        $this->request = ReturnRequest::findOrFail($id);
+        $this->request = Report::findOrFail($id);
 
         if($this->request){
             $this->images = json_decode($this->request->images);
@@ -44,10 +42,6 @@ class ReturnRequestViewModal extends Component
     public function markAsReceievedRequest(){
         $this->request->status = Status::ReturnRequestReceieved;
         $this->updateRequest();
-    }
-
-    public function getOrderInformation($id){
-        return Order::findOrFail($id);
     }
 
     public function updateRequest(){
@@ -72,13 +66,13 @@ class ReturnRequestViewModal extends Component
     }
 
     public function clearData(){
-        $this->request = null;
-
-        $this->reset('images');
+        $this->reset([
+            'request',
+            'images'
+        ]);
     }
 
-    public function render()
-    {
-        return view('livewire.Return.return-request-view-modal');
+    public function render(){
+        return view('livewire.Report.view-return-request-modal');
     }
 }

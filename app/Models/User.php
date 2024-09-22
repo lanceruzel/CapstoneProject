@@ -140,8 +140,8 @@ class User extends Authenticatable
         return $this->hasMany(UserShippingInformation::class);
     }
 
-    public function productReports(){
-        return $this->hasMany(ProductReport::class);
+    public function reports(){
+        return $this->hasMany(Report::class);
     }
 
     public function affiliates(){

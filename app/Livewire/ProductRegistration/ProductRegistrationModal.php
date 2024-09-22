@@ -59,6 +59,7 @@ class ProductRegistrationModal extends Component
     public function store($status){
         if($status == 'accepted'){
             $this->product->status = Status::Available;
+            $this->product->remarks = '';
         }else{
             $validated = $this->validate([
                 'remarks' => 'required|min:10'

@@ -1,12 +1,11 @@
 <?php
 
-namespace App\Livewire\Report;
+namespace App\Livewire\Order;
 
 use App\Models\Report;
-use Barryvdh\DomPDF\Facade\Pdf;
 use Livewire\Component;
 
-class ViewReportModal extends Component
+class ViewReportDetailsInfoModal extends Component
 {
     public $report;
 
@@ -17,26 +16,18 @@ class ViewReportModal extends Component
 
 
     protected $listeners = [
-        'viewReport' => 'getData',
-        'clearViewReportModalData' => 'clearData'
+        'viewReportInformation' => 'getData',
+        'clearViewReportDetailsModal' => 'clearData'
     ];
 
     public function getData($id){
-        $this->report = Report::findOrFail($id);
+        $this->report = Report::where('order_id', $id)->first();
 
         if($this->report){
             $this->description = $this->report->description;
             $this->images = json_decode($this->report->images);
             $this->type = $this->report->type;
         }
-    }
-
-    public function exportReport(){
-        $pdf = Pdf::loadView('pdf.productReport', ['report' => $this->report]);
-
-        return response()->streamDownload(function () use ($pdf) {
-            echo $pdf->stream();
-        }, 'report.pdf');
     }
 
     public function clearData(){
@@ -49,7 +40,8 @@ class ViewReportModal extends Component
         ]);
     }
 
-    public function render(){
-        return view('livewire.Report.view-report-modal');
+    public function render()
+    {
+        return view('livewire.Order.view-report-details-info-modal');
     }
 }

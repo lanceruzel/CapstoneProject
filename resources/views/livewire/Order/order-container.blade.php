@@ -51,10 +51,6 @@
                     <td class="px-6 py-4">
                         <div class="gap-3 flex flex-row items-center justify-center h-full">
                             @if($order->status == App\Enums\Status::OrderBuyerReceived)
-                                @if(!$orderProduct->hasReport())
-                                    <x-button negative label="Report" onclick="$openModal('productReportFormModal')" wire:click="$dispatch('open-product-report', { id: {{ $orderProduct->id }} })" />  
-                                @endif
-
                                 @if(!$orderProduct->hasFeedback())
                                     <x-button label="Review" onclick="$openModal('productFeedbackFormModal')" wire:click="$dispatch('open-product-feedback', { id: {{ $orderProduct->id }} })" />
                                 @endif
@@ -72,16 +68,18 @@
                 @if(($order->tracking_number != null || $order->tracking_number != '') && $order->status != App\Enums\Status::OrderBuyerReceived)
                     <x-link label="View Tracking" href="https://parcelsapp.com/en/tracking/{{ $order->tracking_number }}" target="_blank" />
                 @endif
-                
-                @if($order->status == App\Enums\Status::OrderBuyerReceived && !$hasRequest)
-                    {{-- @if($this->isReturnOrderApplicable()) --}}
-                        <x-button flat label="Return Order" onclick="$openModal('productReturnFormModal')" wire:click="$dispatch('openReturnRequestForm', { id: {{ $order->id }} })" />
-                    {{-- @endif --}}
-                @endif
             </p>
         </div>
 
-        <div class="flex items-center justify-center flex-col gap-3 max-md:pt-3">
+        <div class="flex items-center justify-center max-sm:flex-col gap-3 max-md:pt-3">
+            @if($order->status == App\Enums\Status::OrderBuyerReceived)
+                @if(!$hasReported)
+                    <x-button negative outline label="Report" onclick="$openModal('viewReportModal2')" wire:click="$dispatch('get-order-info', { id: {{ $order->id }} })" />  
+                @else
+                    <x-button negative flat label="View Report" onclick="$openModal('viewReportDetailsModal')" wire:click="$dispatch('viewReportInformation', { id: {{ $order->id }} })" />  
+                @endif
+            @endif
+
             <p class="font-bold">{{ App\Classes\CurrencyConverter::formatPrice($order->total) }}</p>
 
             @if($order->status == App\Enums\Status::OrderSellerShipped)

@@ -62,8 +62,8 @@
     </div>
 
     <livewire:Order.product-feedback-form-modal />
-    <livewire:Report.product-report-form-modal />
-    <livewire:Return.return-product-form-modal />
     <livewire:Order.Return.update-return-tracking-number-modal />
     <livewire:Order.view-receipt-modal />
+    <livewire:Report.product-report-form />
+    <livewire:Order.view-report-details-info-modal />
 </x-layouts.main-layout>

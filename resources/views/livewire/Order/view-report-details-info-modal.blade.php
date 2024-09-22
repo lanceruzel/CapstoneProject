@@ -1,4 +1,4 @@
-<x-modal-card name="viewReportModal" title="Report Details" align='center' x-cloak x-on:close="$dispatch('clearViewReportModalData')" blurless wire:ignore.self>  
+<x-modal-card name="viewReportDetailsModal" title="Report Details" align='center' x-cloak x-on:close="$dispatch('clearViewReportDetailsModal')" blurless wire:ignore.self>  
     @if($report)
         <div class="flex flex-col gap-2 items-start text-gray-600 overflow-auto">
             <div class="flex flex-col gap-2 w-full">
@@ -84,7 +84,6 @@
             
             <x-slot name="footer" class="flex justify-end gap-x-4">
                 <x-button flat label="Close" x-on:click="close" />
-                <x-button wire:loading.attr="disabled" wire:click="exportReport" spinner="exportReport" label="Export" />
             </x-slot>
         </div>
     @else

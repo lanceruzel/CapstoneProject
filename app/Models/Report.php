@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class ReturnRequest extends Model
+class Report extends Model
 {
     use HasFactory;
 
@@ -13,10 +13,11 @@ class ReturnRequest extends Model
         'reporter_id',
         'seller_id',
         'order_id',
+        'type',
         'products',
         'tracking_number',
         'courrier',
-        'content',
+        'description',
         'images',
         'status',
     ];
