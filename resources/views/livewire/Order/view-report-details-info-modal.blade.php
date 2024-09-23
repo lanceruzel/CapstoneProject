@@ -15,6 +15,38 @@
                         <tbody>
                             <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                                 <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                    Action
+                                </th>
+                                <td class="px-6 py-4">
+                                    {{ ucfirst($report->type) }}
+                                </td>
+                            </tr>
+
+                            <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                                <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                    Status
+                                </th>
+                                <td class="px-6 py-4">
+                                    @if($report->status == App\Enums\Status::Accepted)
+                                        <span>Seller has accepted your return request. </span>
+                                    @elseif($report->status == App\Enums\Status::ReturnRequestBuyerShipped)
+                                        <span>You have shipped the item and is now waiting for seller to received. </span>
+                                    @elseif($report->status == App\Enums\Status::ReturnRequestReceieved)
+                                        <span>Seller has received the item and now preparing to send you your item/s. </span>
+                                    @elseif($report->status == App\Enums\Status::ReturnRequestSellerOrderCreated)
+                                        <span>Request has been fulfilled. </span>
+                                    @elseif($report->status == App\Enums\Status::ReturnRequestReview)
+                                        <span>Your request is for review. </span>
+                                    @elseif($report->status == App\Enums\Status::Declined)
+                                        <span>Your request has been declined. </span>
+                                    @else
+                                        {{ $report->status }}
+                                    @endif
+                                </td>
+                            </tr>
+
+                            <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                                <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                     Reporter
                                 </th>
                                 <td class="px-6 py-4">

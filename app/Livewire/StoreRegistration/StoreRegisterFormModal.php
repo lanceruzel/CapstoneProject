@@ -81,13 +81,8 @@ class StoreRegisterFormModal extends Component
     }
 
     public function updateRequirements($id, $validated){
-        if($this->savedRequirements->status == Status::ForSubmission){
-            foreach (array_slice((array) $this->savedRequirements, 0, -2) as $key => $requirement) {
-                $this->savedRequirements->$key->file_path = $this->storeDocument($id, $validated[$key]);
-                $this->savedRequirements->$key->status = Status::ForReview;
-            }
-        }elseif($this->savedRequirements->status == Status::ForReSubmission){
-            foreach (array_slice((array) $this->savedRequirements, 0, -2) as $key => $requirement) {
+        foreach (array_slice((array) $this->savedRequirements, 0, -2) as $key => $requirement) {
+            if($this->savedRequirements->$key->status != Status::Accepted){
                 $this->savedRequirements->$key->file_path = $this->storeDocument($id, $validated[$key]);
                 $this->savedRequirements->$key->status = Status::ForReview;
             }

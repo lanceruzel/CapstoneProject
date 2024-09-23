@@ -64,7 +64,7 @@
         </div>
 
         <div class="flex items-center justify-center flex-col gap-3 max-md:pt-3">
-            @if($order->status != App\Enums\Status::ReturnRequestSellerOrderCreated)
+            @if($order->status != App\Enums\Status::ReturnRequestSellerOrderCreated && $order->status != App\Enums\Status::ReturnRequestReceieved)
                 @if($order->tracking_number != null && $order->courrier != null)
                     <x-button label="Update Tracking Number" onclick="$openModal('returnUpdateTrackingModal')" wire:click="$dispatch('req-return-info', { id: {{ $order->id }} })" />
                 @else

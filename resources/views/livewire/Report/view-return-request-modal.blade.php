@@ -11,6 +11,8 @@
                 <x-alert title="You mark this as received." info />
             @elseif($request->status == App\Enums\Status::ReturnRequestSellerOrderCreated)
                 <x-alert title="This request has been fulfilled." info />
+            @elseif($request->status == App\Enums\Status::Declined)
+                <x-alert title="You declined this request." info />
             @else
                 <x-alert title="Waiting for your review." info />
             @endif
