@@ -56,7 +56,7 @@ $storeRegistration = new StoreRegistration();
     </main>
 
     <script
-      src="https://www.paypal.com/sdk/js?client-id=AZVVsNkGV7NS6SL25L-l2mG9qelgsvcuURxGMNlcEIk4xqlmUuGSek5kJYe2np3Z_ew2kLdEmj4Hy6tx&currency=USD"
+      src="https://www.paypal.com/sdk/js?client-id=ATe6XOxr_O16kSbwVRv-dMnInI2E4BmCD32_GepoFj1irtqU1XwkkkUmegHh21h6-UNhCLwMvNCSAQvo&currency=USD"
       data-sdk-integration-source="developer-studio"
     ></script>
 
@@ -97,7 +97,7 @@ $storeRegistration = new StoreRegistration();
                     return actions.order.create({
                         purchase_units: [{
                             amount: {
-                                value: total
+                                value: total.toFixed(2)
                             }
                         }],
                         application_context: {
