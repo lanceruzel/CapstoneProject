@@ -16,7 +16,7 @@ class PDFViewModal extends Component
 
     public function getPDF($filename){
         //Only works in hosting
-        $this->file = str_replace('https://', 'http://', url('uploads/documents/' . $filename));
+        $this->file = url('uploads/documents/' . $filename);
 
         $this->fileType = pathinfo($this->file, PATHINFO_EXTENSION);
     }
