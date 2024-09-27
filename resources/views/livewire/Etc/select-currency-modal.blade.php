@@ -4,8 +4,34 @@
 
         <div class="grid grid-cols-3 gap-5 text-gray-600 overflow-y-auto px-5 h-fit max-h-[500px]">
             @foreach($currencies as $item)
-                <div class="col-span-1 flex items-center just-center py-5 border shadow rounded-lg hover:bg-gray-100 cursor-pointer" wire:click="confirmation('{{ $item['currency'] }}')">
+                <div class="col-span-1 flex flex-col items-center just-center py-5 border shadow rounded-lg hover:bg-gray-100 cursor-pointer" wire:click="confirmation('{{ $item['currency'] }}')">
                     <p class="text-center w-full">{{ $item['currency'] }}</p>
+
+                    @if($item['currency'] != 'USD')
+                        <small class="text-center w-full inline-block">
+                            @switch($item['currency'])
+                                @case('USD')
+                                    <span>$</span>
+                                    @break
+                                @case('PHP')
+                                    <span>₱</span>
+                                    @break
+                                @case('EUR')
+                                    <span>€</span>
+                                    @break
+                                @case('JPY')
+                                    <span>¥</span>
+                                    @break
+                                @case('KRW')
+                                    <span>₩</span>
+                                    @break
+                                @default
+                            @endswitch
+                            <span>{{ $item['rate'] }}</span>
+                        </small>
+                    @else
+                        <small class="text-center w-full inline-block">Base</small>
+                    @endif
                 </div>
             @endforeach
         </div>
