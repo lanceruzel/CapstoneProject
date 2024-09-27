@@ -50,7 +50,7 @@ class ProductReportForm extends Component
     public function send(){
         $validated = $this->validateForm();
 
-        if(!$this->isReturnOrderApplicable()){
+        if($this->selectedAction == 'return' && !$this->isReturnOrderApplicable()){
             return;
         }
 

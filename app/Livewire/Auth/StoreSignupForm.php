@@ -28,7 +28,6 @@ class StoreSignupForm extends Component
         $countriesJsonPath = public_path('json/countries.json');
         $countries = json_decode(file_get_contents($countriesJsonPath), true);
 
-        // Sort product categories
         return collect($countries)->pluck('name.common')->sort()->values()->toArray();
     }
 
