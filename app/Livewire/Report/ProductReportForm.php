@@ -25,7 +25,7 @@ class ProductReportForm extends Component
     public $order;
     public $orderedProducts = [];
     public $selectedProducts = [];
-    public $selectedAction;
+    public $reason;
 
     protected $listeners = [
         'get-order-info' => 'getData',
@@ -50,7 +50,7 @@ class ProductReportForm extends Component
     public function send(){
         $validated = $this->validateForm();
 
-        if($this->selectedAction == 'return' && !$this->isReturnOrderApplicable()){
+        if(!$this->isReturnOrderApplicable()){
             return;
         }
 
@@ -58,21 +58,13 @@ class ProductReportForm extends Component
             $store = $this->storeReport($validated);
 
             if($store){
-                if($this->selectedAction == 'return'){
-                    $this->notification()->send([
-                        'icon' => 'success',
-                        'title' => 'Success!',
-                        'description' => 'Your return request has been sent.',
-                    ]);
+                $this->notification()->send([
+                    'icon' => 'success',
+                    'title' => 'Success!',
+                    'description' => 'Your return request has been sent.',
+                ]);
 
-                    UserNotif::sendNotif($this->order->seller_id, 'Your have received a return request.' , NotificationType::ReturnRequest);
-                }else{
-                    $this->notification()->send([
-                        'icon' => 'success',
-                        'title' => 'Success!',
-                        'description' => 'Your return report has been sent.',
-                    ]);
-                }
+                UserNotif::sendNotif($this->order->seller_id, 'Your have received a return request.' , NotificationType::ReturnRequest);
                 
                 $this->dispatch('close-modal', ['modal' => 'productReportFormModal']);
                 $this->dispatch('refresh-order-container', ['id' => $this->order->id]);
@@ -95,7 +87,7 @@ class ProductReportForm extends Component
     }
 
     public function isReturnOrderApplicable(){
-        if($this->order->status == Status::OrderBuyerReceived && $this->selectedAction == 'return'){
+        if($this->order->status == Status::OrderBuyerReceived){
             $orderedDate = Carbon::parse($this->order->updated_at);
             $isWithinLast24Hours = $orderedDate->greaterThanOrEqualTo(Carbon::now()->subDay());
 
@@ -120,11 +112,11 @@ class ProductReportForm extends Component
             'reporter_id' => Auth::id(),
             'seller_id' => $this->order->seller_id,
             'order_id' => $this->order->id,
-            'type' => $validated['selectedAction'],
+            'reason' => $validated['reason'],
             'products' => json_encode($validated['selectedProducts']),
             'description' => $validated['description'],
             'images' => json_encode($this->storeImages($validated['images'])),
-            'status' => $validated['selectedAction'] == 'return' ? Status::ReturnRequestReview : Status::ForReview
+            'status' => Status::ReturnRequestReview
         ]);
     }
 
@@ -149,7 +141,7 @@ class ProductReportForm extends Component
 
     public function validateForm(){
         return $this->validate([
-            'selectedAction' => 'required',
+            'reason' => 'required',
             'description' => 'required|min:10',
             'images.*' => 'image|mimes:png,jpg,jpeg|max:2048',
             'selectedProducts' => 'required'
@@ -161,7 +153,7 @@ class ProductReportForm extends Component
             'images',
             'description',
             'order',
-            'selectedAction',
+            'reason',
         ]);
 
         $this->selectedProducts = [];

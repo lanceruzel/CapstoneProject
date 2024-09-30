@@ -11,10 +11,12 @@ class SelectCurrencyModal extends Component
     use WireUiActions;
 
     public $currencies = null;
+    public $date = null;
 
     public function mount(){
         CurrencyConverter::loadCurrencyData();
         $this->currencies = CurrencyConverter::$currencyData;
+        $this->date = CurrencyConverter::$date;
     }
     
     public function confirmation($currency){

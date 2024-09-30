@@ -18,7 +18,7 @@ class ReturnProductsTable extends Component
     public function getRequests(){
         $filter = $this->filterStatus;
 
-        return Report::where('type', 'return')->where('seller_id', Auth::id())->orderBy('id', 'desc')->paginate(10);
+        return Report::where('seller_id', Auth::id())->orderBy('id', 'desc')->paginate(10);
     }
 
     public function render()

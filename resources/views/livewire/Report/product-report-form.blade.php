@@ -1,11 +1,6 @@
 <x-modal-card name="productReportFormModal" title="Product Report" align='center' x-cloak x-on:close="$dispatch('clearProductReportFormModalData')" blurless wire:ignore.self>  
     <div class="flex flex-col gap-2 items-start text-gray-600 overflow-auto">
         <div class="flex flex-col gap-2 w-full">
-            <x-select label="Action" wire:model='selectedAction' placeholder="Please select an action" shadowless>
-                <x-select.option label="Report" value="report" />
-                <x-select.option label="Return Product" value="return" />
-            </x-select>
-
             <x-select
                 class="max-lg:col-span-2"
                 label="Products:"
@@ -17,6 +12,14 @@
                 multiselect
                 shadowless
             />
+            
+            <x-select label="Reason" wire:model='reason' placeholder="Please select an action" shadowless>
+                <x-select.option label="Missing part of the order" value="Missing part of the order" />
+                <x-select.option label="Seller sent wrong item" value="Seller sent wrong item" />
+                <x-select.option label="Damaged Item" value="Damaged Item" />
+                <x-select.option label="Product is defective or does not work" value="Product is defective or does not work" />
+                <x-select.option label="Empty Parcel" value="Empty Parcel" />
+            </x-select>
 
             <x-textarea label="Description" wire:model="description" fluid shadowless placeholder="Type here" />
 

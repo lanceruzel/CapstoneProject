@@ -17,7 +17,7 @@ class ReportsTable extends Component
     public function getReports(){
         $filter = $this->filterStatus;
 
-        return Report::where('type', 'report')->orderBy('id', 'desc')->paginate(10);
+        return Report::orderBy('id', 'desc')->paginate(10);
     }
 
     public function render()

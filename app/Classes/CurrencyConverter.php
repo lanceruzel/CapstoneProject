@@ -2,8 +2,12 @@
 
 namespace App\Classes;
 
+use DateTime;
+use DateTimeZone;
+
 class CurrencyConverter{
     public static $currencyData = null;
+    public static $date = null;
 
 
     public function __construct(){
@@ -20,7 +24,6 @@ class CurrencyConverter{
         }
     }
 
-
     public static function getRate($currency){
         self::loadCurrencyData();
 
@@ -35,13 +38,13 @@ class CurrencyConverter{
     public static function getCurrencyData(){
         $currencies = [];
 
-        $url = "https://api.exchangerate-api.com/v4/latest/usd";
+        $url = "https://v6.exchangerate-api.com/v6/". env("EXCHANGE_RATE_API", "") ."/latest/USD";
         $response = file_get_contents($url);
 
         $data = json_decode($response, true);
 
-        if (isset($data['rates'])) {
-            foreach ($data['rates'] as $currency => $rate) {
+        if(isset($data['conversion_rates'])) {
+            foreach ($data['conversion_rates'] as $currency => $rate) {
                 if (in_array($currency, [
                     'USD',
                     'PHP',
@@ -57,7 +60,18 @@ class CurrencyConverter{
             }
         }
 
+        if(isset($data['time_last_update_utc'])){
+            self::$date = self::epochToDate($data['time_last_update_utc']);
+        }
+
         return $currencies; 
+    }
+
+    public static function epochToDate($epoch){
+        $dt = new DateTime("$epoch");
+        // $dt->setTimezone(new DateTimeZone('GMT+8'));
+
+        return $dt->format('M d, Y H:i T');
     }
 
     public static function formatPrice($amount){

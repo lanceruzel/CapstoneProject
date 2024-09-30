@@ -14,6 +14,7 @@
                     <th scope="col" class="px-6 py-3">Reporter</th>
                     <th scope="col" class="px-6 py-3">Store</th>
                     <th scope="col" class="px-6 py-3">Order ID</th>
+                    <th scope="col" class="px-6 py-3">Reason</th>
                     <th scope="col" class="px-6 py-3">Reported At</th>
                     <th scope="col" class="px-6 py-3"></th>
                 </tr>
@@ -26,6 +27,7 @@
                             <td class="px-6 py-4">{{ $report->reporter->name() }}</td>
                             <td class="px-6 py-4">{{ $report->seller->name() }}</td>
                             <td class="px-6 py-4">#{{ $report->order_id }}</td>
+                            <td class="px-6 py-4">{{ $report->reason }}</td>
                             <td class="px-6 py-4">{{ $report->created_at }}</td>
 
                             <td class="-mr-1 px-6 py-4">

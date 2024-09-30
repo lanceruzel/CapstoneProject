@@ -1,8 +1,9 @@
 <x-modal-card name="changeCurrencyModal" width="lg" title="Change Currency View" align='center' x-cloak blurless wire:ignore.self>
     @if($currencies)
         <p class="font-medium mb-3">Currently Selected: <span class="font-normal">{{ auth()->user()->currency }}</span></p>
+        <p class="mb-3">Rate as of {{ $date }}</p>
 
-        <div class="grid grid-cols-3 gap-5 text-gray-600 overflow-y-auto px-5 h-fit max-h-[500px]">
+        <div class="grid grid-cols-3 gap-5 text-gray-600 overflow-y-auto p-5 h-fit max-h-[500px]">
             @foreach($currencies as $item)
                 <div class="col-span-1 flex flex-col items-center just-center py-5 border shadow rounded-lg hover:bg-gray-100 cursor-pointer" wire:click="confirmation('{{ $item['currency'] }}')">
                     <p class="text-center w-full">{{ $item['currency'] }}</p>

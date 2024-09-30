@@ -13,7 +13,7 @@ class Report extends Model
         'reporter_id',
         'seller_id',
         'order_id',
-        'type',
+        'reason',
         'products',
         'tracking_number',
         'courrier',

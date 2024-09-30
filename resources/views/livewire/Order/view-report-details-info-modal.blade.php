@@ -15,15 +15,6 @@
                         <tbody>
                             <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                                 <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                    Action
-                                </th>
-                                <td class="px-6 py-4">
-                                    {{ ucfirst($report->type) }}
-                                </td>
-                            </tr>
-
-                            <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                                <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                     Status
                                 </th>
                                 <td class="px-6 py-4">
@@ -82,6 +73,15 @@
                                             @if(!$loop->last),@endif
                                         </p>
                                     @endforeach
+                                </td>
+                            </tr>
+
+                            <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                                <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                    Reason
+                                </th>
+                                <td class="px-6 py-4">
+                                    {{ ucfirst($report->reason) }}
                                 </td>
                             </tr>
 
