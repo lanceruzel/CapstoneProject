@@ -1,4 +1,4 @@
-<x-modal-card name="viewReturnRequestModal" title="Return Reqeust Details" align='center' x-cloak x-on:close="$dispatch('clearvViewReturnRequestModal')" blurless wire:ignore.self>  
+<x-modal-card name="viewReturnRequestModal" title="Return Request Details" align='center' x-cloak x-on:close="$dispatch('clearvViewReturnRequestModal')" blurless wire:ignore.self>  
     @if($request)
         <div class="flex flex-col gap-2 items-start text-gray-600 overflow-auto">
             @if($request->status == App\Enums\Status::ReturnRequestReview)
