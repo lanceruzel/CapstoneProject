@@ -17,13 +17,20 @@ class LivestreamContainer extends Component
     protected $listeners = [
         'delete-livestream' => 'deleteLivestream',
         'host-leave-notify' => 'leavingRouteMessage',
-        'live-ended-notify' => 'liveEndedNotify'
+        'live-ended-notify' => 'liveEndedNotify',
+        'live-update' => 'liveUpdateStatus'
     ];
 
     public function mount($name, $role, $meetingId){
         $this->name = $name;
         $this->role = $role;
         $this->meetingId = $meetingId;
+    }
+
+    public function liveUpdateStatus($status){
+        $livestream = Livestream::find($this->meetingId);
+        $livestream->status = $status;
+        $livestream->save();
     }
 
     public function deleteLivestream(){

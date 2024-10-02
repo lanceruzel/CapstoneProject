@@ -12,11 +12,11 @@
             @if($comment->user_id == Auth::id())
                 <!-- sent -->
                 <div class="flex flex-col gap-1 items-end">
-                    {{-- <img src="https://i.pravatar.cc" alt="" class="w-5 h-5 rounded-full shadow"> --}}
                     <div class="px-4 py-2 rounded-[20px] max-w-sm bg-gradient-to-tr from-sky-500 to-blue-500 text-white shadow break-words text-wrap hyphens-auto space-y-3 text-sm">
-                        <span>{{ $comment->content }}</span>
+                        {!! html_entity_decode($comment['content']) !!}
                     </div>
-                        <small class="pe-2">{{ App\Classes\CustomDateTimeFormat::formatAgo($comment->created_at) }}</small>
+                    
+                    <small class="pe-2">{{ App\Classes\CustomDateTimeFormat::formatAgo($comment->created_at) }}</small>
                 </div> 
             @else
                 <!-- received -->
@@ -26,9 +26,14 @@
                     </div>
 
                     <div class="flex gap-3">
-                        <img src="{{ asset('uploads') . '/' . $comment->user->profilePicture() }}" alt="" class="w-9 h-9 rounded-full shadow">
+                        @if($comment->user->profilePicture() == null)
+                            <x-icon name="user" solid class="w-9 h-9 rounded-full border bg-gray-200" />
+                        @else
+                            <img src="{{ asset('uploads') . '/' . $comment->user->profilePicture() }}" class="w-full h-full object-cover rounded-full border">
+                        @endif
+
                         <div class="px-4 py-2 rounded-[20px] max-w-sm bg-gray-100 break-words !text-wrap hyphens-auto space-y-3 text-sm">
-                            <span>{{ $comment->content }}</span>
+                            {!! html_entity_decode($comment['content']) !!}
                         </div>
                     </div>
 
@@ -41,7 +46,7 @@
     </div>
 
     <div class="flex items-center md:gap-4 gap-2 p-3 overflow-hidden">
-        <x-input label="" wire:model='content' placeholder="Message" />
+        <x-input label="" wire:model='content' placeholder="Message" shadowless />
         
         <x-mini-button rounded flat black icon="paper-airplane" wire:click='sendMessage' />
     </div>

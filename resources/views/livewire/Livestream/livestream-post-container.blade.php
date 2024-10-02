@@ -19,10 +19,17 @@
             </div>
         </div>
 
-        <div class="flex items-center justify-center gap-2">
-            <div class="w-2 h-2 bg-teal-500 rounded-full right-0 bottom-0 m-px animate-pulse"></div>
-            <small>Live now</small>
-        </div>
+        @if($livestream->status == 'started')
+            <div class="flex items-center justify-center gap-2">
+                <div class="w-2 h-2 bg-teal-500 rounded-full right-0 bottom-0 m-px animate-pulse"></div>
+                <small>Live now</small>
+            </div>
+        @elseif($livestream->status == 'stopped')
+            <div class="flex items-center justify-center gap-2">
+                <div class="w-2 h-2 bg-rose-500 rounded-full right-0 bottom-0 m-px animate-pulse"></div>
+                <small>Stopped</small>
+            </div>
+        @endif
     </div>
 
     <div class="flex flex-col items-center justify-center gap-3">

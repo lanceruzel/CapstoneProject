@@ -10,7 +10,7 @@ class LivestreamPostsContainer extends Component
     public function render()
     {
         return view('livewire.Livestream.livestream-posts-container', [
-            'livestreams' => Livestream::get()
+            'livestreams' => Livestream::where('status', 'started')->orWhere('status', 'stopped')->get()
         ]);
     }
 }

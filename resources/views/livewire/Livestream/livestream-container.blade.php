@@ -39,6 +39,8 @@
                     <x-mini-button id="startHlsBtn" rounded positive icon="play" />
                 </div>
             </div>
+
+            <livewire:Livestream.livestream-reaction-container :meetingId="$meetingId" :role="$role" />
         </div>
 
         <!-- Chat section -->
@@ -358,6 +360,8 @@
 
                 startHlsButton.classList.toggle('hidden');
                 stopHlsButton.classList.toggle('hidden');
+
+                Livewire.dispatch('live-update', { status: 'started' });
             });
 
             // Stop Hls Button Event Listener
@@ -366,6 +370,8 @@
 
                 startHlsButton.classList.toggle('hidden');
                 stopHlsButton.classList.toggle('hidden');
+
+                Livewire.dispatch('live-update', { status: 'stopped' });
             });
 
             if(role == 'host' && meetingId != null){

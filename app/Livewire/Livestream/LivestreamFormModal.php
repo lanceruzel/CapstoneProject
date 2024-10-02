@@ -32,7 +32,13 @@ class LivestreamFormModal extends Component
                 'id' => $id,
                 'user_id' => Auth::id(),
                 'title' => $validated['title'],
-                'status' => Status::Preparing
+                'status' => 'created',
+                'reactions' => json_encode([
+                    '1' => ['count' => 0],
+                    '2' => ['count' => 0],
+                    '3' => ['count' => 0],
+                    '4' => ['count' => 0],
+                ]),
             ]);
 
             if($livestream){
