@@ -69,9 +69,9 @@ class CurrencyConverter{
 
     public static function epochToDate($epoch){
         $dt = new DateTime("$epoch");
-        // $dt->setTimezone(new DateTimeZone('GMT+8'));
+        $dt->setTimezone(new DateTimeZone('GMT+8'));
 
-        return $dt->format('M d, Y H:i T');
+        return $dt->format('M d, Y') . ' 12:00 AM GMT+8';
     }
 
     public static function formatPrice($amount){
