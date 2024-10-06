@@ -12,6 +12,7 @@ class LivestreamChatContainer extends Component
     public $meetingId;
     public $content;
     public $comments = [];
+    public $isViewOnly = false;
 
     public function getListeners(){
         return [

@@ -25,6 +25,18 @@ class LivestreamFormModal extends Component
     }
 
     public function storeLivestream($id){
+
+        if($this->checkIfHaveExistingLivestreamRoom()){
+            $this->dialog()->show([
+                'icon' => 'error',
+                'title' => 'Error!',
+                'description' => 'Woops, its an error. You must end your previous livestream room to be able to create a new one.',
+            ]);
+
+            $this->dispatch('close-modal', ['modal' => 'livestreamFormModal']);
+            return;
+        }
+
         $validated = $this->validate(['title' => 'required|min:5']);
 
         if($id){
@@ -57,6 +69,10 @@ class LivestreamFormModal extends Component
                 'description' => 'Woops, its an error. ID not found',
             ]);
         }
+    }
+
+    public function checkIfHaveExistingLivestreamRoom(){
+        return Livestream::where('user_id', Auth::id())->where('status', '<>',  'ended')->exists();
     }
 
     public function render(){

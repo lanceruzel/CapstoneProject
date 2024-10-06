@@ -49,4 +49,5 @@
 
     <livewire:Posting.post-form-modal />
     <livewire:Livestream.livestream-form-modal />
+    <livewire:Livestream.view-livestream-comments />
 </x-layouts.main-layout>

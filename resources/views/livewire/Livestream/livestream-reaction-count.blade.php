@@ -1,4 +1,4 @@
-<div wire:poll.5000ms>
+<div {{ $noPoll ? '' : 'wire:poll.5000ms' }}>
     @if($livestream)
         <div class="flex items-center justify-center gap-3 py-2 border-b">
             <div class="flex flex-col justify-center items-center">

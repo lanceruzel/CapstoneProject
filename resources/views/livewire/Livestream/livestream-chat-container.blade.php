@@ -7,7 +7,6 @@
         </div>
 
         <livewire:Livestream.livestream-reaction-count :meetingId="$meetingId" />
-
     </div>
 
     <div class="p-5 text-sm font-medium space-y-5 overflow-y-auto h-[400px] md:h-[calc(100vh-18rem)]">

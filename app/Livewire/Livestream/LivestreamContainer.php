@@ -37,7 +37,9 @@ class LivestreamContainer extends Component
         $livestream = Livestream::find($this->meetingId);
 
         if($livestream){
-            $livestream->delete();
+            //$livestream->delete();
+            $livestream->status = 'ended';
+            $livestream->save();
         }
 
         $this->dialog()->show([

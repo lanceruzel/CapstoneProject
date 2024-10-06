@@ -186,12 +186,14 @@
                     </div>
                 </div>
          
-                @if($user->role == App\Enums\UserType::Travelpreneur || $user->role == App\Enums\UserType::Store)
-                    <div class="flex items-center justify-center">
-                        <div class="cursor-pointer px-10 py-3 transition-all" x-bind:class="tabSelected == 1 ? 'border-b-2 border-gray-500 font-semibold' : ''" x-on:click="tabSelected = 1">Posts</div>
-                        <div class="cursor-pointer px-10 py-3 transition-all" x-bind:class="tabSelected == 2 ? 'border-b-2 border-gray-500 font-semibold' : ''" x-on:click='tabSelected = 2'>Products</div>
-                    </div>
-                @endif
+                <div class="flex items-center justify-center">
+                    <div class="cursor-pointer px-10 py-3 transition-all" x-bind:class="tabSelected == 1 ? 'border-b-2 border-gray-500 font-semibold' : ''" x-on:click="tabSelected = 1">Posts</div>
+                    <div class="cursor-pointer px-10 py-3 transition-all" x-bind:class="tabSelected == 2 ? 'border-b-2 border-gray-500 font-semibold' : ''" x-on:click="tabSelected = 2">Livestreams</div>
+                    
+                    @if($user->role == App\Enums\UserType::Travelpreneur || $user->role == App\Enums\UserType::Store)
+                        <div class="cursor-pointer px-10 py-3 transition-all" x-bind:class="tabSelected == 3 ? 'border-b-2 border-gray-500 font-semibold' : ''" x-on:click='tabSelected = 2'>Products</div>
+                    @endif
+                </div>
             </div>
 
             @if($user->role != App\Enums\UserType::Store && !empty($user->getTravelledCountry()))
@@ -229,8 +231,22 @@
                     <!-- Posts Container -->
                     <livewire:Posting.posts-container userID="{{ $user->id }}"/>
                 </div>
+
+                <div x-show='tabSelected == 2' x-cloak x-transition class="w-[510px] max-w-[510px] min-h-screen rounded-lg max-sm:px-7 space-y-5 mt-5">
+                    <div class="border w-full bg-white rounded-lg p-4 gap-3 shadow-sm flex justify-stretch items-stretch hover:cursor-pointer active:scale-95 transition-all" onclick="$openModal('livestreamFormModal')">
+                        <div class="w-full text-center bg-gray-200 rounded-lg py-2 font-medium text-sm select-none text-gray-600">Start Livestream</div>
+        
+                        <i class="py-1 px-2 text-xl bg-rose-200 text-rose-800 rounded-lg">
+                            <x-icon name="video-camera" class="w-full h-full" />
+                        </i>
+                    </div>
+    
+                    <!-- Livestreams Container -->
+                    <livewire:Livestream.livestream-posts-container userID="{{ $user->id }}"/>
+                </div>
+
                 @if($user->role == App\Enums\UserType::Travelpreneur || $user->role == App\Enums\UserType::Store)
-                    <div x-show='tabSelected == 2' class="w-full px-5" x-cloak x-transition class="">
+                    <div x-show='tabSelected == 3' class="w-full px-5" x-cloak x-transition class="">
                         <div class="pt-5">
                             <div class="flex max-sm:items-start items-center max-sm:flex-col justify-between gap-4">
                                 <p class="text-2xl font-semibold">Our Products</p>
