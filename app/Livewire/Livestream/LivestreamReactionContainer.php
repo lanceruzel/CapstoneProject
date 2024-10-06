@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Livestream;
 
+use App\Events\LiveReactionCreated;
 use App\Models\Livestream;
 use App\Models\PostComment;
 use Illuminate\Support\Facades\Auth;
@@ -14,7 +15,7 @@ class LivestreamReactionContainer extends Component
     public $meetingId;
     public $role;
 
-    public function mount($meetingId, $role){
+    public function mount($meetingId, $role = 'viewer'){
         $this->meetingId = $meetingId;
         $this->role = $role;
         $this->livestream = Livestream::where('id', $meetingId)->first();
@@ -42,15 +43,16 @@ class LivestreamReactionContainer extends Component
                 break;
         }
 
-        $postComment = PostComment::create([
-            'livestream_id' => $this->meetingId,
-            'user_id' => Auth::id(),
-            'content' => 'Reacted: '. $formatted
-        ]);
+        // $postComment = PostComment::create([
+        //     'livestream_id' => $this->meetingId,
+        //     'user_id' => Auth::id(),
+        //     'content' => 'Reacted: '. $formatted
+        // ]);
 
-        if($postComment){
-            LivestreamChatCreated::dispatch($postComment, $this->meetingId);
-        }
+        // if($postComment){
+            // LivestreamChatCreated::dispatch($postComment, $this->meetingId);
+            LiveReactionCreated::dispatch($formatted, $this->meetingId);
+        // }
 
         if($this->livestream){
             $this->livestream->incrementReactionCount($reaction);

@@ -1,10 +1,13 @@
 <div class="h-fit bg-white rounded-lg shadow">
-    <div class="p-3 shadow">
-        <div class="flex items-center justify-between">
+    <div class="p-3">
+        <div class="flex items-center justify-between border-b pb-2">
             <p class="text-xl font-semibold">Chats</p>
 
             <p>Watching now: <span id="watchingCount">0</span></p>
         </div>
+
+        <livewire:Livestream.livestream-reaction-count :meetingId="$meetingId" />
+
     </div>
 
     <div class="p-5 text-sm font-medium space-y-5 overflow-y-auto h-[400px] md:h-[calc(100vh-18rem)]">
@@ -45,7 +48,17 @@
         @endforeach
     </div>
 
-    <div class="flex items-center md:gap-4 gap-2 p-3 overflow-hidden">
+    <div class="flex items-center gap-2 p-3">
+        <x-dropdown position="top">
+            <x-slot name="trigger">
+                <x-mini-button rounded flat black icon="face-smile" />
+            </x-slot>
+
+            <x-dropdown.item class="!px-2 hover:!bg-transparent">
+                <livewire:Livestream.livestream-reaction-container :meetingId="$meetingId" />
+            </x-dropdown.item>
+        </x-dropdown>
+
         <x-input label="" wire:model='content' placeholder="Message" shadowless />
         
         <x-mini-button rounded flat black icon="paper-airplane" wire:click='sendMessage' />

@@ -14,6 +14,10 @@ Broadcast::channel('new-livestream-comment', function (){
     return true;
 });
 
+Broadcast::channel('new-livestream-reaction', function (){
+    return true;
+});
+
 Broadcast::channel('post-updated', function (){
     return true;
 });

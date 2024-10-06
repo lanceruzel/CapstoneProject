@@ -17,11 +17,11 @@
             <!-- Livestream pause Info -->
             <div class="w-full h-[24rem] hidden items-center bg-white shadow rounded-lg justify-center gap-2 p-5" id="pausedInfoVideo">
                 <span class="text-xl font-semibold text-center">
-                    Live stream has been stopped wait for the host to start the stream again
+                    Live stream has been stopped wait for the host to resume the stream again.
                 </span>
             </div>
 
-            <div class="bg-white hidden rounded-lg shadow" id="videoContainer"></div>
+            <div class="hidden bg-white rounded-lg shadow relative" id="videoContainer"></div>
 
             <div class="w-full flex-col items-center justify-center gap-3 py-3 bg-white shadow rounded-lg mt-3" id="speakerView" style="display: none">
                 <h3 id="hlsStatusHeading"></h3>
@@ -40,7 +40,7 @@
                 </div>
             </div>
 
-            <livewire:Livestream.livestream-reaction-container :meetingId="$meetingId" :role="$role" />
+            {{-- <livewire:Livestream.livestream-reaction-container :meetingId="$meetingId" :role="$role" /> --}}
         </div>
 
         <!-- Chat section -->
@@ -54,6 +54,45 @@
             let role = @js($role);
             let meetingId = @js($meetingId);
             let name = @js($name);
+
+            document.addEventListener('livewire:init', () => {
+                Livewire.on('end-live', (event) => {
+                    meeting?.leave();
+                });
+
+                Livewire.on('close-modal', (event) => {
+                    $closeModal(event[0].modal);
+                });
+
+                window.Echo.channel(`new-livestream-reaction.${meetingId}`)
+                    .listen('LiveReactionCreated', (e) => {
+                        const liveReactions = document.getElementById('videoContainer');
+
+                        const newDiv = document.createElement('div');
+                        newDiv.classList.add('text-4xl', 'transition-all', 'ease-in', 'duration-[4000ms]');
+                        newDiv.innerHTML = e.reaction;
+
+                        newDiv.style.position = 'absolute';
+                        newDiv.style.bottom = '0'; 
+
+                        // Randomize the horizontal (x-axis) position of the newDiv within the container
+                        const containerWidth = liveReactions.offsetWidth;
+                        const randomX = Math.random() * (containerWidth - 50); // Random x position, subtract some buffer for div width
+                        newDiv.style.left = `${randomX}px`;
+
+                        liveReactions.appendChild(newDiv);
+
+                        setTimeout(() => {
+                            // newDiv.classList.remove('-translate-y-[100dvh]', 'opacity-100');
+                            newDiv.classList.add('-translate-y-[100dvh]', 'opacity-0', 'scale-[2.5]');
+                        }, 10);
+
+                        setTimeout(() => {
+                            liveReactions.removeChild(newDiv);
+                        }, 4000);
+                    }
+                );
+            });
 
             let watching = 0;
 
@@ -289,12 +328,6 @@
                     }
                 }
             }
-
-            document.addEventListener('livewire:init', () => {
-                Livewire.on('end-live', (event) => {
-                    meeting?.leave();
-                });
-            });
 
             // Open Mic Button Event Listener
             openMicButton.addEventListener("click", async () => {
