@@ -20,6 +20,8 @@ return new class extends Migration
             $table->unsignedBigInteger('conversation_id');
             $table->foreign('conversation_id')->references('id')->on('conversations')->cascadeOnDelete();
 
+            $table->string('status');
+
             $table->timestamps();
         });
     }

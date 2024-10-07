@@ -40,4 +40,8 @@ enum Status: string
     const ReturnRequestReceieved = 'seller-receieved';
     const ReturnRequestBuyerShipped = 'buyer-shipped';
     const ReturnRequestSellerOrderCreated = 'seller-created-order';
+    const AdminProductSuspend = 'admin-products-suspend';
+
+    const Ongoing = 'Ongoing';
+    const Resolved = 'Resolved';
 }

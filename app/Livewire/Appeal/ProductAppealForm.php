@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Appeal;
 
+use App\Enums\Status;
 use App\Models\Conversation;
 use App\Models\Message;
 use App\Models\Product;
@@ -64,7 +65,8 @@ class ProductAppealForm extends Component
                     if($message){
                         $report = ReportAppeal::create([
                             'product_id' => $this->product->id,
-                            'conversation_id' => $conversation->id
+                            'conversation_id' => $conversation->id,
+                            'status' => Status::Ongoing
                         ]);
     
                         $conversation->last_message_id = $message->id;

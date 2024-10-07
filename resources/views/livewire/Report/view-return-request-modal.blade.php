@@ -13,6 +13,8 @@
                 <x-alert title="This request has been fulfilled." info />
             @elseif($request->status == App\Enums\Status::Declined)
                 <x-alert title="You declined this request." info />
+            @elseif($request->status == App\Enums\Status::AdminProductSuspend)
+                <x-alert title="Admin has taken an action" info />
             @else
                 <x-alert title="Waiting for your review." info />
             @endif
@@ -115,15 +117,17 @@
                 <x-button flat label="Message" href="{{ route('message', $request->reporter->username) }}"/>
 
                 <div>
-                    @if($request->status == App\Enums\Status::ReturnRequestReview)
-                        <x-button flat negative wire:loading.attr="disabled" wire:click="declineRequest" spinner="declineRequest" label="Decline Request" />
-                        <x-button positive wire:loading.attr="disabled" wire:click="acceptRequest" spinner="acceptRequest" label="Accept Request" />
-                    @elseif($request->status == App\Enums\Status::ReturnRequestBuyerShipped)
-                        <x-button wire:loading.attr="disabled" wire:click="markAsReceievedRequest" spinner="markAsReceievedRequest" label="Mark as Received" />
-                        @elseif($request->status == App\Enums\Status::ReturnRequestReceieved)
-                        <x-button wire:loading.attr="disabled" wire:click="$dispatch('return-create-order-data', { orderId: {{ $request->order_id }}, requestId: {{ $request->id }} })" onclick="$openModal('returnCreateOrderModal')" label="Create Order" />
-                    @elseif($request->status == App\Enums\Status::Accepted)
-                        <x-button disabled label="Waiting for buyer's shipment" />
+                    @if($request->AdminProductSuspend != App\Enums\Status::ReturnRequestReview)
+                        @if($request->status == App\Enums\Status::ReturnRequestReview)
+                            <x-button flat negative wire:loading.attr="disabled" wire:click="declineRequest" spinner="declineRequest" label="Decline Request" />
+                            <x-button positive wire:loading.attr="disabled" wire:click="acceptRequest" spinner="acceptRequest" label="Accept Request" />
+                        @elseif($request->status == App\Enums\Status::ReturnRequestBuyerShipped)
+                            <x-button wire:loading.attr="disabled" wire:click="markAsReceievedRequest" spinner="markAsReceievedRequest" label="Mark as Received" />
+                            @elseif($request->status == App\Enums\Status::ReturnRequestReceieved)
+                            <x-button wire:loading.attr="disabled" wire:click="$dispatch('return-create-order-data', { orderId: {{ $request->order_id }}, requestId: {{ $request->id }} })" onclick="$openModal('returnCreateOrderModal')" label="Create Order" />
+                        @elseif($request->status == App\Enums\Status::Accepted)
+                            <x-button disabled label="Waiting for buyer's shipment" />
+                        @endif
                     @endif
                 </div>
             </x-slot>

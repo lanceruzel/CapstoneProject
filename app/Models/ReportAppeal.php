@@ -11,7 +11,8 @@ class ReportAppeal extends Model
 
     protected $fillable = [
         'product_id',
-        'conversation_id'
+        'conversation_id',
+        'status'
     ];
 
     public function conversation(){

@@ -66,6 +66,8 @@
                                     <span>Request has been fulfilled. </span>
                                 @elseif($request->status == App\Enums\Status::Declined)
                                     <span>Request has been declined. </span>
+                                @elseif($request->status == App\Enums\Status::AdminProductSuspend)
+                                    <span>Admin has taken an action.</span>
                                 @else
                                     <span>{{ $request->status }}</span>
                                 @endif

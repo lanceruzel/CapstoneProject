@@ -30,6 +30,8 @@
                                         <span>Your request is for review. </span>
                                     @elseif($report->status == App\Enums\Status::Declined)
                                         <span>Your request has been declined. </span>
+                                    @elseif($report->status == App\Enums\Status::AdminProductSuspend)
+                                        <span>Admin has taken an action.</span>
                                     @else
                                         {{ $report->status }}
                                     @endif

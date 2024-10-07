@@ -15,6 +15,7 @@
                     <th scope="col" class="px-6 py-3">Store</th>
                     <th scope="col" class="px-6 py-3">Order ID</th>
                     <th scope="col" class="px-6 py-3">Reason</th>
+                    <th scope="col" class="px-6 py-3">Status</th>
                     <th scope="col" class="px-6 py-3">Reported At</th>
                     <th scope="col" class="px-6 py-3"></th>
                 </tr>
@@ -28,6 +29,25 @@
                             <td class="px-6 py-4">{{ $report->seller->name() }}</td>
                             <td class="px-6 py-4">#{{ $report->order_id }}</td>
                             <td class="px-6 py-4">{{ $report->reason }}</td>
+                            <td class="px-6 py-4">
+                                @if($report->status == App\Enums\Status::ReturnRequestReview)
+                                    <span>Waiting for seller's review</span>
+                                @elseif($report->status == App\Enums\Status::ReturnRequestBuyerShipped)
+                                    <span>Item has been shipped by the seller</span>
+                                @elseif($report->status == App\Enums\Status::Accepted)
+                                    <span>Seller has accepted the request</span>
+                                @elseif($report->status == App\Enums\Status::ReturnRequestReceieved)
+                                    <span>Seller has received the item/s</span>
+                                @elseif($report->status == App\Enums\Status::ReturnRequestSellerOrderCreated)
+                                    <x-badge positive label="This request has been fulfilled." />
+                                @elseif($report->status == App\Enums\Status::Declined)
+                                    <x-badge negative label="Seller declined the request" />
+                                @elseif($report->status == App\Enums\Status::AdminProductSuspend)
+                                    <span>Admin has taken an action.</span>
+                                @else
+                                    <x-alert title="Waiting for your review." info />
+                                @endif
+                            </td>
                             <td class="px-6 py-4">{{ $report->created_at }}</td>
 
                             <td class="-mr-1 px-6 py-4">

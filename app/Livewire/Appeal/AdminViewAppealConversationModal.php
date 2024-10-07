@@ -74,6 +74,8 @@ class AdminViewAppealConversationModal extends Component
                 $this->dispatch('refresh-report-appeals-table');
     
                 UserNotif::sendNotif($this->product->seller_id, $this->product->name . ' has been unsuspended and is now available again.' , NotificationType::Appeal);
+                $this->report->status = Status::Resolved;
+                $this->report->save();
             }
         }catch(\Exception $e){
             $this->notification()->send([
