@@ -59,13 +59,13 @@
     <aside x-bind:class="sidebarOpened ? 'translate-x-0' : '-translate-x-full'" x-transition class="transition-all fixed top-auto h-full w-64 left-0 border-e pt-16 bg-white">
         <div class="py-3 px-2.5 flex items-center justify-between flex-col h-full">
             <ul class="space-y-2 w-full">
-                <li>
+                {{-- <li>
                     @if(request()->routeIS('admin.dashboard'))
                         <x-button class='!justify-start font-medium' icon='folder' href="{{ route('admin.dashboard') }}" solid flat full secondary label="Dashboard" />
                     @else
                         <x-button class='!justify-start font-medium' icon='folder' href="{{ route('admin.dashboard') }}" flat full secondary label="Dashboard" /> 
                     @endif
-                </li>
+                </li> --}}
 
                 <li>
                     @if(request()->routeIS('admin.store-registrations'))

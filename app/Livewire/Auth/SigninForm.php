@@ -26,7 +26,7 @@ class SigninForm extends Component
                 session()->regenerate();
     
                 if(auth()->user()->role == UserType::Admin){
-                    return redirect()->route('admin.dashboard');
+                    return redirect()->route('admin.store-registrations');
                 }elseif(auth()->user()->role != UserType::Store){
                     Auth::user()->userInformation->current_country = Location::getLocation();
                     Auth::user()->userInformation->save();
