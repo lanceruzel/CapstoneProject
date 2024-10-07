@@ -6,7 +6,6 @@
             </div>
 
             <x-input wire:model='title' shadowless />
-            <x-input wire:model='location' hidden id="location" />
         </div>
         
         <x-slot name="footer" class="flex justify-end gap-x-4">
