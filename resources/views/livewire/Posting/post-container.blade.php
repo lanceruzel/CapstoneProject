@@ -16,10 +16,7 @@
                 </div>
 
                 <small class="text-xs font-medium text-gray-600">{{ App\Classes\CustomDateTimeFormat::formatAgo($post->created_at) }}</small>
-
-                - 
-
-                <small> in {{ $post->country }}</small>
+                <small> at {{ $post->country }}</small>
             </div>
         </div>
 

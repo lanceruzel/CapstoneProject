@@ -55,4 +55,12 @@ class Location
     
         return null; // Return null if the country code is not found
     }
+
+    public static function getGeolocationCountry($latitude, $longitude){
+        $request = 'https://us1.locationiq.com/v1/reverse?key=' . env('LOCATIONIQ_API') . '&lat=' . $latitude . '&lon=' . $longitude . '&format=json&'; 
+        $file_contents = file_get_contents($request);
+        $json_decode = json_decode($file_contents);
+
+        return $json_decode->address->state . ', ' . $json_decode->address->country;
+    }
 }

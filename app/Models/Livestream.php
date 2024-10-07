@@ -17,6 +17,7 @@ class Livestream extends Model
         'title',
         'status',
         'reactions',
+        'location',
     ];
 
     public function getReactionCount($reaction){

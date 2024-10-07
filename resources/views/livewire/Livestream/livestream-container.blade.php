@@ -1,5 +1,5 @@
 <div class="w-full max-md:h-full md:h-[calc(100vh-9rem)]">
-    <h1 class="text-2xl font-semibold pb-3 max-md:pt-2">{{ $name }}'s livestream</h1> 
+    <h1 class="text-2xl font-semibold pb-3 max-md:pt-2">{{ $name }} livestreaming from {{ $location }}</h1> 
 
     <div class="grid grid-cols-12 w-full h-full gap-3">
         <div class="col-span-12 lg:col-span-7 2xl:col-span-8" wire:ignore>

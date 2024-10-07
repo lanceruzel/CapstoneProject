@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Livestream;
 
+use App\Classes\Location;
 use App\Enums\Status;
 use App\Models\Livestream;
 use Illuminate\Support\Facades\Auth;
@@ -14,14 +15,21 @@ class LivestreamFormModal extends Component
 
     public $title;
 
+    public $location;
+
     protected $listeners = [
-        'room-created' => 'getRoomID'
+        'room-created' => 'getRoomID',
+        'getGeolocation' => 'getGeolocation'
     ];
 
     public function getRoomID($id = null){
         if($id != null){
             $this->storeLivestream($id);
         }
+    }
+
+    public function getGeolocation($latitude, $longitude){
+        $this->location = Location::getGeolocationCountry($latitude, $longitude);
     }
 
     public function storeLivestream($id){
@@ -51,6 +59,7 @@ class LivestreamFormModal extends Component
                     '3' => ['count' => 0],
                     '4' => ['count' => 0],
                 ]),
+                'location' => $this->location
             ]);
 
             if($livestream){

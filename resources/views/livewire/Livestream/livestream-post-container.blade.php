@@ -16,6 +16,10 @@
                 </div>
 
                 <small class="text-xs font-medium text-gray-600">{{ App\Classes\CustomDateTimeFormat::formatAgo($livestream->created_at) }}</small>
+
+                @if($livestream->location)
+                    <small class="text-xs font-medium text-gray-600"> at {{ $livestream->location }}</small>
+                @endif
             </div>
         </div>
 

@@ -97,8 +97,8 @@ Route::group(['middleware' => 'auth'], function () {
                 $role = 'viewer';
             }
         }
-
-        return view('livewire.Pages.livestream',['role' => $role, 'meetingId' => $livestream->id, 'name' => $livestream->user->name()]);
+        
+        return view('livewire.Pages.livestream',['location' => $livestream->location, 'role' => $role, 'meetingId' => $livestream->id, 'name' => $livestream->user->name()]);
     })->name('livestream');
 });
 
