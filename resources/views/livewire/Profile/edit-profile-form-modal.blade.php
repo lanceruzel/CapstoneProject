@@ -20,7 +20,7 @@
                     <label wire:target='profileDP' wire:loading.attr='disabled' class="flex flex-col justify-center items-center cursor-pointer w-full text-gray-700">
                         <input class="hidden" type="file" accept="image/png, image/jpg, image/jpeg" wire:model="profileDP">
     
-                        <div wire:target='profileDP' wire:loading.remove class="mt-2">Change profile dp</div>
+                        <div wire:target='profileDP' wire:loading.remove class="mt-2">Upload Picture</div>
     
                         <div wire:target='profileDP' wire:loading class="mt-2 flex items-center justify-center gap-3">
                             <span>Loading...</span>
@@ -32,7 +32,7 @@
                     <x-input label="Username" wire:model="username" shadowless /> 
 
                     @if($account->role == App\Enums\UserType::Store)
-                        <x-input label="Store Name" wire:model="name" shadowless />  
+                        <x-input disabled label="Store Name" wire:model="name" shadowless />  
                     @else
                         <x-input label="First Name" wire:model="firstName" shadowless />  
                         <x-input label="Last Name" wire:model="lastName" shadowless />  
