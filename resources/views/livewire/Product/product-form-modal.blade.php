@@ -57,7 +57,7 @@
                         </tbody>
 
                         <caption class="caption-bottom">
-                            <x-button icon='plus' flat black label="Add Variation" wire:click="addVariation" />
+                            <x-button wire:loading.attr="disabled" icon='plus' flat black label="Add Variation" wire:click="addVariation" spinner="addVariation" />
                         </caption>
                     </table>
                 @else
@@ -109,7 +109,7 @@
             </div>
             
             <x-slot name="footer" class="flex justify-end gap-x-4">
-                <x-button flat label="Cancel" x-on:click="close" />
+                <x-button wire:loading.attr="disabled" flat label="Cancel" x-on:click="close" />
 
                 @if($productUpdate)
                     <x-button wire:loading.attr="disabled" wire:click="store" spinner="store" label="Update" />

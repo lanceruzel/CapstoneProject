@@ -8,7 +8,7 @@
             <x-input class="col-span-12 lg:col-span-8" label="Tracking Number" wire:model='trackingNumber' shadowless/>
 
             <x-slot name="footer" class="flex justify-end gap-x-4">
-                <x-button flat label="Close" x-on:click="close" />
+                <x-button wire:loading.attr="disabled" flat label="Close" x-on:click="close" />
 
                 @if($trackingNumber != null && $courrier != null)
                     <x-button wire:loading.attr="disabled" wire:click="updateTrackingNumber" spinner="updateTrackingNumber" label="Update" />

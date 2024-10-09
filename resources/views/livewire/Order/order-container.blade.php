@@ -6,7 +6,7 @@
             <div class="flex items-center justify-center max-sm:flex-col sm:gap-3">
                 @if($order->is_paid) 
                     {{-- <x-button sm flat black label="View Receipt" onclick="$openModal('viewReceiptModal')" wire:click="$dispatch('view-receipt-order', { id: {{ $order->id }} })"/> --}}
-                    <x-button sm flat black label="Download Receipt" wire:click="downloadReceipt"/>
+                    <x-button sm flat black label="Download Receipt" wire:loading.attr="disabled" wire:click="downloadReceipt" spinner="downloadReceipt" />
                 @endif
             </div> 
 
@@ -83,7 +83,7 @@
             <p class="font-bold">{{ App\Classes\CurrencyConverter::formatPrice($order->total) }}</p>
 
             @if($order->status == App\Enums\Status::OrderSellerShipped)
-                <x-button label="Received" wire:click="orderReceivedConfirmation" />
+                <x-button wire:loading.attr="disabled" label="Received" wire:click="orderReceivedConfirmation" />
             @endif
         </div>
     </div>

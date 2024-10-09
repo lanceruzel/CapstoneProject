@@ -11,13 +11,13 @@
                 <x-button label="Delete" right-icon="trash" interaction="negative" wire:click="deleteConfirmation" />
                 
                 <div class="space-x-3">
-                    <x-button flat label="Cancel" x-on:click="close" />
+                    <x-button wire:loading.attr="disabled" flat label="Cancel" x-on:click="close" />
                     <x-button wire:loading.attr="disabled" wire:click="store" spinner="store" label="Save" />
                 </div>
             </x-slot>
         @else
             <x-slot name="footer" class="flex justify-end gap-x-4">
-                <x-button flat label="Cancel" x-on:click="close" />
+                <x-button wire:loading.attr="disabled" flat label="Cancel" x-on:click="close" />
                 <x-button wire:loading.attr="disabled" wire:click="store" spinner="store" label="Save" />
             </x-slot>
         @endif

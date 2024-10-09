@@ -65,7 +65,7 @@
                             @if(count($variations) > 1)
                                 <x-button onclick="$openModal('variationSelectionModal')" wire:click="$dispatch('view-variations-info', { id: {{ $product->id }} })" label="Add to cart" />
                             @else
-                                <x-button  wire:click="store_toCart" label="Add to cart" />
+                                <x-button wire:loading.attr="disabled" wire:click="store_toCart" spinner="store_toCart" label="Add to cart" />
                             @endif
                         @endif
                     </div>

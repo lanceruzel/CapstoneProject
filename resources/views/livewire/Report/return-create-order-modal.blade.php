@@ -38,7 +38,7 @@
             </table>  
             
             <x-slot name="footer" class="flex justify-end gap-x-4">
-                <x-button flat label="Cancel" x-on:click="close" />
+                <x-button wire:loading.attr="disabled" flat label="Cancel" x-on:click="close" />
                 <x-button wire:loading.attr="disabled" wire:click="createOrder" spinner="createOrder" label="Create" />
             </x-slot>
         </div>

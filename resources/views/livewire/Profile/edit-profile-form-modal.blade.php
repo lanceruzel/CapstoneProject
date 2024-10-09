@@ -45,7 +45,7 @@
         </div>
         
         <x-slot name="footer" class="flex justify-end gap-x-4">
-            <x-button flat label="Cancel" x-on:click="close" />
+            <x-button wire:loading.attr="disabled" flat label="Cancel" x-on:click="close" />
             <x-button wire:loading.attr="disabled" wire:click="update" spinner="update" label="Update" />
         </x-slot>
     </div>

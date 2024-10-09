@@ -95,7 +95,7 @@
                 <x-button flat wire:loading.attr="disabled" wire:click="exportReport" spinner="exportReport" label="Export" />
 
                 <div>
-                    <x-button flat label="Close" x-on:click="close" />
+                    <x-button wire:loading.attr="disabled" flat label="Close" x-on:click="close" />
 
                     @if($report->status != App\Enums\Status::AdminProductSuspend)
                         <x-button negative wire:loading.attr="disabled" wire:click="confirmSuspend" spinner="suspendProducts" label="Suspend Product/s" />

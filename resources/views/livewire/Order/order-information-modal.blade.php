@@ -132,7 +132,7 @@
             </div>
             
             <x-slot name="footer" class="flex justify-end gap-x-4">
-                <x-button flat label="Close" x-on:click="close" />
+                <x-button wire:loading.attr="disabled" flat label="Close" x-on:click="close" />
 
                 @if($order->status == App\Enums\Status::OrderSellerConfirmation)
                     <div class="w-full flex justify-end gap-x-4">

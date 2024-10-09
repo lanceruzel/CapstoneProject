@@ -71,8 +71,8 @@
                             </td>
                             <td class="flex flex-row items-center justify-center gap-3">
                                 @if($requirements->status != App\Enums\Status::Accepted)
-                                    <x-mini-button rounded negative icon="x-mark" wire:click="declineDocument('{{ $key }}')" />
-                                    <x-mini-button rounded positive icon="check" wire:click="acceptDocument('{{ $key }}')" />
+                                    <x-mini-button wire:loading.attr="disabled" rounded negative icon="x-mark" wire:click="declineDocument('{{ $key }}')" />
+                                    <x-mini-button wire:loading.attr="disabled" rounded positive icon="check" wire:click="acceptDocument('{{ $key }}')" />
                                 @endif
                             </td>
                         </tr>
@@ -85,7 +85,7 @@
             @endif
             
             <x-slot name="footer" class="flex justify-end gap-x-4">
-                <x-button flat label="Cancel" x-on:click="close" />
+                <x-button wire:loading.attr="disabled" flat label="Cancel" x-on:click="close" />
 
                 @if($requirements->status != App\Enums\Status::Accepted)
                     <x-button wire:loading.attr="disabled" wire:click="updateRegistration" spinner="updateRegistration" label="Update" />

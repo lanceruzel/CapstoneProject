@@ -85,7 +85,7 @@
 
                 @if($product->status == App\Enums\Status::ForReSubmission || $product->status == App\Enums\Status::ForReview)
                     <div>
-                        <x-button wire:loading.attr="disabled" wire:click="store('resubmit')" negative spinner="store" label="Decline" />
+                        <x-button wire:loading.attr="disabled" wire:click="store('resubmit')" negative label="Decline" />
                         <x-button wire:loading.attr="disabled" wire:click="store('accepted')" positive spinner="store" label="Accept" />
                     </div>
                 @endif

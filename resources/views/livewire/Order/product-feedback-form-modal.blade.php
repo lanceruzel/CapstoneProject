@@ -69,7 +69,7 @@
             <x-textarea wire:model="feedbackContent" label="Feedback" shadowless placeholder="Write your review here" />
 
             <x-slot name="footer" class="flex justify-end gap-x-4">
-                <x-button flat label="Close" x-on:click="close" />
+                <x-button wire:loading.attr="disabled" flat label="Close" x-on:click="close" />
                 <x-button wire:loading.attr="disabled" wire:click="store" spinner="store" label="Submit" />
             </x-slot>
         </div>
