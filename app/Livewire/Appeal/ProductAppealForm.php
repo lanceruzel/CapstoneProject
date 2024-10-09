@@ -41,10 +41,16 @@ class ProductAppealForm extends Component
     }
 
     public function store(){
-        $validated = $this->validate([
+        $rules = [
             'content' => 'required',
             'images.*' => 'image|mimes:png,jpg,jpeg|max:2048',
-        ]);
+        ];
+
+        if(empty($this->images) || !$this->images || $this->images == '[]'){
+            $rules['images'] = 'required|image|mimes:png,jpg,jpeg|max:2048';
+        }
+
+        $validated = $this->validate($rules);
 
         try{
             if($this->product){

@@ -14,6 +14,18 @@
             </label>
 
             <x-errors only="images" />
+                
+            @if($errors->has('images.*'))
+                <x-alert title="Error!" negative>
+                    <x-slot name="slot">
+                        <ul>
+                            @foreach ($errors->get('images.*') as $error)
+                                <li>{{ $error[0] }}</li>
+                            @endforeach
+                        </ul>
+                    </x-slot>
+                </x-alert>
+            @endif
 
             @if($images)
                 <div class="max-w-full flex gap-4 overflow-x-auto p-3 pt-5" uk-lightbox>

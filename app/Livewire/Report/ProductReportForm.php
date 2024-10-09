@@ -140,12 +140,18 @@ class ProductReportForm extends Component
     }
 
     public function validateForm(){
-        return $this->validate([
+        $rules = [
             'reason' => 'required',
             'description' => 'required|min:10',
             'images.*' => 'image|mimes:png,jpg,jpeg|max:2048',
             'selectedProducts' => 'required'
-        ]);
+        ];
+
+        if(empty($this->images) || !$this->images || $this->images == '[]'){
+            $rules['images'] = 'required|image|mimes:png,jpg,jpeg|max:2048';
+        }
+
+        return $this->validate($rules);
     }
 
     public function clearData(){

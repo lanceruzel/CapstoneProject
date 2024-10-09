@@ -27,6 +27,7 @@ class ProductFormModal extends Component
 
     public $hasVariation = false;
     public $productUpdate = null;
+    public $existingImagePath ;
 
     public $variations = [
         0 => [
@@ -53,6 +54,7 @@ class ProductFormModal extends Component
 
         if ($this->productUpdate) {
             $this->images = json_decode($this->productUpdate->images);
+            $this->existingImagePath = $this->images;
             $this->name = $this->productUpdate->name;
             $this->description = $this->productUpdate->description;
             $this->category = $this->productUpdate->category;
@@ -179,8 +181,21 @@ class ProductFormModal extends Component
             'name' => 'required|min:10',
             'category' => 'required',
             'description' => 'required|min:50',
-            'images.*' => $this->productUpdate != null ? '' : 'required|image|mimes:png,jpg,jpeg|max:2048',
         ];
+
+        if($this->productUpdate){
+            if(empty($this->images) || !$this->images || $this->images == '[]'){
+                $rules['images'] = 'required|image|mimes:png,jpg,jpeg|max:2048';
+            }else{
+                if($this->images == $this->existingImagePath || array_intersect($this->images,$this->existingImagePath)){
+                    $rules['images.*'] = '';
+                }else{
+                    $rules['images.*'] = 'required|image|mimes:png,jpg,jpeg|max:2048';
+                }
+            }
+        }else{
+            $rules['images.*'] = 'required|image|mimes:png,jpg,jpeg|max:2048';
+        }
 
         if ($this->hasVariation) {
             //Check if there is empty variations
@@ -211,7 +226,8 @@ class ProductFormModal extends Component
             'category',
             'stocks',
             'price',
-            'remarks'
+            'remarks',
+            'existingImagePath'
         ]);
 
 
