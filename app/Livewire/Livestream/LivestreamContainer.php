@@ -13,6 +13,7 @@ class LivestreamContainer extends Component
     public $name;
     public $role;
     public $meetingId;
+    public $location;
 
     protected $listeners = [
         'delete-livestream' => 'deleteLivestream',
@@ -21,10 +22,11 @@ class LivestreamContainer extends Component
         'live-update' => 'liveUpdateStatus'
     ];
 
-    public function mount($name, $role, $meetingId){
+    public function mount($name, $role, $meetingId, $location){
         $this->name = $name;
         $this->role = $role;
         $this->meetingId = $meetingId;
+        $this->location = $location;
     }
 
     public function liveUpdateStatus($status){
