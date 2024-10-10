@@ -13,21 +13,4 @@
             <x-button wire:loading.attr="disabled" spinner="getRoomID" id="createMeetingBtn" label="Create Livestream" />
         </x-slot>
     </div>
-
-    @script
-        <script>
-            if(navigator.geolocation){
-                navigator.geolocation.getCurrentPosition(getLocation);
-            }else{ 
-                x.innerHTML = "Geolocation is not supported by this browser.";
-            }
-            
-            function getLocation(position) {
-                // console.log("Latitude: " + position.coords.latitude);
-                // console.log("Longitude: " + position.coords.longitude);
-
-                Livewire.dispatch('getGeolocation', { latitude: position.coords.latitude, longitude: position.coords.longitude });
-            }
-        </script>
-    @endscript
 </x-modal-card>

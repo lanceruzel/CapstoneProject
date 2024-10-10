@@ -63,7 +63,7 @@
                 Livewire.on('close-modal', (event) => {
                     $closeModal(event[0].modal);
                 });
-
+                
                 window.Echo.channel(`new-livestream-reaction.${meetingId}`)
                     .listen('LiveReactionCreated', (e) => {
                         const liveReactions = document.getElementById('videoContainer');

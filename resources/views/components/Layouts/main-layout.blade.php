@@ -111,6 +111,21 @@
         const userId = document.querySelector('meta[name="user-id"]').getAttribute('content');
 
         document.addEventListener('livewire:init', () => {
+            Livewire.on('askLocation', (event) => {
+                if(navigator.geolocation){
+                    navigator.geolocation.getCurrentPosition(getLocation);
+                }else{ 
+                    console.log('Geolocation is not supported by this browser.');
+                }
+            });
+
+            function getLocation(position) {
+                // console.log("Latitude: " + position.coords.latitude);
+                // console.log("Longitude: " + position.coords.longitude);
+
+                Livewire.dispatch('getGeolocation', { latitude: position.coords.latitude, longitude: position.coords.longitude });
+            }
+                
             Livewire.on('close-modal', (event) => {
                 $closeModal(event[0].modal);
             });
