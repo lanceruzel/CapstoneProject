@@ -44,9 +44,8 @@ class ViewReportModal extends Component
         }, 'report.pdf');
     }
 
-    public function confirmSuspend(): void
-    {
-        $this->dialog()->confirm([
+    public function confirmSuspend(): void{
+        $this->notification()->confirm([
             'title' => 'Are you Sure?',
             'description' => 'Suspend this products?',
             'acceptLabel' => 'Yes, suspend it',
@@ -72,6 +71,9 @@ class ViewReportModal extends Component
             'title' => 'Success!',
             'description' => 'Successfully Suspended.',
         ]);
+
+        $this->dispatch('close-modal', ['modal' => 'viewReportModal']);
+        $this->dispatch('refresh-reports-table');
     }
 
     public function clearData(){

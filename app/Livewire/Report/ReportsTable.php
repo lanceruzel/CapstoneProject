@@ -14,6 +14,11 @@ class ReportsTable extends Component
 
     public $search = '';
 
+    protected $listeners = [
+        'refresh-reports-table' => '$refresh'
+    ];
+
+
     public function getReports(){
         $filter = $this->filterStatus;
 
