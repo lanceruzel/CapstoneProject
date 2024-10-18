@@ -6,10 +6,14 @@ use App\Enums\Status;
 use App\Models\Product;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use Intervention\Image\Drivers\Gd\Driver;
+use Intervention\Image\Image;
+use Intervention\Image\ImageManager;
 use Livewire\Component;
 use Livewire\Features\SupportFileUploads\WithFileUploads;
 use NunoMaduro\Collision\Adapters\Phpunit\State;
 use WireUi\Traits\WireUiActions;
+
 
 class ProductFormModal extends Component
 {
@@ -277,25 +281,45 @@ class ProductFormModal extends Component
         $dbImages = null;
 
         if($images){
-
             if($this->productUpdate){
-                $dbImages = json_decode($this->productUpdate->images, true); // Decode to array
+                $dbImages = json_decode($this->productUpdate->images, true) ?? [];
             }
 
-            foreach ($images as $key => $image) {
-                if ($dbImages !== null && in_array($image, $dbImages)) {
+            foreach($dbImages as $dbImage){
+                if(!in_array($dbImage, $this->images)){
+                    $imagePath = public_path('uploads/products/' . $dbImage);
+    
+                    if (file_exists($imagePath)) {
+                        unlink($imagePath);
+                    }
+                }
+            }
+
+            foreach($images as $key => $image) {
+                if($dbImages !== null && in_array($image, $dbImages)){
                     // Existing image, keep the path
                     array_push($imagePaths, $image);
-                } else {
+                }else{
                     // New image, store and get path
                     $filename = $key . '_' . time() . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
-                    $image->storeAs('products', $filename);
+
+                    // $image->storeAs('products', $filename);
                     array_push($imagePaths, $filename);
+
+                    $img = ImageManager::gd()->read($image->getRealPath());
+                    $img->contain(500, 400);
+
+                    $img->save(public_path('uploads/products/' . $filename));
                 }
             }
         }
 
         return json_encode($imagePaths);
+    }
+
+    public function deleteImageFromStorage($oldImages, $newImages){
+        $result = array_diff($oldImages,$newImages);
+        dd($result);
     }
 
     public function deleteImage($index){

@@ -8,16 +8,16 @@
             <div class="grid grid-cols-2 gap-5">
                 <div class="max-lg:col-span-2 lg:col-span-1">   
                     @if(count($images) > 1)
-                        <div class="relative uk-visible-toggle uk-slideshow w-full min-h-[500px] max-h-[500px]" tabindex="-1" uk-slideshow="animation: push;finite: true">
-                            <ul class="uk-slideshow-items min-h-[500px] max-h-[500px]" uk-lightbox="">
+                        <div class="relative uk-visible-toggle uk-slideshow w-full" tabindex="-1" uk-slideshow="ratio: false; animation: push;finite: true; min-width: 100%; max-width: 100%; min-height: 500px; max-height: 500px">
+                            <div class="uk-slideshow-items" uk-lightbox="">
                                 @foreach($images as $image)
-                                    <li class="min-h-[500px] max-h-[500px] sm:rounded-md" tabindex="-1" style="">
+                                    <li class="sm:rounded-md" tabindex="-1" style="">
                                         <a href="{{ asset('uploads/products') . '/' . $image }}">
-                                            <img src="{{ asset('uploads/products') . '/' . $image }}" class="w-full h-full object-fit inset-0" alt="">
+                                            <img src="{{ asset('uploads/products') . '/' . $image }}" class="h-full object-fit" alt="">
                                         </a>
                                     </li>
                                 @endforeach
-                            </ul>
+                            </div>
         
                             <!-- navigation -->
                             <button type="button" class="absolute -left-3 -translate-y-1/2 bg-gray-100/50 backdrop-blur-xl rounded-full top-1/2 grid w-8 h-7 place-items-center border" uk-slideshow-item="previous">
@@ -31,7 +31,7 @@
                     @else
                         <div class="relative w-full h-full" uk-lightbox>
                             <a href="{{ asset('uploads/products') . '/' . $images[0] }}">
-                                <img src="{{ asset('uploads/products') . '/' . $images[0] }}" alt="" class="sm:rounded-lg w-full h-full object-fit">
+                                <img src="{{ asset('uploads/products') . '/' . $images[0] }}" alt="" class="sm:rounded-lg w-full h-full object-contain">
                             </a>
                         </div>
                     @endif
