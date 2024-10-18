@@ -20,7 +20,7 @@ return new class extends Migration
             $table->unsignedBigInteger('conversation_id');
             $table->foreign('conversation_id')->references('id')->on('conversations')->cascadeOnDelete();
 
-            $table->text('content');
+            $table->text('content')->nullable();
             $table->json('images')->nullable();
 
             $table->timestamps();

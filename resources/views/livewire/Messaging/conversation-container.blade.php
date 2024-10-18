@@ -61,7 +61,12 @@
             
         @if($isAppeal == false)
             <!-- chats bubble -->
-            <div id="chat-container" class="w-full p-5 py-10 overflow-y-auto md:h-[calc(100vh-210px)] h-[calc(100vh-220px)]">
+            @if($images)
+                <div id="chat-container" class="w-full p-5 py-10 overflow-y-auto md:h-[calc(100dvh-375px)] h-[calc(100vh-320px)]">
+            @else
+                <div id="chat-container" class="w-full p-5 py-10 overflow-y-auto md:h-[calc(100dvh-210px)] h-[calc(100vh-220px)]">
+            @endif
+
                 @if($isAppeal == false)
                     <div class="py-10 text-center text-sm lg:pt-8">
                         <div class="w-24 h-24 rounded-full mx-auto mb-3">
@@ -198,26 +203,10 @@
                         @endif
                     @endforeach
                 </div>
-
-                @if($images)
-                    <div class="w-full flex gap-4 overflow-x-auto pt-5" uk-lightbox>
-                        @foreach($images as $key => $image)
-                            <div class="flex-shrink-0 w-56 h-56 relative">
-                                <a href="{{ $image->temporaryUrl() }}">
-                                    <img src="{{ $image->temporaryUrl() }}" alt="Uploaded Image" accept="image/png, image/jpeg" class="w-full h-full object-cover rounded-lg shadow border">
-                                </a>
-
-                                <button wire:click="deleteImage({{ $key }})" class="absolute -top-5 -right-3.5 active:scale-95 transition-all">
-                                    <x-icon name="x-circle" solid class="w-8 h-8" />
-                                </button>
-                            </div>  
-                        @endforeach
-                    </div>
-                @endif
             </div> 
         @else
             <!-- chats bubble -->
-            <div id="chat-container" class="!w-full py-3 overflow-y-auto md:h-[calc(100vh-137px)] !h-[calc(100vh-350px)]">
+            <div id="chat-container" class="!w-full py-3 overflow-y-auto h-[calc(100vh-350px)] md:h-[calc(100vh-137px)] ">
                 <div class="text-sm font-medium space-y-6">
                     @foreach ($conversation->messages as $message)
                         @if($message->user_id == Auth::id())
@@ -312,36 +301,38 @@
                         @endif
                     @endforeach
                 </div>
+            </div> 
+        @endif
 
+        @if($conversation->status != App\Enums\Status::Inactive)
+            <!-- sending message area -->
+            <div class="flex flex-col">
                 @if($images)
-                    <div class="w-full flex gap-4 overflow-x-auto pt-5" uk-lightbox>
+                    <div class="max-w-[calc(100dvw-37rem)] flex gap-4 overflow-x-auto px-5 pt-5" uk-lightbox>
                         @foreach($images as $key => $image)
-                            <div class="flex-shrink-0 w-56 h-56 relative">
+                            <div class="flex-shrink-0 w-36 h-36 relative">
                                 <a href="{{ $image->temporaryUrl() }}">
                                     <img src="{{ $image->temporaryUrl() }}" alt="Uploaded Image" accept="image/png, image/jpeg" class="w-full h-full object-cover rounded-lg shadow border">
                                 </a>
 
-                                <button wire:click="deleteImage({{ $key }})" class="absolute -top-5 -right-3.5 active:scale-95 transition-all">
+                                <button wire:click="deleteImage({{ $key }})" class="absolute -top-5 -right-3.5 active:scale-95 transition-all z-[100]">
                                     <x-icon name="x-circle" solid class="w-8 h-8" />
                                 </button>
                             </div>  
                         @endforeach
                     </div>
                 @endif
-            </div> 
-        @endif
 
-        @if($conversation->status != App\Enums\Status::Inactive)
-            <!-- sending message area -->
-            <div class="flex items-center max-md:pe-5 md:gap-4 gap-2 p-3 overflow-hidden">
-                <label class="py-5 flex flex-col justify-center items-center cursor-pointer">
-                    <input class="hidden" type="file" multiple wire:model="images">
-                    <x-icon name="photo" solid class="w-8 h-8" />
-                </label>
-
-                <x-input label="" wire:model='message' shadowless placeholder="Message"/>
-
-                <x-mini-button rounded flat black icon="paper-airplane" wire:click='sendMessage' />
+                <div class="flex items-center max-md:pe-5 md:gap-4 gap-2 p-3 overflow-hidden">
+                    <label class="py-5 flex flex-col justify-center items-center cursor-pointer">
+                        <input class="hidden" type="file" multiple wire:model="images">
+                        <x-icon name="photo" solid class="w-8 h-8" />
+                    </label>
+    
+                    <x-input label="" wire:model='message' shadowless placeholder="Message"/>
+    
+                    <x-mini-button rounded flat black icon="paper-airplane" wire:click='sendMessage' />
+                </div>
             </div>
         @endif
     @else

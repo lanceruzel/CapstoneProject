@@ -1,8 +1,6 @@
 <x-layouts.main-layout wire:ignore.self>
     <div class="w-full mx-auto h-[calc(100vh-85px)] max-md:h-[calc(100vh-100px)] max-h-screen relative -mt-5 max-md:-mt-4 max-md:w-screen max-md:-ms-5 shadow-lg">
-
         <div class="flex bg-white w-full">
-
             <!-- sidebar -->
             <div class="md:w-[360px] relative border-r h-full">
 
@@ -63,6 +61,5 @@
 
             </div>
         </div>
-
     </div>
 </x-layouts.main-layout>

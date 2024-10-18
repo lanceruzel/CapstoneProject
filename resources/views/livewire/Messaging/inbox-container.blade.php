@@ -65,16 +65,27 @@
                     <div class="flex-1 min-w-0">
                         <div class="flex items-center gap-2 mb-1.5">
                             @if($convo->user1->id != Auth::id())
-                                <div class="mr-auto text-sm text-black dark:text-white font-medium">{{ $convo->user1->role == App\Enums\UserType::Store ? $convo->user1->storeInformation->name : $convo->user1->userInformation->fullname() }}</div>
+                                <div class="mr-auto text-sm text-black dark:text-white font-medium overflow-hidden text-ellipsis whitespace-nowrap">{{ $convo->user1->role == App\Enums\UserType::Store ? $convo->user1->storeInformation->name : $convo->user1->userInformation->fullname() }}</div>
                             @else
-                                <div class="mr-auto text-sm text-black dark:text-white font-medium">{{ $convo->user2->role == App\Enums\UserType::Store ? $convo->user2->storeInformation->name : $convo->user2->userInformation->fullname() }}</div>
+                                <div class="mr-auto text-sm text-black dark:text-white font-medium overflow-hidden text-ellipsis whitespace-nowrap">{{ $convo->user2->role == App\Enums\UserType::Store ? $convo->user2->storeInformation->name : $convo->user2->userInformation->fullname() }}</div>
                             @endif
                             
-                            <div class="text-xs font-light text-gray-500 dark:text-white/70">{{ $convo->last_message_id ? App\Classes\CustomDateTimeFormat::formatAgo($convo->lastMessage->updated_at) : null }}</div> 
+                            <div class="text-xs font-light text-gray-500 dark:text-white/70 whitespace-nowrap">{{ $convo->last_message_id ? App\Classes\CustomDateTimeFormat::formatAgo($convo->lastMessage->updated_at) : null }}</div> 
                         </div>
 
                         <!-- Last Chat Preview -->
-                        <div class="font-medium overflow-hidden text-ellipsis text-sm whitespace-nowrap">{{ $convo->lastMessage->user_id == Auth::id() ? 'You: ' : null }} {{ $convo->last_message_id ? $convo->lastMessage->content : 'No message' }}</div>
+                        <div class="font-medium overflow-hidden text-ellipsis text-sm whitespace-nowrap">{{ $convo->lastMessage->user_id == Auth::id() ? 'You: ' : null }} 
+                            {{ $convo->last_message_id ? $convo->lastMessage->content : 'No message' }}
+                            @if($convo->last_message_id)
+                                @if($convo->lastMessage->content)
+                                    <span>{{ $convo->lastMessage->content }}</span>
+                                @else
+                                    <span>Sent an image</span>
+                                @endif
+                            @else
+                                <span>No message</span>
+                            @endif
+                        </div>
                     </div>
                 </div>
             @endforeach

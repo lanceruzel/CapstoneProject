@@ -22,7 +22,7 @@ class ConversationContainer extends Component
     public $id;
     public $conversation = null;
     
-    public $message;
+    public $message = null;
 
     public $isSender = false;
 
@@ -30,7 +30,7 @@ class ConversationContainer extends Component
 
     public $isAppeal = false;
 
-    public $images;
+    public $images = null;
 
     public function getListeners(){ 
         return [
@@ -42,23 +42,13 @@ class ConversationContainer extends Component
     
     public function mount($selectedID){
         if($selectedID){
-            $this->conversation = $this->getConversation($selectedID);
+            $this->conversation = Conversation::findOrFail($selectedID);
         }
-    }
-
-    public function getConversation($id){
-        return Conversation::where(function ($query) use ($id) {
-            $query->where('user_1', Auth::id())
-                  ->where('user_2', $id);
-        })->orWhere(function ($query) use ($id) {
-            $query->where('user_1', $id)
-                  ->where('user_2', Auth::id());
-        })->first();;
     }
 
     public function sendMessage(){
         try{
-            if($this->message){
+            if($this->message != null || ($this->images != null || $this->images != [])){
                 $validated = $this->formValidate();
     
                 $messageStore = $this->storeMessage($validated);
@@ -69,9 +59,7 @@ class ConversationContainer extends Component
                             $this->deleteImage($key);
                         }
                     }
-                    
-                    $this->images = [];
-    
+
                     //Update Conversation last message
                     $this->conversation->last_message_id = $messageStore->id;
                     $this->conversation->save();
@@ -81,8 +69,7 @@ class ConversationContainer extends Component
                     NewChatCreated::dispatch($this->conversation->user_2);
     
                     $this->dispatch('messagesUpdated');
-    
-                    $this->reset('message');
+                    $this->reset(['message', 'images']);
                 }
             }
         }catch(\Exception $e){
@@ -121,8 +108,8 @@ class ConversationContainer extends Component
 
     public function formValidate(){
         return $this->validate([
-            'message' => 'required',
-            'images.*' => 'image|mimes:png,jpg,jpeg|max:2048',
+            'message' => 'nullable',
+            'images.*' => 'nullable|image|mimes:png,jpg,jpeg|max:2048',
         ]);
     }
 
