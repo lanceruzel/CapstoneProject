@@ -278,7 +278,7 @@ class ProductFormModal extends Component
 
     public function storeImages($images){
         $imagePaths = [];
-        $dbImages = null;
+        $dbImages = [];
 
         if($images){
             if($this->productUpdate){
