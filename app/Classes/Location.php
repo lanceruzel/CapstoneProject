@@ -61,6 +61,14 @@ class Location
         $file_contents = file_get_contents($request);
         $json_decode = json_decode($file_contents);
 
-        return $json_decode->address->state . ', ' . $json_decode->address->country;
+        $location = '';
+
+        if($json_decode->address->state){
+            $location = $json_decode->address->state . ', ' . $json_decode->address->country;
+        }else{
+            $location = $json_decode->address->country;
+        }
+
+        return $location;
     }
 }
