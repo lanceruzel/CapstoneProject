@@ -191,7 +191,7 @@
                     <div class="cursor-pointer px-10 py-3 transition-all" x-bind:class="tabSelected == 2 ? 'border-b-2 border-gray-500 font-semibold' : ''" x-on:click="tabSelected = 2">Livestreams</div>
                     
                     @if($user->role == App\Enums\UserType::Travelpreneur || $user->role == App\Enums\UserType::Store)
-                        <div class="cursor-pointer px-10 py-3 transition-all" x-bind:class="tabSelected == 3 ? 'border-b-2 border-gray-500 font-semibold' : ''" x-on:click='tabSelected = 2'>Products</div>
+                        <div class="cursor-pointer px-10 py-3 transition-all" x-bind:class="tabSelected == 3 ? 'border-b-2 border-gray-500 font-semibold' : ''" x-on:click='tabSelected = 3'>Products</div>
                     @endif
                 </div>
             </div>

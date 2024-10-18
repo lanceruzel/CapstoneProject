@@ -10,10 +10,12 @@ use Illuminate\Support\Facades\Log;
 use Livewire\Attributes\On;
 use Livewire\Component;
 use Livewire\Features\SupportFileUploads\WithFileUploads;
+use WireUi\Traits\WireUiActions;
 
 class ConversationContainer extends Component
 {
     use WithFileUploads;
+    use WireUiActions;
 
     public $userID;
 

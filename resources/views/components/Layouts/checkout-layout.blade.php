@@ -55,6 +55,18 @@ $storeRegistration = new StoreRegistration();
         </div>
     </main>
 
+    <livewire:Etc.select-currency-modal />
+    <livewire:Product.product-view-modal />
+    <livewire:Product.product-view-variation-selection-modal />
+
+    @if(auth()->user()->role == App\Enums\UserType::Store || auth()->user()->role == App\Enums\UserType::Travelpreneur)
+        <livewire:StoreRegistration.store-register-form-modal />
+    @else
+        <livewire:Affiliate.affiliate-dashboard-modal />
+        <livewire:Affiliate.affiliate-invitation-modal />
+        <livewire:Affiliate.view-terms-and-condition-modal />
+    @endif
+
     <script
       src="https://www.paypal.com/sdk/js?client-id=ATe6XOxr_O16kSbwVRv-dMnInI2E4BmCD32_GepoFj1irtqU1XwkkkUmegHh21h6-UNhCLwMvNCSAQvo&currency=USD"
       data-sdk-integration-source="developer-studio"

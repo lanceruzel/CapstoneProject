@@ -28,11 +28,13 @@
                     </div>
 
                     <div class="flex gap-3">
-                        @if($comment->user->profilePicture() == null)
-                            <x-icon name="user" solid class="w-9 h-9 rounded-full border bg-gray-200" />
-                        @else
-                            <img src="{{ asset('uploads') . '/' . $comment->user->profilePicture() }}" class="w-full h-full object-cover rounded-full border">
-                        @endif
+                        <div class="min-w-9 h-9 max-w-9 max-h-9 rounded-full">
+                            @if($comment->user->profilePicture() == null)
+                                <x-icon name="user" solid class="w-full h-full bg-gray-200 rounded-full border" />
+                            @else
+                                <img src="{{ asset('uploads') . '/' . $comment->user->profilePicture() }}" class="w-full h-full object-cover rounded-full border">
+                            @endif
+                        </div>
 
                         <div class="px-4 py-2 rounded-[20px] max-w-sm bg-gray-100 break-words !text-wrap hyphens-auto space-y-3 text-sm">
                             {!! html_entity_decode($comment['content']) !!}
