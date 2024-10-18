@@ -317,11 +317,6 @@ class ProductFormModal extends Component
         return json_encode($imagePaths);
     }
 
-    public function deleteImageFromStorage($oldImages, $newImages){
-        $result = array_diff($oldImages,$newImages);
-        dd($result);
-    }
-
     public function deleteImage($index){
         array_splice($this->images, $index, 1);
     }
