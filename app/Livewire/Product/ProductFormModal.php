@@ -22,6 +22,7 @@ class ProductFormModal extends Component
     public $category;
     public $stocks;
     public $price;
+    public $origin;
 
     public $remarks;
 
@@ -58,6 +59,7 @@ class ProductFormModal extends Component
             $this->name = $this->productUpdate->name;
             $this->description = $this->productUpdate->description;
             $this->category = $this->productUpdate->category;
+            $this->origin = $this->productUpdate->origin;
 
             $this->remarks = $this->productUpdate->remarks;
 
@@ -170,6 +172,7 @@ class ProductFormModal extends Component
                 'category' => $validated['category'],
                 'description' => $validated['description'],
                 'status' => $status,
+                'origin' => $validated['origin'],
                 'images' => $this->productUpdate != null && json_decode($this->productUpdate->images) == $this->images ? json_encode($this->images) : $this->storeImages($this->images),
                 'variations' => json_encode($variations)
             ]
@@ -180,7 +183,8 @@ class ProductFormModal extends Component
         $rules = [
             'name' => 'required|min:10',
             'category' => 'required',
-            'description' => 'required|min:50',
+            'description' => 'required|min:150',
+            'origin' => 'required|min:10'
         ];
 
         if($this->productUpdate){
@@ -227,7 +231,8 @@ class ProductFormModal extends Component
             'stocks',
             'price',
             'remarks',
-            'existingImagePath'
+            'existingImagePath',
+            'origin',
         ]);
 
 

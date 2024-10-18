@@ -27,6 +27,7 @@ class ProductRegistrationModal extends Component
     public $product;
 
     public $remarks;
+    public $origin;
 
     protected $listeners = [
         'viewProductRegistration' => 'getData',
@@ -42,6 +43,7 @@ class ProductRegistrationModal extends Component
             $this->name = $this->product->name;
             $this->description = $this->product->description;
             $this->category = $this->product->category;
+            $this->origin = $this->product->origin;
 
             $this->variations = json_decode($this->product->variations, true);
 

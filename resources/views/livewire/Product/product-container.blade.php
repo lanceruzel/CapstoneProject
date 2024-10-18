@@ -5,7 +5,7 @@
         </div>
     
         <div class="px-3 py-2 space-y-1">
-            <p class="line-clamp-2 break-words font-medium">{{ $product->name }}</p>
+            <div class="break-words font-medium overflow-hidden text-ellipsis truncate">{{ $product->name }}</div>
     
             <p class="text-sm">{{ $product->formattedPriceRage() }}</p>
     

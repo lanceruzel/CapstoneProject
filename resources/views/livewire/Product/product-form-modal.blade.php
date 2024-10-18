@@ -12,7 +12,8 @@
                 @endif
 
                 <x-input label="Product Name" wire:model="name" shadowless />
-                <x-textarea label="Description" wire:model="description" placeholder="Write product's description here." />
+                <x-textarea label="Description" wire:model="description" placeholder="Write product's description here." shadowless />
+                <x-input label="Origin (City, Country)" wire:model="origin" corner="Ex. Manila, Philippines" shadowless />
                 <x-select label="Categories" wire:model="category" placeholder="Select Category" :options="$categories" option-label="name" option-value="name" shadowless />
 
                 <x-checkbox class="m-2" label="Enable Variation" wire:model.live="hasVariation" lg/>

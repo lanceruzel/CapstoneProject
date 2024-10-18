@@ -26,6 +26,7 @@ class ProductViewModal extends Component
     public $description;
 
     public $variations;
+    public $origin;
 
     public $currencyData = [];
 
@@ -46,7 +47,8 @@ class ProductViewModal extends Component
             'images',
             'name',
             'description',
-            'variations'
+            'variations',
+            'origin',
         ]);
 
         $this->product = null;

@@ -24,6 +24,7 @@ return new class extends Migration
             $table->text('description');
             $table->json('variations');
             $table->json('images');
+            $table->string('origin');
             $table->string('status')->default(Status::ForReview);
             $table->text('remarks')->nullable();
 

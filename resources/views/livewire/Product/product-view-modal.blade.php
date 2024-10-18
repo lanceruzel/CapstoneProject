@@ -8,10 +8,10 @@
             <div class="grid grid-cols-2 gap-5">
                 <div class="max-lg:col-span-2 lg:col-span-1">   
                     @if(count($images) > 1)
-                        <div class="relative uk-visible-toggle uk-slideshow w-full" tabindex="-1" uk-slideshow="animation: push;finite: true;min-height: 500; max-height: 500">
-                            <ul class="uk-slideshow-items" uk-lightbox="">
+                        <div class="relative uk-visible-toggle uk-slideshow w-full min-h-[500px] max-h-[500px]" tabindex="-1" uk-slideshow="animation: push;finite: true">
+                            <ul class="uk-slideshow-items min-h-[500px] max-h-[500px]" uk-lightbox="">
                                 @foreach($images as $image)
-                                    <li class="w-full sm:rounded-md" tabindex="-1" style="">
+                                    <li class="min-h-[500px] max-h-[500px] sm:rounded-md" tabindex="-1" style="">
                                         <a href="{{ asset('uploads/products') . '/' . $image }}">
                                             <img src="{{ asset('uploads/products') . '/' . $image }}" class="w-full h-full object-fit inset-0" alt="">
                                         </a>
@@ -54,12 +54,23 @@
                         <p class="text-xs px-3"><span>{{ $product->getSoldCount() }}</span> Sold</p>
                     </div>
             
-                    <p class="text-xl font-semibold">
-                        {{ $product->formattedPriceRage() }}
-                    </p>
+                    <div class="flex items-center justify-between">
+                        <p class="text-xl">
+                            {{ $product->formattedPriceRage() }}
+                        </p>
+
+                        
+                        <div class="flex items-center justify-center text-sm">
+                            <x-icon name="map-pin" class="w-5 h-5" />
+                            <span>{{ $product->origin }}</span>
+                        </div>
+                    </div>
             
-                    <div class="text-wrap min-h-[250px] max-h-[250px] overflow-hidden overflow-y-auto p-5 border rounded-lg break-words"> {!! $product->description !!} </div>
-    
+                    <div class="flex flex-col justify-star">
+                        <p>Description</p>
+                        <div class="text-wrap min-h-[250px] max-h-[250px] overflow-hidden overflow-y-auto p-5 border rounded-sm break-words whitespace-pre-wrap">{!! $product->description !!}</div>
+                    </div>
+                    
                     <div class="flex max-lg:justify-center lg:justify-end items-center gap-3">
                         @if(auth()->user()->role != UserType::Store)
                             @if(count($variations) > 1)
