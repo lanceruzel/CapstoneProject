@@ -3,7 +3,9 @@
         <div class="flex items-center justify-between border-b pb-2">
             <p class="text-xl font-semibold">Chats</p>
 
-            <p>Watching now: <span id="watchingCount">0</span></p>
+            @if($livestream->status != 'ended')
+                <p>Watching now: <span id="watchingCount">0</span></p>
+            @endif
         </div>
 
         <livewire:Livestream.livestream-reaction-count :meetingId="$meetingId" />
