@@ -124,7 +124,7 @@
                         @elseif($request->status == App\Enums\Status::ReturnRequestBuyerShipped)
                             <x-button wire:loading.attr="disabled" wire:click="markAsReceievedRequest" spinner="markAsReceievedRequest" label="Mark as Received" />
                             @elseif($request->status == App\Enums\Status::ReturnRequestReceieved)
-                            <x-button wire:loading.attr="disabled" wire:click="$dispatch('return-create-order-data', { orderId: {{ $request->order_id }}, requestId: {{ $request->id }} })" onclick="$openModal('returnCreateOrderModal')" label="Create Order" />
+                            <x-button wire:loading.attr="disabled" wire:click="$dispatch('return-create-order-data', { orderId: {{ $request->order_id }}, requestId: {{ $request->id }} })" onclick="$openModal('returnCreateOrderModal')" label="Return Order" />
                         @elseif($request->status == App\Enums\Status::Accepted)
                             <x-button disabled label="Waiting for buyer's shipment" />
                         @endif
