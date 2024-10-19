@@ -122,7 +122,7 @@
 
             // Initialize meeting
             function initializeMeeting(mode){
-                window.VideoSDK.config(TOKEN);
+                window.VideoSDK.config(@js(env('VIDEO_SDK_TOKEN')));
             
                 meeting = window.VideoSDK.initMeeting({
                     meetingId: meetingId, // required
