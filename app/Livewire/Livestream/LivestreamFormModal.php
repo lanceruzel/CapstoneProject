@@ -33,7 +33,6 @@ class LivestreamFormModal extends Component
     }
 
     public function storeLivestream($id){
-
         if($this->location){
             if($this->checkIfHaveExistingLivestreamRoom()){
                 $this->dialog()->show([

@@ -11,6 +11,9 @@
     <script src="https://cdn.jsdelivr.net/npm/uikit@3.21.5/dist/js/uikit.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/uikit@3.21.5/dist/css/uikit.min.css" />
     
+    <link href="https://vjs.zencdn.net/7.20.3/video-js.css" rel="stylesheet" />
+    <script defer src="https://vjs.zencdn.net/7.20.3/video.min.js"></script>
+
     @wireUiScripts
     @vite(['resources/css/app.css','resources/js/app.js'])
     {{-- <script src="//unpkg.com/alpinejs" defer></script> --}}
@@ -77,9 +80,21 @@
 
         @if(request()->routeIS('home'))
             <script>
+                if(navigator.geolocation){
+                    navigator.geolocation.getCurrentPosition(getLocation);
+                }else{ 
+                    console.log('Geolocation is not supported by this browser.');
+                }
+
                 const createButton = document.getElementById("createMeetingBtn");
 
                 createButton.addEventListener("click", async () => {
+                    if(navigator.geolocation){
+                        navigator.geolocation.getCurrentPosition(getLocation);
+                    }else{ 
+                        console.log('Geolocation is not supported by this browser.');
+                    }
+
                     const url = `https://api.videosdk.live/v2/rooms`;
                     const options = {
                         method: "POST",
@@ -96,6 +111,10 @@
                     
                     Livewire.dispatch('room-created', { id: roomId })
                 });
+
+                function getLocation(position) {
+                    Livewire.dispatch('getGeolocation', { latitude: position.coords.latitude, longitude: position.coords.longitude });
+                }
             </script>
         @endif
     @endif
@@ -120,9 +139,6 @@
             });
 
             function getLocation(position) {
-                // console.log("Latitude: " + position.coords.latitude);
-                // console.log("Longitude: " + position.coords.longitude);
-
                 Livewire.dispatch('getGeolocation', { latitude: position.coords.latitude, longitude: position.coords.longitude });
             }
                 

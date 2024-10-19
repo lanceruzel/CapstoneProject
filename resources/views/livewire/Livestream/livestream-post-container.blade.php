@@ -55,20 +55,26 @@
             <livewire:Livestream.livestream-reaction-count :meetingId="$livestream->id" noPoll />
         @endif
 
-        @if($livestream->status == 'ended')
+        {{-- @if($livestream->status == 'ended')
             <x-button onclick="$openModal('viewLivestreamCommentsModal')" wire:click="$dispatch('view-livestream-comments', { meetingId: '{{ $livestream->id }}' })" label="View Comments"/>
-        @endif
+        @endif --}}
         
-
-        @if($livestream->status == 'started')
-            <x-button href="{{ route('livestream', $livestream->id) }}" label="Click here to watch"/>
+        @if($livestream->playback_url && $livestream->status == 'ended')
+            <x-button href="{{ route('livestream', $livestream->id) }}" label="Watch Playback"/>
         @endif
 
-        @if($livestream->user_id == Auth::id() && $livestream->status != 'ended')
-            <div class="flex gap-3 items-center justify-center">
-                <x-button href="{{ route('livestream', $livestream->id) }}" label="Enter Room"/>
-                {{-- <x-button label="End Live"/> --}}
+        @if(!$livestream->playback_url && $livestream->status == 'ended')
+            <div class="text-center">
+                <span>No Playback available</span>
             </div>
+        @endif
+
+        @if($livestream->status != 'ended')
+            @if($livestream->user_id == Auth::id())
+                <x-button href="{{ route('livestream', $livestream->id) }}" label="Enter Room"/>
+            @else
+                <x-button href="{{ route('livestream', $livestream->id) }}" label="Click here to watch"/>
+            @endif
         @endif
     </div>
 </div>  

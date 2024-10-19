@@ -23,6 +23,8 @@ return new class extends Migration
             $table->json('reactions');
             $table->string('location')->nullable();
 
+            $table->longText('playback_url')->nullable();
+
             $table->timestamps();
         });
 

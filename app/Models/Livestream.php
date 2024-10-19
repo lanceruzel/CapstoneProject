@@ -18,6 +18,7 @@ class Livestream extends Model
         'status',
         'reactions',
         'location',
+        'playback_url'
     ];
 
     public function getReactionCount($reaction){

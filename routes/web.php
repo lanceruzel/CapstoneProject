@@ -112,7 +112,7 @@ Route::group(['middleware' => 'role:store,travelpreneur,content-creator'], funct
             }
         }
         
-        return view('livewire.Pages.livestream',['location' => $livestream->location, 'role' => $role, 'meetingId' => $livestream->id, 'name' => $livestream->user->name()]);
+        return view('livewire.Pages.livestream',['id' => $livestream->id, 'role' => $role]);
     })->name('livestream');
 });
 

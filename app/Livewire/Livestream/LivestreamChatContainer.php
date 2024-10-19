@@ -3,6 +3,7 @@
 namespace App\Livewire\Livestream;
 
 use App\Events\LivestreamChatCreated;
+use App\Models\Livestream;
 use App\Models\PostComment;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
@@ -14,6 +15,8 @@ class LivestreamChatContainer extends Component
     public $comments = [];
     public $isViewOnly = false;
 
+    public $livestream;
+
     public function getListeners(){
         return [
             "echo:new-livestream-comment.{$this->meetingId},LivestreamChatCreated" => '$refresh',
@@ -22,6 +25,8 @@ class LivestreamChatContainer extends Component
 
     public function mount($meetingId){
         $this->meetingId = $meetingId;
+
+        $this->livestream = Livestream::find($meetingId);
     }
 
     public function sendMessage(){
