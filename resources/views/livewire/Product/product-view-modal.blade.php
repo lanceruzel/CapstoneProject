@@ -67,8 +67,8 @@
                     </div>
             
                     <div class="flex flex-col justify-star">
-                        <p>Description</p>
-                        <div class="text-wrap min-h-[250px] max-h-[250px] overflow-hidden overflow-y-auto p-5 border rounded-sm break-words whitespace-pre-wrap">{!! $product->description !!}</div>
+                        <p class="pb-2">Description: </p>
+                        <div class="text-wrap min-h-[250px] max-h-[250px] overflow-hidden overflow-y-auto rounded-sm break-words whitespace-pre-wrap">{!! $product->description !!}</div>
                     </div>
                     
                     <div class="flex max-lg:justify-center lg:justify-end items-center gap-3">
