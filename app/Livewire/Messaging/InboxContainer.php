@@ -30,6 +30,7 @@ class InboxContainer extends Component
                             ->orWhere('user_2', Auth::id());
                   });})
                   ->whereNotNull('last_message_id')
+                  ->orderBy('updated_at', 'desc')
                   ->get();
     }
 

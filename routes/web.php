@@ -44,8 +44,8 @@ Route::group(['middleware' => 'role:store,travelpreneur,content-creator'], funct
         
         // Initialize $id for the user being messaged
         $id = null;
-    
-        if ($username) {
+ 
+        if($username){
             // Retrieve the user by username or fail
             $id = User::where('username', $username)->firstOrFail()->id;
             
@@ -56,22 +56,30 @@ Route::group(['middleware' => 'role:store,travelpreneur,content-creator'], funct
             })->orWhere(function ($query) use ($authUserId, $id) {
                 $query->where('user_1', $id)
                       ->where('user_2', $authUserId);
-            })->exists();
+            })->firstOrFail();
     
             // If no conversation exists, create a new one
-            if (!$conversationExists) {
+            if(!$conversationExists) {
                 Conversation::create([
                     'user_1' => $authUserId,
                     'user_2' => $id,
                     'status' => 'active'
                 ]);
+            }else{
+                $id = $conversationExists->id;
             }
-        } else {
+        }else{
             // If no username is provided, retrieve the first conversation for the authenticated user
             $conversation = Conversation::where(function($query) use ($authUserId) {
-                $query->where('user_1', $authUserId)
-                      ->orWhere('user_2', $authUserId);
-            })->where('last_message_id', '<>', '')->orderBy('id', 'asc')->firstOrFail();
+                $query->where('user_1', '<>', 1)
+                ->where('user_2', '<>', 1)
+                ->where(function($query) use ($authUserId) {
+                    $query->where('user_1', $authUserId)
+                          ->orWhere('user_2', $authUserId);
+                });
+            })->where('last_message_id', '<>', '')
+            ->orderBy('updated_at', 'desc')->firstOrFail();
+
             // Set the conversation ID to be passed to the view
             $id = $conversation->id;
         }
