@@ -132,12 +132,14 @@
                         
                         <!-- User Location -->
                         @if($user->role != App\Enums\UserType::Store)
-                            <div class="pb-2">
-                                <p>Currently in <span class="font-semibold">{{ $user->userInformation->current_country }}</span></p>
+                            <div class="pb-2 flex items-start justify-center gap-1">
+                                <x-icon name="map-pin" class="w-5 h-5" solid /> 
+                                <p class="font-semibold">{{ $user->userInformation->current_country }}</p>
                             </div>
                         @else
-                            <div class="pb-2">
-                                <p>Located at <span class="font-semibold">{{ $user->storeInformation->country }}</span></p>
+                            <div class="pb-2 flex items-start justify-center gap-1">
+                                <x-icon name="map-pin" class="w-5 h-5" solid /> 
+                                <p class="font-semibold">{{ $user->storeInformation->country }}</p>
                             </div>
                         @endif
                     </div>
