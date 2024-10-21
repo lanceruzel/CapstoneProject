@@ -131,11 +131,13 @@
                         </div>
                         
                         <!-- User Location -->
-                        @if($user->role != App\Enums\UserType::Store)
-                            <div class="pb-2 flex items-start justify-center gap-1">
-                                <x-icon name="map-pin" class="w-5 h-5" solid /> 
-                                <p class="font-semibold">{{ $user->userInformation->current_country }}</p>
-                            </div>
+                        @if($user->role == App\Enums\UserType::ContentCreator)
+                            @if($user->userInformation->current_country)
+                                <div class="pb-2 flex items-start justify-center gap-1">
+                                    <x-icon name="map-pin" class="w-5 h-5" solid /> 
+                                    <p class="font-semibold">{{ $user->userInformation->current_country }}</p>
+                                </div>
+                            @endif
                         @else
                             <div class="pb-2 flex items-start justify-center gap-1">
                                 <x-icon name="map-pin" class="w-5 h-5" solid /> 
@@ -177,7 +179,7 @@
                             </div>
                         </div>
 
-                        <div class="flex items-center justify-center">
+                        <div class="flex items-center justify-center lg:justify-end">
                             <!-- Options -->
                             @if($user->id != Auth::id())
                                 <div class="flex items-center justify-center gap-3">

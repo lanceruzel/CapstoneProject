@@ -11,8 +11,26 @@
             </div>
 
             <div class="leading-none">
-                <div class="flex items-center justify-start gap-1">
-                    <a href="{{ route('profile', $post->user->username) }}" class="hover:text-gray-700 hover:no-underline py-0 font-medium">{{ $post->user->role == App\Enums\UserType::Store ? $post->user->storeInformation->name : $post->user->userInformation->fullname() }}</a>
+                <div class="flex items-start justify-start gap-1">
+                    <a href="{{ route('profile', $post->user->username) }}" class="hover:text-gray-700 hover:no-underline py-0 font-medium">{{ $post->user->name() }}</a>
+                    
+                    @switch($post->user->role)
+                        @case(App\Enums\UserType::ContentCreator)
+                            <x-icon name="cursor-arrow-rays" class="w-4 h-4" solid />
+                            @break
+
+                        @case(App\Enums\UserType::Store)
+                            <x-icon name="building-storefront" class="w-4 h-4" solid />
+                            @break
+
+                        @case(App\Enums\UserType::Travelpreneur)
+                            <x-icon name="briefcase" class="w-4 h-4" solid />
+                            @break
+                    
+                        @default
+                            <x-icon name="user" class="w-4 h-4" solid />
+                            @break
+                    @endswitch
                 </div>
 
                 <small class="text-xs font-medium text-gray-600">{{ App\Classes\CustomDateTimeFormat::formatAgo($post->created_at) }}</small>

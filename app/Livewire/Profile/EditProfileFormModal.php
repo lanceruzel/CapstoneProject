@@ -112,7 +112,7 @@ class EditProfileFormModal extends Component{
     public function formValidate() {
         $rules = [
             'username' => 'required|min:5',
-            'profileBio' => 'required|min:10|max:255',
+            'profileBio' => 'required|min:100',
         ];
     
         // Check role and existence of relationship
