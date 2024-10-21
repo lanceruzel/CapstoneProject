@@ -39,37 +39,34 @@ Route::group(['middleware' => 'role:store,travelpreneur,content-creator'], funct
     })->name('profile');
 
     Route::get('/messages/{username?}', function ($username = null) {
-        // Get the authenticated user ID
         $authUserId = Auth::id();
         
-        // Initialize $id for the user being messaged
         $id = null;
  
         if($username){
-            // Retrieve the user by username or fail
-            $id = User::where('username', $username)->firstOrFail()->id;
+            $id = User::where('username', $username)->first()->id;
             
-            // Check if a conversation exists between the two users
-            $conversationExists = Conversation::where(function ($query) use ($authUserId, $id) {
-                $query->where('user_1', $authUserId)
-                      ->where('user_2', $id);
-            })->orWhere(function ($query) use ($authUserId, $id) {
-                $query->where('user_1', $id)
-                      ->where('user_2', $authUserId);
-            })->firstOrFail();
-    
-            // If no conversation exists, create a new one
-            if(!$conversationExists) {
-                Conversation::create([
-                    'user_1' => $authUserId,
-                    'user_2' => $id,
-                    'status' => 'active'
-                ]);
-            }else{
-                $id = $conversationExists->id;
+            if($id){
+                $conversationExists = Conversation::where(function ($query) use ($authUserId, $id) {
+                    $query->where('user_1', $authUserId)
+                        ->where('user_2', $id);
+                })->orWhere(function ($query) use ($authUserId, $id) {
+                    $query->where('user_1', $id)
+                        ->where('user_2', $authUserId);
+                })->first();
+
+                if(!$conversationExists) {
+                    Conversation::create([
+                        'user_1' => $authUserId,
+                        'user_2' => $id,
+                        'status' => 'active'
+                    ]);
+                }else{
+                    $id = $conversationExists->id;
+                }
             }
+
         }else{
-            // If no username is provided, retrieve the first conversation for the authenticated user
             $conversation = Conversation::where(function($query) use ($authUserId) {
                 $query->where('user_1', '<>', 1)
                 ->where('user_2', '<>', 1)
@@ -78,13 +75,13 @@ Route::group(['middleware' => 'role:store,travelpreneur,content-creator'], funct
                           ->orWhere('user_2', $authUserId);
                 });
             })->where('last_message_id', '<>', '')
-            ->orderBy('updated_at', 'desc')->firstOrFail();
+            ->orderBy('updated_at', 'desc')->first();
 
-            // Set the conversation ID to be passed to the view
-            $id = $conversation->id;
+            if($conversation){
+                $id = $conversation->id;
+            }
         }
-    
-        // Render the view with the conversation ID or null
+
         return view('livewire.Pages.message', ['id' => $id]);
     })->name('message');
 
