@@ -61,14 +61,18 @@ class Location
         $file_contents = file_get_contents($request);
         $json_decode = json_decode($file_contents);
 
-        $location = '';
+        if(isset($json_decode->address->country)){
+            if(isset($json_decode->address->state)){
+                return $json_decode->address->state . ', ' . $json_decode->address->country;
+            }
 
-        if($json_decode->address->state){
-            $location = $json_decode->address->state . ', ' . $json_decode->address->country;
-        }else{
-            $location = $json_decode->address->country;
+            if(isset($json_decode->address->region)){
+                return $json_decode->address->region . ', ' . $json_decode->address->country;
+            }
+
+            return $json_decode->address->country;
         }
 
-        return $location;
+        return 'Uknown';
     }
 }

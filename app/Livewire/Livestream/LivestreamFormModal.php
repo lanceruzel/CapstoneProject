@@ -82,7 +82,7 @@ class LivestreamFormModal extends Component
             $this->notification()->send([
                 'icon' => 'error',
                 'title' => 'Error',
-                'description' => 'Woops, its an error. Please accept location request to continue.',
+                'description' => 'GPS permission is denied. Please enable location services and grant permission.',
             ]);
 
             $this->dispatch('askLocation');

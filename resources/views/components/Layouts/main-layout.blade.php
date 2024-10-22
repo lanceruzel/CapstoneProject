@@ -80,18 +80,76 @@
 
         @if(request()->routeIS('home'))
             <script>
-                if(navigator.geolocation){
-                    navigator.geolocation.getCurrentPosition(getLocation);
-                }else{ 
+                if (navigator.geolocation) {
+                    navigator.geolocation.getCurrentPosition(
+                        function (position) {
+                            // Send coordinates to Livewire if successful
+                            Livewire.dispatch('getGeolocation', { 
+                                latitude: position.coords.latitude, 
+                                longitude: position.coords.longitude 
+                            });
+                        },
+                        function (error) {
+                            // Handle errors
+                            switch (error.code) {
+                                case error.PERMISSION_DENIED:
+                                    //alert('GPS permission is denied. Please enable location services and grant permission.');
+                                    break;
+                                case error.POSITION_UNAVAILABLE:
+                                    alert('Location information is unavailable. Please enable your GPS position feature.');
+                                    break;
+                                case error.TIMEOUT:
+                                    alert('Request for location timed out. Please try again.');
+                                    break;
+                                default:
+                                    alert('An unknown error occurred. Please enable your GPS and try again.');
+                            }
+                        },
+                        {
+                            maximumAge: 10000,
+                            timeout: 5000,
+                            enableHighAccuracy: true
+                        }
+                    );
+                } else {
                     console.log('Geolocation is not supported by this browser.');
                 }
 
                 const createButton = document.getElementById("createMeetingBtn");
 
                 createButton.addEventListener("click", async () => {
-                    if(navigator.geolocation){
-                        navigator.geolocation.getCurrentPosition(getLocation);
-                    }else{ 
+                    if (navigator.geolocation) {
+                        navigator.geolocation.getCurrentPosition(
+                            function (position) {
+                                // Send coordinates to Livewire if successful
+                                Livewire.dispatch('getGeolocation', { 
+                                    latitude: position.coords.latitude, 
+                                    longitude: position.coords.longitude 
+                                });
+                            },
+                            function (error) {
+                                // Handle errors
+                                switch (error.code) {
+                                    case error.PERMISSION_DENIED:
+                                        //alert('GPS permission is denied. Please enable location services and grant permission.');
+                                        break;
+                                    case error.POSITION_UNAVAILABLE:
+                                        alert('Location information is unavailable. Please enable your GPS position feature.');
+                                        break;
+                                    case error.TIMEOUT:
+                                        alert('Request for location timed out. Please try again.');
+                                        break;
+                                    default:
+                                        alert('An unknown error occurred. Please enable your GPS and try again.');
+                                }
+                            },
+                            {
+                                maximumAge: 10000,
+                                timeout: 5000,
+                                enableHighAccuracy: true
+                            }
+                        );
+                    } else {
                         console.log('Geolocation is not supported by this browser.');
                     }
 
@@ -111,10 +169,6 @@
                     
                     Livewire.dispatch('room-created', { id: roomId })
                 });
-
-                function getLocation(position) {
-                    Livewire.dispatch('getGeolocation', { latitude: position.coords.latitude, longitude: position.coords.longitude });
-                }
             </script>
         @endif
     @endif
@@ -131,16 +185,41 @@
 
         document.addEventListener('livewire:init', () => {
             Livewire.on('askLocation', (event) => {
-                if(navigator.geolocation){
-                    navigator.geolocation.getCurrentPosition(getLocation);
-                }else{ 
+                if (navigator.geolocation) {
+                    navigator.geolocation.getCurrentPosition(
+                        function (position) {
+                            // Send coordinates to Livewire if successful
+                            Livewire.dispatch('getGeolocation', { 
+                                latitude: position.coords.latitude, 
+                                longitude: position.coords.longitude 
+                            });
+                        },
+                        function (error) {
+                            // Handle errors
+                            switch (error.code) {
+                                case error.PERMISSION_DENIED:
+                                    //alert('GPS permission is denied. Please enable location services and grant permission.');
+                                    break;
+                                case error.POSITION_UNAVAILABLE:
+                                    alert('Location information is unavailable. Please enable your GPS position feature.');
+                                    break;
+                                case error.TIMEOUT:
+                                    alert('Request for location timed out. Please try again.');
+                                    break;
+                                default:
+                                    alert('An unknown error occurred. Please enable your GPS and try again.');
+                            }
+                        },
+                        {
+                            maximumAge: 10000,
+                            timeout: 5000,
+                            enableHighAccuracy: true
+                        }
+                    );
+                } else {
                     console.log('Geolocation is not supported by this browser.');
                 }
             });
-
-            function getLocation(position) {
-                Livewire.dispatch('getGeolocation', { latitude: position.coords.latitude, longitude: position.coords.longitude });
-            }
                 
             Livewire.on('close-modal', (event) => {
                 $closeModal(event[0].modal);
