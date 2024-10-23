@@ -23,11 +23,20 @@ class LivestreamContainer extends Component
         'live-ended-notify' => 'liveEndedNotify',
         'live-update' => 'liveUpdateStatus',
         'insert-playback-url' => 'updatePlaybackUrl',
-        'end-confirm' => 'leaveConfirmation'
+        'end-confirm' => 'leaveConfirmation',
+        'prepareTimer' => 'getLivestreamStartDate'
     ];
 
     public function mount($id){
         $this->livestream = Livestream::find($id);
+
+        if($this->livestream && ($this->livestream->status == 'ended' && $this->livestream->playback_url == null)){
+            $this->redirect('/');
+        }
+    }
+
+    public function getLivestreamStartDate(): void{
+        $this->dispatch('startLivestreamTimer', ['updated_at' => $this->livestream->updated_at]);
     }
 
     public function updatePlaybackUrl($url){

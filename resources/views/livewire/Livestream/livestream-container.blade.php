@@ -7,11 +7,11 @@
 
 <div class="w-full max-md:h-full md:h-[calc(100vh-9rem)]">
     @if($livestream)
-        @if($livestream->playback_url && $livestream->status == 'ended')
-            <h1 class="text-2xl font-semibold pb-3 max-md:pt-2">Watching {{ $livestream->user->name() }} livestream's playback</h1> 
-        @else
-            <h1 class="text-2xl font-semibold pb-3 max-md:pt-2">{{ $livestream->user->name() }} livestreaming from {{ $livestream->location }}</h1> 
-        @endif
+            @if($livestream->playback_url && $livestream->status == 'ended')
+                <h1 class="text-2xl font-semibold pb-3 max-md:pt-2">Watching {{ $livestream->user->name() }} livestream's playback</h1> 
+            @else
+                <h1 class="text-2xl font-semibold pb-3 max-md:pt-2">{{ $livestream->user->name() }} livestreaming from {{ $livestream->location }}</h1> 
+            @endif
 
         <div class="grid grid-cols-12 w-full h-full gap-3">
             <div class="col-span-12 lg:col-span-7 2xl:col-span-8" wire:ignore>
@@ -30,14 +30,18 @@
                     </div>
                 @else
                     <!-- Loading Info -->
-                    <div class="w-full h-[24rem] flex items-center bg-white shadow rounded-lg justify-center gap-2" id="loadingInfoVideo">
-                        <span>
-                            <x-icon name="arrow-path" class="w-7 h-7 animate-spin" />
-                        </span>
-                        
-                        <span class="text-xl font-semibold">
-                            Loading...
-                        </span>
+                    <div class="w-full flex flex-col items-center bg-white shadow rounded-lg justify-center gap-2" id="loadingInfoVideo">
+                        <img class="h-[400px]" src="{{ asset('assets/svg/18737145_6020154.svg') }}" alt="Loading"/>
+
+                        <div class="flex items-center justify-center gap-2 py-2 mb-2">
+                            <span>
+                                <x-icon name="arrow-path" class="w-7 h-7 animate-spin" />
+                            </span>
+                            
+                            <span class="text-xl font-semibold">
+                                Livestream will start shortly...
+                            </span>
+                        </div>
                     </div>
 
                     <!-- Livestream pause Info -->
@@ -88,6 +92,10 @@
                     Livewire.on('close-modal', (event) => {
                         $closeModal(event[0].modal);
                     });
+
+                    Livewire.on('startLivestreamTimer', (event) => {
+                        startTimer(event[0].updated_at);
+                    });
                     
                     window.Echo.channel(`new-livestream-reaction.${meetingId}`)
                         .listen('LiveReactionCreated', (e) => {
@@ -120,6 +128,8 @@
                 });
 
                 let watching = 0;
+                let timer = 0;
+                let timerID = null;
 
                 const watchingCount = document.getElementById("watchingCount");
 
@@ -157,9 +167,9 @@
                     meeting.join();
                 
                     meeting.on("meeting-joined", () => {
-                        if (meeting.hlsState === Constants.hlsEvents.HLS_STOPPED) {
+                        if(meeting.hlsState === Constants.hlsEvents.HLS_STOPPED){
                             hlsStatusHeading.textContent = "Livestream haven't started yet";
-                        } else {
+                        }else{
                             hlsStatusHeading.textContent = `HLS Status: ${meeting.hlsState}`;
                         }
                     
@@ -188,6 +198,7 @@
                             case "HLS_PLAYABLE":
                                 hlsStatusHeading.textContent = 'You are live now!';
                                 Livewire.dispatch('insert-playback-url', { url: meeting.hlsUrls.playbackHlsUrl });
+                                Livewire.dispatch('prepareTimer');
                                 break;
 
                             case "HLS_STOPPING":
@@ -211,11 +222,26 @@
                                 }
 
                                 const { downstreamUrl } = data;
+                                
                                 let video = document.createElement("video");
                                 video.setAttribute("width", "100%");
                                 video.setAttribute("muted", "false");
                                 // enableAutoPlay for browser autoplay policy
                                 video.setAttribute("autoplay", "true");
+
+                                // Create timer element
+                                let timerElement = document.createElement("div");
+                                timerElement.setAttribute("id", `timer-containter`);
+                                timerElement.style.position = "absolute";
+                                timerElement.style.top = "10px";
+                                timerElement.style.left = "50%";
+                                timerElement.style.transform = "translateX(-50%)"; // Center the timer
+                                timerElement.style.backgroundColor = "rgba(0, 0, 0, 0.5)";
+                                timerElement.style.color = "#fff";
+                                timerElement.style.padding = "5px 10px";
+                                timerElement.style.borderRadius = "5px";
+                                timerElement.style.fontSize = "16px";
+                                timerElement.innerHTML = "00:00:00";
                         
                                 if (Hls.isSupported()) {
                                     var hls = new Hls();
@@ -231,6 +257,7 @@
                                     });
                                 }
                     
+                                videoContainer.appendChild(timerElement);
                                 videoContainer.appendChild(video);
 
                                 //Show video
@@ -293,6 +320,24 @@
                 function createVideoElement(pId, name) {
                     let videoFrame = document.createElement("div");
                     videoFrame.setAttribute("id", `f-${pId}`);
+                    videoFrame.style.position = "relative";  // Set relative positioning for the container
+
+                    // Create timer element
+                    let timerElement = document.createElement("div");
+                    timerElement.setAttribute("id", `timer-containter`);
+                    timerID = pId;
+                    timerElement.style.position = "absolute";
+                    timerElement.style.top = "10px";
+                    timerElement.style.left = "50%";
+                    timerElement.style.transform = "translateX(-50%)"; // Center the timer horizontally
+                    timerElement.style.backgroundColor = "rgba(0, 0, 0, 0.5)";
+                    timerElement.style.color = "#fff";
+                    timerElement.style.padding = "5px 10px";
+                    timerElement.style.borderRadius = "5px";
+                    timerElement.style.fontSize = "16px";
+                    timerElement.innerHTML = "00:00"; 
+
+                    videoFrame.appendChild(timerElement);
 
                     //create video
                     let videoElement = document.createElement("video");
@@ -306,6 +351,40 @@
                     videoFrame.appendChild(videoElement);
                     
                     return videoFrame;
+                }
+
+                function startTimer(mysqlDateTime) {
+                    // Convert the MySQL datetime (e.g., "2024-10-23 14:30:00") to a JavaScript Date object
+                    let startTime = new Date(mysqlDateTime);
+
+                    // Get the current time
+                    let currentTime = new Date();
+
+                    // Calculate the difference in seconds between the current time and the MySQL datetime
+                    let timeDifferenceInSeconds = Math.floor((currentTime - startTime) / 1000);
+
+                    interval = setInterval(function() {
+                        // Increment the timeDifferenceInSeconds every second
+                        timeDifferenceInSeconds++;
+
+                        // Calculate minutes and seconds passed since the MySQL datetime
+                        let minutes = Math.floor(timeDifferenceInSeconds / 60).toString().padStart(2, '0');
+                        let seconds = (timeDifferenceInSeconds % 60).toString().padStart(2, '0');
+
+                        // Update the timer on the page
+                        updateTimer(`${minutes}:${seconds}`);
+                    }, 1000);  // Update every second
+                }
+
+                function updateTimer(time) {
+                    let timerElement = document.getElementById(`timer-containter`);
+                    if (timerElement) {
+                        timerElement.innerHTML = time;
+                    }
+                }
+
+                function stopTimer() {
+                    clearInterval(interval);  // Clears the interval
                 }
 
                 // creating audio element

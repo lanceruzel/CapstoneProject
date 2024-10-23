@@ -11,7 +11,7 @@
         <livewire:Livestream.livestream-reaction-count :meetingId="$meetingId" />
     </div>
 
-    <div class="p-5 text-sm font-medium space-y-5 overflow-y-auto h-[400px] md:h-[calc(100vh-23rem)]">
+    <div class="p-5 text-sm font-medium space-y-5 overflow-y-auto h-[400px] md:h-[calc(100dvh-22rem)]">
         @foreach ($comments as $comment)
             @if($comment->user_id == Auth::id())
                 <!-- sent -->
