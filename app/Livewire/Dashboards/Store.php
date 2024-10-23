@@ -134,7 +134,7 @@ class Store extends Component{
         $sellerId = Auth::id();
         return OrderedItem::select('product_id', DB::raw('COUNT(*) as total_count'))
                       ->whereHas('order', function ($query) use ($sellerId) {
-                          $query->where('seller_id', $sellerId);
+                          $query->where('seller_id', $sellerId)->where('status', Status::OrderBuyerReceived);
                       })
                       ->groupBy('product_id')
                       ->orderBy('total_count', 'desc')
