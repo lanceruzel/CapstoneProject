@@ -80,6 +80,10 @@ class User extends Authenticatable
         return $this->hasMany(Notification::class);
     }
 
+    public function payoutRequests(){
+        return $this->hasMany(Payout::class);
+    }
+
     public function storeInformation(){
         if($this->role === UserType::Store || $this->role === UserType::Travelpreneur){
             return $this->hasOne(StoreInformation::class);
@@ -185,15 +189,27 @@ class User extends Authenticatable
     public function getTotalProductRatings(){
         $totalRating = 0;
 
-        foreach ($this->products as $product) {
+        foreach($this->products as $product){
             $totalRating += $product->getTotalRatings();
         }
 
-        if ($totalRating >= 1000) {
+        if($totalRating >= 1000){
             return number_format($totalRating / 1000, 1) . 'k';
         }
 
         return $totalRating;
+    }
+
+    public function totalPayouts(){
+        $total = 0;
+
+        foreach($this->payoutRequests as $payout){
+            if($payout->status == Status::PayoutSent){
+                $total += $payout->amount;
+            }
+        }
+
+        return $total;
     }
 
     public function getTotalPostLikesReceived(){

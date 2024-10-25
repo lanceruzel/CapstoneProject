@@ -44,4 +44,8 @@ enum Status: string
 
     const Ongoing = 'Ongoing';
     const Resolved = 'Resolved';
+
+    const PayoutPending = 'payout-pending';
+    const PayoutProcessing = 'payout-processing';
+    const PayoutSent = 'payout-sent';
 }

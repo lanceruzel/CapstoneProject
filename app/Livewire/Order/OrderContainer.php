@@ -94,7 +94,8 @@ class OrderContainer extends Component
         $affiliate = Affiliate::where('affiliate_code', $this->order->affiliate_code)->first();
 
         if($affiliate){
-            $affiliate->totalCommissioned += $this->order->commission;
+            $affiliate->total += $this->order->commission;
+            $affiliate->unclaimed += $this->order->commission;
 
             if($affiliate->save()){
                 UserNotif::sendNotif($affiliate->promoter_id, 'You have received a commission.' , NotificationType::Affiliate);

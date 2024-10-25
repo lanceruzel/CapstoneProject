@@ -34,6 +34,7 @@
                     <th scope="col" class="px-6 py-3">Promoter</th>
                     <th scope="col" class="px-6 py-3">Affiliate Code</th>
                     <th scope="col" class="px-6 py-3">Total Commissioned</th>
+                    <th scope="col" class="px-6 py-3">Unclaimed Commissions</th>
                     <th scope="col" class="px-6 py-3">Rate Per Order</th>
                     <th scope="col" class="px-6 py-3">Status</th>
                     <th scope="col" class="px-6 py-3"></th>
@@ -46,7 +47,8 @@
                         <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-100">
                             <td class="px-6 py-4">{{ $affiliate->user->userInformation->fullName() }}</td>
                             <td class="px-6 py-4">{{ $affiliate->affiliate_code }}</td>
-                            <td class="px-6 py-4">${{ number_format($affiliate->totalCommissioned, 2) }}</td>
+                            <td class="px-6 py-4">${{ number_format($affiliate->total, 2) }}</td>
+                            <td class="px-6 py-4">${{ number_format($affiliate->unclaimed, 2) }}</td>
                             <td class="px-6 py-4">{{ $affiliate->rate }}%</td>
                             <td class="px-6 py-4">
                                 @if($affiliate->status == App\Enums\Status::Invitation)

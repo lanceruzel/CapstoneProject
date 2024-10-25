@@ -79,6 +79,14 @@
                 </li>
 
                 <li>
+                    @if(request()->routeIS('store.payouts'))
+                        <x-button class='!justify-start font-medium' icon='folder' href="{{ route('store.payouts') }}" solid flat full secondary label="Payout Requests" />
+                    @else
+                        <x-button class='!justify-start font-medium' icon='folder' href="{{ route('store.payouts') }}" flat full secondary label="Payout Requests" /> 
+                    @endif
+                </li>
+
+                <li>
                     @if(request()->routeIS('store.product-management'))
                         <x-button class='!justify-start font-medium' icon='folder' href="{{ route('store.product-management') }}" solid flat full secondary label="Product Management" />
                     @else
@@ -88,9 +96,9 @@
 
                 <li>
                     @if(request()->routeIS('store.return-products'))
-                        <x-button class='!justify-start font-medium' icon='folder' href="{{ route('store.return-products') }}" solid flat full secondary label="Return Products Requests" />
+                        <x-button class='!justify-start font-medium' icon='folder' href="{{ route('store.return-products') }}" solid flat full secondary label="Return Order Requests" />
                     @else
-                        <x-button class='!justify-start font-medium' icon='folder' href="{{ route('store.return-products') }}" flat full secondary label="Return Products Requests" /> 
+                        <x-button class='!justify-start font-medium' icon='folder' href="{{ route('store.return-products') }}" flat full secondary label="Return Order Requests" /> 
                     @endif
                 </li>
 

@@ -23,7 +23,8 @@ return new class extends Migration
             $table->string('affiliate_code');
             $table->float('rate');
             $table->float('discount');
-            $table->float('totalCommissioned')->default(0);
+            $table->float('total')->default(0);
+            $table->float('unclaimed')->default(0);
             $table->string('status');
 
             $table->timestamps();

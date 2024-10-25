@@ -167,5 +167,9 @@ Route::group(['middleware' => 'role:store,travelpreneur'], function () {
     Route::get('/store/ordered-products', function () {
         return view('livewire.Pages.ordered-product');
     })->name('store.ordered-products');
+
+    Route::get('/store/payouts', function () {
+        return view('livewire.Pages.store-payoutRequests');
+    })->name('store.payouts');
 });
 

@@ -70,7 +70,14 @@ class CheckoutPageContent extends Component
                         $query->where('store_id', $sellerId);
                     }),
             ],
-        ]);
+        ], [
+            "affiliate.$sellerId.required" => 'The affiliate code is required.',
+            "affiliate.$sellerId.exists" => 'The affiliate code is invalid for the selected seller.',
+            "affiliate.$sellerId.string" => 'The affiliate code must be a valid string.',
+            "affiliate.$sellerId.min" => 'The affiliate code must be at least 10 characters.',
+            "affiliate.$sellerId.max" => 'The affiliate code must not exceed 15 characters.',
+        ]
+    );
 
         $affiliateInfo = Affiliate::where('affiliate_code', $this->affiliate[$sellerId])->first();
 

@@ -1,34 +1,29 @@
 <x-modal-card name="affiliateDashboardModal" width='5xl' title="Affiliate Dashboard" align='center' x-cloak blurless wire:ignore.self>  
-    <div class="flex flex-col gap-2 items-center justify-center text-gray-600 overflow-auto">
-        <div class="flex items-center justify-between pb-4 w-full">
-            <h1 class="text-2xl font-bold">Dashboard</h1>
+    <div class="flex flex-col gap-2 items-center justify-center text-gray-600 overflow-auto p-2">
+        <div class="w-full flex items-center justify-center gap-5 overflow-auto">
+            {{-- <div class="p-5 w-fit min-w-48 h-32 shadow flex flex-col items-center justify-center rounded-md border border-gray-200">
+                <h1 class="text-xl font-semibold">Unclaimed</h1>
+                <h1>${{ number_format($overallCommissioned, 2) }}</h1>
+            </div> --}}
+
+            <div class="p-5 w-fit min-w-48 h-32 shadow flex flex-col items-center justify-center rounded-md border border-gray-200">
+                <h1 class="text-xl font-semibold">Total</h1>
+                <h1>${{ number_format($overallCommissioned, 2) }}</h1>
+            </div>
     
-            <x-button label="View Invites" onclick="$openModal('affiliateInvitationsModal')" />
-        </div>
+            <div class="p-5 w-fit min-w-48 h-32 shadow flex flex-col items-center justify-center rounded-md border border-gray-200">
+                <h1 class="text-xl font-semibold">Today</h1>
+                <h1>${{ number_format($todayCommissioned, 2) }}</h1>
+            </div>
+
+            <div class="p-5 w-fit min-w-48 h-32 shadow flex flex-col items-center justify-center rounded-md border border-gray-200">
+                <h1 class="text-xl font-semibold">Last Week</h1>
+                <h1>${{ number_format($lastWeekCommissioned, 2) }}</h1>
+            </div>
     
-        <div class="flex flex-col items-center justify-center border border-gray-200 p-7 rounded-lg shadow">
-            <h1 class="mb-3 text-xl font-semibold">Commissions</h1>
-    
-            <div class="w-full flex items-center justify-center gap-5">
-                <div class="p-5 w-fit min-w-48 h-32 shadow flex flex-col items-center justify-center rounded-md border border-gray-200">
-                    <h1 class="text-xl font-semibold">Total</h1>
-                    <h1>${{ number_format($overallCommissioned, 2) }}</h1>
-                </div>
-        
-                <div class="p-5 w-fit min-w-48 h-32 shadow flex flex-col items-center justify-center rounded-md border border-gray-200">
-                    <h1 class="text-xl font-semibold">Today</h1>
-                    <h1>${{ number_format($todayCommissioned, 2) }}</h1>
-                </div>
-        
-                <div class="p-5 w-fit min-w-48 h-32 shadow flex flex-col items-center justify-center rounded-md border border-gray-200">
-                    <h1 class="text-xl font-semibold">Last Week</h1>
-                    <h1>${{ number_format($lastWeekCommissioned, 2) }}</h1>
-                </div>
-        
-                <div class="p-5 w-fit min-w-48 h-32 shadow flex flex-col items-center justify-center rounded-md border border-gray-200">
-                    <h1 class="text-xl font-semibold">This month</h1>
-                    <h1>${{ number_format($thisMonthCommissioned, 2) }}</h1>
-                </div>
+            <div class="p-5 w-fit min-w-48 h-32 shadow flex flex-col items-center justify-center rounded-md border border-gray-200">
+                <h1 class="text-xl font-semibold">This month</h1>
+                <h1>${{ number_format($thisMonthCommissioned, 2) }}</h1>
             </div>
         </div>
     
@@ -40,9 +35,10 @@
                         <th scope="col" class="px-6 py-3 text-center">Affiliate Code</th>
                         <th scope="col" class="px-6 py-3 text-center">Discount %</th>
                         <th scope="col" class="px-6 py-3 text-center">Commission % Per Order</th>
-                        <th scope="col" class="px-6 py-3 text-center">Total Commissioned</th>
+                        <th scope="col" class="px-6 py-3 text-center">Total</th>
+                        <th scope="col" class="px-6 py-3 text-center">Unclaimed</th>
                         <th scope="col" class="px-6 py-3 text-center">Status</th>
-                        {{-- <th scope="col" class="px-6 py-3 text-center"></th> --}}
+                        <th scope="col" class="px-6 py-3 text-center"></th>
                     </tr>
                 </thead>
     
@@ -54,7 +50,8 @@
                                 <td class="px-6 py-4 text-center">{{ $affiliate->affiliate_code }}</td>
                                 <td class="px-6 py-4 text-center">{{ $affiliate->discount }}%</td>
                                 <td class="px-6 py-4 text-center">{{ $affiliate->rate }}%</td>
-                                <td class="px-6 py-4 text-center">${{ number_format($affiliate->totalCommissioned, 2) }}</td>
+                                <td class="px-6 py-4 text-center">${{ number_format($affiliate->total, 2) }}</td>
+                                <td class="px-6 py-4 text-center">${{ number_format($affiliate->unclaimed, 2) }}</td>
                                 <td class="px-6 py-4 text-center">
                                     @if($affiliate->status == App\Enums\Status::Active)
                                         <x-badge flat positive label="Active" />
@@ -65,9 +62,15 @@
                                     @endif
                                 </td>
     
-                                {{-- <td class="px-6 py-4 flex items-center justify-center">
-                                    <x-button label="Copy Code" onclick="copyToClipboard('{{ $affiliate->affiliate_code }}')"/>
-                                </td> --}}
+                                <td class="px-6 py-4 flex items-center justify-center">
+                                    @if(!App\Models\Payout::where('user_id', auth()->id())
+                                    ->where('requested_to', $affiliate->store_id)
+                                    ->where('status', App\Enums\Status::PayoutPending)
+                                    ->orderBy('id', 'DESC')
+                                    ->exists())
+                                        <x-button xs label="Payout" onclick="$openModal('affiliatePayoutRequestForm')" wire:click="$dispatch('affiliateStore', { id: {{ $affiliate->store_id }} })" />
+                                    @endif
+                                </td>
                             </tr>
                         @endforeach 
                     @else
@@ -80,9 +83,10 @@
                 </tbody>
             </table>
         </div>
-            
+
         <x-slot name="footer" class="flex justify-end gap-x-4">
-            {{-- <x-button flat label="Close" x-on:click="close" /> --}}
+            <x-button flat label="View Payout History" onclick="$openModal('affiliatePayoutHistoryModal')"/>
+            <x-button label="View Invites" onclick="$openModal('affiliateInvitationsModal')" />
         </x-slot>
     </div>
 </x-modal-card>
