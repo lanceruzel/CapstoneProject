@@ -5,12 +5,21 @@
         <x-alert :title="session('success')" positive />
     @endif
 
+    @if(session()->has('status'))
+        <x-alert :title="session('status')" positive />
+    @endif
+
     @if(session()->has('fail'))
         <x-alert :title="session('fail')" negative />
     @endif
 
     <x-input icon="envelope" label="Email" wire:model='email' shadowless />
     <x-password icon="lock-closed" label="Password" wire:model='password' shadowless />
+
+    <div class="w-full flex items-center justify-end pb-2">
+        <x-link label="Forgot password?" href="{{ route('password.request') }}" secondary sm />
+    </div>
+
     <x-button wire:loading.attr='disabled' class="w-full" wire:click='signin' spinner='signin' label="Sign in" />
 
     <div class="w-full flex items-center justify-center flex-col">

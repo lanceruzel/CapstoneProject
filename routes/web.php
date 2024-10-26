@@ -20,6 +20,14 @@ Route::group(['middleware' => 'guest'], function () {
     Route::get('/signup-store', function () {
         return view('livewire.Pages.store-signup');
     })->name('store-signup');
+
+    Route::get('/forgot-password', function () {
+        return view('livewire.Pages.forgot-password');
+    })->name('password.request');
+
+    Route::get('/reset-password/{token}', function (string $token) {
+        return view('livewire.Pages.reset-password', ['token' => $token]);
+    })->middleware('guest')->name('password.reset');
 });
 
 Route::get('/signout', function () {
