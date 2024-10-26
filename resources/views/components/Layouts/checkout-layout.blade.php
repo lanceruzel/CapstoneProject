@@ -63,6 +63,8 @@ $storeRegistration = new StoreRegistration();
         <livewire:StoreRegistration.store-register-form-modal />
     @else
         <livewire:Affiliate.affiliate-dashboard-modal />
+        <livewire:Affiliate.affiliate-payout-form-modal />
+        <livewire:Affiliate.payout-history-modal />
         <livewire:Affiliate.affiliate-invitation-modal />
         <livewire:Affiliate.view-terms-and-condition-modal />
     @endif

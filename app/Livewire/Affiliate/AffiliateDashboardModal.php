@@ -51,7 +51,7 @@ class AffiliateDashboardModal extends Component
         $this->retrieve_commissions();
 
         return view('livewire.Affiliate.affiliate-dashboard-modal', [
-            'affiliates' => Affiliate::where('promoter_id', Auth::id())->where('status', '<>', Status::Invitation)->orderBy('id', 'DESC')->paginate(10)
+            'affiliates' => Affiliate::where('promoter_id', Auth::id())->where('status', '<>', Status::Invitation)->where('status', '<>', Status::Declined)->orderBy('id', 'DESC')->paginate(10)
         ]);
     }
 }

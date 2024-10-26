@@ -18,19 +18,21 @@ class AffiliatePayoutFormModal extends Component
     public $paypalEmail;
     public $accountName;
     public $storeID;
+    public $affiliateCode;
 
     protected $listeners = [
         'clearaffiliatePayoutRequestFormModalData' => 'clearData',
         'affiliateStore' => 'getStoreID'
     ];
 
-    public function getStoreID($id){
+    public function getStoreID($id, $affiliateCode){
         $this->storeID = $id;
+        $this->affiliateCode = $affiliateCode;
     }
 
     public function sendPayout(){
         $validated = $this->validate([
-            'amount' => 'required|min:20|max:1000|numeric',
+            'amount' => 'required|numeric|min:20|max:1000',
             'paypalEmail' => 'required|email',
             'accountName' => 'required|min:5'
         ]);
@@ -74,9 +76,13 @@ class AffiliatePayoutFormModal extends Component
     }
 
     public function checkUnclaimedBalance($amount){
-        $affiliate = Affiliate::where('store_id', $this->storeID)->where('promoter_id', Auth::id())->where('status', Status::Active)->first();
+        $affiliate = Affiliate::where('store_id', $this->storeID)
+        ->where('promoter_id', Auth::id())
+        ->where('affiliate_code')
+        ->where('status', Status::Active)
+        ->first();
     
-        if ($affiliate && ($amount > $affiliate->unclaimed)){
+        if($affiliate && ($amount > $affiliate->unclaimed)){
             $this->addError('amount', 'The amount exceeds your unclaimed balance.');
             return false;
         }
@@ -88,7 +94,8 @@ class AffiliatePayoutFormModal extends Component
         $this->reset([
             'amount',
             'storeID',
-            'accountName'
+            'accountName',
+            'affiliateCode'
         ]);
     }
 

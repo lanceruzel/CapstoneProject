@@ -7,6 +7,7 @@ use App\Models\Affiliate;
 use App\Models\User;
 use App\Classes\UserNotif;
 use App\Enums\NotificationType;
+use App\Enums\UserType;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Livewire\Component;
@@ -37,7 +38,28 @@ class AffiliateInviteFormModal extends Component
         try{
             //Check if email is existing
             if(User::where('email', $validated['email'])->exists()){
-                $promoterId = User::where('email', $validated['email'])->pluck('id');
+                $promoter = User::where('email', $validated['email'])->first();
+
+                $promoterId = $promoter->id;
+
+                if($promoter->role == UserType::Store){
+                    $this->notification()->send([
+                        'icon' => 'error',
+                        'title' => 'Error!',
+                        'description' => 'Woops, its an error. This user is a seller.',
+                    ]);
+
+                    return;
+                }
+
+                if(Affiliate::where('store_id', Auth::id())->where('promoter_id', $promoterId[0])->where('status', '<>', Status::Declined)->exists()){
+                    $this->dialog()->show([
+                        'icon' => 'info',
+                        'title' => 'Info!',
+                        'description' => 'You have existing affiliate with this user.',
+                    ]);
+                    return;
+                }
 
                 $affiliate = Affiliate::create([
                     'store_id' => Auth::id(),

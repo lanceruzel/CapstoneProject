@@ -42,7 +42,7 @@
                     @else
                         <tr>
                             <td colspan="7" class="text-center px-6 py-4 bg-gray-50">
-                                No affiliate found.
+                                No payouts found.
                             </td>
                         </tr>
                     @endif

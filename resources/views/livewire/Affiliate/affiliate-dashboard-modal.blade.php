@@ -67,8 +67,8 @@
                                     ->where('requested_to', $affiliate->store_id)
                                     ->where('status', App\Enums\Status::PayoutPending)
                                     ->orderBy('id', 'DESC')
-                                    ->exists())
-                                        <x-button xs label="Payout" onclick="$openModal('affiliatePayoutRequestForm')" wire:click="$dispatch('affiliateStore', { id: {{ $affiliate->store_id }} })" />
+                                    ->exists() && ($affiliate->status != App\Enums\Status::Declined))
+                                        <x-button xs label="Payout" onclick="$openModal('affiliatePayoutRequestForm')" wire:click="$dispatch('affiliateStore', { id: {{ $affiliate->store_id }}, affiliateCode: '{{ $affiliate->affiliate_code }}' })" />
                                     @endif
                                 </td>
                             </tr>

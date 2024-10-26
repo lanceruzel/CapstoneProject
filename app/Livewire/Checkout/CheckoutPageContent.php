@@ -61,7 +61,7 @@ class CheckoutPageContent extends Component
         //Validate affiliate code
         $this->validate([
             "affiliate.$sellerId" => [
-                'required',
+                // 'required',
                 'string',
                 'min:10',
                 'max:15',
@@ -101,6 +101,11 @@ class CheckoutPageContent extends Component
         }
     }
 
+    public function removeAffiliate($sellerId){
+        $this->resetErrorBag("affiliate." . $sellerId);
+        $this->affiliate[$sellerId] = null;
+    }
+
     public function checkCodePerStore(){
         foreach($this->checkedOutSellers as $checkedOutSeller){
             $seller = $checkedOutSeller['seller'];
@@ -121,6 +126,11 @@ class CheckoutPageContent extends Component
         $this->validateAffiliateInputs();
 
         if (!$this->checkCodePerStore()) {
+            $this->notification()->send([
+                'icon' => 'info',
+                'title' => 'Info!',
+                'description' => 'You have applied an non existing or inactive affiliate code. Please refresh your browser.',
+            ]);
             return; // Stop further execution if the affiliate code check fails
         }
 

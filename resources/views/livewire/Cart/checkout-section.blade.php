@@ -4,6 +4,10 @@
             Total: <span class="font-semibold">{{ App\Classes\CurrencyConverter::formatPrice($total) }}</span>
         </div>
 
-        <x-button label="Checkout" href="{{ route('checkout') }}" />
+        @if($total == 0)
+            <x-button disabled label="Checkout" />
+        @else
+            <x-button label="Checkout" href="{{ route('checkout') }}" />
+        @endif
     </div>
 </div>

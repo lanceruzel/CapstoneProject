@@ -54,7 +54,7 @@
                                     Total: @isset($checkedOutSeller['original_total']) 
                                                 <span class="line-through">{{ App\Classes\CurrencyConverter::formatPrice($checkedOutSeller['original_total']) }}</span> 
                                             @endisset 
-                                        ${{ number_format($checkedOutSeller['total'], 2) }}
+                                        {{ App\Classes\CurrencyConverter::formatPrice($checkedOutSeller['total']) }}
                                 </p>
                                 @isset($checkedOutSeller['discount']) 
                                     <small>{{ $checkedOutSeller['applied_discount'] }}% discount applied</small>
@@ -69,9 +69,10 @@
                                 @endif
 
                                 @if(isset($checkedOutSeller['original_total']))
-                                    <x-button label="Applied" disabled />
+                                    {{-- <x-button negative flat wire:loading.attr="disabled" wire:click="removeAffiliate('{{ $checkedOutSeller['seller']->id }}')" label="Remove" /> --}}
+                                        <x-button disabled flat label="Applied" />
                                 @else
-                                    <x-button wire:loading.attr="disabled" wire:click="applyAffiliate('{{ $checkedOutSeller['seller']->id }}')" label="Apply" />
+                                    <x-button wire:loading.attr="disabled" wire:target="applyAffiliate('{{ $checkedOutSeller['seller']->id }}')" wire:click="applyAffiliate('{{ $checkedOutSeller['seller']->id }}')" label="Apply" />
                                 @endif
                             </div>
                         </div>

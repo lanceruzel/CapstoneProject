@@ -71,7 +71,10 @@ class PayoutModal extends Component
     }
 
     public function deductAffiliate($userID, $amount){
-        $affiliate = Affiliate::where('store_id', Auth::id())->where('promoter_id', $userID)->first();
+        $affiliate = Affiliate::where('store_id', Auth::id())
+            ->where('promoter_id', $userID)
+            ->where('status', '<>', Status::Declined)
+            ->first();
 
         if($affiliate){
             $affiliate->unclaimed -= $amount;
