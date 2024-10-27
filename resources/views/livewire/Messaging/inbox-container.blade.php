@@ -75,7 +75,6 @@
 
                         <!-- Last Chat Preview -->
                         <div class="font-medium overflow-hidden text-ellipsis text-sm whitespace-nowrap">{{ $convo->lastMessage->user_id == Auth::id() ? 'You: ' : null }} 
-                            {{ $convo->last_message_id ? $convo->lastMessage->content : 'No message' }}
                             @if($convo->last_message_id)
                                 @if($convo->lastMessage->content)
                                     <span>{{ $convo->lastMessage->content }}</span>
