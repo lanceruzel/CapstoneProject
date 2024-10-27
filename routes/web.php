@@ -64,11 +64,13 @@ Route::group(['middleware' => 'role:store,travelpreneur,content-creator'], funct
                 })->first();
 
                 if(!$conversationExists) {
-                    Conversation::create([
+                    $conversation = Conversation::create([
                         'user_1' => $authUserId,
                         'user_2' => $id,
                         'status' => 'active'
                     ]);
+
+                    $id = $conversation->id;
                 }else{
                     $id = $conversationExists->id;
                 }
