@@ -1,6 +1,8 @@
 <x-modal-card name="affiliatePayoutRequestForm" width='md' title="Payout Request" align='center' x-cloak x-on:close="$dispatch('clearaffiliatePayoutRequestFormModalData')" blurless wire:ignore.self>  
     <div class="flex flex-col gap-2 items-start text-gray-600 overflow-auto">
-
+        @error('amountFieldError')
+            <x-alert title="{{ $message }}" warning />
+        @enderror
         <x-input label="Account Name" wire:model="accountName" shadowless />
         <x-input label="Paypal Email" wire:model="paypalEmail" shadowless />
         <x-input type="number" prefix="$" label="Enter Amount" wire:model="amount" corner="Min: $20" shadowless />

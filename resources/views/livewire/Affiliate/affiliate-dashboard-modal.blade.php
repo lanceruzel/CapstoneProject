@@ -68,7 +68,16 @@
                                     ->where('status', App\Enums\Status::PayoutPending)
                                     ->orderBy('id', 'DESC')
                                     ->exists() && ($affiliate->status != App\Enums\Status::Declined))
-                                        <x-button xs label="Payout" onclick="$openModal('affiliatePayoutRequestForm')" wire:click="$dispatch('affiliateStore', { id: {{ $affiliate->store_id }}, affiliateCode: '{{ $affiliate->affiliate_code }}' })" />
+
+                                        @if($affiliate->unclaimed >= 20)
+                                            <x-button xs label="Payout" onclick="$openModal('affiliatePayoutRequestForm')" wire:click="$dispatch('affiliateStore', { id: {{ $affiliate->store_id }}, affiliateCode: '{{ $affiliate->affiliate_code }}' })" />
+                                        @else
+                                            <x-button xs label="Payout" x-on:click="$wireui.dialog({
+                                                icon: 'info',
+                                                title: 'Info Dialog!',
+                                                description: 'Your minimum unclaimed balance must be atleast $20.',
+                                            })"/>
+                                        @endif
                                     @endif
                                 </td>
                             </tr>

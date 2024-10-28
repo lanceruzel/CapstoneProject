@@ -76,30 +76,32 @@ class AffiliatePayoutFormModal extends Component
     }
 
     public function checkUnclaimedBalance($amount){
-        $affiliate = Affiliate::where('store_id', $this->storeID)
-        ->where('promoter_id', Auth::id())
-        ->where('affiliate_code')
+        $affiliate = Affiliate::where('affiliate_code', $this->affiliateCode)
         ->where('status', Status::Active)
         ->first();
 
         if($affiliate){
-            if($affiliate->unclaimed <= 20){
-                $this->addError('amount', 'Your transaction cannot be completed because your unclaimed balance is below $20.');
-            }
-
             if($amount > $affiliate->unclaimed){
-                $this->addError('amount', 'The amount exceeds your unclaimed balance.');
+                $this->dialog()->show([
+                    'icon' => 'info',
+                    'title' => 'Info!',
+                    'description' => 'The amount exceeds your unclaimed balance.',
+                ]);
+                
                 return false;
             }
+
+            return true;
+        }else{
+            return false;
         }
-    
-        return true;
     }
     
     public function clearData(){
         $this->reset([
             'amount',
             'storeID',
+            'paypalEmail',
             'accountName',
             'affiliateCode'
         ]);
