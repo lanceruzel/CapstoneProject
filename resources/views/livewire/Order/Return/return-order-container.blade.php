@@ -53,6 +53,8 @@
                     <span>Seller has received the item and now preparing to send you your item/s. </span>
                 @elseif($order->status == App\Enums\Status::ReturnRequestSellerOrderCreated)
                     <span>Request has been fulfilled. </span>
+                @elseif($order->status == App\Enums\Status::AdminProductSuspend)
+                    <span>Admin has suspended this products. </span>
                 @else
                     {{ $order->status }}
                 @endif

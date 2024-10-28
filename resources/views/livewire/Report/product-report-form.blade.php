@@ -19,6 +19,7 @@
                 <x-select.option label="Damaged Item" value="Damaged Item" />
                 <x-select.option label="Product is defective or does not work" value="Product is defective or does not work" />
                 <x-select.option label="Empty Parcel" value="Empty Parcel" />
+                <x-select.option label="Others" value="Others" />
             </x-select>
 
             <x-textarea label="Description" wire:model="description" fluid shadowless placeholder="Type here" />

@@ -13,7 +13,7 @@ class ReturnOrdersContainer extends Component
     public function render()
     {
         return view('livewire.Order.Return.return-orders-container', [
-            'orders' => Report::where('reporter_id', Auth::id())->where('status', '<>', Status::ReturnRequestReview)->get()
+            'orders' => Report::where('reporter_id', Auth::id())->where('status', '<>', Status::ReturnRequestReview)->orderBy('id', 'DESC')->get()
         ]);
     }
 }

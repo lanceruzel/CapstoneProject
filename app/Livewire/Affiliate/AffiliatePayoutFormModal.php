@@ -81,10 +81,16 @@ class AffiliatePayoutFormModal extends Component
         ->where('affiliate_code')
         ->where('status', Status::Active)
         ->first();
-    
-        if($affiliate && ($amount > $affiliate->unclaimed)){
-            $this->addError('amount', 'The amount exceeds your unclaimed balance.');
-            return false;
+
+        if($affiliate){
+            if($affiliate->unclaimed <= 20){
+                $this->addError('amount', 'Your transaction cannot be completed because your unclaimed balance is below $20.');
+            }
+
+            if($amount > $affiliate->unclaimed){
+                $this->addError('amount', 'The amount exceeds your unclaimed balance.');
+                return false;
+            }
         }
     
         return true;

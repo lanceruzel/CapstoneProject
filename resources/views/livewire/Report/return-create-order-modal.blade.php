@@ -1,6 +1,6 @@
 <x-modal-card name="returnCreateOrderModal" title="Return Create Order" align='center' x-cloak x-on:close="$dispatch('clearReturnCreateOrderModalData')" blurless wire:ignore.self>  
     @if($order && $request && $requestedItems)
-        <div class="flex flex-col gap-2 items-start text-gray-600 overflow-auto">
+        <div class="flex flex-col gap-2 items-start text-gray-600 overflow-visible">
 
             <table class="border border-gray-600 table-auto w-full border-spacing-y-4 text-left">
                 <thead>
@@ -17,8 +17,8 @@
                                 {{ $requestedItems[$index]['name'] }}
                             </td>
 
-                            <td class="p-2 font-medium border border-gray-300">
-                                <x-select label="" wire:model="requestedItems.{{ $index }}.selectedVariation" placeholder="Select variation" :options="$requestedItems[$index]['variation']" option-label="name" option-value="name"/>
+                            <td class="p-2 font-medium border border-gray-300 overflow-visible">
+                                <x-select class="!z-[99]" label="" position="bottom" wire:model="requestedItems.{{ $index }}.selectedVariation" placeholder="Select variation" :options="$requestedItems[$index]['variation']" option-label="name" option-value="name"/>
                             </td>
 
                             <td class="p-2 border border-gray-300 min-w-[100px]">
