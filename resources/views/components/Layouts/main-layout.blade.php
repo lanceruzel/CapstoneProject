@@ -82,52 +82,68 @@
 
         @if(request()->routeIS('home'))
             <script>
-                if (navigator.geolocation) {
-                    navigator.geolocation.getCurrentPosition(
-                        function (position) {
-                            // Send coordinates to Livewire if successful
-                            Livewire.dispatch('getGeolocation', { 
-                                latitude: position.coords.latitude, 
-                                longitude: position.coords.longitude 
-                            });
-                        },
-                        function (error) {
-                            // Handle errors
-                            switch (error.code) {
-                                case error.PERMISSION_DENIED:
-                                    //alert('GPS permission is denied. Please enable location services and grant permission.');
-                                    break;
-                                case error.POSITION_UNAVAILABLE:
-                                    alert('Location information is unavailable. Please enable your GPS position feature.');
-                                    break;
-                                case error.TIMEOUT:
-                                    alert('Request for location timed out. Please try again.');
-                                    break;
-                                default:
-                                    alert('An unknown error occurred. Please enable your GPS and try again.');
-                            }
-                        },
-                        {
-                            maximumAge: 10000,
-                            timeout: 5000,
-                            enableHighAccuracy: true
-                        }
-                    );
-                } else {
-                    console.log('Geolocation is not supported by this browser.');
-                }
+                // if (navigator.geolocation) {
+                //     navigator.geolocation.getCurrentPosition(
+                //         function (position) {
+                //             // Send coordinates to Livewire if successful
+                //             Livewire.dispatch('getGeolocation', { 
+                //                 latitude: position.coords.latitude, 
+                //                 longitude: position.coords.longitude 
+                //             });
+                //         },
+                //         function (error) {
+                //             // Handle errors
+                //             switch (error.code) {
+                //                 case error.PERMISSION_DENIED:
+                //                     //alert('GPS permission is denied. Please enable location services and grant permission.');
+                //                     break;
+                //                 case error.POSITION_UNAVAILABLE:
+                //                     alert('Location information is unavailable. Please enable your GPS position feature.');
+                //                     break;
+                //                 case error.TIMEOUT:
+                //                     alert('Request for location timed out. Please try again.');
+                //                     break;
+                //                 default:
+                //                     alert('An unknown error occurred. Please enable your GPS and try again.');
+                //             }
+                //         },
+                //         {
+                //             maximumAge: 10000,
+                //             timeout: 5000,
+                //             enableHighAccuracy: true
+                //         }
+                //     );
+                // } else {
+                //     console.log('Geolocation is not supported by this browser.');
+                // }
 
                 const createButton = document.getElementById("createMeetingBtn");
 
                 createButton.addEventListener("click", async () => {
                     if (navigator.geolocation) {
                         navigator.geolocation.getCurrentPosition(
-                            function (position) {
+                            async function (position) {
                                 // Send coordinates to Livewire if successful
                                 Livewire.dispatch('getGeolocation', { 
                                     latitude: position.coords.latitude, 
                                     longitude: position.coords.longitude 
                                 });
+
+                                const url = `https://api.videosdk.live/v2/rooms`;
+                                const options = {
+                                    method: "POST",
+                                    headers: { Authorization: @js(env('VIDEO_SDK_TOKEN')), "Content-Type": "application/json" },
+                                };
+                            
+                                const { roomId } = await fetch(url, options)
+                                    .then((response) => {
+                                        return response.json();
+                                    })
+                                    .catch((error) => {
+                                        alert("error", error)
+                                    });
+                                
+                                Livewire.dispatch('room-created', { id: roomId })
                             },
                             function (error) {
                                 // Handle errors
@@ -155,21 +171,7 @@
                         console.log('Geolocation is not supported by this browser.');
                     }
 
-                    const url = `https://api.videosdk.live/v2/rooms`;
-                    const options = {
-                        method: "POST",
-                        headers: { Authorization: @js(env('VIDEO_SDK_TOKEN')), "Content-Type": "application/json" },
-                    };
-                
-                    const { roomId } = await fetch(url, options)
-                        .then((response) => {
-                            return response.json();
-                        })
-                        .catch((error) => {
-                            alert("error", error)
-                        });
                     
-                    Livewire.dispatch('room-created', { id: roomId })
                 });
             </script>
         @endif

@@ -30,6 +30,14 @@ class LivestreamFormModal extends Component
 
     public function getGeolocation($latitude, $longitude){
         $this->location = Location::getGeolocationCountry($latitude, $longitude);
+
+        if($this->location == 'Error' || $this->location == 'API key missing'){
+            $this->dialog()->show([
+                'icon' => 'error',
+                'title' => 'Error!',
+                'description' => 'Woops, its an error. There seems to be a problem creating your livestream.',
+            ]);
+        }
     }
 
     public function storeLivestream($id){

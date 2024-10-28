@@ -64,7 +64,7 @@ class AffiliateInviteFormModal extends Component
                 $affiliate = Affiliate::create([
                     'store_id' => Auth::id(),
                     'promoter_id' => $promoterId[0],
-                    'affiliate_code' => $validated['affiliateCode'],
+                    'affiliate_code' => strtoupper($validated['affiliateCode']),
                     'rate' => $validated['commissionRate'],
                     'discount' => $validated['discount'],
                     'status' => Status::Invitation

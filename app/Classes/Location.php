@@ -2,6 +2,9 @@
 
 namespace App\Classes;
 
+use Exception;
+use Illuminate\Support\Facades\Log;
+
 class Location
 {
     /**
@@ -57,22 +60,33 @@ class Location
     }
 
     public static function getGeolocationCountry($latitude, $longitude){
-        $request = 'https://us1.locationiq.com/v1/reverse?key=' . env('LOCATIONIQ_API') . '&lat=' . $latitude . '&lon=' . $longitude . '&format=json&'; 
-        $file_contents = file_get_contents($request);
-        $json_decode = json_decode($file_contents);
-
-        if(isset($json_decode->address->country)){
-            if(isset($json_decode->address->state)){
-                return $json_decode->address->state . ', ' . $json_decode->address->country;
-            }
-
-            if(isset($json_decode->address->region)){
-                return $json_decode->address->region . ', ' . $json_decode->address->country;
-            }
-
-            return $json_decode->address->country;
+        $apiKey = env('LOCATIONIQ_API');
+        if(!$apiKey){
+            return 'API key missing';
         }
-
-        return 'Uknown';
+    
+        $request = 'https://us1.locationiq.com/v1/reverse?key=' . $apiKey . '&lat=' . $latitude . '&lon=' . $longitude . '&format=json';
+        
+        try {
+            $file_contents = file_get_contents($request);
+            $json_decode = json_decode($file_contents);
+    
+            if(isset($json_decode->address->country)){
+                if(isset($json_decode->address->state)){
+                    return $json_decode->address->state . ', ' . $json_decode->address->country;
+                }
+    
+                if(isset($json_decode->address->region)){
+                    return $json_decode->address->region . ', ' . $json_decode->address->country;
+                }
+    
+                return $json_decode->address->country;
+            }
+    
+            return 'Unknown';
+        } catch (Exception $e) {
+            Log::error('Error on location: ' . $e->getMessage());
+            return 'Error';
+        }
     }
 }

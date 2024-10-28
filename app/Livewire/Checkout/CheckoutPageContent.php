@@ -79,7 +79,7 @@ class CheckoutPageContent extends Component
         ]
     );
 
-        $affiliateInfo = Affiliate::where('affiliate_code', $this->affiliate[$sellerId])->first();
+        $affiliateInfo = Affiliate::where('affiliate_code', strtoupper($this->affiliate[$sellerId]))->first();
 
         if($affiliateInfo){
             foreach($this->checkedOutSellers as $key => $checkedOutSeller){
