@@ -237,13 +237,15 @@
                 </div>
 
                 <div x-show='tabSelected == 2' x-cloak x-transition class="w-[510px] max-w-[510px] min-h-screen rounded-lg max-sm:px-7 space-y-5 mt-5">
-                    <div class="border w-full bg-white rounded-lg p-4 gap-3 shadow-sm flex justify-stretch items-stretch hover:cursor-pointer active:scale-95 transition-all" onclick="$openModal('livestreamFormModal')">
-                        <div class="w-full text-center bg-gray-200 rounded-lg py-2 font-medium text-sm select-none text-gray-600">Start Livestream</div>
-        
-                        <i class="py-1 px-2 text-xl bg-rose-200 text-rose-800 rounded-lg">
-                            <x-icon name="video-camera" class="w-full h-full" />
-                        </i>
-                    </div>
+                    @if($user->id == Auth::id())
+                        <div class="border w-full bg-white rounded-lg p-4 gap-3 shadow-sm flex justify-stretch items-stretch hover:cursor-pointer active:scale-95 transition-all" onclick="$openModal('livestreamFormModal')">
+                            <div class="w-full text-center bg-gray-200 rounded-lg py-2 font-medium text-sm select-none text-gray-600">Start Livestream</div>
+            
+                            <i class="py-1 px-2 text-xl bg-rose-200 text-rose-800 rounded-lg">
+                                <x-icon name="video-camera" class="w-full h-full" />
+                            </i>
+                        </div>
+                    @endif
     
                     <!-- Livestreams Container -->
                     <livewire:Livestream.livestream-posts-container userID="{{ $user->id }}"/>
@@ -270,6 +272,8 @@
     </div>
 
     <livewire:Posting.post-form-modal />
+    <livewire:Livestream.livestream-form-modal />
+    <livewire:Livestream.view-livestream-comments />
     <livewire:Profile.edit-profile-form-modal />
     <livewire:TravelProfile.view-travel-modal />
     <livewire:Auth.change-password-modal />

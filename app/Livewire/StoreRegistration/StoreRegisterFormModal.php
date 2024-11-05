@@ -5,6 +5,8 @@ namespace App\Livewire\StoreRegistration;
 use App\Enums\Status;
 use App\Enums\UserType;
 use App\Models\User;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 use Livewire\Component;
 use Livewire\Features\SupportFileUploads\WithFileUploads;
@@ -20,7 +22,7 @@ class StoreRegisterFormModal extends Component
     public $contact;
     public $email;
     public $country;
-    public $address;
+    public $state;
     public $requirement_1;
     public $requirement_2;
     public $requirement_3;
@@ -35,8 +37,14 @@ class StoreRegisterFormModal extends Component
     public $registrationDTI;
     public $registrationBIR;
 
+    public $url = "https://api.countrystatecity.in/v1/countries";
+    public $countryData = [];
+    public $countryOptions;
+    public $stateOptions;
+
     protected $listeners = [
-        'clearstoreRegistrationData' => 'clearData'
+        'clearstoreRegistrationData' => 'clearData',
+        'updatedCountry'
     ];
 
     public function mount(){
@@ -46,9 +54,72 @@ class StoreRegisterFormModal extends Component
             $this->contact = $this->user->storeInformation->contact;
             $this->email = $this->user->storeInformation->email;
             $this->country = $this->user->storeInformation->country;
-            $this->address = $this->user->storeInformation->address;
+            $this->state = $this->user->storeInformation->state;
 
             $this->savedRequirements = json_decode($this->user->storeInformation->requirements);
+
+            $this->loadCountries();
+            $this->loadStates();
+        }
+    }
+
+    public function loadCountries()
+    {
+        $response = Http::withHeaders([
+            'X-CSCAPI-KEY' => env('COUNTRY_STATE_CITY_API_KEY')
+        ])->get($this->url);
+
+        if ($response->successful()) {
+            $this->countryData = $response->json();
+
+            $this->countryOptions = collect($this->countryData)->map(function ($country) {
+                return [
+                    'name' => $country['name'],
+                    'value' => $country['name']
+                ];
+            })
+            ->sortBy('name')
+            ->values()
+            ->toArray();
+        } else {
+            Log::error('Failed to load countries', ['response' => $response->body()]);
+        }
+    }
+
+    public function updatedCountry(){
+        $this->state = null;
+        $this->stateOptions = [];
+        $this->loadStates();
+    }
+
+    public function loadStates(){
+        if(!$this->country){
+            return;
+        }
+
+        $selectedCountry = collect($this->countryData)->firstWhere('name', $this->country);
+
+        if(!$selectedCountry){
+            Log::error('Selected country not found', ['country' => $this->country]);
+            return;
+        }
+
+        $response = Http::withHeaders([
+            'X-CSCAPI-KEY' => env('COUNTRY_STATE_CITY_API_KEY')
+        ])->get($this->url . '/' . $selectedCountry['iso2'] . '/states');
+
+        if ($response->successful()) {
+            $this->stateOptions = collect($response->json())->map(function ($state) {
+                return [
+                    'name' => $state['name'],
+                    'value' => $state['name']
+                ];
+            })
+            ->sortBy('name')
+            ->values()
+            ->toArray();
+        } else {
+            Log::error('Failed to load states', ['response' => $response->body()]);
         }
     }
 
@@ -60,7 +131,7 @@ class StoreRegisterFormModal extends Component
         if($this->savedRequirements->status == Status::ForSubmission){
             $storeInformation->contact = $validated['contact'];
             $storeInformation->country = $validated['country'];
-            $storeInformation->address = $validated['address'];
+            $storeInformation->state = $validated['state'];
             $storeInformation->paypal_name = $validated['paypalAccountName'];
             $storeInformation->paypal_email = $validated['paypalEmail'];
 
@@ -101,7 +172,7 @@ class StoreRegisterFormModal extends Component
             $rules = [
                 'country' => 'required',
                 'contact' => 'required|min:5',
-                'address' => 'required|min:5',
+                'state' => 'required|min:5',
                 'paypalAccountName' => 'required|min:5',
                 'paypalEmail' => 'required|email|min:5',
             ];
@@ -137,13 +208,7 @@ class StoreRegisterFormModal extends Component
         return $validate;
     }
 
-    public function getCountries(){
-        $countriesJsonPath = public_path('json/countries.json');
-        $countries = json_decode(file_get_contents($countriesJsonPath), true);
-
-        // Sort product categories
-        return collect($countries)->pluck('name.common')->sort()->values()->toArray();
-    }
+    
 
     public function storeDocument($id, $document){
         $filename = $id . '_' . time() . '_' . uniqid() . '.' . $document->getClientOriginalExtension();
@@ -155,7 +220,6 @@ class StoreRegisterFormModal extends Component
     public function render()
     {
         return view('livewire.StoreRegistration.store-register-form-modal', [
-            'countries' => $this->getCountries(),
             'registrationStatus' => $this->savedRequirements->status
         ]);
     }

@@ -19,7 +19,7 @@ class ViewStoreRegistrationModal extends Component
     public $contact;
     public $email;
     public $country;
-    public $address;
+    public $state;
 
     public $remarks;
 
@@ -39,7 +39,7 @@ class ViewStoreRegistrationModal extends Component
             $this->contact = $this->registration->contact;
             $this->email = $this->registration->email;
             $this->country = $this->registration->country;
-            $this->address = $this->registration->address;
+            $this->state = $this->registration->state;
             $this->paypalAccountName = $this->registration->paypal_name;
             $this->paypalEmail = $this->registration->paypal_email;
             $this->requirements = json_decode($this->registration->requirements);
@@ -111,7 +111,7 @@ class ViewStoreRegistrationModal extends Component
             'contact', 
             'email',
             'country',
-            'address',
+            'state',
             'requirements',
             'registration'
         ]);

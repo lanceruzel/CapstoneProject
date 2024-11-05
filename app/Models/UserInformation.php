@@ -16,7 +16,7 @@ class UserInformation extends Model
         'gender',
         'birthdate',
         'country',
-        'address',
+        'state',
         'profile_bio',
         'profile_picture',
         'current_country'

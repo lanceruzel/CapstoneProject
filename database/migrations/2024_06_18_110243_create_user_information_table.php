@@ -22,7 +22,7 @@ return new class extends Migration
             $table->char('gender');
             $table->date('birthdate');
             $table->string('country');
-            $table->string('address');
+            $table->string('state');
 
             $table->string('profile_bio')->nullable();
             $table->string('profile_picture')->nullable();

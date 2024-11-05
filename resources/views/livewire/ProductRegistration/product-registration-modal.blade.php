@@ -5,7 +5,12 @@
 
                 <x-input disabled label="Product Name" wire:model="name" shadowless />
                 <x-textarea disabled label="Description" wire:model="description" placeholder="Write product's description here." />
-                <x-input disabled label="Origin" wire:model="origin" shadowless />
+
+                <div class="grid grid-cols-2 gap-3">
+                    <x-input class="max-lg:col-span-2" disabled label="Country" wire:model="origin_country" shadowless />
+                    <x-input class="max-lg:col-span-2" disabled label="State" wire:model="origin_state" shadowless /> 
+                </div>
+            
                 <x-select disabled label="Categories" wire:model="category" placeholder="Select Category" :options="$categories" option-label="name" option-value="name" shadowless />
 
                 <x-checkbox disabled class="m-2" label="Enable Variation" wire:model.live="hasVariation" lg/>

@@ -15,7 +15,7 @@ class StoreInformation extends Model
         'email',
         'contact',
         'country',
-        'address',
+        'state',
         'requirements',
         'profile_bio',
         'profile_picture',

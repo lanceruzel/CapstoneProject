@@ -93,8 +93,8 @@ class ProductFeedbackFormModal extends Component
 
         $blockedWords = ['fuck'];
         
-        foreach ($blockedWords as $word) {
-            if (strpos($value, $word) !== false) {
+        foreach($blockedWords as $word){
+            if(strpos($value, $word) !== false){
                 $inputText = str_replace($word, '****', $value);
             }
         }

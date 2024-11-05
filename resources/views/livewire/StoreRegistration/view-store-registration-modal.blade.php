@@ -8,7 +8,7 @@
                 <x-input class="max-lg:col-span-2" disabled label="Store Email" wire:model="email" shadowless />
 
                 <x-input class="max-lg:col-span-2" disabled label="Country" wire:model="country" shadowless />
-                <x-input class="max-lg:col-span-2" disabled label="Address" wire:model="address" shadowless />
+                <x-input class="max-lg:col-span-2" disabled label="State" wire:model="state" shadowless />
             </div>
 
             <div class="flex flex-col gap-1 w-full">

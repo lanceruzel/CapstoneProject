@@ -22,7 +22,8 @@ class Product extends Model
         'images',
         'status',
         'remarks',
-        'origin',
+        'origin_country',
+        'origin_state',
     ];
 
     public function getStocks($selected){

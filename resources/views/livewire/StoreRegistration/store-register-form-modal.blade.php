@@ -12,8 +12,30 @@
                     <x-input class="max-lg:col-span-2" label="Store Contact" wire:model="contact" shadowless />
                     <x-input class="max-lg:col-span-2" label="Store Email" wire:model="email" shadowless />
 
-                    <x-select class="max-lg:col-span-2" label="Country" wire:model="country" placeholder="Select Country" :options="$countries" searchable shadowless />
-                    <x-input class="max-lg:col-span-2" label="Address" wire:model="address" shadowless />
+                    <x-select
+                        class="max-lg:col-span-2"
+                        label="Country"
+                        wire:model="country"
+                        placeholder="Select Country"
+                        :options="$countryOptions"
+                        option-label="name"
+                        option-value="value"
+                        searchable
+                        shadowless
+                        x-on:selected="Livewire.dispatch('updatedCountry')"
+                    />
+        
+                    <x-select
+                        class="max-lg:col-span-2"
+                        label="State"
+                        wire:model="state"
+                        placeholder="Select State"
+                        :options="$stateOptions"
+                        option-label="name"
+                        option-value="value"
+                        searchable
+                        shadowless
+                    />
                 </div>
             </div>
 

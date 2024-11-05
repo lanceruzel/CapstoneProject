@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Models\UserInformation;
 use App\Enums\UserType;
 use App\Models\StoreInformation;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\Rules\Password;
 use Livewire\Component;
@@ -21,14 +22,23 @@ class SignupForm extends Component
     public $lastName;
     public $birthdate;
     public $gender;
-    public $country;
-    public $address;
+    public $country = '';
+    public $state = '';
     public $username;
     public $email;
     public $password;
     public $password_confirmation;
 
+    public $countryOptions;
+    public $stateOptions;
     public $userType = UserType::ContentCreator;
+
+    public $url = "https://api.countrystatecity.in/v1/countries";
+    public $countryData = [];
+
+    protected $listeners = [
+        'updatedCountry'
+    ];
 
     public function mount($type = null){
         if($type != null){
@@ -38,13 +48,68 @@ class SignupForm extends Component
                 abort(404, 'Invalid Url');
             }
         }
+
+        $this->loadCountries();
     }
 
-    public function getCountries(){
-        $countriesJsonPath = public_path('json/countries.json');
-        $countries = json_decode(file_get_contents($countriesJsonPath), true);
+    public function loadCountries()
+    {
+        $response = Http::withHeaders([
+            'X-CSCAPI-KEY' => env('COUNTRY_STATE_CITY_API_KEY')
+        ])->get($this->url);
 
-        return collect($countries)->pluck('name.common')->sort()->values()->toArray();
+        if ($response->successful()) {
+            $this->countryData = $response->json();
+
+            $this->countryOptions = collect($this->countryData)->map(function ($country) {
+                return [
+                    'name' => $country['name'],
+                    'value' => $country['name']
+                ];
+            })
+            ->sortBy('name')
+            ->values()
+            ->toArray();
+        } else {
+            Log::error('Failed to load countries', ['response' => $response->body()]);
+        }
+    }
+
+    public function updatedCountry(){
+        $this->state = null;
+        $this->stateOptions = [];
+        $this->loadStates();
+    }
+
+    public function loadStates(){
+        if(!$this->country){
+            return;
+        }
+
+        $selectedCountry = collect($this->countryData)->firstWhere('name', $this->country);
+        
+        if(!$selectedCountry){
+            Log::error('Selected country not found', ['country' => $this->country]);
+            return;
+        }
+
+        $response = Http::withHeaders([
+            'X-CSCAPI-KEY' => env('COUNTRY_STATE_CITY_API_KEY')
+        ])->get($this->url . '/' . $selectedCountry['iso2'] . '/states');
+
+        if ($response->successful()) {
+            $this->stateOptions = collect($response->json())->map(function ($state) {
+                return [
+                    'name' => $state['name'],
+                    'value' => $state['name']
+                ];
+            })
+            ->sortBy('name')
+            ->values()
+            ->toArray();
+        } else {
+            Log::error('Failed to load states', ['response' => $response->body()]);
+        }
     }
 
     public function signup(){
@@ -108,7 +173,7 @@ class SignupForm extends Component
             'birthdate' => 'required|date|before:tomorrow',
             'gender' => 'required',
             'country' => 'required',
-            'address' => 'required|min:5',
+            'state' => 'required',
             'username' => 'required|min:5',
             'email' => 'required|email|unique:users',
             'password' => [
@@ -135,7 +200,7 @@ class SignupForm extends Component
             'name' => $validated['firstName'] . ' ' . $validated['lastName'] . '\'s Store',
             'email' => $validated['email'],
             'country' => $validated['country'],
-            'address' => $validated['address'],
+            'state' => $validated['state'],
             'requirements' => $this->storeRequirementsFormat()
         ]);
     }
@@ -165,14 +230,12 @@ class SignupForm extends Component
             'gender' => $validated['gender'],
             'birthdate' => $validated['birthdate'], 
             'country' => $validated['country'],
-            'address' => $validated['address']
+            'state' => $validated['state']
         ]);
     }
 
     public function render()
     {
-        return view('livewire.Auth.signup-form', [
-            'countries' => $this->getCountries()
-        ]);
+        return view('livewire.Auth.signup-form');
     }
 }

@@ -5,6 +5,7 @@ namespace App\Livewire\Product;
 use App\Enums\Status;
 use App\Models\Product;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Intervention\Image\Drivers\Gd\Driver;
 use Intervention\Image\Image;
@@ -26,7 +27,8 @@ class ProductFormModal extends Component
     public $category;
     public $stocks;
     public $price;
-    public $origin;
+    public $origin_country;
+    public $origin_state;
 
     public $remarks;
 
@@ -49,8 +51,14 @@ class ProductFormModal extends Component
 
     protected $listeners = [
         'clearProductFormModalData' => 'clearData',
-        'viewProductInformation' => 'getData'
+        'viewProductInformation' => 'getData',
+        'updatedCountry'
     ];
+
+    public $url = "https://api.countrystatecity.in/v1/countries";
+    public $countryOptions;
+    public $stateOptions;
+    public $countryData = [];
 
     public function getData($id){
         $this->variations = null;
@@ -63,7 +71,8 @@ class ProductFormModal extends Component
             $this->name = $this->productUpdate->name;
             $this->description = $this->productUpdate->description;
             $this->category = $this->productUpdate->category;
-            $this->origin = $this->productUpdate->origin;
+            $this->origin_country = $this->productUpdate->origin_country;
+            $this->origin_state = $this->productUpdate->origin_state;
 
             $this->remarks = $this->productUpdate->remarks;
 
@@ -78,6 +87,69 @@ class ProductFormModal extends Component
         }
     }
 
+    public function mount(){
+        $this->loadCountries();
+    }
+
+    public function loadCountries()
+    {
+        $response = Http::withHeaders([
+            'X-CSCAPI-KEY' => env('COUNTRY_STATE_CITY_API_KEY')
+        ])->get($this->url);
+
+        if ($response->successful()) {
+            $this->countryData = $response->json();
+
+            $this->countryOptions = collect($this->countryData)->map(function ($country) {
+                return [
+                    'name' => $country['name'],
+                    'value' => $country['name']
+                ];
+            })
+            ->sortBy('name')
+            ->values()
+            ->toArray();
+        } else {
+            Log::error('Failed to load countries', ['response' => $response->body()]);
+        }
+    }
+
+    public function updatedCountry(){
+        $this->state = null;
+        $this->stateOptions = [];
+        $this->loadStates();
+    }
+
+    public function loadStates(){
+        if(!$this->origin_country){
+            return;
+        }
+
+        $selectedCountry = collect($this->countryData)->firstWhere('name', $this->origin_country);
+        
+        if(!$selectedCountry){
+            Log::error('Selected country not found', ['country' => $this->origin_country]);
+            return;
+        }
+
+        $response = Http::withHeaders([
+            'X-CSCAPI-KEY' => env('COUNTRY_STATE_CITY_API_KEY')
+        ])->get($this->url . '/' . $selectedCountry['iso2'] . '/states');
+
+        if ($response->successful()) {
+            $this->stateOptions = collect($response->json())->map(function ($state) {
+                return [
+                    'name' => $state['name'],
+                    'value' => $state['name']
+                ];
+            })
+            ->sortBy('name')
+            ->values()
+            ->toArray();
+        } else {
+            Log::error('Failed to load states', ['response' => $response->body()]);
+        }
+    }
     public function removeEmptyVariations(){
         $filteredVariations = [];
         foreach ($this->variations as $variation) {
@@ -176,7 +248,8 @@ class ProductFormModal extends Component
                 'category' => $validated['category'],
                 'description' => $validated['description'],
                 'status' => $status,
-                'origin' => $validated['origin'],
+                'origin_country' => $validated['origin_country'],
+                'origin_state' => $validated['origin_state'],
                 'images' => $this->productUpdate != null && json_decode($this->productUpdate->images) == $this->images ? json_encode($this->images) : $this->storeImages($this->images),
                 'variations' => json_encode($variations)
             ]
@@ -188,7 +261,8 @@ class ProductFormModal extends Component
             'name' => 'required|min:10',
             'category' => 'required',
             'description' => 'required|min:150',
-            'origin' => 'required|min:10'
+            'origin_country' => 'required',
+            'origin_state' => 'required'
         ];
 
         if($this->productUpdate){
@@ -236,7 +310,8 @@ class ProductFormModal extends Component
             'price',
             'remarks',
             'existingImagePath',
-            'origin',
+            'origin_country',
+            'origin_state',
         ]);
 
 

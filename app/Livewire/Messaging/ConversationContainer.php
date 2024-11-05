@@ -37,6 +37,7 @@ class ConversationContainer extends Component
             "echo:new-chat.{$this->userID},NewChatCreated" => '$refresh',
             'view-conversation' => 'retrieveMessages',
             'view-appeal-convo' => 'getAppealData',
+            'clear-appeal-convo-view' => 'clearConvoView'
         ];
     }
     
@@ -90,6 +91,10 @@ class ConversationContainer extends Component
             'content' => $validated['message'],
             'images' => json_encode($this->storeImages($this->images)),
         ]);
+    }
+
+    public function clearConvoView(){
+        $this->conversation = null;
     }
 
     public function storeImages($images){

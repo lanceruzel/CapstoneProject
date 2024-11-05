@@ -4,11 +4,33 @@
     <x-input class="col-span-2" label="Name of your store" wire:model="name" shadowless />
 
     <div class="grid grid-cols-2 gap-3">
-        <x-select class="max-sm:col-span-2" label="What country does your store located?" wire:model="country" placeholder="Select Country" :options="$countries" searchable shadowless />
-        <x-input class="max-sm:col-span-2" label="Contact" wire:model="contact" shadowless />
+        <x-select
+            class="max-lg:col-span-2"
+            label="What country does your store located?"
+            wire:model="country"
+            placeholder="Select Country"
+            :options="$countryOptions"
+            option-label="name"
+            option-value="value"
+            searchable
+            shadowless
+            x-on:selected="Livewire.dispatch('updatedCountry')"
+        />
+
+        <x-select
+            class="max-lg:col-span-2"
+            label="State"
+            wire:model="state"
+            placeholder="Select State"
+            :options="$stateOptions"
+            option-label="name"
+            option-value="value"
+            searchable
+            shadowless
+        />
     </div>
 
-    <x-input class="col-span-2" label="Address" wire:model="address" shadowless />
+    <x-input class="col-span-2" label="Contact" wire:model="contact" shadowless />
 
     <x-input label="Username" wire:model='username' corner="Ex: pchub1202" shadowless />
     <x-input label="Email" wire:model='email' shadowless />

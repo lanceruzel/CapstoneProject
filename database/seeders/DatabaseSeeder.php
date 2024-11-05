@@ -32,7 +32,7 @@ class DatabaseSeeder extends Seeder
             'gender' => 'Male',
             'birthdate' => '2002-12-02',
             'country' => 'Philippines',
-            'address' => 'Bataan',
+            'state' => 'Bataan',
             'profile_bio' => null,
             'profile_picture' => null
         ]);

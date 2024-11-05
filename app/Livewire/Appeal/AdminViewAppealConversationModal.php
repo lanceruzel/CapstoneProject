@@ -40,9 +40,11 @@ class AdminViewAppealConversationModal extends Component
         $this->reset([
             'product',
             'seller',
+            'report'
         ]);
 
         $this->report = null;
+        $this->dispatch('clear-appeal-convo-view');
     }
 
     public function unsuspendedConfirmation(){
