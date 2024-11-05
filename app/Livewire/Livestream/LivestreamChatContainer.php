@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Livestream;
 
+use App\Classes\WordFilter;
 use App\Events\LivestreamChatCreated;
 use App\Models\Livestream;
 use App\Models\PostComment;
@@ -36,7 +37,7 @@ class LivestreamChatContainer extends Component
             $postComment = PostComment::create([
                 'livestream_id' => $this->meetingId,
                 'user_id' => Auth::id(),
-                'content' => $validated['content']
+                'content' => WordFilter::filteredInput($validated['content'])
             ]);
 
             if($postComment){

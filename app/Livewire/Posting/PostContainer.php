@@ -3,6 +3,7 @@
 namespace App\Livewire\Posting;
 
 use App\Classes\UserNotif;
+use App\Classes\WordFilter;
 use App\Enums\NotificationType;
 use App\Events\CommentCreated;
 use App\Models\Post;
@@ -55,7 +56,7 @@ class PostContainer extends Component
         $comment = PostComment::create([
             'post_id' => $this->post->id,
             'user_id' => Auth::id(),
-            'content' => $validated['commentContent'],
+            'content' => WordFilter::filteredInput($validated['commentContent']),
         ]);
 
         if($comment){

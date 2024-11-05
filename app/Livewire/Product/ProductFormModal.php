@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Product;
 
+use App\Classes\WordFilter;
 use App\Enums\Status;
 use App\Models\Product;
 use Illuminate\Support\Facades\Auth;
@@ -244,9 +245,9 @@ class ProductFormModal extends Component
                 'seller_id' => Auth::id()
             ],
             [
-                'name' => $validated['name'],
+                'name' => WordFilter::filteredInput($validated['name']),
                 'category' => $validated['category'],
-                'description' => $validated['description'],
+                'description' => WordFilter::filteredInput($validated['description']),
                 'status' => $status,
                 'origin_country' => $validated['origin_country'],
                 'origin_state' => $validated['origin_state'],

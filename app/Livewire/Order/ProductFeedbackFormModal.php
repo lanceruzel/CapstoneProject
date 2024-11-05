@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Order;
 
+use App\Classes\WordFilter;
 use App\Models\OrderedItem;
 use App\Models\Product;
 use App\Models\ProductFeedback;
@@ -83,23 +84,9 @@ class ProductFeedbackFormModal extends Component
         return ProductFeedback::create([
             'product_id' => $this->product->id,
             'user_id' => Auth::id(),
-            'content' => $this->updatedInputText($validated['feedbackContent']),
+            'content' => WordFilter::filteredInput($validated['feedbackContent']),
             'rating' => $validated['productRating'],
         ]);
-    }
-
-    public function updatedInputText($value){
-        $inputText = '';
-
-        $blockedWords = ['fuck'];
-        
-        foreach($blockedWords as $word){
-            if(strpos($value, $word) !== false){
-                $inputText = str_replace($word, '****', $value);
-            }
-        }
-
-        return $inputText == '' ? $value : $inputText;
     }
 
     public function render()

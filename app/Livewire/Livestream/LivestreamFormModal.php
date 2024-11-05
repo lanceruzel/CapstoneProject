@@ -3,6 +3,7 @@
 namespace App\Livewire\Livestream;
 
 use App\Classes\Location;
+use App\Classes\WordFilter;
 use App\Enums\Status;
 use App\Models\Livestream;
 use Illuminate\Support\Facades\Auth;
@@ -59,7 +60,7 @@ class LivestreamFormModal extends Component
                 $livestream = Livestream::create([
                     'id' => $id,
                     'user_id' => Auth::id(),
-                    'title' => $validated['title'],
+                    'title' => WordFilter::filteredInput($validated['title']),
                     'status' => 'created',
                     'reactions' => json_encode([
                         '1' => ['count' => 0],

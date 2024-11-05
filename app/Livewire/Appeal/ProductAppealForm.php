@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Appeal;
 
+use App\Classes\WordFilter;
 use App\Enums\Status;
 use App\Models\Conversation;
 use App\Models\Message;
@@ -64,7 +65,7 @@ class ProductAppealForm extends Component
                     $message = Message::create([
                         'user_id' => Auth::id(),
                         'conversation_id' => $conversation->id,
-                        'content' => $validated['content'],
+                        'content' => WordFilter::filteredInput($validated['content']),
                         'images' => json_encode($this->storeImages($this->images)),
                     ]);
     

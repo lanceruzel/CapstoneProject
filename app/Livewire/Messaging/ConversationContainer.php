@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Messaging;
 
+use App\Classes\WordFilter;
 use App\Events\NewChatCreated;
 use App\Models\Message;
 use App\Models\Conversation;
@@ -88,7 +89,7 @@ class ConversationContainer extends Component
         return Message::create([
             'user_id' => Auth::id(),
             'conversation_id' => $this->conversation->id,
-            'content' => $validated['message'],
+            'content' => WordFilter::filteredInput($validated['message']),
             'images' => json_encode($this->storeImages($this->images)),
         ]);
     }

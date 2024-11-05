@@ -3,6 +3,7 @@
 namespace App\Livewire\Posting;
 
 use App\Classes\Location;
+use App\Classes\WordFilter;
 use App\Enums\PostType;
 use App\Enums\Status;
 use App\Events\PostUpdated;
@@ -109,7 +110,7 @@ class PostFormModal extends Component
             ],
             [
                 'type' => $postType,
-                'content' => $validated['content'],
+                'content' => WordFilter::filteredInput($validated['content']),
                 'images' => json_encode($this->storeImages($this->images)),
                 'status' => Status::Available,
                 'country' => Location::getLocation(),
