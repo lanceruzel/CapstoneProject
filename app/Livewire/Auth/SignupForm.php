@@ -170,7 +170,7 @@ class SignupForm extends Component
         return $this->validate([
             'firstName' => 'required|min:3',
             'lastName' => 'required|min:3',
-            'birthdate' => 'required|date|before:tomorrow',
+            'birthdate' => 'required|date|before:-18 years',
             'gender' => 'required',
             'country' => 'required',
             'state' => 'required',
@@ -182,6 +182,8 @@ class SignupForm extends Component
                 Password::min(8)->letters()->mixedCase()->numbers()->symbols()->uncompromised(), //disabled for the meantime for development stage
             ],
             'password_confirmation' => 'required'
+        ], [
+            'birthdate.before' => 'You must be at least 18 years old.',
         ]);
     }
 
