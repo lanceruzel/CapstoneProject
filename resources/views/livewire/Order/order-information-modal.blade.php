@@ -49,7 +49,7 @@
 
                     <tr>
                         <td class="text-right pe-3 font-medium">Total:</td>
-                        <td>${{ $order->total }}</td>
+                        <td>${{ number_format($order->total, 2) }}</td>
                     </tr>
 
                     <tr>

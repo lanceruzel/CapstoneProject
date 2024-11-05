@@ -136,6 +136,10 @@ Route::group(['middleware' => 'role:admin'], function () {
         return view('livewire.Pages.admin-dashboard');
     })->name('admin.dashboard');
 
+    Route::get('/admin/user-management', function () {
+        return view('livewire.Pages.user-management');
+    })->name('admin.user-management');
+
     Route::get('/admin/store-registrations', function () {
         return view('livewire.Pages.store-registrations');
     })->name('admin.store-registrations');

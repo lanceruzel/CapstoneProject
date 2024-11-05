@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class User extends Authenticatable
 {
@@ -85,19 +86,11 @@ class User extends Authenticatable
     }
 
     public function storeInformation(){
-        if($this->role === UserType::Store || $this->role === UserType::Travelpreneur){
-            return $this->hasOne(StoreInformation::class);
-        }
-
-        return null;
+        return $this->hasOne(StoreInformation::class);
     }
 
     public function userInformation(){
-        if($this->role !== UserType::Store){
-            return $this->hasOne(UserInformation::class);
-        }
-
-        return null;
+        return $this->hasOne(UserInformation::class);
     }
 
     public function posts(){
@@ -128,6 +121,10 @@ class User extends Authenticatable
         return $this->hasMany(Order::class);
     }
 
+    public function ordered(){
+        return $this->hasMany(Order::class, 'seller_id');
+    }
+
     public function products(){
         return $this->hasMany(Product::class, 'seller_id');
     }
@@ -156,6 +153,18 @@ class User extends Authenticatable
         }
     }
 
+    public function totalAffiliateEarnings(){
+        return $this->affiliates->sum(function($affiliate) {
+            return $affiliate->total;
+        });
+    }
+
+    public function totalUnclaimedCommissions(){
+        return $this->affiliates->sum(function($affiliate) {
+            return $affiliate->unclaimed;
+        });
+    }
+
     public function hasRole($desiredRole){
         return $this->role === $desiredRole;
     }
@@ -170,7 +179,7 @@ class User extends Authenticatable
     }
 
     public function getTotalDeliveredOrders(){
-        return $this->orders()->where('status', Status::OrderBuyerReceived)->count();
+        return $this->ordered()->where('status', Status::OrderBuyerReceived)->count();
     }
 
     public function getTotalProducts(){

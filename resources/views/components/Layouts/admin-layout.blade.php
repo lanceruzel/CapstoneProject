@@ -68,6 +68,14 @@
                 </li> --}}
 
                 <li>
+                    @if(request()->routeIS('admin.user-management'))
+                        <x-button class='!justify-start font-medium' icon='folder' href="{{ route('admin.user-management') }}" solid flat full secondary label="User Management" />
+                    @else
+                        <x-button class='!justify-start font-medium' icon='folder' href="{{ route('admin.user-management') }}" flat full secondary label="User Management" /> 
+                    @endif
+                </li>
+
+                <li>
                     @if(request()->routeIS('admin.store-registrations'))
                         <x-button class='!justify-start font-medium' icon='folder' href="{{ route('admin.store-registrations') }}" solid flat full secondary label="Store Registrations" />
                     @else

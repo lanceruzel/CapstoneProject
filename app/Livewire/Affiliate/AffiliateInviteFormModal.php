@@ -52,7 +52,7 @@ class AffiliateInviteFormModal extends Component
                     return;
                 }
 
-                if(Affiliate::where('store_id', Auth::id())->where('promoter_id', $promoterId[0])->where('status', '<>', Status::Declined)->exists()){
+                if(Affiliate::where('store_id', Auth::id())->where('promoter_id', $promoterId)->where('status', '<>', Status::Declined)->exists()){
                     $this->dialog()->show([
                         'icon' => 'info',
                         'title' => 'Info!',
@@ -63,7 +63,7 @@ class AffiliateInviteFormModal extends Component
 
                 $affiliate = Affiliate::create([
                     'store_id' => Auth::id(),
-                    'promoter_id' => $promoterId[0],
+                    'promoter_id' => $promoterId,
                     'affiliate_code' => strtoupper($validated['affiliateCode']),
                     'rate' => $validated['commissionRate'],
                     'discount' => $validated['discount'],
@@ -71,7 +71,7 @@ class AffiliateInviteFormModal extends Component
                 ]);
 
                 if($affiliate){
-                    UserNotif::sendNotif($promoterId[0], 'You have received an affiliate invitation.', NotificationType::Affiliate);
+                    UserNotif::sendNotif($promoterId, 'You have received an affiliate invitation.', NotificationType::Affiliate);
 
                     $this->notification()->send([
                         'icon' => 'success',

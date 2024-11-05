@@ -62,7 +62,7 @@
                         
                         <div class="flex items-center justify-center text-sm">
                             <x-icon name="map-pin" class="w-5 h-5" />
-                            <span>{{ $product->origin }}</span>
+                            <span>{{ $product->origin_country . ', ' . $product->origin_state }}</span>
                         </div>
                     </div>
             
@@ -76,7 +76,9 @@
                             @if(count($variations) > 1)
                                 <x-button onclick="$openModal('variationSelectionModal')" wire:click="$dispatch('view-variations-info', { id: {{ $product->id }} })" label="Add to cart" />
                             @else
-                                <x-button wire:loading.attr="disabled" wire:click="store_toCart" spinner="store_toCart" label="Add to cart" />
+                                @if(auth()->user()->role != 'admin')
+                                    <x-button wire:loading.attr="disabled" wire:click="store_toCart" spinner="store_toCart" label="Add to cart" />
+                                @endif
                             @endif
                         @endif
                     </div>
@@ -95,8 +97,10 @@
                         <p class="text-lg font-medium">{{ $product->seller->name() }}</p>
                         
                         <div>
-                            <x-button flat label="Chat Now" href="{{ route('message', $product->seller->username) }}" />
-                            <x-button outline label="View Shop" href="{{ route('profile', $product->seller->username) }}" />
+                            @if(auth()->user()->role != 'admin')
+                                <x-button flat label="Chat Now" href="{{ route('message', $product->seller->username) }}" />
+                                <x-button outline label="View Shop" href="{{ route('profile', $product->seller->username) }}" />
+                            @endif
                         </div>
                     </div>
                 </div>
