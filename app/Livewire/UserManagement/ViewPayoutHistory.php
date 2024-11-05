@@ -12,6 +12,7 @@ class ViewPayoutHistory extends Component
 
     public $promoter;
     public $store;
+    public $payouts;
 
     protected $listeners = [
         'clearPayoutHistoryModal' => 'clearData',
@@ -21,20 +22,21 @@ class ViewPayoutHistory extends Component
     public function getData($promoter, $store){
         $this->promoter = $promoter;
         $this->store = $store;
+        $this->payouts = Payout::where('user_id', $this->promoter)
+        ->where('requested_to', $this->store)
+        // ->paginate(10)
+        ->get();
     }
 
     public function clearData(){
         $this->reset([
             'promoter',
-            'store'
+            'store',
+            'payouts'
         ]);
     }
 
     public function render(){
-        return view('livewire.UserManagement.view-payout-history', [
-            'payouts' => Payout::where('user_id', $this->promoter)
-                ->where('requested_to', $this->store)
-                ->paginate(10)
-        ]);
+        return view('livewire.UserManagement.view-payout-history');
     }
 }

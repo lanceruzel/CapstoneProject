@@ -12,6 +12,7 @@ class UserViewProducts extends Component
     use WithPagination;
 
     public $userId;
+    public $products;
 
     protected $listeners = [
         'clearViewProductsModal' => 'clearData',
@@ -25,13 +26,14 @@ class UserViewProducts extends Component
     public function getData($id)
     {
         $this->userId = $id;
-
+        $this->products = $this->getProducts();
     }
 
     public function clearData()
     {
         $this->reset([
             'userId',
+            'products'
         ]);
     }
 
@@ -39,7 +41,7 @@ class UserViewProducts extends Component
         $filter = $this->filterStatus;
 
         if(empty($filter)){
-            return Product::where('name', 'like', '%' . $this->search . '%')->where('seller_id', $this->userId)->orderBy('id', 'desc')->paginate(10);
+            return Product::where('name', 'like', '%' . $this->search . '%')->where('seller_id', $this->userId)->orderBy('id', 'desc')->get();
         }else{
             return Product::query()
             ->Where(function ($query) use($filter) {
@@ -50,13 +52,12 @@ class UserViewProducts extends Component
             ->where('seller_id', $this->userId)
             ->where('name', 'like', '%' . $this->search . '%')
             ->orderBy('id', 'desc')
-            ->paginate(10);
+            // ->paginate(10);
+            ->get();
         }
     }
 
     public function render(){
-        return view('livewire.UserManagement.user-view-products', [
-            'products' => $this->getProducts()
-        ]);
+        return view('livewire.UserManagement.user-view-products');
     }
 }

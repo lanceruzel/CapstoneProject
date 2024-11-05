@@ -76,10 +76,10 @@
                     </tbody>
                 </table>
         
-                <!-- Pagination -->
+                {{-- <!-- Pagination -->
                 <div class="w-full mt-5">
                     {{ $products->links() }}
-                </div>
+                </div> --}}
 
                 @if($products->count() <= 0)
                     <div class="flex flex-col items-center justify-center mt-5">

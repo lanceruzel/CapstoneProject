@@ -14,6 +14,7 @@ class UserViewOrders extends Component
 
     public $search = '';
     public $userId;
+    public $orders;
 
     protected $listeners = [
         'clearViewOrdersModal' => 'clearData',
@@ -23,11 +24,15 @@ class UserViewOrders extends Component
     public function getData($id)
     {
         $this->userId = $id;
+        $this->orders = $this->getOrders();
     }
 
     public function clearData()
     {
-        $this->reset('userId');
+        $this->reset([
+            'userId',
+            'orders'
+        ]);
     }
 
     public function getOrders(){
@@ -42,7 +47,8 @@ class UserViewOrders extends Component
             })
             ->where('seller_id', $this->userId)
             ->orderBy('id', 'desc')
-            ->paginate(10);
+            // ->paginate(10);
+            ->get();
         }else{
             return Order::query()
             ->Where(function ($query) use($filter) {
@@ -58,14 +64,13 @@ class UserViewOrders extends Component
                 });
             })
             ->orderBy('id', 'desc')
-            ->paginate(10);
+            // ->paginate(10);
+            ->get();
         }
     }
 
     public function render()
     {
-        return view('livewire.UserManagement.user-view-orders', [
-            'orders' => $this->getOrders()
-        ]);
+        return view('livewire.UserManagement.user-view-orders');
     }
 }

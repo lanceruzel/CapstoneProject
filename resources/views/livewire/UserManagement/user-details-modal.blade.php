@@ -114,7 +114,7 @@
                                     Total Fulfilled Orders
                                 </th>
                                 <td class="px-6 py-4 flex items-center gap-3">
-                                    <span>x{{ $user->getTotalDeliveredOrders() }}</span> <x-button flat label="View Orders" x-on:click="$openModal('viewOrdersModal')" wire:click="$dispatch('viewOrders', { id: {{ $user->id }} })"/>
+                                    <span>x{{ $user->ordered()->count() }}</span> <x-button flat label="View Orders" x-on:click="$openModal('viewOrdersModal')" wire:click="$dispatch('viewOrders', { id: {{ $user->id }} })"/>
                                 </td>
                             </tr>
 
@@ -264,7 +264,7 @@
                                     Total Fulfilled Orders
                                 </th>
                                 <td class="px-6 py-4 flex items-center gap-3">
-                                    <span>x{{ $user->getTotalDeliveredOrders() }}</span> <x-button flat label="View Orders" x-on:click="$openModal('viewOrdersModal')" wire:click="$dispatch('viewOrders', { id: {{ $user->id }} })"/>
+                                    <span>x{{ $user->ordered()->count() }}</span> <x-button flat label="View Orders" x-on:click="$openModal('viewOrdersModal')" wire:click="$dispatch('viewOrders', { id: {{ $user->id }} })"/>
                                 </td>
                             </tr>
 

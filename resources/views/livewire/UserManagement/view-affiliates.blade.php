@@ -29,39 +29,41 @@
                     <tbody>
                         @if($affiliates && $affiliates->count() > 0)
                             @foreach ($affiliates as $affiliate)
-                                <td class="px-6 py-4 text-center">
-                                    @if($mode == 'store')
-                                        {{ $affiliate->user->userInformation->fullname() }}
-                                    @else
-                                        {{ $affiliate->store->storeInformation->name }}
-                                    @endif
-                                </td>
-                                <td class="px-6 py-4 text-center">{{ $affiliate->affiliate_code }}</td>
-                                <td class="px-6 py-4 text-center">{{ $affiliate->discount }}%</td>
-                                <td class="px-6 py-4 text-center">{{ $affiliate->rate }}%</td>
-                                <td class="px-6 py-4 text-center">${{ number_format($affiliate->total, 2) }}</td>
-                                <td class="px-6 py-4 text-center">${{ number_format($affiliate->unclaimed, 2) }}</td>
-                                <td class="px-6 py-4 text-center">
-                                    @if($affiliate->status == App\Enums\Status::Active)
-                                        <x-badge flat positive label="Active" />
-                                    @elseif($affiliate->status == App\Enums\Status::Inactive)
-                                        <x-badge flat negative label="Inactive" />
-                                    @else
-                                        <x-badge flat warning label="{{ $affiliate->status }}" />
-                                    @endif
-                                </td>
-                                <td class="px-6 py-4 text-center">
-                                    <x-button flat label="Payout History" x-on:click="$openModal('payoutHistoryModal')" wire:click="$dispatch('viewPayout', { promoter: {{ $affiliate->promoter_id }}, store: {{ $affiliate->store_id }} })"/>
-                                </td>
+                                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-100">
+                                    <td class="px-6 py-4 text-center">
+                                        @if($mode == 'store')
+                                            {{ $affiliate->user->userInformation->fullname() }}
+                                        @else
+                                            {{ $affiliate->store->storeInformation->name }}
+                                        @endif
+                                    </td>
+                                    <td class="px-6 py-4 text-center">{{ $affiliate->affiliate_code }}</td>
+                                    <td class="px-6 py-4 text-center">{{ $affiliate->discount }}%</td>
+                                    <td class="px-6 py-4 text-center">{{ $affiliate->rate }}%</td>
+                                    <td class="px-6 py-4 text-center">${{ number_format($affiliate->total, 2) }}</td>
+                                    <td class="px-6 py-4 text-center">${{ number_format($affiliate->unclaimed, 2) }}</td>
+                                    <td class="px-6 py-4 text-center">
+                                        @if($affiliate->status == App\Enums\Status::Active)
+                                            <x-badge flat positive label="Active" />
+                                        @elseif($affiliate->status == App\Enums\Status::Inactive)
+                                            <x-badge flat negative label="Inactive" />
+                                        @else
+                                            <x-badge flat warning label="{{ $affiliate->status }}" />
+                                        @endif
+                                    </td>
+                                    <td class="px-6 py-4 text-center">
+                                        <x-button flat label="Payout History" x-on:click="$openModal('payoutHistoryModal')" wire:click="$dispatch('viewPayout', { promoter: {{ $affiliate->promoter_id }}, store: {{ $affiliate->store_id }} })"/>
+                                    </td>
+                                </tr>
                             @endforeach 
                         @endif
                     </tbody>
                 </table>
         
-                <!-- Pagination -->
+                {{-- <!-- Pagination -->
                 <div class="w-full mt-5">
                     {{ $affiliates->links() }}
-                </div>
+                </div> --}}
 
                 @if($affiliates->count() <= 0)
                     <div class="flex flex-col items-center justify-center mt-5">

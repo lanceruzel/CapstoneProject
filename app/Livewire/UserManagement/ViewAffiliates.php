@@ -12,6 +12,7 @@ class ViewAffiliates extends Component
 
     public $id;
     public $mode;
+    public $affiliates;
 
     protected $listeners = [
         'viewAffiliates' => 'getData',
@@ -21,20 +22,21 @@ class ViewAffiliates extends Component
     public function getData($id, $mode){
         $this->id = $id; 
         $this->mode = $mode; 
+
+        $this->affiliates = $this->mode == 'store' ? Affiliate::where('store_id', $this->id)->get() : Affiliate::where('promoter_id', $this->id)->get();
     }
 
     public function clearData(){
         $this->reset([
             'id',
-            'mode'
+            'mode',
+            'affiliates'
         ]);
     }
 
     public function render(){
-        $affiliate = $this->mode == 'store' ? Affiliate::where('store_id', $this->id)->paginate(10) : Affiliate::where('promoter_id', $this->id)->paginate(10);
+        
 
-        return view('livewire.UserManagement.view-affiliates', [
-            'affiliates' => $affiliate
-        ]);
+        return view('livewire.UserManagement.view-affiliates');
     }
 }

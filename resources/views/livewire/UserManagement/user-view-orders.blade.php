@@ -95,9 +95,9 @@
                 </table>
 
                 <!-- Pagination -->
-                <div class="w-full mt-5">
+                {{-- <div class="w-full mt-5">
                     {{ $orders->links() }}
-                </div>
+                </div> --}}
         
                 @if(count($orders) <= 0)
                     <div class="flex flex-col items-center justify-center mt-5">
