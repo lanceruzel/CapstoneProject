@@ -16,14 +16,18 @@
     <main class="w-screen h-screen">
         <div class="overflow-hidden h-full">
             <div class="relative flex items-center justify-center h-full w-full px-3 md:px-5 lg:px-10 z-60">
-                <div class="flex flex-col items-center justify-center max-lg:mt-40 text-center bg-white p-10 rounded shadow">
-                    <h1 class="text-xl font-semibold">Please verify your email through the email we've sent you.</h1>
-                    <p class="mt-5">Didn't get the email?</p>
-
-                    <form action="{{ route('verification.send') }}" method="POST">
+                <div class="flex flex-col items-center justify-center max-lg:mt-40 text-center bg-gray-50 p-12 rounded-lg shadow-lg space-y-6">
+                    <h1 class="text-2xl font-bold text-gray-800">Verify Your Email</h1>
+                    <p class="text-gray-600">Please check your inbox for a verification email and click the link to complete the process.</p>
+                    
+                    <p class="text-gray-500">Didn’t receive an email?</p>
+                    
+                    <form action="{{ route('verification.send') }}" method="POST" class="w-full max-w-xs">
                         @csrf
-                        <x-button class="mt-3" label="Send Again" type="submit" />
+                        <x-button class="w-full py-2 mt-2" label="Resend Email" type="submit" />
                     </form>
+                    
+                    <x-link label="Back to Login" class="text-blue-500 mt-2 hover:underline text-sm" href="{{ route('signout') }}" />
                 </div>
 
                 <div class="absolute top-0 w-full h-full max-w-[1500px] z-[-10] object-auto">
