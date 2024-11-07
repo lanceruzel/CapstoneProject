@@ -6,6 +6,8 @@ use App\Enums\Status;
 use App\Enums\UserType;
 use App\Models\StoreInformation;
 use App\Models\User;
+use Illuminate\Auth\Events\Registered;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\Rules\Password;
@@ -110,16 +112,12 @@ class StoreSignupForm extends Component
                         'icon' => 'info',
                         'title' => 'Info!',
                         'description' => 'Your account has been successfully created. We may require you for further details of your store owner as you register your store in our system.',
-                        'onClose' => [
-                                'method' => 'redirectToSignin',
-                            ],
-                            'onDismiss' => [
-                                'method' => 'redirectToSignin',
-                            ],
-                            'onTimeout' => [
-                                'method' => 'redirectToSignin',
-                            ],
                     ]);
+
+                    Auth::login($account);
+                    event(new Registered($account));
+                    
+                    return redirect()->route('verification.notice');
                 }else{
                     // Delete the user row
                     User::destroy($account->id);

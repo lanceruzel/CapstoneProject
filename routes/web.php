@@ -5,6 +5,8 @@ use App\Models\Livestream;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
+use Illuminate\Http\Request;
 
 Route::group(['middleware' => 'guest'], function () {
     Route::get('/signin', function () {
@@ -35,7 +37,7 @@ Route::get('/signout', function () {
     return redirect()->route('login');
 })->middleware('auth')->name('signout');
 
-Route::group(['middleware' => 'role:store,travelpreneur,content-creator'], function () {
+Route::group(['middleware' => ['role:store,travelpreneur,content-creator', 'verified']], function () {
     Route::get('/', function () {
         return view('livewire.Pages.home');
     })->name('home');
@@ -157,7 +159,7 @@ Route::group(['middleware' => 'role:admin'], function () {
     })->name('admin.report-appeals');
 });
 
-Route::group(['middleware' => 'role:store,travelpreneur'], function () {
+Route::group(['middleware' => ['role:store,travelpreneur', 'verified']], function () {
     Route::get('/store/dashboard', function () {
         return view('livewire.Pages.store-dashboard');
     })->name('store.dashboard');
@@ -187,3 +189,19 @@ Route::group(['middleware' => 'role:store,travelpreneur'], function () {
     })->name('store.payouts');
 });
 
+Route::get('/email/verify', function () {
+    return view('livewire.Pages.auth.verify-email');
+})->middleware('auth')->name('verification.notice');
+
+Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
+    $request->fulfill();
+ 
+    // return redirect('/');
+    return view('livewire.Pages.auth.verified-email');
+})->middleware(['auth', 'signed'])->name('verification.verify');
+
+Route::post('/email/verification-notification', function (Request $request) {
+    $request->user()->sendEmailVerificationNotification();
+ 
+    return back()->with('message', 'Verification link sent!');
+})->middleware(['auth', 'throttle:6,1'])->name('verification.send');

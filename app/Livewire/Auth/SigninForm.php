@@ -33,6 +33,11 @@ class SigninForm extends Component
                 }
 
                 CurrencyConverter::loadCurrencyData();
+
+                if(auth()->user()->email_verified_at == null){
+                    return redirect()->route('verification.notice');
+                }
+
                 return redirect()->route('home');
             }else{
                 session()->flash('fail', 'These credentials do not match our records.');

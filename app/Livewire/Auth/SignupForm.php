@@ -7,6 +7,8 @@ use App\Models\User;
 use App\Models\UserInformation;
 use App\Enums\UserType;
 use App\Models\StoreInformation;
+use Illuminate\Auth\Events\Registered;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\Rules\Password;
@@ -126,7 +128,7 @@ class SignupForm extends Component
                         $storeInformation = $this->insertStoreInformation($account, $validated);
 
                         if($storeInformation){
-                            return redirect()->route('login')->with('success', 'Your account has been successfully created.'); 
+                            // return redirect()->route('login')->with('success', 'Your account has been successfully created.'); 
                         }else{
                             // Delete the user row
                             User::destroy($account->id);
@@ -136,8 +138,13 @@ class SignupForm extends Component
                         }       
 
                     }else{
-                        return redirect()->route('login')->with('success', 'Your account has been successfully created.');
+                        // return redirect()->route('login')->with('success', 'Your account has been successfully created.');
                     }
+
+                    Auth::login($account);
+                    event(new Registered($account));
+                    
+                    return redirect()->route('verification.notice');
                 }else{
                     // Delete the user row
                     User::destroy($account->id);
