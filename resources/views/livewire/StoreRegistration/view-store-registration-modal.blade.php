@@ -39,7 +39,7 @@
                             <td class="text-center py-3">
                                 @switch($key)
                                     @case('validId')
-                                        Valid ID
+                                        Valid ID (<span class="font-semibold underline underline-offset-2">{{ $requirement->type }}</span>)
                                         @break
 
                                     @case('businessPermit')

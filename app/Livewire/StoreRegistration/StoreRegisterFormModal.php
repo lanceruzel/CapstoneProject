@@ -41,6 +41,7 @@ class StoreRegisterFormModal extends Component
     public $countryData = [];
     public $countryOptions;
     public $stateOptions;
+    public $validIdType;
 
     protected $listeners = [
         'clearstoreRegistrationData' => 'clearData',
@@ -125,7 +126,7 @@ class StoreRegisterFormModal extends Component
 
     public function store(){
         $validated = $this->formValidate();
-
+        
         $storeInformation = $this->user->storeInformation;
 
         if($this->savedRequirements->status == Status::ForSubmission){
@@ -154,6 +155,10 @@ class StoreRegisterFormModal extends Component
     public function updateRequirements($id, $validated){
         foreach (array_slice((array) $this->savedRequirements, 0, -2) as $key => $requirement) {
             if($this->savedRequirements->$key->status != Status::Accepted){
+                if($key == 'validId'){
+                    $this->savedRequirements->$key->type = $validated['validIdType'];
+                }
+
                 $this->savedRequirements->$key->file_path = $this->storeDocument($id, $validated[$key]);
                 $this->savedRequirements->$key->status = Status::ForReview;
             }
@@ -179,6 +184,10 @@ class StoreRegisterFormModal extends Component
 
             foreach (array_slice((array) $this->savedRequirements, 0, -2) as $key => $requirement) {
                 if($requirement->status == Status::Declined || $requirement->status == '' || $requirement->status == null) {
+                    if($key == 'validId'){
+                        $rules['validIdType'] = 'required';
+                    }
+
                     $rules[$key] = 'required|mimes:pdf,png,jpg,jpeg,doc,docx';
                 }
             }
@@ -195,6 +204,10 @@ class StoreRegisterFormModal extends Component
 
             foreach (array_slice((array) $this->savedRequirements, 0, -2) as $key => $requirement) {
                 if($requirement->status == Status::Declined) {
+                    if($key == 'validId'){
+                        $rules['validIdType'] = 'required';
+                    }
+
                     $rules[$key] = 'required|mimes:pdf,png,jpg,jpeg,doc,docx';
                 }
             }

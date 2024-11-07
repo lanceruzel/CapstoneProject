@@ -217,6 +217,7 @@ class SignupForm extends Component
     public function storeRequirementsFormat(){
         $format = [
             'validId' => [
+                'type' => '',
                 'file_path' => '',
                 'status' => '',
             ],
