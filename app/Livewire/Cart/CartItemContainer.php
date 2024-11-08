@@ -23,45 +23,50 @@ class CartItemContainer extends Component
     public $status = null;
     public $stocksAvailable = 0;
 
-    public function mount($id){
+    public function mount($id) {
         $this->cartItem = CartItem::findOrFail($id);
         $this->quantity = $this->cartItem->quantity;
-        
+    
         $variations = json_decode($this->cartItem->product->variations);
-
-        if($this->cartItem->product->status == Status::Suspended){
+        $variationFound = false;
+    
+        if ($this->cartItem->product->status == Status::Suspended) {
             $this->status = 'Currently Suspended';
-        }else{
-            foreach($variations as $variation){
-                if($variation->name == $this->cartItem->variation){
+        } else {
+            foreach ($variations as $variation) {
+                if (strtolower($variation->name) == strtolower($this->cartItem->variation)) {
+                    $variationFound = true;
                     $this->stocksAvailable = $variation->stocks;
-
-                    if($this->quantity > $variation->stocks){
+    
+                    // Adjust quantity if it exceeds available stocks
+                    if ($this->quantity > $variation->stocks) {
                         $this->cartItem->quantity = $variation->stocks;
                         $this->cartItem->save();
                     }
-
+    
                     $this->price = $variation->price;
-                    
-                    if($variation->stocks == 0){
+
+                    if ($variation->stocks == 0) {
                         $this->status = 'Stocks unavailable';
                     }
-
-                    break;
-                }else{
-                    $this->status = 'Variation not found';
-                    break;
+    
+                    break; 
                 }
+            }
+    
+            if (!$variationFound) {
+                $this->status = 'Variation not found';
             }
         }
 
-        if($this->status == null){
+        if ($this->status == null) {
             $this->isForCheckout = $this->cartItem->for_checkout == 1 ? true : false;
-        }else{
+        } else {
             $this->cartItem->for_checkout = 0;
             $this->cartItem->save();
         }
     }
+    
 
     public function addQuantity(){
         if($this->cartItem->quantity >= $this->stocksAvailable){

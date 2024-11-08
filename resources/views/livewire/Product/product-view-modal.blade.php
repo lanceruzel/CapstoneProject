@@ -82,7 +82,7 @@
                             @if(count($variations) > 1)
                                 <x-button onclick="$openModal('variationSelectionModal')" wire:click="$dispatch('view-variations-info', { id: {{ $product->id }} })" label="Add to cart" />
                             @else
-                                <x-alert title="No stocks available" warning />
+                                <x-button wire:click="store_toCart" label="Add to cart" />
                             @endif
                         @endif
                     </div>
