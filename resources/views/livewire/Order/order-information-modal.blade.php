@@ -1,99 +1,164 @@
 <x-modal-card name="orderViewModal" title="Order Information" align='center' x-cloak x-on:close="$dispatch('clearOrderViewModalData')" blurless wire:ignore.self>  
     @if($order)
         <div class="flex flex-col gap-2 items-start text-gray-600 overflow-auto">
-            <p class="font-bold pt-5 w-full text-center">Order Information</p>
-
-            <table class="table-auto w-full border-spacing-y-4 text-left">
-                <tbody>
+ 
+            <div class="relative overflow-x-auto w-full">
+                <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                     <tr>
-                        <td class="text-right pe-3 font-medium">Order Number:</td>
-                        <td>{{ $order->id }}</td>
+                        <th scope="col" class="px-6 py-3">
+                            Information
+                        </th>
                     </tr>
+                </thead>
 
-                    <tr>
-                        <td class="text-right pe-3 font-medium">Name:</td>
-                        <td>{{ $order->name }}</td>
-                    </tr>
-
-                    <tr>
-                        <td class="text-right pe-3 font-medium">Address:</td>
-                        <td>{{ $order->address }}</td>
-                    </tr>
-
-                    <tr>
-                        <td class="text-right pe-3 font-medium">Postal Code:</td>
-                        <td>{{ $order->postal }}</td>
-                    </tr>
-                    
-                    <tr>
-                        <td class="text-right pe-3 font-medium">Contact Number:</td>
-                        <td>{{ $order->contact }}</td>
-                    </tr>
-
-                    <tr>
-                        <td class="text-right pe-3 font-medium">Payment Method:</td>
-                        <td>{{ $order->payment_method == 'COD' ? 'Cash on Delivery' : 'PayPal' }} {{ $order->payment_method == 'PayPal' ? '(Reference #:' . $order->referenceNumber . ')' : null }}</td>
-                    </tr>
-
-                    @if($order->referenceNumber)
-                        <tr>
-                            <td class="text-right pe-3 font-medium">Payment Reference Number:</td>
-                            <td>{{ $order->referenceNumber }}</td>
+                <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                    <tbody>
+                        <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                            <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                Order Number
+                            </th>
+                            <td class="px-6 py-4">
+                                {{ $order->id }}
+                            </td>
                         </tr>
-                    @endif
-
-                    <tr>
-                        <td class="text-right pe-3 font-medium">Payment Status:</td>
-                        <td>{{ $order->is_paid ? 'Paid' : 'Not Yet Paid' }}</td>
-                    </tr>
-
-                    <tr>
-                        <td class="text-right pe-3 font-medium">Total:</td>
-                        <td>${{ number_format($order->total, 2) }}</td>
-                    </tr>
-
-                    <tr>
-                        <td class="text-right pe-3 font-medium">Applied Affiliate Code:</td>
-                        <td>{{ $order->affiliate_code ? $order->affiliate_code : 'None' }}</td>
-                    </tr>
-
-                    <tr>
-                        <td class="text-right pe-3 font-medium">Commission:</td>
-                        <td>{{ $order->commission ? '$'. $order->commission : 'None' }}</td>
-                    </tr>
-
-                    <tr>
-                        <td class="text-right pe-3 font-medium">Deducted Total:</td>
-                        <td class="font-semibold">
-                            @if($order->commission)
-                                <span>${{ $order->total - $order->commission }}</span>
-                            @else
-                                <span>${{ $order->total }}</span>
-                            @endif
-                        </td>
-                    </tr>
-
-                    @if($order->status == App\Enums\Status::OrderSellerShipped)
-                        <tr>
-                            <td></td>
-                            <td></td>
+    
+                        <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                            <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                Name
+                            </th>
+                            <td class="px-6 py-4">
+                                {{ $order->name }}
+                            </td>
                         </tr>
-
-                        <tr>
-                            <td class="text-right pe-3 font-medium">Courrier:</td>
-                            <td>{{ $order->courrier }}</td>
+    
+                        <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                            <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                Address
+                            </th>
+                            <td class="px-6 py-4">
+                                {{ $order->address }}
+                            </td>
                         </tr>
-
-                        <tr>
-                            <td class="text-right pe-3 font-medium">Tracking Number:</td>
-                            <td>{{ $order->tracking_number }}</td>
+    
+                        <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                            <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                Postal Code
+                            </th>
+                            <td class="px-6 py-4">
+                                {{ $order->postal }}
+                            </td>
                         </tr>
-                    @endif
-                </tbody>
-            </table>
+                        
+                        <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                            <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                Contact Number
+                            </th>
+                            <td class="px-6 py-4">
+                                {{ $order->contact }}
+                            </td>
+                        </tr>
+    
+                        <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                            <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                Payment Method
+                            </th>
+                            <td class="px-6 py-4">
+                                {{ $order->payment_method == 'COD' ? 'Cash on Delivery' : 'PayPal' }} {{ $order->payment_method == 'PayPal' ? '(Reference #:' . $order->referenceNumber . ')' : null }}
+                            </td>
+                        </tr>
+    
+                        @if($order->referenceNumber)
+                            <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                                <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                    Payment Reference Number
+                                </th>
+                                <td class="px-6 py-4">
+                                    {{ $order->referenceNumber }}
+                                </td>
+                            </tr>
+                        @endif
+    
+                        <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                            <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                Payment Status
+                            </th>
+                            <td class="px-6 py-4">
+                                {{ $order->is_paid ? 'Paid' : 'Pending' }}
+                            </td>
+                        </tr>
+    
+                        <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                            <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                Total
+                            </th>
+                            <td class="px-6 py-4">
+                                ${{ number_format($order->total, 2) }}
+                            </td>
+                        </tr>
+    
+                        <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                            <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                Applied Affiliate Code
+                            </th>
+                            <td class="px-6 py-4">
+                                {{ $order->affiliate_code ? $order->affiliate_code : 'None' }}
+                            </td>
+                        </tr>
+    
+                        <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                            <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                Commission
+                            </th>
+                            <td class="px-6 py-4">
+                                {{ $order->commission ? '$'. $order->commission : 'None' }}
+                            </td>
+                        </tr>
+    
+                        <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                            <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                Deducted Total
+                            </th>
+                            <td class="px-6 py-4">
+                                @if($order->commission)
+                                    <span>${{ number_format($order->total - $order->commission, 2) }}</span>
+                                @else
+                                    <span>${{ number_format($order->total, 2) }}</span>
+                                @endif
+                            </td>
+                        </tr>
+    
+                        @if($order->status == App\Enums\Status::OrderSellerShipped)
+                            <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                                <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                </th>
+                                <td class="px-6 py-4">
+                                </td>
+                            </tr>
+    
+                            <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                                <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                    Courrier
+                                </th>
+                                <td class="px-6 py-4">
+                                    {{ $order->courrier }}
+                                </td>
+                            </tr>
+    
+                            <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                                <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                    Tracking Number
+                                </th>
+                                <td class="px-6 py-4">
+                                    {{ $order->tracking_number }}
+                                </td>
+                            </tr>
+                        @endif
+                    </tbody>
+                </table>
+            </div>
 
             @if($order->status == App\Enums\Status::OrderSellerPreparing)
-                <div class="w-full grid grid-cols-12 gap-3">
+                <div class="w-full grid grid-cols-12 gap-3 mt-3">
                     <x-select class="col-span-12 lg:col-span-4" label="Courrier" wire:model="courrier" placeholder="Select Courrier" :options="$listOfCourriers" searchable shadowless />
                     <x-input class="col-span-12 lg:col-span-8" label="Tracking Number" wire:model='trackingNumber' shadowless/>
                 </div>
@@ -120,7 +185,23 @@
                                     <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-100">
                                         <td class="px-6 py-4">{{ $item->product->name }}</td>
                                         <td class="px-6 py-4">{{ $item->variation }}</td>
-                                        <td class="px-6 py-4 text-center">x{{ $item->product->getStocks($item->variation) }}</td>
+                                        <td class="px-6 py-4 text-center">
+                                            @php
+                                                $stocks = $item->product->getStocks($item->variation);
+                                            @endphp
+
+                                            @if($stocks >= 100)
+                                                <x-badge flat positive label="x{{ $stocks }}" />
+                                            @elseif($stocks >= 50 && $stocks < 100)
+                                                <x-badge flat lime label="x{{ $stocks }}" />
+                                            @elseif($stocks >= 25 && $stocks < 50)
+                                                <x-badge flat amber label="x{{ $stocks }}" />
+                                            @elseif($stocks >= 10 && $stocks < 25)
+                                                <x-badge flat pink label="x{{ $stocks }}" />
+                                            @else
+                                                <x-badge flat negative label="x{{ $stocks }}" />
+                                            @endif
+                                        </td>
                                         <td class="px-6 py-4 text-center">x{{ $item->quantity }}</td>
                                         <td class="px-6 py-4 text-center">${{ number_format($item->subtotal, 2) }}</td>
                                     </tr>

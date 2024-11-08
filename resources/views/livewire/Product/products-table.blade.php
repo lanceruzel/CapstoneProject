@@ -71,7 +71,23 @@
                                     {{ $product->status }}
                                 @endif
                             </td>
-                            <td class="px-6 py-4">x{{ $product->totalStocks() }}</td>
+                            <td class="px-6 py-4">
+                                @php
+                                    $stocks = $product->totalStocks();
+                                @endphp
+
+                                @if($stocks >= 100)
+                                    <x-badge flat positive label="x{{ $stocks }}" />
+                                @elseif($stocks >= 50 && $stocks < 100)
+                                    <x-badge flat lime label="x{{ $stocks }}" />
+                                @elseif($stocks >= 25 && $stocks < 50)
+                                    <x-badge flat amber label="x{{ $stocks }}" />
+                                @elseif($stocks >= 10 && $stocks < 25)
+                                    <x-badge flat pink label="x{{ $stocks }}" />
+                                @else
+                                    <x-badge flat negative label="x{{ $stocks }}" />
+                                @endif
+
                             <td class="px-6 py-4">{{ $product->priceRange() }}</td>
                             <td class="px-6 py-4">
                                 @if($product->status == App\Enums\Status::Suspended)

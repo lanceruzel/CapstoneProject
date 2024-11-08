@@ -66,7 +66,9 @@
                         </div>
                     </div>
             
-                    @if($totalStocks < 20)
+                    @if($totalStocks <= 10)
+                        <x-alert title="Stocks available x{{ $totalStocks }}" warning />
+                    @elseif($totalStocks < 20)
                         <x-alert title="Low Stocks" warning />
                     @endif
 

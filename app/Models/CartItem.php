@@ -60,6 +60,12 @@ class CartItem extends Model
             $groupedItems[$sellerName]['products'][] = $item;
         }
 
+        foreach ($groupedItems as $sellerName => &$group) {
+            usort($group['products'], function ($a, $b) {
+                return $a->product->created_at <=> $b->product->created_at; // Ascending order
+            });
+        }
+
         return $groupedItems;
     }
 

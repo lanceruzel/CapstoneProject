@@ -39,13 +39,13 @@
                         (quantity >= 2) ? this.quantity-- : this.quantity
                     }
                 }">
-                    <x-mini-button rounded icon="minus" white interaction="white" x-on:click="(quantity >= 2) ? quantity-- : quantity"/>
+                    <x-mini-button rounded icon="minus" x-on:click="(quantity >= 2) ? quantity-- : quantity"/>
         
                     <span>x 
                         <span x-text="quantity"></span> 
                     </span>
 
-                    <x-mini-button rounded icon="plus" white interaction="white" x-on:click="quantity++"/>
+                    <x-mini-button rounded icon="plus" x-on:click="quantity++"/>
                 </div>
             @endif
 
