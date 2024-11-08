@@ -1,6 +1,6 @@
 <tr class="bg-white">
     <td class="px-6 py-4">
-        @if($exists)
+        @if($status == null)
             <x-checkbox wire:model='isForCheckout' md wire:click="toggleIsForCheckout" />
         @else
             <x-checkbox wire:model='isForCheckout' md disabled />
@@ -16,33 +16,16 @@
     <td class="py-4 align-top">
         <div class="flex flex-col items-start justify-start pt-1 min-w-[300px] max-w-[300px]">
             <div class="font-semibold break-words">
-                @if($suspended)
-                    <span class="line-through">{{ $cartItem->product->name }}</span> - SUSPENDED
-                @else
-                    <span>{{ $cartItem->product->name }}</span>
-                @endif
+                <span>{{ $cartItem->product->name }}</span>
             </div>
     
             <p class="text-sm text-gray-600">
-                Variation:
-                @if(!$exists)
-                    Not found
-                @else
-                    {{ $cartItem->variation }}
-                @endif
+                <span class="font-medium">Variation: </span>{{ $cartItem->variation }}
             </p>
 
-            <div class="text-sm text-gray-600 flex items-center justify-center gap-1">
-                <span>Availability: </span>
-
-                <span>
-                    @if($available)
-                        <x-mini-badge positive icon="check" />
-                    @else
-                        <x-mini-badge negative icon="x-mark" />
-                    @endif
-                </span>
-            </div>
+            @if($status != null)
+                <x-badge flat negative class="mt-2" label="{{ $status }}" />
+            @endif
         </div>
     </td>
 
@@ -58,25 +41,19 @@
                 (quantity >= 2) ? this.quantity-- : this.quantity
             }
         }">
-        @if($suspended || !$available || !$exists)
-            <x-mini-button rounded icon="minus" sm disabled />
+            @if($status == null)
+                <x-mini-button rounded icon="minus" sm wire:click='minusQuantity'/>
 
-            <p>x 
-                <span x-text="quantity"></span> 
-            </p>
+                <p>x<span x-text="quantity"></span></p>
 
-            <x-mini-button rounded icon="plus" sm disabled />
-        @else
-            <x-mini-button rounded icon="minus" sm wire:click='minusQuantity'/>
+                <x-mini-button rounded icon="plus" sm wire:click='addQuantity'/>
+            @else
+                <x-mini-button rounded icon="minus" sm disabled />
 
-            <p>x 
-                <span x-text="quantity"></span> 
-            </p>
+                <p>x0</p>
 
-            <x-mini-button rounded icon="plus" sm wire:click='addQuantity'/>
-        @endif
-
-            
+                <x-mini-button rounded icon="plus" sm disabled />
+            @endif
         </div>
     </td>
 

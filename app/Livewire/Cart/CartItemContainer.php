@@ -20,6 +20,7 @@ class CartItemContainer extends Component
     public $exists = false;
     public $available = false;
     public $suspended = false;
+    public $status = null;
 
     public function mount($id){
         $this->cartItem = CartItem::findOrFail($id);
@@ -27,29 +28,30 @@ class CartItemContainer extends Component
         
         $variations = json_decode($this->cartItem->product->variations);
 
-        foreach($variations as $variation){
-            if($variation->name == $this->cartItem->variation){
-                $this->exists = true;
-                $this->price = $variation->price;
+        if($this->cartItem->product->status == Status::Suspended){
+            $this->status = 'Currently Suspended';
+        }else{
+            foreach($variations as $variation){
+                if($variation->name == $this->cartItem->variation){
+                    $this->price = $variation->price;
+                    
+                    if($variation->stocks < $this->quantity){
+                        $this->status = 'Stocks unavailable';
+                    }
 
-                if($variation->stocks >= $this->quantity){
-                    $this->available = true;
-                }
-
-                if($this->cartItem->product->status == Status::Suspended){
-                    $this->suspended = true;
-                    $this->available = false;
-                    $this->exists = false;
+                    break;
+                }else{
+                    $this->status = 'Variation not found';
                 }
             }
         }
 
-        if(!$this->exists || !$this->available || $this->suspended){
+        if($this->status == null){
+            $this->isForCheckout = $this->cartItem->for_checkout == 1 ? true : false;
+        }else{
             $this->cartItem->for_checkout = 0;
             $this->cartItem->save();
         }
-
-        $this->isForCheckout = $this->cartItem->for_checkout == 1 ? true : false;
     }
 
     public function addQuantity(){
