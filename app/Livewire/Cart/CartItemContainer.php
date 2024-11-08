@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Cart;
 
+use App\Enums\Status;
 use App\Models\CartItem;
 use Livewire\Component;
 use WireUi\Traits\WireUiActions;
@@ -16,6 +17,9 @@ class CartItemContainer extends Component
     public $isForCheckout;
 
     public $price;
+    public $exists = false;
+    public $available = false;
+    public $suspended = false;
 
     public function mount($id){
         $this->cartItem = CartItem::findOrFail($id);
@@ -25,8 +29,24 @@ class CartItemContainer extends Component
 
         foreach($variations as $variation){
             if($variation->name == $this->cartItem->variation){
+                $this->exists = true;
                 $this->price = $variation->price;
+
+                if($variation->stocks >= $this->quantity){
+                    $this->available = true;
+                }
+
+                if($this->cartItem->product->status == Status::Suspended){
+                    $this->suspended = true;
+                    $this->available = false;
+                    $this->exists = false;
+                }
             }
+        }
+
+        if(!$this->exists || !$this->available || $this->suspended){
+            $this->cartItem->for_checkout = 0;
+            $this->cartItem->save();
         }
 
         $this->isForCheckout = $this->cartItem->for_checkout == 1 ? true : false;
