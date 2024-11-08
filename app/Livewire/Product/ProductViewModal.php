@@ -43,7 +43,7 @@ class ProductViewModal extends Component
         $this->variations = json_decode($this->product->variations);
 
         foreach($this->variations as $variation){
-            $this->totalStocks += $variation->stocks;
+            $this->totalStocks += (int) $variation->stocks;
         }
     }
 
