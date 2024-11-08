@@ -37,7 +37,7 @@ class AddStockFormModal extends Component
         $rules = [];
 
         foreach($this->variations as $key => $i){
-            $rules["stocks.$key.stocks"] = 'numeric|min:1|max:9999';
+            $rules["stocks.$key.stocks"] = 'nullable|numeric|min:1|max:9999';
         }   
 
         return $this->validate($rules);
