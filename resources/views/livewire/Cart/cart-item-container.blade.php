@@ -8,7 +8,7 @@
     </td>
 
     <td class="px-6 py-4">
-        <div class="rounded-lg w-28 h-28" wire:ignore>
+        <div class="rounded-lg w-20 h-20" wire:ignore>
             <img src="{{ asset('uploads/products') . '/' . json_decode($cartItem->product->images)[0] }}" class="w-full h-full object-cover object-center rounded-t-lg" alt="...">
         </div>
     </td>
@@ -58,17 +58,29 @@
                 (quantity >= 2) ? this.quantity-- : this.quantity
             }
         }">
-            <x-mini-button rounded icon="minus" sm white interaction="white" wire:click='minusQuantity'/>
+        @if($suspended || !$available || !$exists)
+            <x-mini-button rounded icon="minus" sm disabled />
 
             <p>x 
                 <span x-text="quantity"></span> 
             </p>
 
-            <x-mini-button rounded icon="plus" sm white interaction="white" wire:click='addQuantity'/>
+            <x-mini-button rounded icon="plus" sm disabled />
+        @else
+            <x-mini-button rounded icon="minus" sm wire:click='minusQuantity'/>
+
+            <p>x 
+                <span x-text="quantity"></span> 
+            </p>
+
+            <x-mini-button rounded icon="plus" sm wire:click='addQuantity'/>
+        @endif
+
+            
         </div>
     </td>
 
     <td class="-mr-1 px-6 py-4">
-        <x-mini-button rounded icon="trash" flat gray interaction="negative" wire:click='deleteCartItem' />
+        <x-mini-button rounded icon="trash" negative wire:click='deleteCartItem' />
     </td>
 </tr>
