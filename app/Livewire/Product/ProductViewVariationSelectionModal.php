@@ -39,6 +39,15 @@ class ProductViewVariationSelectionModal extends Component
             'quantity' => 'required',
         ]);
 
+        if($this->selectedVariation == null){
+            $this->notification()->send([
+                'icon' => 'info',
+                'title' => 'Info!',
+                'description' => 'Please select a variation.',
+            ]);
+            return;
+        }
+
         if(!$this->isStockAvailable()){
             $this->notification()->send([
                 'icon' => 'error',
@@ -113,6 +122,8 @@ class ProductViewVariationSelectionModal extends Component
 
     public function clearData(){
         $this->variations = null;
+        $this->selectedVariation = null;
+        $this->quantity = 1;
     }
 
     public function render()

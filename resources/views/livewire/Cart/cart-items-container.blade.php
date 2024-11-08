@@ -9,7 +9,7 @@
                 <table class="w-full">
                     <tbody class="divide-y">
                         @foreach ($checkedOutSeller['products'] as $key => $product)
-                            <livewire:Cart.cart-item-container :id="$product->id" wire:key="{{ $key }}-cart-{{ $product->id }}"/>
+                            <livewire:Cart.cart-item-container :id="$product->id" wire:key="{{ $sellerName }}-{{ $key }}-cart-{{ $product->id }}"/>
                         @endforeach
                     </tbody>
                 </table>
