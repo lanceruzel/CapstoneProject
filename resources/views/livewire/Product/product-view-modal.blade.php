@@ -66,19 +66,21 @@
                         </div>
                     </div>
             
+                    @if($totalStocks < 20)
+                        <x-alert title="Low Stocks" warning />
+                    @endif
+
                     <div class="flex flex-col justify-star">
                         <p class="pb-2">Description: </p>
                         <div class="text-wrap min-h-[250px] max-h-[250px] overflow-hidden overflow-y-auto rounded-sm break-words whitespace-pre-wrap">{!! $product->description !!}</div>
                     </div>
                     
                     <div class="flex max-lg:justify-center lg:justify-end items-center gap-3">
-                        @if(auth()->user()->role != UserType::Store)
+                        @if(auth()->user()->role != UserType::Store && auth()->user()->role != 'admin')
                             @if(count($variations) > 1)
                                 <x-button onclick="$openModal('variationSelectionModal')" wire:click="$dispatch('view-variations-info', { id: {{ $product->id }} })" label="Add to cart" />
                             @else
-                                @if(auth()->user()->role != 'admin')
-                                    <x-button wire:loading.attr="disabled" wire:click="store_toCart" spinner="store_toCart" label="Add to cart" />
-                                @endif
+                                <x-alert title="No stocks available" warning />
                             @endif
                         @endif
                     </div>

@@ -39,6 +39,15 @@ class ProductViewVariationSelectionModal extends Component
             'quantity' => 'required',
         ]);
 
+        if(!$this->isStockAvailable()){
+            $this->notification()->send([
+                'icon' => 'error',
+                'title' => 'Insufficient Stock',
+                'description' => 'The selected quantity exceeds available stock.',
+            ]);
+            return;
+        }
+
         try{
             $existingCartItem = CartItem::where('user_id', Auth::id())->where('product_id', $this->product->id)->where('variation', $this->selectedVariation)->first();
 
@@ -89,6 +98,17 @@ class ProductViewVariationSelectionModal extends Component
 
             Log::error('Error AffiliateInvite: ' . $e->getMessage());
         }
+    }
+
+    public function isStockAvailable(){
+        if($this->selectedVariation){
+            foreach($this->variations as $variation){
+                if($variation->name === $this->selectedVariation && $variation->stocks >= $this->quantity){
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     public function clearData(){

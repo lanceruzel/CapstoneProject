@@ -29,6 +29,7 @@ class ProductViewModal extends Component
     public $origin;
 
     public $currencyData = [];
+    public $totalStocks;
 
     protected $listeners = [
         'view-product-info' => 'getData',
@@ -40,6 +41,10 @@ class ProductViewModal extends Component
         $this->images = json_decode($this->product->images);
 
         $this->variations = json_decode($this->product->variations);
+
+        foreach($this->variations as $variation){
+            $this->totalStocks += $variation->stocks;
+        }
     }
 
     public function clearData(){
@@ -49,6 +54,7 @@ class ProductViewModal extends Component
             'description',
             'variations',
             'origin',
+            'totalStocks'
         ]);
 
         $this->product = null;

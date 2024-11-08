@@ -26,27 +26,31 @@
             @if($status != null)
                 <x-badge flat negative class="mt-2" label="{{ $status }}" />
             @endif
+
+            @if($stocksAvailable > 0 && $stocksAvailable <= 20)
+                <x-badge flat warning class="mt-2" label="Stocks available x{{ $stocksAvailable }}" />
+            @endif
         </div>
     </td>
 
     <td class="px-3 py-4 text-center min-w-[150px] max-w-[150px]">{{ App\Classes\CurrencyConverter::formatPrice($price * $cartItem->quantity) }}</td>
 
     <td class="px-6 py-4">
-        <div class="flex items-center gap-x-3 p-3 justify-center w-[160px]" x-data="{
-            quantity: @entangle('quantity'),
-            plus() { 
-                this.quantity++ 
-            },
-            minus() { 
-                (quantity >= 2) ? this.quantity-- : this.quantity
-            }
-        }">
+        <div class="flex items-center gap-x-3 p-3 justify-center w-[160px]">
             @if($status == null)
-                <x-mini-button rounded icon="minus" sm wire:click='minusQuantity'/>
+                @if($cartItem->quantity > 1)
+                    <x-mini-button rounded icon="minus" sm wire:click='minusQuantity'/>
+                @else
+                    <x-mini-button rounded icon="minus" sm disabled />
+                @endif
 
-                <p>x<span x-text="quantity"></span></p>
+                <p>x{{ $quantity }}</p>
 
-                <x-mini-button rounded icon="plus" sm wire:click='addQuantity'/>
+                @if($cartItem->quantity < $stocksAvailable)
+                    <x-mini-button rounded icon="plus" sm wire:click='addQuantity'/>
+                @else
+                    <x-mini-button rounded icon="plus" sm disabled />
+                @endif
             @else
                 <x-mini-button rounded icon="minus" sm disabled />
 

@@ -21,6 +21,7 @@ class CartItemContainer extends Component
     public $available = false;
     public $suspended = false;
     public $status = null;
+    public $stocksAvailable = 0;
 
     public function mount($id){
         $this->cartItem = CartItem::findOrFail($id);
@@ -33,15 +34,23 @@ class CartItemContainer extends Component
         }else{
             foreach($variations as $variation){
                 if($variation->name == $this->cartItem->variation){
+                    $this->stocksAvailable = $variation->stocks;
+
+                    if($this->quantity > $variation->stocks){
+                        $this->cartItem->quantity = $variation->stocks;
+                        $this->cartItem->save();
+                    }
+
                     $this->price = $variation->price;
                     
-                    if($variation->stocks < $this->quantity){
+                    if($variation->stocks == 0){
                         $this->status = 'Stocks unavailable';
                     }
 
                     break;
                 }else{
                     $this->status = 'Variation not found';
+                    break;
                 }
             }
         }
@@ -55,6 +64,10 @@ class CartItemContainer extends Component
     }
 
     public function addQuantity(){
+        if($this->cartItem->quantity >= $this->stocksAvailable){
+            return;
+        }
+
         $this->cartItem->quantity++;
         $this->cartItem->save();
         $this->dispatch('update-totalCheckout');

@@ -14,7 +14,11 @@
                     @foreach ($variations as $key => $variation)
                             <tr>
                                 <td class="text-center py-1">
-                                    <x-radio label="{{ $variation->name }}" wire:model.live="selectedVariation" lg value="{{ $variation->name }}" />
+                                    @if($variation->stocks > 0)
+                                        <x-radio label="{{ $variation->name }}" wire:model.live="selectedVariation" lg value="{{ $variation->name }}" />
+                                    @else
+                                        <x-radio label="{{ $variation->name }}" disabled lg value="{{ $variation->name }}" />
+                                    @endif
                                 </td>
                                 <td class="text-center">x{{ $variation->stocks }}</td>
                                 <td class="text-center">{{ App\Classes\CurrencyConverter::formatPrice($variation->price) }}</td>
