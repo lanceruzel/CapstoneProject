@@ -66,4 +66,5 @@
     <livewire:Order.view-receipt-modal />
     <livewire:Report.product-report-form />
     <livewire:Order.view-report-details-info-modal />
+    <livewire:Order.order-cancellation-modal />
 </x-layouts.main-layout>

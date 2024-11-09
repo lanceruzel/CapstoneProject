@@ -1,7 +1,7 @@
 <div class="flex flex-col gap-5 mt-3">
     @if(count($orders) > 0)
         @foreach ($orders as $order)
-            <livewire:Order.order-container :order="$order" />
+            <livewire:Order.order-container :order="$order" wire:key="order-{{ $order->id }}-container" />
         @endforeach
     @else
         <div class="flex items-center justify-center w-full h-full">

@@ -69,7 +69,7 @@ class OrderInformationModal extends Component
         $this->saveOrder();
     }
 
-    public function  Order(){
+    public function  acceptOrder(){
         //Decrease stocks
         foreach($this->products as $product){
             foreach(json_decode($product->product->variations) as $variation){

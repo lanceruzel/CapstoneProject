@@ -43,6 +43,10 @@
                             <p class="text-sm text-gray-600">
                                 Variation: {{ $orderProduct->variation }}
                             </p>
+
+                            @if($orderProduct->product->status == App\Enums\Status::Suspended)
+                                <x-badge flat negative class="mt-2" label="Currently suspended" />
+                            @endif
                         </div>
                     </td>
                     
@@ -64,11 +68,21 @@
     {{--  --}}
     <div class="border-t pt-3 flex items-center justify-between max-md:flex-col">
         <div>
-            <p>{{ $order->status }} 
-                @if(($order->tracking_number != null || $order->tracking_number != '') && $order->status != App\Enums\Status::OrderBuyerReceived)
-                    <x-link label="View Tracking" href="https://parcelsapp.com/en/tracking/{{ $order->tracking_number }}" target="_blank" />
+            @if(($order->status == App\Enums\Status::OrderSellerCancel || $order->status == App\Enums\Status::OrderBuyerCancel) && ($order->cancel_reason != null || $order->cancel_reason != ''))
+                @if($order->status == App\Enums\Status::OrderBuyerCancel)
+                    <p>You cancelled this due to: {{ $order->cancel_reason }}</p>
+                @elseif($order->status == App\Enums\Status::OrderSellerCancel)
+                    <p>Seller cancelled  due to: {{ $order->cancel_reason }}</p>
+                @else
+                    <p>Cancelled: {{ $order->cancel_reason }}</p>
                 @endif
-            </p>
+            @else
+                <p>{{ $order->status }} 
+                    @if(($order->tracking_number != null || $order->tracking_number != '') && $order->status != App\Enums\Status::OrderBuyerReceived)
+                        <x-link label="View Tracking" href="https://parcelsapp.com/en/tracking/{{ $order->tracking_number }}" target="_blank" />
+                    @endif
+                </p>
+            @endif
         </div>
 
         <div class="flex items-center justify-center max-sm:flex-col gap-3 max-md:pt-3">
@@ -80,7 +94,14 @@
                 @endif
             @endif
 
-            <p class="font-bold">{{ App\Classes\CurrencyConverter::formatPrice($order->total) }}</p>
+
+            <div class="flex items-center justify-center gap-3">
+                @if($order->status == App\Enums\Status::OrderSellerConfirmation)
+                    <x-button outline negative wire:loading.attr="disabled" label="Cancel Order" onclick="$openModal('orderCancellationModalForm')" wire:click="$dispatch('cancellationOrder', { id: {{ $order->id }}, mode: 'buyer' })" />
+                @endif
+                
+                <p class="font-bold">{{ App\Classes\CurrencyConverter::formatPrice($order->total) }}</p>
+            </div>
 
             @if($order->status == App\Enums\Status::OrderSellerShipped)
                 <x-button wire:loading.attr="disabled" label="Received" wire:click="orderReceivedConfirmation" />

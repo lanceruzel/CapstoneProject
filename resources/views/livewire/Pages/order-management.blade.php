@@ -8,4 +8,5 @@
     </div>
 
     <livewire:Order.order-information-modal />
+    <livewire:Order.order-cancellation-modal />
 </x-layouts.store-layout>

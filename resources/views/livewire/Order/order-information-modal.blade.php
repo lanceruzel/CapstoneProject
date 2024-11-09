@@ -1,7 +1,11 @@
-<x-modal-card name="orderViewModal" title="Order Information" align='center' x-cloak x-on:close="$dispatch('clearOrderViewModalData')" blurless wire:ignore.self>  
+<x-modal-card name="orderViewModal" title="Order Information" persistent align='center' x-cloak x-on:close="$dispatch('clearOrderViewModalData')" blurless wire:ignore.self>  
     @if($order)
         <div class="flex flex-col gap-2 items-start text-gray-600 overflow-auto">
  
+            @if(($order->status == App\Enums\Status::OrderSellerCancel || $order->status == App\Enums\Status::OrderBuyerCancel) && ($order->cancel_reason != null || $order->cancel_reason != ''))
+                <x-alert title="Cancelled due to: {{ $order->cancel_reason }}" negative />
+            @endif
+
             <div class="relative overflow-x-auto w-full">
                 <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                     <tr>
@@ -153,6 +157,29 @@
                                 </td>
                             </tr>
                         @endif
+
+                        <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                            <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                Status
+                            </th>
+                            <td class="px-6 py-4">
+                                @if($order->status == App\Enums\Status::OrderSellerConfirmation)
+                                    <span>Waiting for your confirmation.</span>
+                                @elseif($order->status == App\Enums\Status::OrderSellerPreparing)
+                                    <span>Waiting for shipment and tracking number.</span>
+                                @elseif($order->status == App\Enums\Status::OrderSellerShipped)
+                                    <span>Order has been shipped and waiting for buyer to be received.</span>
+                                @elseif($order->status == App\Enums\Status::OrderSellerCancel)
+                                    <span>You cancelled this order.</span>
+                                @elseif($order->status == App\Enums\Status::OrderBuyerReceived)
+                                    <span>Buyer have received the order.</span>
+                                @elseif($order->status == App\Enums\Status::OrderBuyerCancel)
+                                    <span>Buyer cancelled this order.</span>
+                                @else
+                                    <span>{{ $order->status }}</span>
+                                @endif
+                            </td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
@@ -217,7 +244,8 @@
 
                 @if($order->status == App\Enums\Status::OrderSellerConfirmation)
                     <div class="w-full flex justify-end gap-x-4">
-                        <x-button outline negative wire:loading.attr="disabled" wire:click="declineConfirmation" spinner="declineOrder" label="Decline Order" />
+                        {{-- <x-button outline negative wire:loading.attr="disabled" wire:click="declineConfirmation" spinner="declineOrder" label="Decline Order" /> --}}
+                        <x-button outline negative wire:loading.attr="disabled" label="Decline Order" onclick="$openModal('orderCancellationModalForm')" wire:click="$dispatch('cancellationOrder', { id: {{ $order->id }}, mode: 'store' })" />
                         <x-button wire:loading.attr="disabled" wire:click="acceptOrder" spinner="acceptOrder" label="Accept Order" />
                     </div>
                 @elseif($order->status == App\Enums\Status::OrderSellerPreparing)

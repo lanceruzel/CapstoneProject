@@ -36,6 +36,7 @@ return new class extends Migration
             $table->float('commission')->nullable();
             $table->string('is_paid')->default(false);
             $table->string('referenceNumber')->nullable();
+            $table->string('cancel_reason')->nullable();
             $table->timestamps();
         });
 

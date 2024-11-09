@@ -28,7 +28,8 @@ class Order extends Model
         'courrier',
         'affiliate_code',
         'commission',
-        'referenceNumber'
+        'referenceNumber',
+        'cancel_reason'
     ];
 
     public function affiliate(){
