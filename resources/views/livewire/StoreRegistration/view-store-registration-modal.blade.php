@@ -4,7 +4,22 @@
             <div class="grid grid-cols-2 gap-3 w-full">
                 <h1 class="col-span-2 text-xl font-semibold">Store Information</h1>
 
-                <x-input class="max-lg:col-span-2" disabled label="Store Contact" wire:model="contact" shadowless />
+                <x-phone
+                    disabled
+                    class="max-lg:col-span-2"
+                    shadowless
+                    wire:model="contact"
+                    label="Store Number"
+                    :mask="[
+                        '(###) ###-####',               // US format
+                        '+# ### ###-####',              // Generic international format
+                        '+## ## ####-####',             // Europe format
+                        '+### ## ### ####',             // UK and other similar regions
+                        '+## (##) ####-####',           // Canada format
+                        '+## (#) ####-####'             // General international format
+                    ]"
+                />
+
                 <x-input class="max-lg:col-span-2" disabled label="Store Email" wire:model="email" shadowless />
 
                 <x-input class="max-lg:col-span-2" disabled label="Country" wire:model="country" shadowless />

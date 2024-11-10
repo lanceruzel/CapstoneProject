@@ -9,7 +9,20 @@
                 </div>
                 
                 <div class="grid grid-cols-2 gap-3 w-full">
-                    <x-input class="max-lg:col-span-2" label="Store Contact" wire:model="contact" shadowless />
+                    <x-phone
+                        class="max-lg:col-span-2"
+                        shadowless
+                        wire:model="contact"
+                        label="Store Number"
+                        :mask="[
+                            '(###) ###-####',               // US format
+                            '+# ### ###-####',              // Generic international format
+                            '+## ## ####-####',             // Europe format
+                            '+### ## ### ####',             // UK and other similar regions
+                            '+## (##) ####-####',           // Canada format
+                            '+## (#) ####-####'             // General international format
+                        ]"
+                    />
                     <x-input class="max-lg:col-span-2" label="Store Email" wire:model="email" shadowless />
 
                     <x-select

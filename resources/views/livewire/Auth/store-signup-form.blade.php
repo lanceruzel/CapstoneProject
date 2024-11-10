@@ -30,7 +30,20 @@
         />
     </div>
 
-    <x-input class="col-span-2" label="Contact" wire:model="contact" shadowless />
+    <x-phone
+        class="col-span-2"
+        shadowless
+        wire:model="contact"
+        label="Contact Number"
+        :mask="[
+            '(###) ###-####',               // US format
+            '+# ### ###-####',              // Generic international format
+            '+## ## ####-####',             // Europe format
+            '+### ## ### ####',             // UK and other similar regions
+            '+## (##) ####-####',           // Canada format
+            '+## (#) ####-####'             // General international format
+        ]"
+    />
 
     <x-input label="Username" wire:model='username' corner="Ex: pchub1202" shadowless />
     <x-input label="Email" wire:model='email' shadowless />

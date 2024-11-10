@@ -4,7 +4,20 @@
         <x-input label="House #. StreetName, Brgy." corner="Eg. 01 Magsaysay St., Landing" wire:model="address1" shadowless />
         <x-input label="Municipality, City, Country" corner="Eg. Limay, Bataan, Philippines" wire:model="address2" shadowless />
         <x-input label="Postal Code" corner="Eg. 2103" shadowless wire:model="postal" />
-        <x-input label="Contact Number" shadowless wire:model="phoneNumber" />
+
+        <x-phone
+            wire:model="phoneNumber"
+            label="Contact Number"
+            shadowless
+            :mask="[
+                '(###) ###-####',               // US format
+                '+# ### ###-####',              // Generic international format
+                '+## ## ####-####',             // Europe format
+                '+### ## ### ####',             // UK and other similar regions
+                '+## (##) ####-####',           // Canada format
+                '+## (#) ####-####'             // General international format
+            ]"
+        />
 
         @if($addressUpdate != null)
             <x-slot name="footer" class="flex justify-between gap-x-4">
