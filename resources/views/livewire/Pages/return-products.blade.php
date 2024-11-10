@@ -9,4 +9,5 @@
 
     <livewire:Report.view-return-request-modal />
     <livewire:Report.return-create-order-modal />
+    <livewire:Report.return-request-decline-modal />
 </x-layouts.store-layout>

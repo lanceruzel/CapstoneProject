@@ -20,6 +20,7 @@ class Report extends Model
         'description',
         'images',
         'status',
+        'cancel_reason'
     ];
 
     public function order(){

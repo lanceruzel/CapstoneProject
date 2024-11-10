@@ -91,6 +91,13 @@
                                     <td class="px-6 py-4">{{ $request->tracking_number  }} <x-link label="View Tracking" href="https://parcelsapp.com/en/tracking/{{ $request->tracking_number }}" target="_blank" /></td>
                                 </tr>
                             @endif
+
+                            @if($request->status == App\Enums\Status::Declined && ($request->cancel_reason != null || $request->cancel_reason != ''))
+                                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">Decline Reason: </td>
+                                    <td class="px-6 py-4">{{ $request->cancel_reason  }}</td>
+                                </tr>
+                            @endif
                         </tbody>
                     </table>
                 </div>
@@ -119,7 +126,7 @@
                 <div>
                     @if($request->AdminProductSuspend != App\Enums\Status::ReturnRequestReview)
                         @if($request->status == App\Enums\Status::ReturnRequestReview)
-                            <x-button flat negative wire:loading.attr="disabled" wire:click="declineRequest" spinner="declineRequest" label="Decline Request" />
+                            <x-button outline negative wire:loading.attr="disabled" label="Decline Request" onclick="$openModal('returnReuqestCancellationModal')" wire:click="$dispatch('cancellationRequest', { id: {{ $request->id }} })" />
                             <x-button positive wire:loading.attr="disabled" wire:click="acceptRequest" spinner="acceptRequest" label="Approve Request" />
                         @elseif($request->status == App\Enums\Status::ReturnRequestBuyerShipped)
                             <x-button wire:loading.attr="disabled" wire:click="markAsReceievedRequest" spinner="markAsReceievedRequest" label="Mark as Received" />

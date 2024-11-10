@@ -1,6 +1,24 @@
 <x-modal-card name="viewReportModal" title="Report Details" align='center' x-cloak x-on:close="$dispatch('clearViewReportModalData')" blurless wire:ignore.self>  
     @if($report)
         <div class="flex flex-col gap-2 items-start text-gray-600 overflow-auto">
+            @if($report->status == App\Enums\Status::ReturnRequestReview)
+                <x-alert title="Waiting for the store owner's review" info />
+            @elseif($report->status == App\Enums\Status::ReturnRequestBuyerShipped)
+                <x-alert title="Item has been shipped by the seller" info />
+            @elseif($report->status == App\Enums\Status::Accepted)
+                <x-alert title="Seller have accepted this request and is now waiting for the buyer to ship the item/s" info />
+            @elseif($report->status == App\Enums\Status::ReturnRequestReceieved)
+                <x-alert title="Buyer mark this as received." info />
+            @elseif($report->status == App\Enums\Status::ReturnRequestSellerOrderCreated)
+                <x-alert title="This request has been fulfilled." info />
+            @elseif($report->status == App\Enums\Status::Declined)
+                <x-alert title="Buyer declined this request." info />
+            @elseif($report->status == App\Enums\Status::AdminProductSuspend)
+                <x-alert title="Admin has taken an action" info />
+            @else
+                <x-alert title="Waiting for your review." info />
+            @endif
+
             <div class="flex flex-col gap-2 w-full">
                 <div class="relative overflow-x-auto">
                     <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
@@ -70,6 +88,13 @@
                                     {{ $description }}
                                 </td>
                             </tr>
+
+                            @if($report->status == App\Enums\Status::Declined && ($report->cancel_reason != null || $report->cancel_reason != ''))
+                                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">Decline Reason: </td>
+                                    <td class="px-6 py-4">{{ $report->cancel_reason  }}</td>
+                                </tr>
+                            @endif
                         </tbody>
                     </table>
                 </div>

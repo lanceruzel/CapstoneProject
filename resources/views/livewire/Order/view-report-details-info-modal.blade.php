@@ -38,6 +38,16 @@
                                 </td>
                             </tr>
 
+                            @if($report->status == App\Enums\Status::Declined && ($report->cancel_reason != null || $report->cancel_reason != ''))
+                                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">Decline Reason: </td>
+                                    <td class="px-6 py-4">
+                                        <p>{{ $report->cancel_reason }}</p>
+                                        <p class="pt-1.5">(You send an email at <span class="font-medium underline underline-offset-2">support@globeconnect.space</span> if you need assistance)</p>
+                                    </td>
+                                </tr>
+                            @endif
+
                             <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                                 <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                     Reporter
@@ -94,7 +104,7 @@
                                 <td class="px-6 py-4">
                                     {{ $description }}
                                 </td>
-                            </tr>
+                            </tr> 
                         </tbody>
                     </table>
                 </div>

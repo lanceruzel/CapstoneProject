@@ -33,6 +33,7 @@ return new class extends Migration
 
             $table->string('courrier')->nullable();
             $table->string('tracking_number')->nullable();
+            $table->string('cancel_reason')->nullable();
             $table->timestamps();
         });
     }

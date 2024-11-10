@@ -23,7 +23,7 @@ class CheckoutPageContent extends Component
     public $checkedOutSellers = null;
 
     public $merchandiseTotal = 0;
-    public $shippingTotal = 25;
+    public $shippingTotal = 3;
 
     public $affiliate = [];
 
