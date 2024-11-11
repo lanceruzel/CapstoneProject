@@ -134,9 +134,9 @@ Route::group(['middleware' => ['role:store,travelpreneur,content-creator', 'veri
 });
 
 Route::group(['middleware' => 'role:admin'], function () {
-    Route::get('/admin/dashboard', function () {
-        return view('livewire.Pages.admin-dashboard');
-    })->name('admin.dashboard');
+    // Route::get('/admin/dashboard', function () {
+    //     return view('livewire.Pages.admin-dashboard');
+    // })->name('admin.dashboard');
 
     Route::get('/admin/user-management', function () {
         return view('livewire.Pages.user-management');

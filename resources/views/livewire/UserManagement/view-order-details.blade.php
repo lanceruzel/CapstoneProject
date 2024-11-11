@@ -88,15 +88,6 @@
 
                         <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                             <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                Total
-                            </th>
-                            <td class="px-6 py-4">
-                                ${{ number_format($order->total, 2) }}
-                            </td>
-                        </tr>
-
-                        <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                            <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                 Applied Affiliate Code
                             </th>
                             <td class="px-6 py-4">
@@ -110,6 +101,24 @@
                             </th>
                             <td class="px-6 py-4">
                                 {{ $order->commission ? '$'. $order->commission : 'None' }}
+                            </td>
+                        </tr>
+
+                        <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                            <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                Shipping Fee: 
+                            </th>
+                            <td class="px-6 py-4">
+                                $3.00
+                            </td>
+                        </tr>
+
+                        <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                            <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                Total
+                            </th>
+                            <td class="px-6 py-4">
+                                ${{ number_format($order->total, 2) }}
                             </td>
                         </tr>
 

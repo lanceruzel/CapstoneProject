@@ -111,7 +111,7 @@
 
                             <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                                 <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                    Total Fulfilled Orders
+                                    Total Orders
                                 </th>
                                 <td class="px-6 py-4 flex items-center gap-3">
                                     <span>x{{ $user->ordered()->count() }}</span> <x-button flat label="View Orders" x-on:click="$openModal('viewOrdersModal')" wire:click="$dispatch('viewOrders', { id: {{ $user->id }} })"/>
@@ -261,7 +261,7 @@
 
                             <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                                 <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                    Total Fulfilled Orders
+                                    Total Orders
                                 </th>
                                 <td class="px-6 py-4 flex items-center gap-3">
                                     <span>x{{ $user->ordered()->count() }}</span> <x-button flat label="View Orders" x-on:click="$openModal('viewOrdersModal')" wire:click="$dispatch('viewOrders', { id: {{ $user->id }} })"/>

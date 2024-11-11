@@ -3,6 +3,10 @@
         <h1 class="text-3xl font-semibold">User Information Management</h1>
     </div>
 
+    <div class="mt-3">
+        <livewire:UserManagement.user-management-stats />
+    </div>
+
     <div class="mt-5">
         <livewire:UserManagement.user-table />
     </div>
