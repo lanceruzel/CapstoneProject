@@ -10,7 +10,7 @@
         
         <x-slot name="footer" class="flex justify-end gap-x-4">
             <x-button wire:loading.attr="disabled" flat label="Cancel" x-on:click="close" />
-            <x-button wire:loading.attr="disabled" spinner="getRoomID" id="createMeetingBtn" label="Create Livestream" />
+            <x-button wire:loading.attr="disabled" spinner="storeLivestream" id="createMeetingBtn" label="Create Livestream" />
         </x-slot>
     </div>
 </x-modal-card>

@@ -47,7 +47,7 @@ class LivestreamFormModal extends Component
                 $this->dialog()->show([
                     'icon' => 'error',
                     'title' => 'Error!',
-                    'description' => 'Woops, its an error. You must end your previous livestream room to be able to create a new one.',
+                    'description' => 'You must end your current livestream session before starting a new one. Visit your profile’s livestream section to end the active stream.',
                 ]);
     
                 $this->dispatch('close-modal', ['modal' => 'livestreamFormModal']);

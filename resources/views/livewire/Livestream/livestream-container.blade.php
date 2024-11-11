@@ -130,6 +130,7 @@
                 let watching = 0;
                 let timer = 0;
                 let timerID = null;
+                var userMode = null;
 
                 const watchingCount = document.getElementById("watchingCount");
 
@@ -156,6 +157,8 @@
 
                 // Initialize meeting
                 function initializeMeeting(mode){
+                    userMode = mode;
+
                     window.VideoSDK.config(@js(env('VIDEO_SDK_TOKEN')));
                 
                     meeting = window.VideoSDK.initMeeting({
@@ -373,6 +376,19 @@
 
                         // Update the timer on the page
                         updateTimer(`${minutes}:${seconds}`);
+
+                        //Notify host that the livestream will be ended shortly
+                        if(timeDifferenceInSeconds == 540){
+                            if(userMode === Constants.modes.CONFERENCE){
+                                Livewire.dispatch('notifyHost');
+                            }
+                        }
+
+                        //Livestream limit 10mins
+                        if(timeDifferenceInSeconds >= 600){
+                            Livewire.dispatch('livestreamLimitReached');
+                            clearInterval(interval);
+                        }
                     }, 1000);  // Update every second
                 }
 

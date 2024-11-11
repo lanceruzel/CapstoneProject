@@ -24,7 +24,9 @@ class LivestreamContainer extends Component
         'live-update' => 'liveUpdateStatus',
         'insert-playback-url' => 'updatePlaybackUrl',
         'end-confirm' => 'leaveConfirmation',
-        'prepareTimer' => 'getLivestreamStartDate'
+        'prepareTimer' => 'getLivestreamStartDate',
+        'livestreamLimitReached' => 'deleteLivestream',
+        'notifyHost'
     ];
 
     public function mount($id){
@@ -33,6 +35,14 @@ class LivestreamContainer extends Component
         if($this->livestream && ($this->livestream->status == 'ended' && $this->livestream->playback_url == null)){
             $this->redirect('/');
         }
+    }
+
+    public function notifyHost(){
+        $this->notification()->send([
+            'icon' => 'info',
+            'title' => 'Livestream Info!',
+            'description' => 'Your livestream is nearing its 10-minute limit and will end shortly.',
+        ]);
     }
 
     public function getLivestreamStartDate(): void{
