@@ -98,6 +98,7 @@
             <div class="flex items-center justify-center gap-3">
                 @if($order->status == App\Enums\Status::OrderSellerConfirmation)
                     <x-button outline negative wire:loading.attr="disabled" label="Cancel Order" onclick="$openModal('orderCancellationModalForm')" wire:click="$dispatch('cancellationOrder', { id: {{ $order->id }}, mode: 'buyer' })" />
+                    {{-- <x-button outline negative wire:loading.attr="disabled" label="Cancel Order" wire:click="cancelOrderTest" /> --}}
                 @endif
                 
                 <p class="font-bold">{{ App\Classes\CurrencyConverter::formatPrice($order->total) }}</p>

@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Order;
 
+use App\Classes\PaypalRefund;
 use App\Enums\Status;
 use App\Models\Order;
 use Livewire\Component;
@@ -45,13 +46,17 @@ class OrderCancellationModal extends Component
 
             if($this->mode == 'store'){
                 $this->order->status = Status::OrderSellerCancel;
-           }else{
+            }else{
                 $this->order->status = Status::OrderBuyerCancel;
-           }
+            }
 
             $this->order->cancel_reason = $validated['description'] ?? $validated['reason'];
             
             if($this->order->save()){
+                if($this->order->payment_method == 'Paypal' && ($this->order->is_paid == true || $this->order->is_paid == 1)){
+                    $this->refund();
+                }
+
                 $this->dispatch('close-modal', ['modal' => 'orderCancellationModalForm']);
 
                if($this->mode == 'store'){
@@ -67,6 +72,18 @@ class OrderCancellationModal extends Component
                     'description' => 'Order has been cancelled successfully',
                 ]);
             }
+        }
+    }
+
+    public function refund(){
+        $paypal = new PaypalRefund();
+
+        if($paypal->processRefund($this->order->referenceNumber)){
+            $this->notification()->send([
+                'icon' => 'success',
+                'title' => 'Success!',
+                'description' => $this->mode == 'store' ? 'Buyer\'s payment has been successfully refunded.' : 'Your refund has been successfully sent to your account.',
+            ]);
         }
     }
 
