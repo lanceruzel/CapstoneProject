@@ -23,19 +23,20 @@ class StoreRegisterFormModal extends Component
     public $email;
     public $country;
     public $state;
-    public $requirement_1;
-    public $requirement_2;
-    public $requirement_3;
 
     public $savedRequirements;
 
     public $paypalAccountName;
     public $paypalEmail;
 
-    public $validId;
-    public $businessPermit;
-    public $registrationDTI;
-    public $registrationBIR;
+    public $dti_permit;
+    public $mayors_permit;
+    public $business_permit;
+    public $bir_registration;
+    public $valid_id;
+    public $health_and_safety_permit;
+    public $business_license;
+    public $tax_compliance;
 
     public $url = "https://api.countrystatecity.in/v1/countries";
     public $countryData = [];
@@ -155,7 +156,7 @@ class StoreRegisterFormModal extends Component
     public function updateRequirements($id, $validated){
         foreach (array_slice((array) $this->savedRequirements, 0, -2) as $key => $requirement) {
             if($this->savedRequirements->$key->status != Status::Accepted){
-                if($key == 'validId'){
+                if($key == 'valid_id'){
                     $this->savedRequirements->$key->type = $validated['validIdType'];
                 }
 
@@ -184,27 +185,26 @@ class StoreRegisterFormModal extends Component
 
             foreach (array_slice((array) $this->savedRequirements, 0, -2) as $key => $requirement) {
                 if($requirement->status == Status::Declined || $requirement->status == '' || $requirement->status == null) {
-                    if($key == 'validId'){
+                    if($key == 'valid_id'){
                         $rules['validIdType'] = 'required';
                     }
-
+                    
                     $rules[$key] = 'required|mimes:pdf,png,jpg,jpeg,doc,docx';
                 }
             }
-
+            
             // Add email validation if it is different from the stored email
             if ($this->email != $this->user->storeInformation->email) {
                 $rules['email'] = 'required|email|unique:store_information';
             }
-            
-            $validate = $this->validate($rules);
 
+            $validate = $this->validate($rules);
         }elseif($this->savedRequirements->status == Status::ForReSubmission){
             $rules = [];
 
             foreach (array_slice((array) $this->savedRequirements, 0, -2) as $key => $requirement) {
                 if($requirement->status == Status::Declined) {
-                    if($key == 'validId'){
+                    if($key == 'valid_id'){
                         $rules['validIdType'] = 'required';
                     }
 
@@ -217,11 +217,9 @@ class StoreRegisterFormModal extends Component
                 $validate = $this->validate($rules);
             }
         }
-        
+ 
         return $validate;
     }
-
-    
 
     public function storeDocument($id, $document){
         $filename = $id . '_' . time() . '_' . uniqid() . '.' . $document->getClientOriginalExtension();

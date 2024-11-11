@@ -216,12 +216,24 @@ class SignupForm extends Component
 
     public function storeRequirementsFormat(){
         $format = [
-            'validId' => [
+            'dti_permit' => [
+                'file_path' => '',
+                'status' => '',
+            ],
+            'valid_id' => [
                 'type' => '',
                 'file_path' => '',
                 'status' => '',
             ],
-            'registrationDTI' => [
+            'bir_registration' => [
+                'file_path' => '',
+                'status' => '',
+            ],
+            'tax_compliance' => [
+                'file_path' => '',
+                'status' => '',
+            ],
+            'business_license' => [
                 'file_path' => '',
                 'status' => '',
             ],

@@ -53,20 +53,36 @@
                         <tr class="border-b">
                             <td class="text-center py-3">
                                 @switch($key)
-                                    @case('validId')
+                                    @case('valid_id')
                                         Valid ID (<span class="font-semibold underline underline-offset-2">{{ $requirement->type }}</span>)
                                         @break
 
-                                    @case('businessPermit')
+                                    @case('dti_permit')
+                                        DTI Permit
+                                        @break
+
+                                    @case('bir_registration')
+                                        BIR Registration
+                                        @break
+
+                                    @case('tax_compliance')
+                                        Tax Compliance
+                                        @break
+
+                                    @case('business_license')
+                                        Business License
+                                        @break
+
+                                    @case('mayors_permit')
+                                        Mayor's Permit
+                                        @break
+
+                                    @case('business_permit')
                                         Business Permit
                                         @break
 
-                                    @case('registrationDTI')
-                                        Certificate of Registration (<span class="font-semibold underline underline-offset-2">DTI</span>)
-                                        @break
-
-                                    @case('registrationBIR')
-                                        Certificate of Registration (<span class="font-semibold underline underline-offset-2">BIR</span>)
+                                    @case('health_and_safety_permit')
+                                        Health and safety permit
                                         @break
                                 
                                     @default

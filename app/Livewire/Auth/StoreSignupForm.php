@@ -154,15 +154,36 @@ class StoreSignupForm extends Component
 
     public function storeRequirementsFormat(){
         $format = [
-            'businessPermit' => [
+            'dti_permit' => [
                 'file_path' => '',
                 'status' => '',
             ],
-            'registrationDTI' => [
+            'mayors_permit' => [
                 'file_path' => '',
                 'status' => '',
             ],
-            'registrationBIR' => [
+            'business_permit' => [
+                'file_path' => '',
+                'status' => '',
+            ],
+            'bir_registration' => [
+                'file_path' => '',
+                'status' => '',
+            ],
+            'valid_id' => [
+                'type' => '',
+                'file_path' => '',
+                'status' => '',
+            ],
+            'health_and_safety_permit' => [
+                'file_path' => '',
+                'status' => '',
+            ],
+            'business_license' => [
+                'file_path' => '',
+                'status' => '',
+            ],
+            'tax_compliance' => [
                 'file_path' => '',
                 'status' => '',
             ],

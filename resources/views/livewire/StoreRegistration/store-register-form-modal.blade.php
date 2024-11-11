@@ -70,47 +70,65 @@
                     {{-- <small class="text-gray-500">(Note: The following information will be used to contact your store)</small> --}}
                 </div>
                 
-                <div class="grid grid-cols-2 gap-3 w-full">
+                <div class="gap-3 w-full">
                     @foreach(array_slice((array) $savedRequirements, 0, -2) as $key => $requirement) 
-                        @if($key == 'validId')
-                            <x-select
-                                class="max-lg:col-span-2"
-                                label="Select ID Type"
-                                placeholder="Select one"
-                                :options="['Driver\'s License', 'National Identity Card', 'Passport', 'Voter ID Card', 'Social Security Card', 'Tax Identification Number (TIN)', 'Health Insurance Card', 'State or Provincial ID Cards', 'Work Permit or Work ID Card']"
-                                shadowless
-                                wire:model="validIdType"
-                            />
+                        @if($key == 'valid_id')
+                            <div class="grid grid-cols-2 mt-3 gap-3">
+                                <x-select
+                                    class="max-lg:col-span-2"
+                                    label="Select ID Type"
+                                    placeholder="Select one"
+                                    :options="['Driver\'s License', 'National Identity Card', 'Passport', 'Voter ID Card', 'Social Security Card', 'Tax Identification Number (TIN)', 'Health Insurance Card', 'State or Provincial ID Cards', 'Work Permit or Work ID Card']"
+                                    shadowless
+                                    wire:model="validIdType"
+                                />
 
-                            <x-input type="file" label="Upload ID Picture" class="max-lg:col-span-2" wire:model='validId' shadowless>
-                                <x-slot name='corner' wire:target='validId' wire:loading>
-                                    <div class="flex items-center justify-center gap-2">
-                                        <span>
-                                            <x-icon name="arrow-path" class="w-5 h-5 animate-spin" />
-                                        </span>
-                                        
-                                        <span>
-                                            Uploading...
-                                        </span>
-                                    </div>
-                                </x-slot>
-                            </x-input>
+                                <x-input type="file" label="Upload ID Picture" class="max-lg:col-span-2" wire:model='valid_id' shadowless>
+                                    <x-slot name='corner' wire:target='validId' wire:loading>
+                                        <div class="flex items-center justify-center gap-2">
+                                            <span>
+                                                <x-icon name="arrow-path" class="w-5 h-5 animate-spin" />
+                                            </span>
+                                            
+                                            <span>
+                                                Uploading...
+                                            </span>
+                                        </div>
+                                    </x-slot>
+                                </x-input>
+                            </div>
                         @else
-                            <x-input type="file" class="max-lg:col-span-2" wire:model='{{ $key }}' shadowless>
+                            <x-input type="file" class="mt-3" wire:model='{{ $key }}' shadowless>
                                 <x-slot name='label'>
                                     @switch($key)
-                                        @case('businessPermit')
+                                        @case('dti_permit')
+                                            DTI Permit
+                                            @break
+
+                                        @case('bir_registration')
+                                            BIR Registration
+                                            @break
+
+                                        @case('tax_compliance')
+                                            Tax Compliance
+                                            @break
+
+                                        @case('business_license')
+                                            Business License
+                                            @break
+
+                                        @case('mayors_permit')
+                                            Mayor's Permit
+                                            @break
+
+                                        @case('business_permit')
                                             Business Permit
                                             @break
 
-                                        @case('registrationDTI')
-                                            Certificate of Registration (<span class="font-semibold underline underline-offset-2">DTI</span>)
+                                        @case('health_and_safety_permit')
+                                            Health and safety permit
                                             @break
 
-                                        @case('registrationBIR')
-                                            Certificate of Registration (<span class="font-semibold underline underline-offset-2">BIR</span>)
-                                            @break
-                                    
                                         @default
                                     @endswitch
                                 </x-slot>
@@ -151,43 +169,61 @@
             <div class="pt-5 w-full space-y-3">
                 @foreach (array_slice((array) $savedRequirements, 0, -2) as $key => $requirement)
                     @if($requirement->status == App\Enums\Status::Declined)
-                        @if($key == 'validId')
-                            <x-select
-                                class="max-lg:col-span-2"
-                                label="Select ID Type"
-                                placeholder="Select one"
-                                :options="['Driver\'s License', 'National Identity Card', 'Passport', 'Voter ID Card', 'Social Security Card', 'Tax Identification Number (TIN)', 'Health Insurance Card', 'State or Provincial ID Cards', 'Work Permit or Work ID Card']"
-                                shadowless
-                                wire:model="validIdType"
-                            />
+                        @if($key == 'valid_id')
+                            <div class="grid grid-cols-2 mt-3 gap-3">
+                                <x-select
+                                    class="max-lg:col-span-2"
+                                    label="Select ID Type"
+                                    placeholder="Select one"
+                                    :options="['Driver\'s License', 'National Identity Card', 'Passport', 'Voter ID Card', 'Social Security Card', 'Tax Identification Number (TIN)', 'Health Insurance Card', 'State or Provincial ID Cards', 'Work Permit or Work ID Card']"
+                                    shadowless
+                                    wire:model="validIdType"
+                                />
 
-                            <x-input type="file" label="Upload ID Picture" class="max-lg:col-span-2" wire:model='validId' shadowless>
-                                <x-slot name='corner' wire:target='validId' wire:loading>
-                                    <div class="flex items-center justify-center gap-2">
-                                        <span>
-                                            <x-icon name="arrow-path" class="w-5 h-5 animate-spin" />
-                                        </span>
-                                        
-                                        <span>
-                                            Uploading...
-                                        </span>
-                                    </div>
-                                </x-slot>
-                            </x-input>
+                                <x-input type="file" label="Upload ID Picture" class="max-lg:col-span-2" wire:model='valid_id' shadowless>
+                                    <x-slot name='corner' wire:target='validId' wire:loading>
+                                        <div class="flex items-center justify-center gap-2">
+                                            <span>
+                                                <x-icon name="arrow-path" class="w-5 h-5 animate-spin" />
+                                            </span>
+                                            
+                                            <span>
+                                                Uploading...
+                                            </span>
+                                        </div>
+                                    </x-slot>
+                                </x-input>
+                            </div>
                         @else
                             <x-input type="file" class="max-lg:col-span-2" wire:model='{{ $key }}' shadowless>
                                 <x-slot name='label'>
                                     @switch($key)
-                                        @case('businessPermit')
+                                        @case('dti_permit')
+                                            DTI Permit
+                                            @break
+
+                                        @case('bir_registration')
+                                            BIR Registration
+                                            @break
+
+                                        @case('tax_compliance')
+                                            Tax Compliance
+                                            @break
+
+                                        @case('business_license')
+                                            Business License
+                                            @break
+
+                                        @case('mayors_permit')
+                                            Mayor's Permit
+                                            @break
+
+                                        @case('business_permit')
                                             Business Permit
                                             @break
 
-                                        @case('registrationDTI')
-                                            Certificate of Registration (<span class="font-semibold underline underline-offset-2">DTI</span>)
-                                            @break
-
-                                        @case('registrationBIR')
-                                            Certificate of Registration (<span class="font-semibold underline underline-offset-2">BIR</span>)
+                                        @case('health_and_safety_permit')
+                                            Health and safety permit
                                             @break
                                     
                                         @default
