@@ -3,6 +3,10 @@
         <h1 class="text-3xl font-semibold">Report Appeals</h1>
     </div>
 
+    <div class="mt-3">
+        <livewire:Appeal.appeal-stats />
+    </div>
+
     <div class="mt-5">
         <livewire:Appeal.report-appeals-table />
     </div>
