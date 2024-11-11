@@ -9,7 +9,7 @@ use Livewire\Component;
 class ProductRegistrationsStats extends Component
 {
     public function render(){
-        $totalProducts = Product::where('id', '<>', 1)->count();
+        $totalProducts = Product::count();
         $productCounts = Product::selectRaw('status, COUNT(*) as count')
             ->whereIn('status', [Status::Available, Status::ForReview, Status::Suspended])
             ->groupBy('status')
