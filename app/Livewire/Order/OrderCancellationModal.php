@@ -4,7 +4,9 @@ namespace App\Livewire\Order;
 
 use App\Classes\PaypalRefund;
 use App\Enums\Status;
+use App\Mail\RefundEmail;
 use App\Models\Order;
+use Illuminate\Support\Facades\Mail;
 use Livewire\Component;
 use WireUi\Traits\WireUiActions;
 
@@ -79,6 +81,8 @@ class OrderCancellationModal extends Component
         $paypal = new PaypalRefund();
 
         if($paypal->processRefund($this->order->referenceNumber)){
+            Mail::to($this->order->user->email)->send(new RefundEmail($this->order));
+
             $this->notification()->send([
                 'icon' => 'success',
                 'title' => 'Success!',
