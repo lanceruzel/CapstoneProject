@@ -175,8 +175,8 @@ class SignupForm extends Component
 
     public function formValidate(){
         return $this->validate([
-            'firstName' => 'required|min:3',
-            'lastName' => 'required|min:3',
+            'firstName' => 'required|min:2',
+            'lastName' => 'required|min:2',
             'birthdate' => 'required|date|before:-18 years',
             'gender' => 'required',
             'country' => 'required',

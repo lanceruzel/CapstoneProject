@@ -187,7 +187,7 @@ class StoreSignupForm extends Component
 
     public function formValidate(){
         return $this->validate([
-            'name' => 'required|min:3',
+            'name' => 'required|min:5',
             'country' => 'required',
             'contact' => 'required|min:5',
             'state' => 'required',
