@@ -42,6 +42,26 @@ class LivestreamFormModal extends Component
     }
 
     public function storeLivestream($id){
+        if($this->checkIfMonthlyAvailable()){
+            if(!$this->checkIfAsyncAvail()){
+                $this->dialog()->show([
+                    'icon' => 'info',
+                    'title' => 'System!',
+                    'description' => 'There are currently 5 livestreams in progress. Please wait until someone finishes their stream to start yours.',
+                ]);
+
+                return;
+            }
+        }else{
+            $this->dialog()->show([
+                'icon' => 'info',
+                'title' => 'System!',
+                'description' => 'The monthly livestream limit has been reached. We\'ll be happy to assist you with streaming next month!',
+            ]);
+
+            return;
+        }
+
         if($this->location){
             if($this->checkIfHaveExistingLivestreamRoom()){
                 $this->dialog()->show([
@@ -96,8 +116,29 @@ class LivestreamFormModal extends Component
 
             $this->dispatch('askLocation');
         }
+    }
 
-        
+    public function checkIfMonthlyAvailable(){
+        $livestreamMonthlyCount = Livestream::where('playback_url', '<>', null)
+            ->whereMonth('updated_at', now()->month)
+            ->whereYear('updated_at', now()->year)
+            ->count();
+
+        if($livestreamMonthlyCount < 30){
+            return true;
+        }
+
+        return false;
+    }
+
+    public function checkIfAsyncAvail(){
+        $livestreamAsyncCount = Livestream::where('status', 'started')->count() ?? 0;
+
+        if($livestreamAsyncCount < 5){
+            return true;
+        }
+
+        return false;
     }
 
     public function checkIfHaveExistingLivestreamRoom(){
