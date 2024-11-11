@@ -3,6 +3,10 @@
         <h1 class="text-3xl font-semibold">Product Registrations</h1>
     </div>
 
+    <div class="mt-3">
+        <livewire:ProductRegistration.product-registrations-stats />
+    </div>
+
     <div class="mt-5">
         <livewire:ProductRegistration.product-registrations-table />
     </div>
