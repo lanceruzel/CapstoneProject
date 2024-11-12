@@ -23,7 +23,7 @@
         
         <x-slot name="footer" class="flex justify-end gap-x-4">
             @if($product && $product->status == App\Enums\Status::Suspended)
-                <x-button wire:loading.attr="disabled" wire:click="unsuspendedConfirmation" spinner="unsuspendedConfirmation" label="Unsuspended Product" />
+                <x-button wire:loading.attr="disabled" wire:click="unsuspendedConfirmation" spinner="unsuspendProduct" label="Unsuspended Product" />
             @else
                 {{-- <x-button wire:loading.attr="disabled" wire:click="exportReport" spinner="exportReport" label="Export Appeal" /> --}}
                 <x-button flat label="Close" x-on:click="close" />

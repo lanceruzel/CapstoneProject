@@ -5,10 +5,12 @@ namespace App\Livewire\Appeal;
 use App\Classes\UserNotif;
 use App\Enums\NotificationType;
 use App\Enums\Status;
+use App\Mail\AvailableProductsMail;
 use App\Models\Product;
 use App\Models\ReportAppeal;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 use Livewire\Component;
 use WireUi\Traits\WireUiActions;
 
@@ -64,6 +66,7 @@ class AdminViewAppealConversationModal extends Component
     public function unsuspendProduct(){
         try{
             $this->product->status = Status::Available;
+            $this->product->remarks = '';
 
             if($this->product->save() && $this->updateConversationStatus()){
                 $this->notification()->send([
@@ -76,6 +79,9 @@ class AdminViewAppealConversationModal extends Component
                 $this->dispatch('refresh-report-appeals-table');
     
                 UserNotif::sendNotif($this->product->seller_id, $this->product->name . ' has been unsuspended and is now available again.' , NotificationType::Appeal);
+                
+                Mail::to($this->product->seller->email)->send(new AvailableProductsMail($this->product->name, $this->product->seller->name()));
+
                 $this->report->status = Status::Resolved;
                 $this->report->save();
             }

@@ -12,4 +12,5 @@
     </div>
 
     <livewire:Report.view-report-modal />
+    <livewire:Report.product-suspension-modal />
 </x-layouts.admin-layout>

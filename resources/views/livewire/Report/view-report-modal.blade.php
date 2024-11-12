@@ -123,7 +123,8 @@
                     <x-button wire:loading.attr="disabled" flat label="Close" x-on:click="close" />
 
                     @if($report->status != App\Enums\Status::AdminProductSuspend)
-                        <x-button negative wire:loading.attr="disabled" wire:click="confirmSuspend" spinner="suspendProducts" label="Suspend Product/s" />
+                        {{-- <x-button negative wire:loading.attr="disabled" wire:click="confirmSuspend" spinner="suspendProducts" label="Suspend Product/s" /> --}}
+                        <x-button negative wire:loading.attr="disabled" label="Suspend Product" onclick="$openModal('productSuspensionModal')" wire:click="$dispatch('get-suspension-details', { id: {{ $report->id }} })" />
                     @endif
                 </div>
             </x-slot>

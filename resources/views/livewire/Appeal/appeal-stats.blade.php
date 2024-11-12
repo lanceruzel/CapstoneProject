@@ -7,7 +7,7 @@
 
         <div>
             <p class="text-xl font-medium">{{ $totalAppeals }}</p>
-            <p>Total Users</p>
+            <p>Total Appeals</p>
         </div>
     </div>
 
