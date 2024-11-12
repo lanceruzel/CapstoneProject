@@ -43,15 +43,27 @@
                 </div>
             @endif
 
-            <div class="w-full mt-3 border1 rounded-lg bg-[url('https://demo.foxthemes.net/instello/assets/images/ad_pattern.png')] bg-repeat">   
-                <label wire:target='images' wire:loading.attr='disabled' class="py-5 flex flex-col justify-center items-center cursor-pointer">
+            <div class="w-full mt-3 border rounded-lg bg-[url('https://demo.foxthemes.net/instello/assets/images/ad_pattern.png')] bg-repeat">   
+                <label wire:target='images' wire:loading.class="pointer-events-none" class="py-5 flex flex-col justify-center items-center cursor-pointer relative">
                     <input class="hidden" type="file" accept="image/png, image/jpg, image/jpeg" multiple wire:model="images">
-                    <x-icon name="photo" class="w-10 h-10 text-teal-600" lg />
                     
-                    <span wire:target='images' wire:loading.remove class="text-gray-700 mt-2">Browse to Upload image</span>
-                    <span wire:target='images' wire:loading class="text-gray-700 mt-2">Loading previews...</span>
+                    <div class="flex flex-col items-center justify-center" wire:target='images' wire:loading.remove>
+                        <x-icon name="photo" class="w-10 h-10 text-teal-600" lg />
+                        <span class="text-gray-700 mt-2">Browse to Upload image</span>
+                    </div>
+                    
+                    <div wire:target='images' wire:loading class="flex flex-col gap-3 items-center justify-center">
+                        <div class="flex items-center justify-center w-full">
+                            <svg class="animate-spin h-10 w-10 text-teal-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                            </svg>
+                        </div>
+                        
+                        <p class="text-gray-700">Loading previews...</p>
+                    </div>
                 </label>
-            </div>    
+            </div>       
         </div>
         
         <x-slot name="footer" class="flex justify-end gap-x-4">
