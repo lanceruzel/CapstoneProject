@@ -268,16 +268,16 @@ class ProductFormModal extends Component
 
         if($this->productUpdate){
             if(empty($this->images) || !$this->images || $this->images == '[]'){
-                $rules['images'] = 'required|image|mimes:png,jpg,jpeg|max:2048';
+                $rules['images'] = 'required|image|mimes:png,jpg,jpeg';
             }else{
                 if($this->images == $this->existingImagePath || array_intersect($this->images,$this->existingImagePath)){
                     $rules['images.*'] = '';
                 }else{
-                    $rules['images.*'] = 'required|image|mimes:png,jpg,jpeg|max:2048';
+                    $rules['images.*'] = 'required|image|mimes:png,jpg,jpeg';
                 }
             }
         }else{
-            $rules['images.*'] = 'required|image|mimes:png,jpg,jpeg|max:2048';
+            $rules['images.*'] = 'required|image|mimes:png,jpg,jpeg';
         }
 
         if ($this->hasVariation) {

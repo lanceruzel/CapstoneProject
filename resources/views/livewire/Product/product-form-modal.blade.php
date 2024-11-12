@@ -109,43 +109,73 @@
                     </x-alert>
                 @endif
 
-                @if($images)
-                    <div class="max-w-full flex gap-4 overflow-x-auto p-3 pt-5" uk-lightbox>
-                        @foreach($images as $key => $image)
-                            <div class="flex-shrink-0 w-56 h-56 relative">
-                                <a href="{{ is_object($image) && method_exists($image, 'temporaryUrl') ? $image->temporaryUrl() : asset('uploads/products') . '/' . $image }}">
-                                    <img src="{{ is_object($image) && method_exists($image, 'temporaryUrl') ? $image->temporaryUrl() : asset('uploads/products') . '/' . $image }}" alt="Uploaded Image" accept="image/png, image/jpeg" class="w-full h-full object-cover rounded-lg shadow border">
-                                </a>
-
-                                <button wire:click="deleteImage({{ $key }})" class="absolute -top-5 -right-3.5 active:scale-95 transition-all">
-                                    <x-icon name="x-circle" solid class="w-8 h-8" />
-                                </button>
-                            </div>  
-                        @endforeach
-                    </div>
-                @endif
-
-                <div class="w-full mt-3 border rounded-lg bg-[url('https://demo.foxthemes.net/instello/assets/images/ad_pattern.png')] bg-repeat">   
-                    <label wire:target='images' wire:loading.class="pointer-events-none" class="py-5 flex flex-col justify-center items-center cursor-pointer relative">
-                        <input class="hidden" type="file" accept="image/png, image/jpg, image/jpeg" multiple wire:model="images">
-                        
-                        <div class="flex flex-col items-center justify-center" wire:target='images' wire:loading.remove>
-                            <x-icon name="photo" class="w-10 h-10 text-teal-600" lg />
-                            <span class="text-gray-700 mt-2">Browse to Upload image</span>
-                        </div>
-                        
-                        <div wire:target='images' wire:loading class="flex flex-col gap-3 items-center justify-center">
-                            <div class="flex items-center justify-center w-full">
-                                <svg class="animate-spin h-10 w-10 text-teal-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                <div class="w-full mt-3">
+                    <div class="border rounded-lg bg-[url('https://demo.foxthemes.net/instello/assets/images/ad_pattern.png')] bg-repeat"
+                        x-data="{ 
+                            uploading: false, 
+                            progress: 0,
+                            dragOver: false,
+                            handleFiles(event) {
+                                const files = event.dataTransfer.files;
+                                if (files.length) {
+                                    this.$refs.fileInput.files = files;  // Assign files to the input
+                                    this.$refs.fileInput.dispatchEvent(new Event('change'));  // Trigger change event
+                                }
+                            }
+                        }"
+                        x-on:livewire-upload-start="uploading = true"
+                        x-on:livewire-upload-finish="uploading = false; progress = 0"
+                        x-on:livewire-upload-error="uploading = false"
+                        x-on:livewire-upload-progress="progress = $event.detail.progress"
+                        x-on:dragover.prevent="dragOver = true"
+                        x-on:dragleave.prevent="dragOver = false"
+                        x-on:drop.prevent="dragOver = false; handleFiles($event)"
+                    >   
+                        <label wire:target='images' wire:loading.class="pointer-events-none" x-bind:class="{ 'border-2 border-dashed border-blue-400': dragOver }" class="py-8 flex flex-col justify-center items-center cursor-pointer relative transition-all duration-300 ease-in-out">
+                            <input x-ref="fileInput" class="hidden" type="file" accept="image/png, image/jpg, image/jpeg" multiple wire:model="images">
+                            
+                            <div class="flex flex-col items-center justify-center" wire:target='images' wire:loading.remove>
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-12 h-12 text-teal-600 mb-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                                 </svg>
+                                <p class="text-gray-700 font-medium">Drag and drop or click to upload images</p>
+                                <p class="text-sm text-gray-500 mt-1">Supports PNG, JPG, JPEG</p>
                             </div>
                             
-                            <p class="text-gray-700">Loading previews...</p>
-                        </div>
-                    </label>
-                </div>   
+                            <div wire:target='images' wire:loading class="flex flex-col gap-3 items-center justify-center">
+                                <div x-show="uploading" class="w-full max-w-xs">
+                                    <div class="bg-gray-200 rounded-full h-4 dark:bg-gray-700 w-full relative">
+                                        <div class="bg-teal-600 h-4 rounded-full" x-bind:style="{ width: `${progress}%` }"></div>
+                                        
+                                        <div class="absolute inset-0 flex justify-center items-center">
+                                            <span class="text-xs text-white font-semibold" x-text="`${progress}%`"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <p class="text-gray-700">Uploading images...</p>
+                            </div>
+                        </label>
+                    </div>
+                
+                    <div class="mt-4 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+                        @if($images)
+                            @foreach ($images as $index => $image)
+                                <div class="relative group">
+                                    <img src="{{ is_object($image) && method_exists($image, 'temporaryUrl') ? $image->temporaryUrl() : asset('uploads/products') . '/' . $image }}" alt="Uploaded image preview" class="w-full h-32 object-cover rounded-lg shadow-md">
+                    
+                                    <div class="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-200 rounded-lg">
+                                        <button wire:click="deleteImage({{ $index }})" class="bg-red-500 text-white p-2 rounded-full hover:bg-red-600 transition-colors duration-200">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                                <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd" />
+                                            </svg>
+                                        </button>
+                                    </div>
+                                </div>
+                            @endforeach
+                        @endif
+                    </div>
+                </div>  
             </div>
             
             <x-slot name="footer" class="flex justify-end gap-x-4">

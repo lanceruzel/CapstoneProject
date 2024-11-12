@@ -115,7 +115,7 @@ class ConversationContainer extends Component
     public function formValidate(){
         return $this->validate([
             'message' => 'nullable',
-            'images.*' => 'nullable|image|mimes:png,jpg,jpeg|max:2048',
+            'images.*' => 'nullable|image|mimes:png,jpg,jpeg',
         ]);
     }
 

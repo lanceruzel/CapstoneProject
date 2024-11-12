@@ -143,12 +143,12 @@ class ProductReportForm extends Component
         $rules = [
             'reason' => 'required',
             'description' => 'required|min:10',
-            'images.*' => 'image|mimes:png,jpg,jpeg|max:2048',
+            'images.*' => 'image|mimes:png,jpg,jpeg',
             'selectedProducts' => 'required'
         ];
 
         if(empty($this->images) || !$this->images || $this->images == '[]'){
-            $rules['images'] = 'required|image|mimes:png,jpg,jpeg|max:2048';
+            $rules['images'] = 'required|image|mimes:png,jpg,jpeg';
         }
 
         return $this->validate($rules);

@@ -122,7 +122,7 @@ class PostFormModal extends Component
     public function formValidate(){
         return $this->validate([
             'content' => 'required',
-            'images.*' => $this->postUpdate ? '' : 'image|mimes:png,jpg,jpeg|max:2048',
+            'images.*' => $this->postUpdate ? '' : 'image|mimes:png,jpg,jpeg',
         ]);
     }
 
