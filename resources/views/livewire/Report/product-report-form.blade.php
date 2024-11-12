@@ -73,7 +73,7 @@
                         
                         <div wire:target='images' wire:loading class="flex flex-col gap-3 items-center justify-center">
                             <div x-show="uploading" class="w-full max-w-xs">
-                                <div class="bg-gray-200 rounded-full h-4 dark:bg-gray-700 w-full relative">
+                                <div class="bg-gray-400 rounded-full h-4 dark:bg-gray-700 w-full relative">
                                     <div class="bg-teal-600 h-4 rounded-full" x-bind:style="{ width: `${progress}%` }"></div>
                                     
                                     <div class="absolute inset-0 flex justify-center items-center">
