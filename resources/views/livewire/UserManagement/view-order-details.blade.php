@@ -82,7 +82,7 @@
                                 Payment Status
                             </th>
                             <td class="px-6 py-4">
-                                {{ $order->is_paid ? 'Paid' : 'Not Yet Paid' }}
+                                {{ $order->is_paid ? 'Paid' : 'Pending' }}
                             </td>
                         </tr>
 

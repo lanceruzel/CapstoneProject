@@ -5,7 +5,9 @@ namespace App\Livewire\Report;
 use App\Classes\UserNotif;
 use App\Enums\NotificationType;
 use App\Enums\Status;
+use App\Mail\ReturnRequestAcceptedMail;
 use App\Models\Report;
+use Illuminate\Support\Facades\Mail;
 use Livewire\Component;
 use WireUi\Traits\WireUiActions;
 
@@ -32,6 +34,8 @@ class ViewReturnRequestModal extends Component
     public function acceptRequest(){
         $this->request->status = Status::Accepted;
         $this->updateRequest();
+
+        Mail::to($this->request->reporter->email)->send(new ReturnRequestAcceptedMail($this->request));
     }
 
     public function declineRequest(){

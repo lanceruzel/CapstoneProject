@@ -5,8 +5,10 @@ namespace App\Livewire\Report;
 use App\Classes\UserNotif;
 use App\Enums\NotificationType;
 use App\Enums\Status;
+use App\Mail\ReturnRequestDeclinedMail;
 use App\Models\Report;
 use App\Models\User;
+use Illuminate\Support\Facades\Mail;
 use Livewire\Component;
 use WireUi\Traits\WireUiActions;
 
@@ -46,8 +48,12 @@ class ReturnRequestDeclineModal extends Component
             $validated = $this->validateForm();
 
             $this->report->status = Status::Declined;
-            $this->report->cancel_reason = $validated['description'] ?? $validated['reason'];
             
+            $reason = $validated['description'] ?? $validated['reason'];
+            $this->report->cancel_reason = $reason;
+            
+            Mail::to($this->report->reporter->email)->send(new ReturnRequestDeclinedMail($this->report, $reason));
+
             if($this->report->save()){
                 UserNotif::sendNotif($this->report->reporter_id, 'Your return request has been declined.' , NotificationType::ReturnRequest);
 

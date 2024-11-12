@@ -64,7 +64,7 @@
                                         @if($order->is_paid)
                                             <x-badge flat positive label="Paid" />
                                         @else
-                                            <x-badge flat info label="Not yet paid" />
+                                            <x-badge flat info label="Pending" />
                                         @endif
                                     </td>
                                     <td class="px-6 py-4">
