@@ -73,7 +73,15 @@
                 <div class="gap-3 w-full">
                     @foreach(array_slice((array) $savedRequirements, 0, -2) as $key => $requirement) 
                         @if($key == 'valid_id')
-                            <div class="grid grid-cols-2 mt-3 gap-3">
+                            <div class="grid grid-cols-2 mt-3 gap-3" x-data="{ 
+                                    uploading: false, 
+                                    progress: 0,
+                                }"
+                                x-on:livewire-upload-start="uploading = true"
+                                x-on:livewire-upload-finish="uploading = false; progress = 0"
+                                x-on:livewire-upload-error="uploading = false"
+                                x-on:livewire-upload-progress="progress = $event.detail.progress"
+                            >
                                 <x-select
                                     class="max-lg:col-span-2"
                                     label="Select ID Type"
@@ -84,67 +92,81 @@
                                 />
 
                                 <x-input type="file" label="Upload ID Picture" class="max-lg:col-span-2" wire:model='valid_id' shadowless>
-                                    <x-slot name='corner' wire:target='validId' wire:loading>
-                                        <div class="flex items-center justify-center gap-2">
-                                            <span>
-                                                <x-icon name="arrow-path" class="w-5 h-5 animate-spin" />
-                                            </span>
-                                            
-                                            <span>
-                                                Uploading...
-                                            </span>
+                                    <x-slot name='corner' wire:target='valid_id' wire:loading>
+                                        <div class="flex flex-col gap-3 items-center justify-center w-[150px]">
+                                            <div x-show="uploading" class="w-full max-w-xs">
+                                                <div class="bg-gray-400 rounded-full h-4 dark:bg-gray-700 w-full relative">
+                                                    <div class="bg-teal-600 h-4 rounded-full" x-bind:style="{ width: `${progress}%` }"></div>
+                                                    
+                                                    <div class="absolute inset-0 flex justify-center items-center">
+                                                        <span class="text-xs text-white font-semibold" x-text="`${progress}%`"></span>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </x-slot>
                                 </x-input>
                             </div>
                         @else
-                            <x-input type="file" class="mt-3" wire:model='{{ $key }}' shadowless>
-                                <x-slot name='label'>
-                                    @switch($key)
-                                        @case('dti_permit')
-                                            DTI Permit
-                                            @break
-
-                                        @case('bir_registration')
-                                            BIR Registration
-                                            @break
-
-                                        @case('tax_compliance')
-                                            Tax Compliance
-                                            @break
-
-                                        @case('business_license')
-                                            Business License
-                                            @break
-
-                                        @case('mayors_permit')
-                                            Mayor's Permit
-                                            @break
-
-                                        @case('business_permit')
-                                            Business Permit
-                                            @break
-
-                                        @case('health_and_safety_permit')
-                                            Health and safety permit
-                                            @break
-
-                                        @default
-                                    @endswitch
-                                </x-slot>
-
-                                <x-slot name='corner' wire:target='{{ $key }}' wire:loading>
-                                    <div class="flex items-center justify-center gap-2">
-                                        <span>
-                                            <x-icon name="arrow-path" class="w-5 h-5 animate-spin" />
-                                        </span>
-                                        
-                                        <span>
-                                            Uploading...
-                                        </span>
-                                    </div>
-                                </x-slot>
-                            </x-input>
+                            <div x-data="{ 
+                                    uploading: false, 
+                                    progress: 0,
+                                }"
+                                x-on:livewire-upload-start="uploading = true"
+                                x-on:livewire-upload-finish="uploading = false; progress = 0"
+                                x-on:livewire-upload-error="uploading = false"
+                                x-on:livewire-upload-progress="progress = $event.detail.progress"
+                            >
+                                <x-input type="file" class="mt-3" wire:model='{{ $key }}' shadowless>
+                                    <x-slot name='label'>
+                                        @switch($key)
+                                            @case('dti_permit')
+                                                DTI Permit
+                                                @break
+    
+                                            @case('bir_registration')
+                                                BIR Registration
+                                                @break
+    
+                                            @case('tax_compliance')
+                                                Tax Compliance
+                                                @break
+    
+                                            @case('business_license')
+                                                Business License
+                                                @break
+    
+                                            @case('mayors_permit')
+                                                Mayor's Permit
+                                                @break
+    
+                                            @case('business_permit')
+                                                Business Permit
+                                                @break
+    
+                                            @case('health_and_safety_permit')
+                                                Health and safety permit
+                                                @break
+    
+                                            @default
+                                        @endswitch
+                                    </x-slot>
+    
+                                    <x-slot name='corner' wire:target='{{ $key }}' wire:loading>
+                                        <div class="flex flex-col gap-3 items-center justify-center w-[150px]">
+                                            <div x-show="uploading" class="w-full max-w-xs">
+                                                <div class="bg-gray-400 rounded-full h-4 dark:bg-gray-700 w-full relative">
+                                                    <div class="bg-teal-600 h-4 rounded-full" x-bind:style="{ width: `${progress}%` }"></div>
+                                                    
+                                                    <div class="absolute inset-0 flex justify-center items-center">
+                                                        <span class="text-xs text-white font-semibold" x-text="`${progress}%`"></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </x-slot>
+                                </x-input>
+                            </div>
                         @endif
                     @endforeach
                 </div>
@@ -170,7 +192,15 @@
                 @foreach (array_slice((array) $savedRequirements, 0, -2) as $key => $requirement)
                     @if($requirement->status == App\Enums\Status::Declined)
                         @if($key == 'valid_id')
-                            <div class="grid grid-cols-2 mt-3 gap-3">
+                            <div class="grid grid-cols-2 mt-3 gap-3" x-data="{ 
+                                uploading: false, 
+                                progress: 0,
+                                }"
+                                x-on:livewire-upload-start="uploading = true"
+                                x-on:livewire-upload-finish="uploading = false; progress = 0"
+                                x-on:livewire-upload-error="uploading = false"
+                                x-on:livewire-upload-progress="progress = $event.detail.progress"
+                            >
                                 <x-select
                                     class="max-lg:col-span-2"
                                     label="Select ID Type"
@@ -181,67 +211,81 @@
                                 />
 
                                 <x-input type="file" label="Upload ID Picture" class="max-lg:col-span-2" wire:model='valid_id' shadowless>
-                                    <x-slot name='corner' wire:target='validId' wire:loading>
-                                        <div class="flex items-center justify-center gap-2">
-                                            <span>
-                                                <x-icon name="arrow-path" class="w-5 h-5 animate-spin" />
-                                            </span>
-                                            
-                                            <span>
-                                                Uploading...
-                                            </span>
+                                    <x-slot name='corner' wire:target='valid_id' wire:loading>
+                                        <div class="flex flex-col gap-3 items-center justify-center w-[150px]">
+                                            <div x-show="uploading" class="w-full max-w-xs">
+                                                <div class="bg-gray-400 rounded-full h-4 dark:bg-gray-700 w-full relative">
+                                                    <div class="bg-teal-600 h-4 rounded-full" x-bind:style="{ width: `${progress}%` }"></div>
+                                                    
+                                                    <div class="absolute inset-0 flex justify-center items-center">
+                                                        <span class="text-xs text-white font-semibold" x-text="`${progress}%`"></span>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </x-slot>
                                 </x-input>
                             </div>
                         @else
-                            <x-input type="file" class="max-lg:col-span-2" wire:model='{{ $key }}' shadowless>
-                                <x-slot name='label'>
-                                    @switch($key)
-                                        @case('dti_permit')
-                                            DTI Permit
-                                            @break
+                            <div x-data="{ 
+                                uploading: false, 
+                                progress: 0,
+                                }"
+                                x-on:livewire-upload-start="uploading = true"
+                                x-on:livewire-upload-finish="uploading = false; progress = 0"
+                                x-on:livewire-upload-error="uploading = false"
+                                x-on:livewire-upload-progress="progress = $event.detail.progress"
+                            >
+                                <x-input type="file" class="mt-3" wire:model='{{ $key }}' shadowless>
+                                    <x-slot name='label'>
+                                        @switch($key)
+                                            @case('dti_permit')
+                                                DTI Permit
+                                                @break
 
-                                        @case('bir_registration')
-                                            BIR Registration
-                                            @break
+                                            @case('bir_registration')
+                                                BIR Registration
+                                                @break
 
-                                        @case('tax_compliance')
-                                            Tax Compliance
-                                            @break
+                                            @case('tax_compliance')
+                                                Tax Compliance
+                                                @break
 
-                                        @case('business_license')
-                                            Business License
-                                            @break
+                                            @case('business_license')
+                                                Business License
+                                                @break
 
-                                        @case('mayors_permit')
-                                            Mayor's Permit
-                                            @break
+                                            @case('mayors_permit')
+                                                Mayor's Permit
+                                                @break
 
-                                        @case('business_permit')
-                                            Business Permit
-                                            @break
+                                            @case('business_permit')
+                                                Business Permit
+                                                @break
 
-                                        @case('health_and_safety_permit')
-                                            Health and safety permit
-                                            @break
-                                    
-                                        @default
-                                    @endswitch
-                                </x-slot>
+                                            @case('health_and_safety_permit')
+                                                Health and safety permit
+                                                @break
 
-                                <x-slot name='corner' wire:target='{{ $key }}' wire:loading>
-                                    <div class="flex items-center justify-center gap-2">
-                                        <span>
-                                            <x-icon name="arrow-path" class="w-5 h-5 animate-spin" />
-                                        </span>
-                                        
-                                        <span>
-                                            Uploading...
-                                        </span>
-                                    </div>
-                                </x-slot>
-                            </x-input>
+                                            @default
+                                        @endswitch
+                                    </x-slot>
+
+                                    <x-slot name='corner' wire:target='{{ $key }}' wire:loading>
+                                        <div class="flex flex-col gap-3 items-center justify-center w-[150px]">
+                                            <div x-show="uploading" class="w-full max-w-xs">
+                                                <div class="bg-gray-400 rounded-full h-4 dark:bg-gray-700 w-full relative">
+                                                    <div class="bg-teal-600 h-4 rounded-full" x-bind:style="{ width: `${progress}%` }"></div>
+                                                    
+                                                    <div class="absolute inset-0 flex justify-center items-center">
+                                                        <span class="text-xs text-white font-semibold" x-text="`${progress}%`"></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </x-slot>
+                                </x-input>
+                            </div>
                         @endif
                     @endif
                 @endforeach
