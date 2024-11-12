@@ -2,7 +2,7 @@
     <div onclick="$openModal('productViewModal')" wire:click="$dispatch('view-product-info', { id: {{ $product->id }} })">
         <div class="h-[220px] rounded-t-lg border-b-2">
             @if($this->identifyFileType(json_decode($product->media)[0]) == 'video')
-                <video src="{{ asset('uploads/products') . '/' . $item }}" class="block w-full h-full object-fit rounded-t-lg bg-white" alt="video"></video>
+                <video src="{{ asset('uploads/products') . '/' . json_decode($product->media)[0] }}" class="block w-full h-full object-fit rounded-t-lg bg-white" alt="video"></video>
             @else
                 <img src="{{ asset('uploads/products') . '/' . json_decode($product->media)[0] }}" class="block w-full h-full object-fit rounded-t-lg bg-white" alt="image">
             @endif

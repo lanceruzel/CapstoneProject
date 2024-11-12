@@ -19,7 +19,7 @@
                                 <div class="relative overflow-hidden rounded-lg">
                                     <div class="relative w-full md:h-40 h-full">
                                         @if($this->identifyFileType(json_decode($product->media)[0]) == 'video')
-                                            <video src="{{ asset('uploads/products') . '/' . $item }}" class="object-cover w-full h-full inset-0" alt="video"></video>
+                                            <video src="{{ asset('uploads/products') . '/' . json_decode($product->media)[0] }}" class="object-cover w-full h-full inset-0" alt="video"></video>
                                         @else
                                             <img src="{{ asset('uploads/products') . '/' . json_decode($product->media)[0] }}" class="object-cover w-full h-full inset-0" alt="image">
                                         @endif
