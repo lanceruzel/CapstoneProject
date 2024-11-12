@@ -21,7 +21,7 @@ return new class extends Migration
             $table->foreign('conversation_id')->references('id')->on('conversations')->cascadeOnDelete();
 
             $table->text('content')->nullable();
-            $table->json('images')->nullable();
+            $table->json('media')->nullable();
 
             $table->timestamps();
         });

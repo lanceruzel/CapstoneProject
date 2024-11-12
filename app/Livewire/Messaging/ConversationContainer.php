@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Log;
 use Livewire\Attributes\On;
 use Livewire\Component;
 use Livewire\Features\SupportFileUploads\WithFileUploads;
+use Str;
 use WireUi\Traits\WireUiActions;
 
 class ConversationContainer extends Component
@@ -31,7 +32,7 @@ class ConversationContainer extends Component
 
     public $isAppeal = false;
 
-    public $images = null;
+    public $media = null;
 
     public function getListeners(){ 
         return [
@@ -50,15 +51,15 @@ class ConversationContainer extends Component
 
     public function sendMessage(){
         try{
-            if($this->message != null || ($this->images != null || $this->images != [])){
+            if($this->message != null || ($this->media != null || $this->media != [])){
                 $validated = $this->formValidate();
     
                 $messageStore = $this->storeMessage($validated);
     
                 if($messageStore){
-                    if($this->images){
-                        foreach($this->images as $key=>$image){
-                            $this->deleteImage($key);
+                    if($this->media){
+                        foreach($this->media as $key => $item){
+                            $this->deleteMedia($key);
                         }
                     }
 
@@ -71,7 +72,7 @@ class ConversationContainer extends Component
                     NewChatCreated::dispatch($this->conversation->user_2);
     
                     $this->dispatch('messagesUpdated');
-                    $this->reset(['message', 'images']);
+                    $this->reset(['message', 'media']);
                 }
             }
         }catch(\Exception $e){
@@ -90,7 +91,7 @@ class ConversationContainer extends Component
             'user_id' => Auth::id(),
             'conversation_id' => $this->conversation->id,
             'content' => WordFilter::filteredInput($validated['message']),
-            'images' => json_encode($this->storeImages($this->images)),
+            'media' => json_encode($this->storeMedia($this->media)),
         ]);
     }
 
@@ -98,25 +99,67 @@ class ConversationContainer extends Component
         $this->conversation = null;
     }
 
-    public function storeImages($images){
-        $imagePaths = [];
+    public function storeMedia($media){
+        $mediaPaths = [];
 
-        if($images){
-            foreach ($images as $key => $image) {
-                $filename = $key . '_' . time() . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
-                $image->storeAs('messages', $filename);
-                array_push($imagePaths, $filename);
+        if($media){
+            foreach ($media as $key => $item) {
+                $filename = $key . '_' . time() . '_' . uniqid() . '.' . $item->getClientOriginalExtension();
+                $item->storeAs('messages', $filename);
+                array_push($mediaPaths, $filename);
             }
         }
 
-        return $imagePaths;
+        return $mediaPaths;
     }
 
     public function formValidate(){
         return $this->validate([
             'message' => 'nullable',
-            'images.*' => 'nullable|image|mimes:png,jpg,jpeg',
+            'media.*' => 'nullable|mimes:png,jpg,jpeg,mp4,mov,avi,wmv,mkv,webm',
         ]);
+    }
+
+    public function identifyFileType($fileName)
+    {
+        // Trim any leading/trailing spaces
+        $fileName = trim($fileName);
+
+        // Find the position of the last dot
+        $dotPosition = strrpos($fileName, '.');
+
+        // If there is no dot, it's not a file with an extension
+        if ($dotPosition === false) {
+            return 'unknown';
+        }
+
+        // Find the position of the first question mark (if any) after the dot
+        $questionMarkPosition = strpos($fileName, '?', $dotPosition);
+
+        // If there is no question mark, the extension ends at the end of the string
+        if ($questionMarkPosition === false) {
+            $extension = substr($fileName, $dotPosition + 1);
+        } else {
+            // If there's a question mark, extract the part before it
+            $extension = substr($fileName, $dotPosition + 1, $questionMarkPosition - $dotPosition - 1);
+        }
+
+        // Convert to lowercase
+        $extension = Str::lower($extension);
+
+        // List of common video extensions
+        $videoExtensions = ['mp4', 'webm', 'avi', 'mov', 'mkv', 'flv'];
+        // List of common image extensions
+        $imageExtensions = ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'svg'];
+
+        // Check if the file extension matches any known video or image types
+        if (in_array($extension, $videoExtensions)) {
+            return 'video';
+        } elseif (in_array($extension, $imageExtensions)) {
+            return 'image';
+        }
+
+        return 'unknown'; // Default return if it's neither video nor image
     }
 
     public function getAppealData($id){
@@ -126,8 +169,8 @@ class ConversationContainer extends Component
         }
     }
 
-    public function deleteImage($index){
-        array_splice($this->images, $index, 1);
+    public function deleteMedia($index){
+        array_splice($this->media, $index, 1);
     }
 
     public function retrieveMessages($id){

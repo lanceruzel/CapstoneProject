@@ -27,7 +27,7 @@ return new class extends Migration
             $table->json('products');
 
             $table->text('description');
-            $table->json('images');
+            $table->json('media');
 
             $table->text('status');
 

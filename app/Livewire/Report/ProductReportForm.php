@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Livewire\Component;
 use Livewire\WithFileUploads;
+use Str;
 use WireUi\Traits\WireUiActions;
 
 class ProductReportForm extends Component
@@ -19,7 +20,7 @@ class ProductReportForm extends Component
     use WithFileUploads;
     use WireUiActions;
 
-    public $images;
+    public $media;
     public $description;
 
     public $order;
@@ -45,6 +46,47 @@ class ProductReportForm extends Component
             ->unique('id')
             ->toArray();
         }
+    }
+
+    public function identifyFileType($fileName){
+        // Trim any leading/trailing spaces
+        $fileName = trim($fileName);
+
+        // Find the position of the last dot
+        $dotPosition = strrpos($fileName, '.');
+
+        // If there is no dot, it's not a file with an extension
+        if ($dotPosition === false) {
+            return 'unknown';
+        }
+
+        // Find the position of the first question mark (if any) after the dot
+        $questionMarkPosition = strpos($fileName, '?', $dotPosition);
+
+        // If there is no question mark, the extension ends at the end of the string
+        if ($questionMarkPosition === false) {
+            $extension = substr($fileName, $dotPosition + 1);
+        } else {
+            // If there's a question mark, extract the part before it
+            $extension = substr($fileName, $dotPosition + 1, $questionMarkPosition - $dotPosition - 1);
+        }
+
+        // Convert to lowercase
+        $extension = Str::lower($extension);
+
+        // List of common video extensions
+        $videoExtensions = ['mp4', 'webm', 'avi', 'mov', 'mkv', 'flv'];
+        // List of common image extensions
+        $imageExtensions = ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'svg'];
+
+        // Check if the file extension matches any known video or image types
+        if (in_array($extension, $videoExtensions)) {
+            return 'video';
+        } elseif (in_array($extension, $imageExtensions)) {
+            return 'image';
+        }
+
+        return 'unknown'; // Default return if it's neither video nor image
     }
 
     public function send(){
@@ -115,40 +157,40 @@ class ProductReportForm extends Component
             'reason' => $validated['reason'],
             'products' => json_encode($validated['selectedProducts']),
             'description' => $validated['description'],
-            'images' => json_encode($this->storeImages($validated['images'])),
+            'media' => json_encode($this->storeMedia($validated['media'])),
             'status' => Status::ReturnRequestReview
         ]);
     }
 
-    public function deleteImage($index){
-        array_splice($this->images, $index, 1);
+    public function deleteMedia($index){
+        array_splice($this->media, $index, 1);
     }
 
-    public function storeImages($images){
-        $imagePaths = [];
+    public function storeMedia($media){
+        $mediaPaths = [];
 
-        if($images){
-            foreach ($images as $key => $image) {
+        if($media){
+            foreach ($media as $key => $item) {
                 // New image, store and get path
-                $filename = $key . '_' . time() . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
-                $image->storeAs('report', $filename);
-                array_push($imagePaths, $filename);
+                $filename = $key . '_' . time() . '_' . uniqid() . '.' . $item->getClientOriginalExtension();
+                $item->storeAs('report', $filename);
+                array_push($mediaPaths, $filename);
             }
         }
 
-        return $imagePaths;
+        return $mediaPaths;
     }
 
     public function validateForm(){
         $rules = [
             'reason' => 'required',
             'description' => 'required|min:10',
-            'images.*' => 'image|mimes:png,jpg,jpeg',
+            'media.*' => 'required|mimes:png,jpg,jpeg,mp4,mov,avi,wmv,mkv,webm',
             'selectedProducts' => 'required'
         ];
 
-        if(empty($this->images) || !$this->images || $this->images == '[]'){
-            $rules['images'] = 'required|image|mimes:png,jpg,jpeg';
+        if(empty($this->media) || !$this->media || $this->media == '[]'){
+            $rules['media'] = 'required|mimes:png,jpg,jpeg,mp4,mov,avi,wmv,mkv,webm';
         }
 
         return $this->validate($rules);
@@ -156,7 +198,7 @@ class ProductReportForm extends Component
 
     public function clearData(){
         $this->reset([
-            'images',
+            'media',
             'description',
             'order',
             'reason',

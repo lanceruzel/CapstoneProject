@@ -7,6 +7,7 @@ use App\Models\Product;
 use App\Models\Report;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Livewire\Component;
+use Str;
 use WireUi\Traits\WireUiActions;
 
 class ViewReportModal extends Component
@@ -15,7 +16,7 @@ class ViewReportModal extends Component
 
     public $report;
 
-    public $images;
+    public $media;
     public $description;
     public $products;
     public $type;
@@ -31,9 +32,50 @@ class ViewReportModal extends Component
 
         if($this->report){
             $this->description = $this->report->description;
-            $this->images = json_decode($this->report->images);
+            $this->media = json_decode($this->report->media);
             $this->type = $this->report->type;
         }
+    }
+
+    public function identifyFileType($fileName){
+        // Trim any leading/trailing spaces
+        $fileName = trim($fileName);
+
+        // Find the position of the last dot
+        $dotPosition = strrpos($fileName, '.');
+
+        // If there is no dot, it's not a file with an extension
+        if ($dotPosition === false) {
+            return 'unknown';
+        }
+
+        // Find the position of the first question mark (if any) after the dot
+        $questionMarkPosition = strpos($fileName, '?', $dotPosition);
+
+        // If there is no question mark, the extension ends at the end of the string
+        if ($questionMarkPosition === false) {
+            $extension = substr($fileName, $dotPosition + 1);
+        } else {
+            // If there's a question mark, extract the part before it
+            $extension = substr($fileName, $dotPosition + 1, $questionMarkPosition - $dotPosition - 1);
+        }
+
+        // Convert to lowercase
+        $extension = Str::lower($extension);
+
+        // List of common video extensions
+        $videoExtensions = ['mp4', 'webm', 'avi', 'mov', 'mkv', 'flv'];
+        // List of common image extensions
+        $imageExtensions = ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'svg'];
+
+        // Check if the file extension matches any known video or image types
+        if (in_array($extension, $videoExtensions)) {
+            return 'video';
+        } elseif (in_array($extension, $imageExtensions)) {
+            return 'image';
+        }
+
+        return 'unknown'; // Default return if it's neither video nor image
     }
 
     public function exportReport(){
@@ -79,7 +121,7 @@ class ViewReportModal extends Component
     public function clearData(){
         $this->reset([
             'report',
-            'images',
+            'media',
             'description',
             'products',
             'type'

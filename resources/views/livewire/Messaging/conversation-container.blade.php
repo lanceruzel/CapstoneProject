@@ -61,7 +61,7 @@
             
         @if($isAppeal == false)
             <!-- chats bubble -->
-            @if($images)
+            @if($media)
                 <div id="chat-container" class="w-full p-5 py-10 overflow-y-auto md:h-[calc(100dvh-375px)] h-[calc(100vh-320px)]">
             @else
                 <div id="chat-container" class="w-full p-5 py-10 overflow-y-auto md:h-[calc(100dvh-210px)] h-[calc(100vh-220px)]">
@@ -110,25 +110,47 @@
                                 <div class="px-4 py-2 rounded-[20px] max-w-sm bg-gradient-to-tr from-sky-500 to-blue-500 text-white shadow break-words text-wrap hyphens-auto space-y-3">
                                     <span>{{ $message->content }}</span>
 
-                                    <!-- images -->
-                                    @if(json_decode($message->images) != null)
-                                        @if(count(json_decode($message->images)) === 1)
+                                    <!-- media -->
+                                    @if(json_decode($message->media) != null)
+                                        @if(count(json_decode($message->media)) === 1)
                                             <div class="rounded h-60 min-h-60 max-h-60" uk-lightbox>
-                                                <a href="{{ asset('uploads/messages') . '/' . json_decode($message->images)[0] }}">
-                                                    <img src="{{ asset('uploads/messages') . '/' . json_decode($message->images)[0] }}" alt="" class="sm:rounded-lg w-full h-full object-cover">
-                                                </a>
+                                                {{-- -------------------------------- --}}
+                                                @if($this->identifyFileType(json_decode($message->media)[0]) == 'video')
+                                                    <a data-type="video" class="relative" href="{{ asset('uploads/messages') . '/' . json_decode($message->media)[0] }}">
+                                                        <video src="{{ asset('uploads/messages') . '/' . json_decode($message->media)[0] }}" class="sm:rounded-lg w-full h-full object-cover" alt="video"></video>
+                                                        
+                                                        <div class="absolute top-0 bottom-0 right-0 left-0 flex items-center justify-center">
+                                                            <x-icon name="play-circle" solid class="w-10 h-10" />
+                                                        </div>
+                                                    </a>
+                                                @else
+                                                    <a href="{{ asset('uploads/messages') . '/' . json_decode($message->media)[0] }}">
+                                                        <img src="{{ asset('uploads/messages') . '/' . json_decode($message->media)[0] }}" class="sm:rounded-lg w-full h-full object-cover" alt="image">
+                                                    </a>
+                                                @endif
                                             </div>
-                                        @elseif(count(json_decode($message->images)) > 1)
+                                        @elseif(count(json_decode($message->media)) > 1)
                                             @php
-                                                $count = count(json_decode($message->images)); 
+                                                $count = count(json_decode($message->media)); 
                                             @endphp
                                     
                                             <div class="grid {{ $count == 2 ? 'grid-cols-2' : 'grid-cols-3' }} gap-3">
-                                                @foreach(json_decode($message->images) as $image)
+                                                @foreach(json_decode($message->media) as $item)
                                                     <div class="col-span-1 rounded h-44 min-h-44 max-h-44" tabindex="-1" style="" uk-lightbox>
-                                                        <a href="{{ asset('uploads/messages') . '/' . $image }}">
-                                                            <img src="{{ asset('uploads/messages') . '/' . $image }}" class="w-full h-full object-cover inset-0" alt="">
-                                                        </a>
+                                                        {{-- -------------------------------- --}}
+                                                        @if($this->identifyFileType($item) == 'video')
+                                                            <a data-type="video" class="relative" href="{{ asset('uploads/messages') . '/' . $item }}">
+                                                                <video src="{{ asset('uploads/messages') . '/' . $item }}" class="sm:rounded-lg w-full h-full object-cover" alt="video"></video>
+                                                                
+                                                                <div class="absolute top-0 bottom-0 right-0 left-0 flex items-center justify-center">
+                                                                    <x-icon name="play-circle" solid class="w-10 h-10" />
+                                                                </div>
+                                                            </a>
+                                                        @else
+                                                            <a href="{{ asset('uploads/messages') . '/' . $item }}">
+                                                                <img src="{{ asset('uploads/messages') . '/' . $item }}" class="sm:rounded-lg w-full h-full object-cover" alt="image">
+                                                            </a>
+                                                        @endif
                                                     </div>
                                                 @endforeach
                                             </div>
@@ -169,25 +191,47 @@
                                     <div class="px-4 py-2 rounded-[20px] max-w-sm bg-gray-100 break-words !text-wrap hyphens-auto space-y-3">
                                         <span>{{ $message->content }}</span>
 
-                                        <!-- images -->
-                                        @if(json_decode($message->images) != null)
-                                            @if(count(json_decode($message->images)) === 1)
+                                        <!-- media -->
+                                        @if(json_decode($message->media) != null)
+                                            @if(count(json_decode($message->media)) === 1)
                                                 <div class="rounded h-60 min-h-60 max-h-60" uk-lightbox>
-                                                    <a href="{{ asset('uploads/messages') . '/' . json_decode($message->images)[0] }}">
-                                                        <img src="{{ asset('uploads/messages') . '/' . json_decode($message->images)[0] }}" alt="" class="sm:rounded-lg w-full h-full object-cover">
-                                                    </a>
+                                                    {{-- -------------------------------- --}}
+                                                    @if($this->identifyFileType(json_decode($message->media)[0]) == 'video')
+                                                        <a data-type="video" class="relative" href="{{ asset('uploads/messages') . '/' . json_decode($message->media)[0] }}">
+                                                            <video src="{{ asset('uploads/messages') . '/' . json_decode($message->media)[0] }}" class="sm:rounded-lg w-full h-full object-cover" alt="video"></video>
+                                                            
+                                                            <div class="absolute top-0 bottom-0 right-0 left-0 flex items-center justify-center">
+                                                                <x-icon name="play-circle" solid class="w-10 h-10" />
+                                                            </div>
+                                                        </a>
+                                                    @else
+                                                        <a href="{{ asset('uploads/messages') . '/' . json_decode($message->media)[0] }}">
+                                                            <img src="{{ asset('uploads/messages') . '/' . json_decode($message->media)[0] }}" class="sm:rounded-lg w-full h-full object-cover" alt="image">
+                                                        </a>
+                                                    @endif
                                                 </div>
-                                            @elseif(count(json_decode($message->images)) > 1)
+                                            @elseif(count(json_decode($message->media)) > 1)
                                                 @php
-                                                    $count = count(json_decode($message->images)); 
+                                                    $count = count(json_decode($message->media)); 
                                                 @endphp
                                         
                                                 <div class="grid {{ $count == 2 ? 'grid-cols-2' : 'grid-cols-3' }} gap-3">
-                                                    @foreach(json_decode($message->images) as $image)
+                                                    @foreach(json_decode($message->media) as $item)
                                                         <div class="col-span-1 rounded h-44 min-h-44 max-h-44" tabindex="-1" style="" uk-lightbox>
-                                                            <a href="{{ asset('uploads/messages') . '/' . $image }}">
-                                                                <img src="{{ asset('uploads/messages') . '/' . $image }}" class="w-full h-full object-cover inset-0" alt="">
-                                                            </a>
+                                                            {{-- -------------------------------- --}}
+                                                            @if($this->identifyFileType($item) == 'video')
+                                                                <a data-type="video" class="relative" href="{{ asset('uploads/messages') . '/' . $item }}">
+                                                                    <video src="{{ asset('uploads/messages') . '/' . $item }}" class="w-full h-full object-cover inset-0" alt="video"></video>
+                                                                
+                                                                    <div class="absolute top-0 bottom-0 right-0 left-0 flex items-center justify-center">
+                                                                        <x-icon name="play-circle" solid class="w-10 h-10" />
+                                                                    </div>
+                                                                </a>
+                                                            @else
+                                                                <a href="{{ asset('uploads/messages') . '/' . $item }}">
+                                                                    <img src="{{ asset('uploads/messages') . '/' . $item }}" class="w-full h-full object-cover inset-0" alt="image">
+                                                                </a>
+                                                            @endif
                                                         </div>
                                                     @endforeach
                                                 </div>
@@ -216,25 +260,48 @@
                                 <div class="px-4 py-2 rounded-[20px] max-w-sm bg-gradient-to-tr from-sky-500 to-blue-500 text-white shadow break-words text-wrap hyphens-auto space-y-3">
                                     <span>{{ $message->content }}</span>
 
-                                    <!-- images -->
-                                    @if(json_decode($message->images) != null)
-                                        @if(count(json_decode($message->images)) === 1)
+                                    <!-- media -->
+                                    @if(json_decode($message->media) != null)
+                                        @if(count(json_decode($message->media)) === 1)
                                             <div class="rounded h-60 min-h-60 max-h-60" uk-lightbox>
-                                                <a href="{{ asset('uploads/messages') . '/' . json_decode($message->images)[0] }}">
-                                                    <img src="{{ asset('uploads/messages') . '/' . json_decode($message->images)[0] }}" alt="" class="sm:rounded-lg w-full h-full object-cover">
-                                                </a>
+                                                {{-- -------------------------------- --}}
+                                                @if($this->identifyFileType(json_decode($message->media)[0]) == 'video')
+                                                    <a data-type="video" class="relative" href="{{ asset('uploads/messages') . '/' . json_decode($message->media)[0] }}">
+                                                        <video src="{{ asset('uploads/messages') . '/' . json_decode($message->media)[0] }}" class="sm:rounded-lg w-full h-full object-cover" alt="video"></video>
+                                                    
+                                                        <div class="absolute top-0 bottom-0 right-0 left-0 flex items-center justify-center">
+                                                            <x-icon name="play-circle" solid class="w-10 h-10" />
+                                                        </div>
+                                                    </a>
+                                                @else
+                                                    <a href="{{ asset('uploads/messages') . '/' . json_decode($message->media)[0] }}">
+                                                        <img src="{{ asset('uploads/messages') . '/' . json_decode($message->media)[0] }}" class="sm:rounded-lg w-full h-full object-cover" alt="image">
+                                                    </a>
+                                                @endif
+
                                             </div>
-                                        @elseif(count(json_decode($message->images)) > 1)
+                                        @elseif(count(json_decode($message->media)) > 1)
                                             @php
-                                                $count = count(json_decode($message->images)); 
+                                                $count = count(json_decode($message->media)); 
                                             @endphp
                                     
                                             <div class="grid {{ $count == 2 ? 'grid-cols-2' : 'grid-cols-3' }} gap-3">
-                                                @foreach(json_decode($message->images) as $image)
+                                                @foreach(json_decode($message->media) as $item)
                                                     <div class="col-span-1 rounded h-44 min-h-44 max-h-44" tabindex="-1" style="" uk-lightbox>
-                                                        <a href="{{ asset('uploads/messages') . '/' . $image }}">
-                                                            <img src="{{ asset('uploads/messages') . '/' . $image }}" class="w-full h-full object-cover inset-0" alt="">
-                                                        </a>
+                                                        {{-- -------------------------------- --}}
+                                                        @if($this->identifyFileType($item) == 'video')
+                                                            <a data-type="video" class="relative" href="{{ asset('uploads/messages') . '/' . $item }}">
+                                                                <video src="{{ asset('uploads/messages') . '/' . $item }}" class="w-full h-full object-cover inset-0" alt="video"></video>
+                                                                
+                                                                <div class="absolute top-0 bottom-0 right-0 left-0 flex items-center justify-center">
+                                                                    <x-icon name="play-circle" solid class="w-10 h-10" />
+                                                                </div>
+                                                            </a>
+                                                        @else
+                                                            <a href="{{ asset('uploads/messages') . '/' . $item }}">
+                                                                <img src="{{ asset('uploads/messages') . '/' . $item }}" class="w-full h-full object-cover inset-0" alt="image">
+                                                            </a>
+                                                        @endif
                                                     </div>
                                                 @endforeach
                                             </div>
@@ -267,25 +334,47 @@
                                     <div class="px-4 py-2 rounded-[20px] max-w-sm bg-gray-100 shadow break-words !text-wrap hyphens-auto space-y-3">
                                         <span>{{ $message->content }}</span>
 
-                                        <!-- images -->
-                                        @if(json_decode($message->images) != null)
-                                            @if(count(json_decode($message->images)) === 1)
+                                        <!-- media -->
+                                        @if(json_decode($message->media) != null)
+                                            @if(count(json_decode($message->media)) === 1)
                                                 <div class="rounded h-60 min-h-60 max-h-60" uk-lightbox>
-                                                    <a href="{{ asset('uploads/messages') . '/' . json_decode($message->images)[0] }}">
-                                                        <img src="{{ asset('uploads/messages') . '/' . json_decode($message->images)[0] }}" alt="" class="sm:rounded-lg w-full h-full object-cover">
-                                                    </a>
+                                                    {{-- -------------------------------- --}}
+                                                    @if($this->identifyFileType(json_decode($message->media)[0]) == 'video')
+                                                        <a data-type="video" class="relative" href="{{ asset('uploads/messages') . '/' . json_decode($message->media)[0] }}">
+                                                            <video src="{{ asset('uploads/messages') . '/' . json_decode($message->media)[0] }}" class="sm:rounded-lg w-full h-full object-cover" alt="video"></video>
+                                                        
+                                                            <div class="absolute top-0 bottom-0 right-0 left-0 flex items-center justify-center">
+                                                                <x-icon name="play-circle" solid class="w-10 h-10" />
+                                                            </div>
+                                                        </a>
+                                                    @else
+                                                        <a href="{{ asset('uploads/messages') . '/' . json_decode($message->media)[0] }}">
+                                                            <img src="{{ asset('uploads/messages') . '/' . json_decode($message->media)[0] }}" class="sm:rounded-lg w-full h-full object-cover" alt="image">
+                                                        </a>
+                                                    @endif
                                                 </div>
-                                            @elseif(count(json_decode($message->images)) > 1)
+                                            @elseif(count(json_decode($message->media)) > 1)
                                                 @php
-                                                    $count = count(json_decode($message->images)); 
+                                                    $count = count(json_decode($message->media)); 
                                                 @endphp
                                         
                                                 <div class="grid {{ $count == 2 ? 'grid-cols-2' : 'grid-cols-3' }} gap-3">
-                                                    @foreach(json_decode($message->images) as $image)
+                                                    @foreach(json_decode($message->media) as $item)
                                                         <div class="col-span-1 rounded h-44 min-h-44 max-h-44" tabindex="-1" style="" uk-lightbox>
-                                                            <a href="{{ asset('uploads/messages') . '/' . $image }}">
-                                                                <img src="{{ asset('uploads/messages') . '/' . $image }}" class="w-full h-full object-cover inset-0" alt="">
-                                                            </a>
+                                                            {{-- -------------------------------- --}}
+                                                            @if($this->identifyFileType($item) == 'video')
+                                                                <a data-type="video" class="relative" href="{{ asset('uploads/messages') . '/' . $item }}">
+                                                                    <video src="{{ asset('uploads/messages') . '/' . $item }}" class="w-full h-full object-cover inset-0" alt="video"></video>
+                                                                
+                                                                    <div class="absolute top-0 bottom-0 right-0 left-0 flex items-center justify-center">
+                                                                        <x-icon name="play-circle" solid class="w-10 h-10" />
+                                                                    </div>
+                                                                </a>
+                                                            @else
+                                                                <a href="{{ asset('uploads/messages') . '/' . $item }}">
+                                                                    <img src="{{ asset('uploads/messages') . '/' . $item }}" class="w-full h-full object-cover inset-0" alt="image">
+                                                                </a>
+                                                            @endif
                                                         </div>
                                                     @endforeach
                                                 </div>
@@ -307,15 +396,25 @@
         @if($conversation->status != App\Enums\Status::Inactive)
             <!-- sending message area -->
             <div class="flex flex-col">
-                @if($images)
+                @if($media)
                     <div class="max-w-[calc(100dvw-37rem)] flex gap-4 overflow-x-auto px-5 pt-5" uk-lightbox>
-                        @foreach($images as $key => $image)
+                        @foreach($media as $key => $item)
                             <div class="flex-shrink-0 w-36 h-36 relative">
-                                <a href="{{ $image->temporaryUrl() }}">
-                                    <img src="{{ $image->temporaryUrl() }}" alt="Uploaded Image" accept="image/png, image/jpeg" class="w-full h-full object-cover rounded-lg shadow border">
-                                </a>
+                                @if($this->identifyFileType($item->temporaryUrl()) == 'video')
+                                    <a data-type="video" class="relative" href="{{ $item->temporaryUrl() }}">
+                                        <video src="{{ $item->temporaryUrl() }}" alt="Uploaded Image" class="w-full h-full object-cover rounded-lg shadow border"></video>
 
-                                <button wire:click="deleteImage({{ $key }})" class="absolute -top-5 -right-3.5 active:scale-95 transition-all z-[100]">
+                                        <div class="absolute top-0 bottom-0 right-0 left-0 flex items-center justify-center">
+                                            <x-icon name="play-circle" solid class="w-10 h-10" />
+                                        </div>
+                                    </a>
+                                @else
+                                    <a href="{{ $item->temporaryUrl() }}">
+                                        <img src="{{ $item->temporaryUrl() }}" alt="Uploaded Image" class="w-full h-full object-cover rounded-lg shadow border">
+                                    </a>
+                                @endif
+
+                                <button wire:click="deleteMedia({{ $key }})" class="absolute -top-5 -right-3.5 active:scale-95 transition-all z-[100]">
                                     <x-icon name="x-circle" solid class="w-8 h-8" />
                                 </button>
                             </div>  
@@ -325,7 +424,7 @@
 
                 <div class="flex items-center max-md:pe-5 md:gap-4 gap-2 p-3 overflow-hidden">
                     <label class="py-5 flex flex-col justify-center items-center cursor-pointer">
-                        <input class="hidden" type="file" multiple wire:model="images">
+                        <input class="hidden" type="file" multiple wire:model="media">
                         <x-icon name="photo" solid class="w-8 h-8" />
                     </label>
     

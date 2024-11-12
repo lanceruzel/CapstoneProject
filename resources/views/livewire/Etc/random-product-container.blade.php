@@ -18,7 +18,11 @@
                             <div class="border p-2 rounded cursor-pointer" onclick="$openModal('productViewModal')" wire:click="$dispatch('view-product-info', { id: {{ $product->id }} })">
                                 <div class="relative overflow-hidden rounded-lg">
                                     <div class="relative w-full md:h-40 h-full">
-                                        <img src="{{ asset('uploads/products') . '/' . json_decode($product->images)[0] }}" alt="" class="object-cover w-full h-full inset-0">
+                                        @if($this->identifyFileType(json_decode($product->media)[0]) == 'video')
+                                            <video src="{{ asset('uploads/products') . '/' . $item }}" class="object-cover w-full h-full inset-0" alt="video"></video>
+                                        @else
+                                            <img src="{{ asset('uploads/products') . '/' . json_decode($product->media)[0] }}" class="object-cover w-full h-full inset-0" alt="image">
+                                        @endif
                                     </div> 
                                     <div class="absolute right-0 top-0 m-2 bg-white/60 rounded-full py-0.5 px-2 text-sm font-semibold dark:bg-slate-800/60">{{ $product->priceRange() }}</div>
                                 </div>

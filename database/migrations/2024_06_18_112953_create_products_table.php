@@ -23,7 +23,7 @@ return new class extends Migration
             $table->string('category');
             $table->text('description');
             $table->json('variations');
-            $table->json('images');
+            $table->json('media');
             $table->string('origin_country');
             $table->string('origin_state');
             $table->string('status')->default(Status::ForReview);

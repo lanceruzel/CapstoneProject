@@ -99,17 +99,27 @@
                     </table>
                 </div>
 
-                <x-errors only="images" />
+                <x-errors only="media" />
 
-                <p class="text-gray-600 mt-3">Images</p>
+                <p class="text-gray-600 mt-3">Media</p>
 
-                @if($images)
+                @if($media)
                     <div class="max-w-full flex gap-4 overflow-x-auto p-3" uk-lightbox>
-                        @foreach($images as $key => $image)
+                        @foreach($media as $key => $item)
                             <div class="flex-shrink-0 w-56 h-56 relative">
-                                <a href="{{ is_object($image) && method_exists($image, 'temporaryUrl') ? $image->temporaryUrl() : asset('uploads/report') . '/' . $image }}">
-                                    <img src="{{ is_object($image) && method_exists($image, 'temporaryUrl') ? $image->temporaryUrl() : asset('uploads/report') . '/' . $image }}" alt="Uploaded Image" accept="image/png, image/jpeg" class="w-full h-full object-cover rounded-lg shadow border">
-                                </a>
+                                @if($this->identifyFileType($item) == 'video')
+                                    <a data-type="video" class="relative" href="{{ asset('uploads/report') . '/' . $item }}">
+                                        <video src="{{ asset('uploads/report') . '/' . $item }}" class="w-full h-full object-cover rounded-lg shadow border" alt="video"></video>
+
+                                        <div class="absolute top-0 bottom-0 right-0 left-0 flex items-center justify-center">
+                                            <x-icon name="play-circle" solid class="w-10 h-10" />
+                                        </div>
+                                    </a>
+                                @else
+                                    <a href="{{ asset('uploads/report') . '/' . $item }}">
+                                        <img src="{{ asset('uploads/report') . '/' . $item }}" class="w-full h-full object-cover rounded-lg shadow border" alt="image">
+                                    </a>
+                                @endif
                             </div>  
                         @endforeach
                     </div>

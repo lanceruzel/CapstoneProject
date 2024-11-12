@@ -49,7 +49,11 @@
                         <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-100">
                             <td class="px-6 py-4 flex items-center justify-start gap-3">
                                 <div class="rounded-lg w-16 h-16 border" wire:ignore>
-                                    <img src="{{ asset('uploads/products') . '/' . json_decode($product->images)[0] }}" class="w-full h-full object-cover object-center rounded-lg" alt="...">
+                                    @if($this->identifyFileType(json_decode($product->media)[0]) == 'video')
+                                        <video src="{{ asset('uploads/products') . '/' . json_decode($product->media)[0] }}" class="w-full h-full object-cover object-center rounded-lg" alt="video"></video>
+                                    @else
+                                        <img src="{{ asset('uploads/products') . '/' . json_decode($product->media)[0] }}" class="w-full h-full object-cover object-center rounded-lg" alt="image">
+                                    @endif
                                 </div>
 
                                 <div>
@@ -91,8 +95,8 @@
                             <td class="px-6 py-4">{{ $product->priceRange() }}</td>
                             <td class="px-6 py-4">
                                 @if($product->status == App\Enums\Status::Suspended)
-                                    @if($product->appeal)
-                                        <x-button label="View Appeal" onclick="$openModal('reportAppealConversationModal')" wire:click="$dispatch('view-appeal-convo', { id: [{{ json_encode($product->appeal->conversation_id) }}] })"  />
+                                    @if($product->latestAppeal && ($product->latestAppeal->status == App\Enums\Status::Ongoing))
+                                        <x-button label="View Appeal" onclick="$openModal('reportAppealConversationModal')" wire:click="$dispatch('view-appeal-convo', { id: [{{ json_encode($product->latestAppeal->conversation_id) }}] })"  />
                                     @else
                                         <x-button label="Make an Appeal" onclick="$openModal('productAppealFormModal')" wire:click="$dispatch('for-product-appeal', { id: {{ $product->id }} })" />
                                     @endif

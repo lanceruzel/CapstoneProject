@@ -13,7 +13,7 @@ class Message extends Model
         'user_id',
         'conversation_id',
         'content',
-        'images',
+        'media',
     ];
 
     public function conversation(){

@@ -51,24 +51,34 @@
     </div>
 
     <div wire:ignore class="mt-3">
-        @if(json_decode($post->images) != null)
-            @if(count(json_decode($post->images)) === 1)
+        @if(json_decode($post->media) != null)
+            @if(count(json_decode($post->media)) === 1)
                 <!-- post image -->
                 <div class="relative w-full h-full" uk-lightbox>
-                    <a href="{{ asset('uploads/posts') . '/' . json_decode($post->images)[0] }}">
-                        <img src="{{ asset('uploads/posts') . '/' . json_decode($post->images)[0] }}" alt="" class="sm:rounded-lg w-full h-full object-cover">
+                    <a href="{{ asset('uploads/posts') . '/' . json_decode($post->media)[0] }}">
+                        <img src="{{ asset('uploads/posts') . '/' . json_decode($post->media)[0] }}" alt="" class="sm:rounded-lg w-full h-full object-cover">
                     </a>
                 </div>
-            @elseif(count(json_decode($post->images)) > 1)
+            @elseif(count(json_decode($post->media)) > 1)
                 <!-- slide images -->
                 <div class="relative uk-visible-toggle uk-slideshow w-full" tabindex="-1" uk-slideshow="animation: push;finite: true;min-height: 300; max-height: 350">
 
                     <ul class="uk-slideshow-items" uk-lightbox="" style="min-height: 350px;">
-                        @foreach(json_decode($post->images) as $image)
-                            <li class="w-full sm:rounded-md" tabindex="-1" style="">
-                                <a href="{{ asset('uploads/posts') . '/' . $image }}">
-                                    <img src="{{ asset('uploads/posts') . '/' . $image }}" class="w-full h-full object-cover inset-0" alt="">
-                                </a>
+                        @foreach(json_decode($post->media) as $index => $item)
+                            <li class="w-full sm:rounded-md" tabindex="-1" wire:key="update-media-{{ $index }}">
+                                @if($this->identifyFileType($item) == 'video')
+                                    <a data-type="video" class="relative" href="{{ asset('uploads/posts') . '/' . $item }}">
+                                        <video src="{{ asset('uploads/posts') . '/' . $item }}" class="w-full h-full object-cover inset-0" alt="video"></video>
+
+                                        <div class="absolute top-0 bottom-0 right-0 left-0 flex items-center justify-center">
+                                            <x-icon name="play-circle" solid class="w-10 h-10" />
+                                        </div>
+                                    </a>
+                                @else
+                                    <a href="{{ asset('uploads/posts') . '/' . $item }}">
+                                        <img src="{{ asset('uploads/posts') . '/' . $item }}" class="w-full h-full object-cover inset-0" alt="image">
+                                    </a>
+                                @endif
                             </li>
                         @endforeach
                     </ul>

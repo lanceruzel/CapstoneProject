@@ -18,7 +18,7 @@ class Report extends Model
         'tracking_number',
         'courrier',
         'description',
-        'images',
+        'media',
         'status',
         'cancel_reason'
     ];

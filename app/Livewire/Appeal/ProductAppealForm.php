@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Livewire\Component;
 use Livewire\Features\SupportFileUploads\WithFileUploads;
+use Str;
 use WireUi\Traits\WireUiActions;
 
 class ProductAppealForm extends Component
@@ -20,7 +21,7 @@ class ProductAppealForm extends Component
     use WireUiActions;
 
     public $product = null;
-    public $images;
+    public $media;
     public $content;
 
     protected $listeners = [
@@ -34,7 +35,7 @@ class ProductAppealForm extends Component
 
     public function clearData(){
         $this->reset([
-            'images',
+            'media',
             'content'
         ]);
 
@@ -44,11 +45,11 @@ class ProductAppealForm extends Component
     public function store(){
         $rules = [
             'content' => 'required',
-            'images.*' => 'image|mimes:png,jpg,jpeg',
+            'media.*' => 'nullable|mimes:png,jpg,jpeg,mp4,mov,avi,wmv,mkv,webm',
         ];
 
-        if(empty($this->images) || !$this->images || $this->images == '[]'){
-            $rules['images'] = 'required|image|mimes:png,jpg,jpeg';
+        if(empty($this->media) || !$this->media || $this->media == '[]'){
+            $rules['media'] = 'required|mimes:png,jpg,jpeg,mp4,mov,avi,wmv,mkv,webm';
         }
 
         $validated = $this->validate($rules);
@@ -66,7 +67,7 @@ class ProductAppealForm extends Component
                         'user_id' => Auth::id(),
                         'conversation_id' => $conversation->id,
                         'content' => WordFilter::filteredInput($validated['content']),
-                        'images' => json_encode($this->storeImages($this->images)),
+                        'media' => json_encode($this->storeMedia($this->media)),
                     ]);
     
                     if($message){
@@ -109,23 +110,64 @@ class ProductAppealForm extends Component
         }
     }
 
-    public function deleteImage($index){
-        array_splice($this->images, $index, 1);
+    public function deleteMedia($index){
+        array_splice($this->media, $index, 1);
     }
 
-    public function storeImages($images){
-        $imagePaths = [];
+    public function storeMedia($media){
+        $mediaPaths = [];
 
-        if($images){
-            foreach ($images as $key => $image) {
+        if($media){
+            foreach ($media as $key => $item) {
                 // New image, store and get path
-                $filename = $key . '_' . time() . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
-                $image->storeAs('messages', $filename);
-                array_push($imagePaths, $filename);
+                $filename = $key . '_' . time() . '_' . uniqid() . '.' . $item->getClientOriginalExtension();
+                $item->storeAs('messages', $filename);
+                array_push($mediaPaths, $filename);
             }
         }
 
-        return $imagePaths;
+        return $mediaPaths;
+    }
+
+    public function identifyFileType($fileName){
+        // Trim any leading/trailing spaces
+        $fileName = trim($fileName);
+
+        // Find the position of the last dot
+        $dotPosition = strrpos($fileName, '.');
+
+        // If there is no dot, it's not a file with an extension
+        if ($dotPosition === false) {
+            return 'unknown';
+        }
+
+        // Find the position of the first question mark (if any) after the dot
+        $questionMarkPosition = strpos($fileName, '?', $dotPosition);
+
+        // If there is no question mark, the extension ends at the end of the string
+        if ($questionMarkPosition === false) {
+            $extension = substr($fileName, $dotPosition + 1);
+        } else {
+            // If there's a question mark, extract the part before it
+            $extension = substr($fileName, $dotPosition + 1, $questionMarkPosition - $dotPosition - 1);
+        }
+
+        // Convert to lowercase
+        $extension = Str::lower($extension);
+
+        // List of common video extensions
+        $videoExtensions = ['mp4', 'webm', 'avi', 'mov', 'mkv', 'flv'];
+        // List of common image extensions
+        $imageExtensions = ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'svg'];
+
+        // Check if the file extension matches any known video or image types
+        if (in_array($extension, $videoExtensions)) {
+            return 'video';
+        } elseif (in_array($extension, $imageExtensions)) {
+            return 'image';
+        }
+
+        return 'unknown'; // Default return if it's neither video nor image
     }
 
     public function render()

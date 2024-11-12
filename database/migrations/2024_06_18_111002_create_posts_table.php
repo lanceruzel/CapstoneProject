@@ -18,7 +18,7 @@ return new class extends Migration
             $table->foreign('user_id')->references('id')->on('users')->cascadeOnDelete();
 
             $table->text('content');
-            $table->json('images')->nullable();
+            $table->json('media')->nullable();
             
             $table->string('type');
             $table->string('status');

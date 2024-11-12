@@ -1,7 +1,11 @@
 <div class="relative hover:no-underline hover:text-gray-700 border shadow-sm rounded-lg cursor-pointer flex-1 bg-white overflow-hidden">
     <div onclick="$openModal('productViewModal')" wire:click="$dispatch('view-product-info', { id: {{ $product->id }} })">
         <div class="h-[220px] rounded-t-lg border-b-2">
-            <img src="{{ asset('uploads/products') . '/' . json_decode($product->images)[0] }}" class="block w-full h-full object-fit rounded-t-lg bg-white" alt="...">
+            @if($this->identifyFileType(json_decode($product->media)[0]) == 'video')
+                <video src="{{ asset('uploads/products') . '/' . $item }}" class="block w-full h-full object-fit rounded-t-lg bg-white" alt="video"></video>
+            @else
+                <img src="{{ asset('uploads/products') . '/' . json_decode($product->media)[0] }}" class="block w-full h-full object-fit rounded-t-lg bg-white" alt="image">
+            @endif
         </div>
     
         <div class="px-3 py-2 space-y-1">

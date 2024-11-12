@@ -19,7 +19,7 @@ class Product extends Model
         'category',
         'description',
         'variations',
-        'images',
+        'media',
         'status',
         'remarks',
         'origin_country',
@@ -158,8 +158,13 @@ class Product extends Model
         return $this->hasOne(ReportAppeal::class);
     }
 
+    public function latestAppeal()
+{
+    return $this->hasOne(ReportAppeal::class)->latestOfMany();
+}
+
     public function reports(){
-        return $this->hasMany(ProductReport::class);
+        return $this->hasMany(Report::class);
     }
 
     public function posts(){

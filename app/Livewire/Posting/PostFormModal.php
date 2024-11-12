@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Livewire\Component;
 use Livewire\Features\SupportFileUploads\WithFileUploads;
+use Str;
 use WireUi\Traits\WireUiActions;
 
 class PostFormModal extends Component
@@ -21,7 +22,7 @@ class PostFormModal extends Component
     use WireUiActions;
 
     public $content;
-    public $images = [];
+    public $media = [];
     public $isIncluded = true;
 
     public $postUpdate = null;
@@ -37,7 +38,7 @@ class PostFormModal extends Component
 
             if($this->postUpdate){
                 $this->content = $this->postUpdate->content;
-                $this->images = json_decode($this->postUpdate->images);
+                $this->media = json_decode($this->postUpdate->media);
                 $this->isIncluded = $this->postUpdate->include_compilation == 1 ? true : false;
             }
         }
@@ -94,7 +95,7 @@ class PostFormModal extends Component
     public function clearData(){
         $this->postUpdate = null;
         $this->reset('content');
-        $this->reset('images');
+        $this->reset('media');
     }
 
     public function closeModal(){
@@ -111,7 +112,7 @@ class PostFormModal extends Component
             [
                 'type' => $postType,
                 'content' => WordFilter::filteredInput($validated['content']),
-                'images' => json_encode($this->storeImages($this->images)),
+                'media' => json_encode($this->storeMedia($this->media)),
                 'status' => Status::Available,
                 'country' => Location::getLocation(),
                 'include_compilation' => $this->isIncluded
@@ -122,41 +123,80 @@ class PostFormModal extends Component
     public function formValidate(){
         return $this->validate([
             'content' => 'required',
-            'images.*' => $this->postUpdate ? '' : 'image|mimes:png,jpg,jpeg',
+            'media.*' => $this->postUpdate ? '' : 'nullable|mimes:png,jpg,jpeg,mp4,mov,avi,wmv,mkv,webm',
         ]);
     }
 
-    public function storeImages($images){
-        $imagePaths = [];
-        $dbImages = null;
+    public function storeMedia($media){
+        $mediaPaths = [];
+        $dbMedia = null;
 
-        if($images){
+        if($media){
             if($this->postUpdate){
-                $dbImages = json_decode($this->postUpdate->images, true); // Decode to array
+                $dbMedia = json_decode($this->postUpdate->media, true); // Decode to array
             }
 
-            foreach ($images as $key => $image) {
-                if ($dbImages !== null && in_array($image, $dbImages)) {
-                    // Existing image, keep the path
-                    array_push($imagePaths, $image);
+            foreach ($media as $key => $item) {
+                if ($dbMedia !== null && in_array($item, $dbMedia)) {
+                    array_push($mediaPaths, $item);
                 } else {
-                    // New image, store and get path
-                    $filename = $key . '_' . time() . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
-                    $image->storeAs('posts', $filename);
-                    array_push($imagePaths, $filename);
+                    $filename = $key . '_' . time() . '_' . uniqid() . '.' . $item->getClientOriginalExtension();
+                    $item->storeAs('posts', $filename);
+                    array_push($mediaPaths, $filename);
                 }
             }
         }
 
-        return $imagePaths;
+        return $mediaPaths;
+    }
+
+    public function identifyFileType($fileName){
+        // Trim any leading/trailing spaces
+        $fileName = trim($fileName);
+
+        // Find the position of the last dot
+        $dotPosition = strrpos($fileName, '.');
+
+        // If there is no dot, it's not a file with an extension
+        if ($dotPosition === false) {
+            return 'unknown';
+        }
+
+        // Find the position of the first question mark (if any) after the dot
+        $questionMarkPosition = strpos($fileName, '?', $dotPosition);
+
+        // If there is no question mark, the extension ends at the end of the string
+        if ($questionMarkPosition === false) {
+            $extension = substr($fileName, $dotPosition + 1);
+        } else {
+            // If there's a question mark, extract the part before it
+            $extension = substr($fileName, $dotPosition + 1, $questionMarkPosition - $dotPosition - 1);
+        }
+
+        // Convert to lowercase
+        $extension = Str::lower($extension);
+
+        // List of common video extensions
+        $videoExtensions = ['mp4', 'webm', 'avi', 'mov', 'mkv', 'flv'];
+        // List of common image extensions
+        $imageExtensions = ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'svg'];
+
+        // Check if the file extension matches any known video or image types
+        if (in_array($extension, $videoExtensions)) {
+            return 'video';
+        } elseif (in_array($extension, $imageExtensions)) {
+            return 'image';
+        }
+
+        return 'unknown'; // Default return if it's neither video nor image
     }
 
     public function markAsUnvailable($id){
         Product::findOrFail($id);
     }
 
-    public function deleteImage($index){
-        array_splice($this->images, $index, 1);
+    public function deleteMedia($index){
+        array_splice($this->media, $index, 1);
     }
 
     public function render()

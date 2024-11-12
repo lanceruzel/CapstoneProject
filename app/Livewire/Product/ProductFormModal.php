@@ -14,6 +14,7 @@ use Intervention\Image\ImageManager;
 use Livewire\Component;
 use Livewire\Features\SupportFileUploads\WithFileUploads;
 use NunoMaduro\Collision\Adapters\Phpunit\State;
+use Str;
 use WireUi\Traits\WireUiActions;
 
 
@@ -22,7 +23,7 @@ class ProductFormModal extends Component
     use WithFileUploads;
     use WireUiActions;
 
-    public $images;
+    public $media;
     public $name;
     public $description;
     public $category;
@@ -35,7 +36,7 @@ class ProductFormModal extends Component
 
     public $hasVariation = false;
     public $productUpdate = null;
-    public $existingImagePath ;
+    public $existingMediaPath;
 
     public $variations = [
         0 => [
@@ -67,8 +68,8 @@ class ProductFormModal extends Component
         $this->productUpdate = Product::findOrFail($id);
 
         if ($this->productUpdate) {
-            $this->images = json_decode($this->productUpdate->images);
-            $this->existingImagePath = $this->images;
+            $this->media = json_decode($this->productUpdate->media);
+            $this->existingMediaPath = $this->media;
             $this->name = $this->productUpdate->name;
             $this->description = $this->productUpdate->description;
             $this->category = $this->productUpdate->category;
@@ -92,8 +93,7 @@ class ProductFormModal extends Component
         $this->loadCountries();
     }
 
-    public function loadCountries()
-    {
+    public function loadCountries(){
         $response = Http::withHeaders([
             'X-CSCAPI-KEY' => env('COUNTRY_STATE_CITY_API_KEY')
         ])->get($this->url);
@@ -116,7 +116,7 @@ class ProductFormModal extends Component
     }
 
     public function updatedCountry(){
-        $this->state = null;
+        $this->origin_state = null;
         $this->stateOptions = [];
         $this->loadStates();
     }
@@ -151,6 +151,7 @@ class ProductFormModal extends Component
             Log::error('Failed to load states', ['response' => $response->body()]);
         }
     }
+
     public function removeEmptyVariations(){
         $filteredVariations = [];
         foreach ($this->variations as $variation) {
@@ -251,7 +252,7 @@ class ProductFormModal extends Component
                 'status' => $status,
                 'origin_country' => $validated['origin_country'],
                 'origin_state' => $validated['origin_state'],
-                'images' => $this->productUpdate != null && json_decode($this->productUpdate->images) == $this->images ? json_encode($this->images) : $this->storeImages($this->images),
+                'media' => $this->productUpdate != null && json_decode($this->productUpdate->media) == $this->media ? json_encode($this->media) : $this->storeMedia($this->media),
                 'variations' => json_encode($variations)
             ]
         );
@@ -267,17 +268,17 @@ class ProductFormModal extends Component
         ];
 
         if($this->productUpdate){
-            if(empty($this->images) || !$this->images || $this->images == '[]'){
-                $rules['images'] = 'required|image|mimes:png,jpg,jpeg';
+            if(empty($this->media) || !$this->media || $this->media == '[]'){
+                $rules['media'] = 'required|mimes:png,jpg,jpeg,mp4,mov,avi,wmv,mkv,webm';
             }else{
-                if($this->images == $this->existingImagePath || array_intersect($this->images,$this->existingImagePath)){
-                    $rules['images.*'] = '';
+                if($this->media == $this->existingMediaPath || array_intersect($this->media,$this->existingMediaPath)){
+                    $rules['media.*'] = '';
                 }else{
-                    $rules['images.*'] = 'required|image|mimes:png,jpg,jpeg';
+                    $rules['media.*'] = 'required|mimes:png,jpg,jpeg,mp4,mov,avi,wmv,mkv,webm';
                 }
             }
         }else{
-            $rules['images.*'] = 'required|image|mimes:png,jpg,jpeg';
+            $rules['media.*'] = 'required|mimes:png,jpg,jpeg,mp4,mov,avi,wmv,mkv,webm';
         }
 
         if ($this->hasVariation) {
@@ -301,16 +302,57 @@ class ProductFormModal extends Component
         return $this->validate($rules);
     }
 
+    public function identifyFileType($fileName){
+        // Trim any leading/trailing spaces
+        $fileName = trim($fileName);
+
+        // Find the position of the last dot
+        $dotPosition = strrpos($fileName, '.');
+
+        // If there is no dot, it's not a file with an extension
+        if ($dotPosition === false) {
+            return 'unknown';
+        }
+
+        // Find the position of the first question mark (if any) after the dot
+        $questionMarkPosition = strpos($fileName, '?', $dotPosition);
+
+        // If there is no question mark, the extension ends at the end of the string
+        if ($questionMarkPosition === false) {
+            $extension = substr($fileName, $dotPosition + 1);
+        } else {
+            // If there's a question mark, extract the part before it
+            $extension = substr($fileName, $dotPosition + 1, $questionMarkPosition - $dotPosition - 1);
+        }
+
+        // Convert to lowercase
+        $extension = Str::lower($extension);
+
+        // List of common video extensions
+        $videoExtensions = ['mp4', 'webm', 'avi', 'mov', 'mkv', 'flv'];
+        // List of common image extensions
+        $imageExtensions = ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'svg'];
+
+        // Check if the file extension matches any known video or image types
+        if (in_array($extension, $videoExtensions)) {
+            return 'video';
+        } elseif (in_array($extension, $imageExtensions)) {
+            return 'image';
+        }
+
+        return 'unknown'; // Default return if it's neither video nor image
+    }
+
     public function clearData(){
         $this->reset([
-            'images',
+            'media',
             'name',
             'description',
             'category',
             'stocks',
             'price',
             'remarks',
-            'existingImagePath',
+            'existingMediaPath',
             'origin_country',
             'origin_state',
         ]);
@@ -352,49 +394,53 @@ class ProductFormModal extends Component
         return collect($productCategories['categories'])->sortBy('name')->values()->toArray();
     }
 
-    public function storeImages($images){
-        $imagePaths = [];
-        $dbImages = [];
+    public function storeMedia($media){
+        $mediaPaths = [];
+        $dbMedia = [];
 
-        if($images){
+        if($media){
             if($this->productUpdate){
-                $dbImages = json_decode($this->productUpdate->images, true) ?? [];
+                $dbMedia = json_decode($this->productUpdate->media, true) ?? [];
             }
 
-            foreach($dbImages as $dbImage){
-                if(!in_array($dbImage, $this->images)){
-                    $imagePath = public_path('uploads/products/' . $dbImage);
+            foreach($dbMedia as $dbItem){
+                if(!in_array($dbItem, $this->media)){
+                    $mediaPath = public_path('uploads/products/' . $dbItem);
     
-                    if (file_exists($imagePath)) {
-                        unlink($imagePath);
+                    if (file_exists($mediaPath)) {
+                        unlink($mediaPath);
                     }
                 }
             }
 
-            foreach($images as $key => $image) {
-                if($dbImages !== null && in_array($image, $dbImages)){
+            foreach($media as $key => $item) {
+                if($dbMedia !== null && in_array($item, $dbMedia)){
                     // Existing image, keep the path
-                    array_push($imagePaths, $image);
+                    array_push($mediaPaths, $item);
                 }else{
                     // New image, store and get path
-                    $filename = $key . '_' . time() . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
+                    $filename = $key . '_' . time() . '_' . uniqid() . '.' . $item->getClientOriginalExtension();
 
                     // $image->storeAs('products', $filename);
-                    array_push($imagePaths, $filename);
+                    array_push($mediaPaths, $filename);
 
-                    $img = ImageManager::gd()->read($image->getRealPath());
-                    $img->contain(500, 400);
+                    if($this->identifyFileType($filename) == 'image'){
+                        $img = ImageManager::gd()->read($item->getRealPath());
+                        $img->contain(500, 400);
 
-                    $img->save(public_path('uploads/products/' . $filename));
+                        $img->save(public_path('uploads/products/' . $filename));
+                    }else{
+                        $item->storeAs('products', $filename);
+                    }
                 }
             }
         }
 
-        return json_encode($imagePaths);
+        return json_encode($mediaPaths);
     }
 
-    public function deleteImage($index){
-        array_splice($this->images, $index, 1);
+    public function deleteMedia($index){
+        array_splice($this->media, $index, 1);
     }
 
     public function render(){

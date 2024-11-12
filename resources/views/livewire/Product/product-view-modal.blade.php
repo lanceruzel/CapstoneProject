@@ -7,14 +7,24 @@
         <div class="max-w-[1100px] mx-auto max-lg:p-5 lg:p-7">
             <div class="grid grid-cols-2 gap-5">
                 <div class="max-lg:col-span-2 lg:col-span-1">   
-                    @if(count($images) > 1)
+                    @if(count($media) > 1)
                         <div class="relative uk-visible-toggle uk-slideshow w-full" tabindex="-1" uk-slideshow="ratio: false; animation: push;finite: true; min-width: 100%; max-width: 100%; min-height: 500px; max-height: 500px">
                             <div class="uk-slideshow-items" uk-lightbox="">
-                                @foreach($images as $image)
-                                    <li class="sm:rounded-md" tabindex="-1" style="">
-                                        <a href="{{ asset('uploads/products') . '/' . $image }}">
-                                            <img src="{{ asset('uploads/products') . '/' . $image }}" class="h-full object-fit" alt="">
-                                        </a>
+                                @foreach($media as $key => $item)
+                                    <li class="sm:rounded-md" tabindex="-1">
+                                        @if($this->identifyFileType($item) == 'video')
+                                            <a data-type="video" class="relative" href="{{ asset('uploads/products') . '/' . $item }}">
+                                                <video src="{{ asset('uploads/products') . '/' . $item }}" class="h-full object-fit" alt="video"></video>
+
+                                                <div class="absolute top-0 bottom-0 right-0 left-0 flex items-center justify-center">
+                                                    <x-icon name="play-circle" solid class="w-10 h-10" />
+                                                </div>
+                                            </a>
+                                        @else
+                                            <a href="{{ asset('uploads/products') . '/' . $item }}">
+                                                <img src="{{ asset('uploads/products') . '/' . $item }}" class="h-full object-fit" alt="image">
+                                            </a>
+                                        @endif
                                     </li>
                                 @endforeach
                             </div>
@@ -30,9 +40,19 @@
                         </div>
                     @else
                         <div class="relative w-full h-full" uk-lightbox>
-                            <a href="{{ asset('uploads/products') . '/' . $images[0] }}">
-                                <img src="{{ asset('uploads/products') . '/' . $images[0] }}" alt="" class="sm:rounded-lg w-full h-full object-contain">
-                            </a>
+                            @if($this->identifyFileType($media[0]) == 'video')
+                                <a data-type="video" class="relative" href="{{ asset('uploads/products') . '/' . $media[0] }}">
+                                    <video src="{{ asset('uploads/products') . '/' . $media[0] }}" class="sm:rounded-lg w-full h-full object-contai" alt="video"></video>
+
+                                    <div class="absolute top-0 bottom-0 right-0 left-0 flex items-center justify-center">
+                                        <x-icon name="play-circle" solid class="w-10 h-10" />
+                                    </div>
+                                </a>
+                            @else
+                                <a href="{{ asset('uploads/products') . '/' . $media[0] }}">
+                                    <img src="{{ asset('uploads/products') . '/' . $media[0] }}" class="sm:rounded-lg w-full h-full object-contai" alt="image">
+                                </a>
+                            @endif
                         </div>
                     @endif
                 </div>
