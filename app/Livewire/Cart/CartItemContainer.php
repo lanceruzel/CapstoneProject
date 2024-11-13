@@ -5,6 +5,7 @@ namespace App\Livewire\Cart;
 use App\Enums\Status;
 use App\Models\CartItem;
 use Livewire\Component;
+use Str;
 use WireUi\Traits\WireUiActions;
 
 class CartItemContainer extends Component

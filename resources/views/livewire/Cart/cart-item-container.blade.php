@@ -9,7 +9,11 @@
 
     <td class="px-6 py-4">
         <div class="rounded-lg w-20 h-20" wire:ignore>
-            <img src="{{ asset('uploads/products') . '/' . json_decode($cartItem->product->images)[0] }}" class="w-full h-full object-cover object-center rounded-t-lg" alt="...">
+            @if(App\Classes\FileTypeIdentifier::identify(json_decode($cartItem->product->media)[0]) == 'video')
+                <video src="{{ asset('uploads/products') . '/' . json_decode($cartItem->product->media)[0] }}" alt="video preview" class="w-full h-full object-cover object-center rounded-lg"></video>
+            @else
+                <img src="{{ asset('uploads/products') . '/' . json_decode($cartItem->product->media)[0] }}" alt="image preview" class="w-full h-full object-cover object-center rounded-lg">
+            @endif
         </div>
     </td>
 

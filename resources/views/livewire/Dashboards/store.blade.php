@@ -118,7 +118,11 @@
                     <div class="flex justify-between gap-3 py-3">
                         <div class="flex items-center gap-3">
                             <div class="rounded-lg w-12 h-12 border">
-                                <img src="{{ asset('uploads/products') . '/' . json_decode($product->product->images)[0] }}" class="w-full h-full object-cover object-center rounded-lg" alt="...">
+                                @if(App\Classes\FileTypeIdentifier::identify(json_decode($product->product->media)[0]) == 'video')
+                                    <video src="{{ asset('uploads/products') . '/' . json_decode($product->product->media)[0] }}" alt="video preview" class="w-full h-full object-cover object-center rounded-lg"></video>
+                                @else
+                                    <img src="{{ asset('uploads/products') . '/' . json_decode($product->product->media)[0] }}" alt="image preview" class="w-full h-full object-cover object-center rounded-lg">
+                                @endif
                             </div>
 
                             <p>{{ $product->product->name }}</p>

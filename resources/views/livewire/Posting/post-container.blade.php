@@ -55,7 +55,7 @@
             @if(count(json_decode($post->media)) === 1)
                 <!-- post image -->
                 <div class="relative w-full h-full" uk-lightbox>
-                    @if($this->identifyFileType(json_decode($post->media)[0]) == 'video')
+                    @if(App\Classes\FileTypeIdentifier::identify(json_decode($post->media)[0]) == 'video')
                         <a data-type="video" class="relative" href="{{ asset('uploads/posts') . '/' . json_decode($post->media)[0] }}">
                             <video src="{{ asset('uploads/posts') . '/' . json_decode($post->media)[0] }}" class="m:rounded-lg w-full h-full object-cover" alt="video"></video>
 
@@ -76,7 +76,7 @@
                     <ul class="uk-slideshow-items" uk-lightbox="" style="min-height: 350px;">
                         @foreach(json_decode($post->media) as $index => $item)
                             <li class="w-full sm:rounded-md" tabindex="-1" wire:key="update-media-{{ $index }}">
-                                @if($this->identifyFileType($item) == 'video')
+                                @if(App\Classes\FileTypeIdentifier::identify($item) == 'video')
                                     <a data-type="video" class="relative" href="{{ asset('uploads/posts') . '/' . $item }}">
                                         <video src="{{ asset('uploads/posts') . '/' . $item }}" class="w-full h-full object-cover inset-0" alt="video"></video>
 

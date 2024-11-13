@@ -69,7 +69,7 @@
                     @if($media)
                         @foreach($media as $index => $item)
                             <div class="relative group" wire:key="post-{{ $index }}">
-                                @if($this->identifyFileType(is_object($item) && method_exists($item, 'temporaryUrl') ? $item->temporaryUrl() : $item) == 'video')
+                                @if(App\Classes\FileTypeIdentifier::identify(is_object($item) && method_exists($item, 'temporaryUrl') ? $item->temporaryUrl() : $item) == 'video')
                                     <video src="{{ is_object($item) && method_exists($item, 'temporaryUrl') ? $item->temporaryUrl() : asset('uploads/posts') . '/' . $item }}" alt="video preview" class="w-full h-32 object-cover rounded-lg shadow-md"></video>
                                 @else
                                     <img src="{{ is_object($item) && method_exists($item, 'temporaryUrl') ? $item->temporaryUrl() : asset('uploads/posts') . '/' . $item }}" alt="image preview" class="w-full h-32 object-cover rounded-lg shadow-md">

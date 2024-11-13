@@ -49,7 +49,7 @@
                         <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-100">
                             <td class="px-6 py-4 flex items-center justify-start gap-3">
                                 <div class="rounded-lg w-16 h-16 border" wire:ignore>
-                                    @if($this->identifyFileType(json_decode($product->media)[0]) == 'video')
+                                    @if(App\Classes\FileTypeIdentifier::identify(json_decode($product->media)[0]) == 'video')
                                         <video src="{{ asset('uploads/products') . '/' . json_decode($product->media)[0] }}" class="w-full h-full object-cover object-center rounded-lg" alt="video"></video>
                                     @else
                                         <img src="{{ asset('uploads/products') . '/' . json_decode($product->media)[0] }}" class="w-full h-full object-cover object-center rounded-lg" alt="image">

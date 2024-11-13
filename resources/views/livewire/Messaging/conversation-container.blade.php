@@ -115,7 +115,7 @@
                                         @if(count(json_decode($message->media)) === 1)
                                             <div class="rounded h-60 min-h-60 max-h-60" uk-lightbox>
                                                 {{-- -------------------------------- --}}
-                                                @if($this->identifyFileType(json_decode($message->media)[0]) == 'video')
+                                                @if(App\Classes\FileTypeIdentifier::identify(json_decode($message->media)[0]) == 'video')
                                                     <a data-type="video" class="relative" href="{{ asset('uploads/messages') . '/' . json_decode($message->media)[0] }}">
                                                         <video src="{{ asset('uploads/messages') . '/' . json_decode($message->media)[0] }}" class="sm:rounded-lg w-full h-full object-cover" alt="video"></video>
                                                         
@@ -138,7 +138,7 @@
                                                 @foreach(json_decode($message->media) as $item)
                                                     <div class="col-span-1 rounded h-44 min-h-44 max-h-44" tabindex="-1" style="" uk-lightbox>
                                                         {{-- -------------------------------- --}}
-                                                        @if($this->identifyFileType($item) == 'video')
+                                                        @if(App\Classes\FileTypeIdentifier::identify($item) == 'video')
                                                             <a data-type="video" class="relative" href="{{ asset('uploads/messages') . '/' . $item }}">
                                                                 <video src="{{ asset('uploads/messages') . '/' . $item }}" class="sm:rounded-lg w-full h-full object-cover" alt="video"></video>
                                                                 
@@ -196,7 +196,7 @@
                                             @if(count(json_decode($message->media)) === 1)
                                                 <div class="rounded h-60 min-h-60 max-h-60" uk-lightbox>
                                                     {{-- -------------------------------- --}}
-                                                    @if($this->identifyFileType(json_decode($message->media)[0]) == 'video')
+                                                    @if(App\Classes\FileTypeIdentifier::identify(json_decode($message->media)[0]) == 'video')
                                                         <a data-type="video" class="relative" href="{{ asset('uploads/messages') . '/' . json_decode($message->media)[0] }}">
                                                             <video src="{{ asset('uploads/messages') . '/' . json_decode($message->media)[0] }}" class="sm:rounded-lg w-full h-full object-cover" alt="video"></video>
                                                             
@@ -219,7 +219,7 @@
                                                     @foreach(json_decode($message->media) as $item)
                                                         <div class="col-span-1 rounded h-44 min-h-44 max-h-44" tabindex="-1" style="" uk-lightbox>
                                                             {{-- -------------------------------- --}}
-                                                            @if($this->identifyFileType($item) == 'video')
+                                                            @if(App\Classes\FileTypeIdentifier::identify($item) == 'video')
                                                                 <a data-type="video" class="relative" href="{{ asset('uploads/messages') . '/' . $item }}">
                                                                     <video src="{{ asset('uploads/messages') . '/' . $item }}" class="w-full h-full object-cover inset-0" alt="video"></video>
                                                                 
@@ -265,7 +265,7 @@
                                         @if(count(json_decode($message->media)) === 1)
                                             <div class="rounded h-60 min-h-60 max-h-60" uk-lightbox>
                                                 {{-- -------------------------------- --}}
-                                                @if($this->identifyFileType(json_decode($message->media)[0]) == 'video')
+                                                @if(App\Classes\FileTypeIdentifier::identify(json_decode($message->media)[0]) == 'video')
                                                     <a data-type="video" class="relative" href="{{ asset('uploads/messages') . '/' . json_decode($message->media)[0] }}">
                                                         <video src="{{ asset('uploads/messages') . '/' . json_decode($message->media)[0] }}" class="sm:rounded-lg w-full h-full object-cover" alt="video"></video>
                                                     
@@ -289,7 +289,7 @@
                                                 @foreach(json_decode($message->media) as $item)
                                                     <div class="col-span-1 rounded h-44 min-h-44 max-h-44" tabindex="-1" style="" uk-lightbox>
                                                         {{-- -------------------------------- --}}
-                                                        @if($this->identifyFileType($item) == 'video')
+                                                        @if(App\Classes\FileTypeIdentifier::identify($item) == 'video')
                                                             <a data-type="video" class="relative" href="{{ asset('uploads/messages') . '/' . $item }}">
                                                                 <video src="{{ asset('uploads/messages') . '/' . $item }}" class="w-full h-full object-cover inset-0" alt="video"></video>
                                                                 
@@ -339,7 +339,7 @@
                                             @if(count(json_decode($message->media)) === 1)
                                                 <div class="rounded h-60 min-h-60 max-h-60" uk-lightbox>
                                                     {{-- -------------------------------- --}}
-                                                    @if($this->identifyFileType(json_decode($message->media)[0]) == 'video')
+                                                    @if(App\Classes\FileTypeIdentifier::identify(json_decode($message->media)[0]) == 'video')
                                                         <a data-type="video" class="relative" href="{{ asset('uploads/messages') . '/' . json_decode($message->media)[0] }}">
                                                             <video src="{{ asset('uploads/messages') . '/' . json_decode($message->media)[0] }}" class="sm:rounded-lg w-full h-full object-cover" alt="video"></video>
                                                         
@@ -362,7 +362,7 @@
                                                     @foreach(json_decode($message->media) as $item)
                                                         <div class="col-span-1 rounded h-44 min-h-44 max-h-44" tabindex="-1" style="" uk-lightbox>
                                                             {{-- -------------------------------- --}}
-                                                            @if($this->identifyFileType($item) == 'video')
+                                                            @if(App\Classes\FileTypeIdentifier::identify($item) == 'video')
                                                                 <a data-type="video" class="relative" href="{{ asset('uploads/messages') . '/' . $item }}">
                                                                     <video src="{{ asset('uploads/messages') . '/' . $item }}" class="w-full h-full object-cover inset-0" alt="video"></video>
                                                                 
@@ -400,7 +400,7 @@
                     <div class="max-w-[calc(100dvw-37rem)] flex gap-4 overflow-x-auto px-5 pt-5" uk-lightbox>
                         @foreach($media as $key => $item)
                             <div class="flex-shrink-0 w-36 h-36 relative">
-                                @if($this->identifyFileType($item->temporaryUrl()) == 'video')
+                                @if(App\Classes\FileTypeIdentifier::identify($item->temporaryUrl()) == 'video')
                                     <a data-type="video" class="relative" href="{{ $item->temporaryUrl() }}">
                                         <video src="{{ $item->temporaryUrl() }}" alt="Uploaded Image" class="w-full h-full object-cover rounded-lg shadow border"></video>
 

@@ -12,7 +12,7 @@
                             <div class="uk-slideshow-items" uk-lightbox="">
                                 @foreach($media as $key => $item)
                                     <li class="sm:rounded-md" tabindex="-1">
-                                        @if($this->identifyFileType($item) == 'video')
+                                        @if(App\Classes\FileTypeIdentifier::identify($item) == 'video')
                                             <a data-type="video" class="relative" href="{{ asset('uploads/products') . '/' . $item }}">
                                                 <video src="{{ asset('uploads/products') . '/' . $item }}" class="h-full object-fit" alt="video"></video>
 
@@ -40,7 +40,7 @@
                         </div>
                     @else
                         <div class="relative w-full h-full" uk-lightbox>
-                            @if($this->identifyFileType($media[0]) == 'video')
+                            @if(App\Classes\FileTypeIdentifier::identify($media[0]) == 'video')
                                 <a data-type="video" class="relative" href="{{ asset('uploads/products') . '/' . $media[0] }}">
                                     <video src="{{ asset('uploads/products') . '/' . $media[0] }}" class="sm:rounded-lg w-full h-full object-contai" alt="video"></video>
 

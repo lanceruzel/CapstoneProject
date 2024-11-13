@@ -4,6 +4,7 @@ namespace App\Livewire\Product;
 
 use App\Classes\WordFilter;
 use App\Enums\Status;
+use App\Classes\FileTypeIdentifier;
 use App\Models\Product;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
@@ -301,48 +302,7 @@ class ProductFormModal extends Component
 
         return $this->validate($rules);
     }
-
-    public function identifyFileType($fileName){
-        // Trim any leading/trailing spaces
-        $fileName = trim($fileName);
-
-        // Find the position of the last dot
-        $dotPosition = strrpos($fileName, '.');
-
-        // If there is no dot, it's not a file with an extension
-        if ($dotPosition === false) {
-            return 'unknown';
-        }
-
-        // Find the position of the first question mark (if any) after the dot
-        $questionMarkPosition = strpos($fileName, '?', $dotPosition);
-
-        // If there is no question mark, the extension ends at the end of the string
-        if ($questionMarkPosition === false) {
-            $extension = substr($fileName, $dotPosition + 1);
-        } else {
-            // If there's a question mark, extract the part before it
-            $extension = substr($fileName, $dotPosition + 1, $questionMarkPosition - $dotPosition - 1);
-        }
-
-        // Convert to lowercase
-        $extension = Str::lower($extension);
-
-        // List of common video extensions
-        $videoExtensions = ['mp4', 'webm', 'avi', 'mov', 'mkv', 'flv'];
-        // List of common image extensions
-        $imageExtensions = ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'svg'];
-
-        // Check if the file extension matches any known video or image types
-        if (in_array($extension, $videoExtensions)) {
-            return 'video';
-        } elseif (in_array($extension, $imageExtensions)) {
-            return 'image';
-        }
-
-        return 'unknown'; // Default return if it's neither video nor image
-    }
-
+    
     public function clearData(){
         $this->reset([
             'media',
@@ -424,7 +384,7 @@ class ProductFormModal extends Component
                     // $image->storeAs('products', $filename);
                     array_push($mediaPaths, $filename);
 
-                    if($this->identifyFileType($filename) == 'image'){
+                    if(FileTypeIdentifier::identify($filename) == 'image'){
                         $img = ImageManager::gd()->read($item->getRealPath());
                         $img->contain(500, 400);
 

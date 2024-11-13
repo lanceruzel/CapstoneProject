@@ -107,7 +107,7 @@
                     <div class="max-w-full flex gap-4 overflow-x-auto p-3" uk-lightbox>
                         @foreach($media as $key => $item)
                             <div class="flex-shrink-0 w-56 h-56 relative">
-                                @if($this->identifyFileType($item) == 'video')
+                                @if(App\Classes\FileTypeIdentifier::identify($item) == 'video')
                                     <a data-type="video" class="relative" href="{{ asset('uploads/report') . '/' . $item }}">
                                         <video src="{{ asset('uploads/report') . '/' . $item }}" class="w-full h-full object-cover rounded-lg shadow border" alt="video"></video>
 

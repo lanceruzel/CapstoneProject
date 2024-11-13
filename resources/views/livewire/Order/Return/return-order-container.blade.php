@@ -18,7 +18,11 @@
                 <tr>
                     <td class="px-6 py-4">
                         <div class="rounded-lg w-16 h-16 border" wire:ignore>
-                            <img src="{{ asset('uploads/products') . '/' . json_decode($orderProduct->images)[0] }}" class="w-full h-full object-cover object-center rounded-t-lg" alt="...">
+                            @if(App\Classes\FileTypeIdentifier::identify(json_decode($orderProduct->media)[0]) == 'video')
+                                <video src="{{ asset('uploads/products') . '/' . json_decode($orderProduct->media)[0] }}" alt="video preview" class="w-full h-full object-cover object-center rounded-lg"></video>
+                            @else
+                                <img src="{{ asset('uploads/products') . '/' . json_decode($orderProduct->media)[0] }}" alt="image preview" class="w-full h-full object-cover object-center rounded-lg">
+                            @endif
                         </div>
                     </td>
 
