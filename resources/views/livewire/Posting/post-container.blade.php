@@ -55,9 +55,19 @@
             @if(count(json_decode($post->media)) === 1)
                 <!-- post image -->
                 <div class="relative w-full h-full" uk-lightbox>
-                    <a href="{{ asset('uploads/posts') . '/' . json_decode($post->media)[0] }}">
-                        <img src="{{ asset('uploads/posts') . '/' . json_decode($post->media)[0] }}" alt="" class="sm:rounded-lg w-full h-full object-cover">
-                    </a>
+                    @if($this->identifyFileType(json_decode($post->media)[0]) == 'video')
+                        <a data-type="video" class="relative" href="{{ asset('uploads/posts') . '/' . json_decode($post->media)[0] }}">
+                            <video src="{{ asset('uploads/posts') . '/' . json_decode($post->media)[0] }}" class="m:rounded-lg w-full h-full object-cover" alt="video"></video>
+
+                            <div class="absolute top-0 bottom-0 right-0 left-0 flex items-center justify-center">
+                                <x-icon name="play-circle" solid class="w-10 h-10" />
+                            </div>
+                        </a>
+                    @else
+                        <a href="{{ asset('uploads/posts') . '/' . json_decode($post->media)[0] }}">
+                            <img src="{{ asset('uploads/posts') . '/' . json_decode($post->media)[0] }}" class="m:rounded-lg w-full h-full object-cover" alt="image">
+                        </a>
+                    @endif
                 </div>
             @elseif(count(json_decode($post->media)) > 1)
                 <!-- slide images -->
