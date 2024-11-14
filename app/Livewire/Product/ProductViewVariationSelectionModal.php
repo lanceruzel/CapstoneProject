@@ -70,7 +70,7 @@ class ProductViewVariationSelectionModal extends Component
                 $existingCartItem->increment('quantity', $this->quantity);
     
                 $this->dispatch('close-modal', ['modal' => 'variationSelectionModal']);
-                $this->dispatch('close-modal', ['modal' => 'productViewModal']);
+                // $this->dispatch('close-modal', ['modal' => 'productViewModal']);
                 return;
             }
     
@@ -97,7 +97,7 @@ class ProductViewVariationSelectionModal extends Component
             }
     
             $this->dispatch('close-modal', ['modal' => 'variationSelectionModal']);
-            $this->dispatch('close-modal', ['modal' => 'productViewModal']);
+            // $this->dispatch('close-modal', ['modal' => 'productViewModal']);
         }catch(\Exception $e){
             $this->notification()->send([
                 'icon' => 'error',

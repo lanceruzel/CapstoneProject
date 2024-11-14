@@ -113,19 +113,20 @@
                         <td>${{ number_format($item->subtotal, 2) }}</td>
                     </tr>
                 @endforeach
+
                 <tr>
                     <td colspan="4" style="text-align: right;"><strong>Subtotal:</strong></td>
                     <td>${{ number_format($order->orderedItems->sum('subtotal'), 2) }}</td>
                 </tr>
 
                 <tr>
-                    <td colspan="4" style="text-align: right;"><strong>Shipping Fee:</strong></td>
-                    <td>$25.00</td>
+                    <td colspan="4" style="text-align: right;"><strong>Affiliate Discount (%{{ $order->discount_percentage }}):</strong></td>
+                    <td>-${{ $order->discount }}</td>
                 </tr>
 
                 <tr>
-                    <td colspan="4" style="text-align: right;"><strong>Affiliate Discount (%{{ $order->discount_percentage }}):</strong></td>
-                    <td>-${{ $order->discount }}</td>
+                    <td colspan="4" style="text-align: right;"><strong>Shipping Fee:</strong></td>
+                    <td>$3.00</td>
                 </tr>
 
                 <tr>

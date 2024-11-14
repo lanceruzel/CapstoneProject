@@ -5,12 +5,14 @@ namespace App\Livewire\Checkout;
 use App\Classes\UserNotif;
 use App\Enums\NotificationType;
 use App\Enums\Status;
+use App\Mail\OrderPaypalPaymentMail;
 use App\Models\Affiliate;
 use App\Models\CartItem;
 use App\Models\Order;
 use App\Models\OrderedItem;
 use App\Models\UserShippingInformation;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Validation\Rule;
 use Livewire\Component;
 use WireUi\Traits\WireUiActions;
@@ -226,6 +228,8 @@ class CheckoutPageContent extends Component
                             return;
                         }
                     }
+
+                    Mail::to(auth()->user()->email)->send(new OrderPaypalPaymentMail($storeOrder));
 
                     //Delete Cart Items
                     if(CartItem::deleteCheckoutItems()){
