@@ -44,7 +44,7 @@ class ProductAppealForm extends Component
 
     public function store(){
         $rules = [
-            'content' => 'required',
+            'content' => 'required|blasp_check',
             'media.*' => 'nullable|mimes:png,jpg,jpeg,mp4,mov,avi,wmv,mkv,webm',
         ];
 
@@ -66,7 +66,7 @@ class ProductAppealForm extends Component
                     $message = Message::create([
                         'user_id' => Auth::id(),
                         'conversation_id' => $conversation->id,
-                        'content' => WordFilter::filteredInput($validated['content']),
+                        'content' => $validated['content'],
                         'media' => json_encode($this->storeMedia($this->media)),
                     ]);
     

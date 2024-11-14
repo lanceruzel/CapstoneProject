@@ -74,13 +74,13 @@ class LivestreamFormModal extends Component
                 return;
             }
     
-            $validated = $this->validate(['title' => 'required|min:5']);
+            $validated = $this->validate(['title' => 'required|min:5|blasp_check']);
     
             if($id){
                 $livestream = Livestream::create([
                     'id' => $id,
                     'user_id' => Auth::id(),
-                    'title' => WordFilter::filteredInput($validated['title']),
+                    'title' => $validated['title'],
                     'status' => 'created',
                     'reactions' => json_encode([
                         '1' => ['count' => 0],

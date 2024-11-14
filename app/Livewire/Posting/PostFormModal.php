@@ -45,10 +45,10 @@ class PostFormModal extends Component
     }
 
     public function store(){
+        $validated = $this->formValidate();
+
         try{
             $postType = PostType::Status;
-
-            $validated = $this->formValidate();
 
             $post = $this->storePost($postType, $validated);
 
@@ -111,7 +111,7 @@ class PostFormModal extends Component
             ],
             [
                 'type' => $postType,
-                'content' => WordFilter::filteredInput($validated['content']),
+                'content' => $validated['content'],
                 'media' => json_encode($this->storeMedia($this->media)),
                 'status' => Status::Available,
                 'country' => Location::getLocation(),
@@ -122,7 +122,7 @@ class PostFormModal extends Component
 
     public function formValidate(){
         return $this->validate([
-            'content' => 'required',
+            'content' => 'required|blasp_check',
             'media.*' => $this->postUpdate ? '' : 'nullable|mimes:png,jpg,jpeg,mp4,mov,avi,wmv,mkv,webm',
         ]);
     }

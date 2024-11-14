@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "0e502d911a0d181e2b5bcf97dae18c29",
+    "content-hash": "01b42b233202bef0f51f0b807e49ee39",
     "packages": [
         {
             "name": "barryvdh/laravel-dompdf",
@@ -82,6 +82,67 @@
                 }
             ],
             "time": "2024-04-25T13:16:04+00:00"
+        },
+        {
+            "name": "blaspsoft/blasp",
+            "version": "v1.2.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Blaspsoft/blasp.git",
+                "reference": "9d3fbe45b42ac5f5e0c00099751172c628583e70"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Blaspsoft/blasp/zipball/9d3fbe45b42ac5f5e0c00099751172c628583e70",
+                "reference": "9d3fbe45b42ac5f5e0c00099751172c628583e70",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/support": "^8.0|^9.0|^10.0|^11.0",
+                "php": "^7.4|^8.0"
+            },
+            "require-dev": {
+                "orchestra/testbench": "^6.47",
+                "phpunit/phpunit": "^9.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Blaspsoft\\Blasp\\ServiceProvider"
+                    ],
+                    "aliases": {
+                        "Blasp": "Blaspsoft\\Blasp\\Facades\\Blasp"
+                    }
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Blaspsoft\\Blasp\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Michael Deeming",
+                    "email": "michael.deeming90@gmail.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Blasp is a powerful and customisable profanity filter package for Laravel applications",
+            "homepage": "https://github.com/blaspsoft/blasp",
+            "keywords": [
+                "blasp",
+                "blaspsoft"
+            ],
+            "support": {
+                "issues": "https://github.com/Blaspsoft/blasp/issues",
+                "source": "https://github.com/Blaspsoft/blasp/tree/v1.2.1"
+            },
+            "time": "2024-10-25T15:01:01+00:00"
         },
         {
             "name": "brick/math",

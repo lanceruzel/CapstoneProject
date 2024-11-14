@@ -31,13 +31,13 @@ class LivestreamChatContainer extends Component
     }
 
     public function sendMessage(){
-        $validated = $this->validate(['content' => 'required']);
+        $validated = $this->validate(['content' => 'required|blasp_check']);
 
         if($this->meetingId){
             $postComment = PostComment::create([
                 'livestream_id' => $this->meetingId,
                 'user_id' => Auth::id(),
-                'content' => WordFilter::filteredInput($validated['content'])
+                'content' => $validated['content']
             ]);
 
             if($postComment){

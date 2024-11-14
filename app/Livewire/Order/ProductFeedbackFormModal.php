@@ -45,7 +45,7 @@ class ProductFeedbackFormModal extends Component
 
     public function store(){
         $validated = $this->validate([
-            'feedbackContent' => 'required',
+            'feedbackContent' => 'required|blasp_check',
             'productRating' => 'required',
         ]);
 
@@ -84,7 +84,7 @@ class ProductFeedbackFormModal extends Component
         return ProductFeedback::create([
             'product_id' => $this->product->id,
             'user_id' => Auth::id(),
-            'content' => WordFilter::filteredInput($validated['feedbackContent']),
+            'content' => $validated['feedbackContent'],
             'rating' => $validated['productRating'],
         ]);
     }

@@ -51,7 +51,7 @@ class PostContainer extends Component
         }
 
         $validated = $this->validate([
-            'commentContent' => 'required',
+            'commentContent' => 'required|blasp_check',
         ]);
 
         $comment = PostComment::create([

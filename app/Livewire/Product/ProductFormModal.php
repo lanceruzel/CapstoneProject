@@ -247,9 +247,9 @@ class ProductFormModal extends Component
                 'seller_id' => Auth::id()
             ],
             [
-                'name' => WordFilter::filteredInput($validated['name']),
+                'name' => $validated['name'],
                 'category' => $validated['category'],
-                'description' => WordFilter::filteredInput($validated['description']),
+                'description' => $validated['description'],
                 'status' => $status,
                 'origin_country' => $validated['origin_country'],
                 'origin_state' => $validated['origin_state'],
@@ -261,9 +261,9 @@ class ProductFormModal extends Component
 
     public function formValidate(){
         $rules = [
-            'name' => 'required|min:10',
+            'name' => 'required|min:10|blasp_check',
             'category' => 'required',
-            'description' => 'required|min:150',
+            'description' => 'required|min:150|blasp_check',
             'origin_country' => 'required',
             'origin_state' => 'required'
         ];

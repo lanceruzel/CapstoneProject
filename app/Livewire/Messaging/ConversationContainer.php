@@ -50,9 +50,10 @@ class ConversationContainer extends Component
     }
 
     public function sendMessage(){
+        $validated = $this->formValidate();
+
         try{
             if($this->message != null || ($this->media != null || $this->media != [])){
-                $validated = $this->formValidate();
     
                 $messageStore = $this->storeMessage($validated);
     
@@ -90,7 +91,7 @@ class ConversationContainer extends Component
         return Message::create([
             'user_id' => Auth::id(),
             'conversation_id' => $this->conversation->id,
-            'content' => WordFilter::filteredInput($validated['message']),
+            'content' => $validated['message'],
             'media' => json_encode($this->storeMedia($this->media)),
         ]);
     }
@@ -115,7 +116,7 @@ class ConversationContainer extends Component
 
     public function formValidate(){
         return $this->validate([
-            'message' => 'nullable',
+            'message' => 'nullable|blasp_check',
             'media.*' => 'nullable|mimes:png,jpg,jpeg,mp4,mov,avi,wmv,mkv,webm',
         ]);
     }

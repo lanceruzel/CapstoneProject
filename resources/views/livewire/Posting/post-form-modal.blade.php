@@ -6,13 +6,7 @@
                 <x-checkbox label="Include in compilation" wire:model='isIncluded' />
             </div>
 
-            <label class="w-full">
-                <textarea wire:model="content" rows="5" class="w-full bg-gray-50 text-sm font-medium rounded-lg border focus:outline-none focus:ring-0 focus:border-gray-400 p-3 resize-none {{$errors->has('content') ? 'border-red-500' : 'border-gray-100'}}" placeholder="Type here" style="resize: vertical"></textarea>
-                
-                @error('content')
-                    <span class="text-red-500 text-sm">{{ $message }}</span>
-                @enderror
-            </label>
+            <x-textarea label="" rows="5" wire:model="content" placeholder="Share your adventure!" shadowless />
 
             <x-errors only="media" />
 
