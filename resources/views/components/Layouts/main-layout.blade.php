@@ -66,6 +66,7 @@
 
     @if(auth()->user()->role == App\Enums\UserType::Store || auth()->user()->role == App\Enums\UserType::Travelpreneur)
         <livewire:StoreRegistration.store-register-form-modal />
+        <livewire:StoreRegistration.merchant-id-help-modal />
     @else
         <livewire:Affiliate.affiliate-dashboard-modal />
         <livewire:Affiliate.affiliate-payout-form-modal />

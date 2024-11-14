@@ -59,8 +59,14 @@
                 </div>
             
                 <div class="grid grid-cols-2 gap-3 w-full">
-                    <x-input class="max-lg:col-span-2" label="Merchant ID" wire:model="paypalMerchantId" shadowless />
-                    <x-input class="max-lg:col-span-2" label="Email" wire:model="paypalEmail" shadowless />
+                    <x-input class="max-lg:col-span-2" label="Merchant ID" wire:model="paypalMerchantId" shadowless>
+                        <x-slot name='corner'>
+                            <button class="underline" onclick="$openModal('merchantHelpIdModal')">
+                                Need Help?
+                            </button>
+                        </x-slot>
+                    </x-input>
+                    <x-input class="max-lg:col-span-2" label="Paypal Email" wire:model="paypalEmail" shadowless />
                 </div>
             </div>
 
