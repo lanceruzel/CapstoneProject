@@ -17,10 +17,10 @@ class ReportStats extends Component
 
         return view('livewire.Report.report-stats', [
             'totalReports' => $totalReports,
-            'totalFulfilled' => $reportCounts[Status::ReturnRequestSellerOrderCreated],
-            'totalForReview' => $reportCounts[Status::ReturnRequestReview],
-            'totalDecline' => $reportCounts[Status::Declined],
-            'totalAdminAction' => $reportCounts[Status::AdminProductSuspend]
+            'totalFulfilled' => $reportCounts[Status::ReturnRequestSellerOrderCreated] ?? 0,
+            'totalForReview' => $reportCounts[Status::ReturnRequestReview] ?? 0,
+            'totalDecline' => $reportCounts[Status::Declined] ?? 0,
+            'totalAdminAction' => $reportCounts[Status::AdminProductSuspend] ?? 0
         ]);
     }
 }

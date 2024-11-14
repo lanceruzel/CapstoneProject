@@ -32,10 +32,10 @@ class StoreRegistrationsStats extends Component
 
         return view('livewire.StoreRegistration.store-registrations-stats', [
             'totalRegistrations' => $totalRegistrations,
-            'totalAccepted' => $registrationCounts[Status::Accepted],
-            'totalForReview' => $registrationCounts[Status::ForReview],
-            'totalForSubmission' => $registrationCounts[Status::ForSubmission],
-            'totalForReSubmission' => $registrationCounts[Status::ForReSubmission],
+            'totalAccepted' => $registrationCounts[Status::Accepted] ?? 0,
+            'totalForReview' => $registrationCounts[Status::ForReview] ?? 0,
+            'totalForSubmission' => $registrationCounts[Status::ForSubmission] ?? 0,
+            'totalForReSubmission' => $registrationCounts[Status::ForReSubmission] ?? 0,
         ]);
     }
 }
