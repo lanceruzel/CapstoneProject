@@ -74,7 +74,7 @@
                                     Account Name
                                 </th>
                                 <td class="px-6 py-4">
-                                    {{ $user->storeInformation->paypal_name ? $user->storeInformation->paypal_name : 'None'}}
+                                    {{ $user->storeInformation->paypal_merchant_id ? $user->storeInformation->paypal_merchant_id : 'None'}}
                                 </td>
                             </tr>
                             <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
@@ -224,7 +224,7 @@
                                     Account Name
                                 </th>
                                 <td class="px-6 py-4">
-                                    {{ $user->storeInformation->paypal_name ? $user->storeInformation->paypal_name : 'None'}}
+                                    {{ $user->storeInformation->paypal_merchant_id ? $user->storeInformation->paypal_merchant_id : 'None'}}
                                 </td>
                             </tr>
                             <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">

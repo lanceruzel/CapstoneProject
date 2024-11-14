@@ -69,21 +69,104 @@ $storeRegistration = new StoreRegistration();
         <livewire:Affiliate.view-terms-and-condition-modal />
     @endif
 
-    <script
-      src="https://www.paypal.com/sdk/js?client-id=ATe6XOxr_O16kSbwVRv-dMnInI2E4BmCD32_GepoFj1irtqU1XwkkkUmegHh21h6-UNhCLwMvNCSAQvo&currency=USD"
-      data-sdk-integration-source="developer-studio"
-    ></script>
+    <script type="module">
+        let merchantIDs = [];
 
-    <script>
         const userId = document.querySelector('meta[name="user-id"]').getAttribute('content');
 
         document.addEventListener('livewire:init', () => {
-            total = 0;
+            let total = 0;
+            let formattedMerchant = null;
+            const clientId = 'ATe6XOxr_O16kSbwVRv-dMnInI2E4BmCD32_GepoFj1irtqU1XwkkkUmegHh21h6-UNhCLwMvNCSAQvo';
 
             Livewire.on('getTotal', (event) => {
                 total = event[0].total;
             });
 
+            Livewire.on('orders-merchant', (event) => {
+                handleMerchantData(event[0].merchants);
+            });
+
+            // Function to load the PayPal SDK
+            function loadPayPalScript(merchantIds) {
+                return new Promise((resolve, reject) => {
+                    const script = document.createElement('script');
+                    let baseUrl = `https://www.paypal.com/sdk/js?client-id=${clientId}&currency=USD&disable-funding=credit,card`;
+
+                    if (merchantIds.length === 1) {
+                        // console.log(merchantIds[0])
+                        // For a single merchant, add the ID directly to the URL
+                        baseUrl += `&merchant-id=${merchantIds[0]}`;
+                    } else {
+                        // For multiple merchants, use merchant-id=* in the URL and set data-merchant-id attribute
+                        baseUrl += `&merchant-id=*`;
+                        script.setAttribute('data-merchant-id', merchantIds.join(','));
+                    }
+
+                    script.src = baseUrl;
+                    script.setAttribute('data-sdk-integration-source', 'developer-studio');
+                    script.onload = () => resolve();
+                    script.onerror = () => reject(new Error('Failed to load PayPal SDK'));
+                    document.body.appendChild(script);
+                });
+            }
+
+            function renderPayPalButtons() {
+                paypal.Buttons({
+                    createOrder: function(data, actions) {
+                        return actions.order.create({
+                            purchase_units: formattedMerchant,
+                            application_context: {
+                                shipping_preference: "NO_SHIPPING"
+                            }
+                        });
+                    },
+                    onApprove: function(data, actions) {
+                        return actions.order.capture().then(function(details) {
+                            Livewire.dispatch('payment-completed', { 
+                                status: details.status, 
+                                references: details.purchase_units
+                            });
+                        });
+                    },
+                }).render('#paypal-button-container').then(() => {
+                    document.querySelector('#paypal-button-container').style.pointerEvents = 'none';
+                    document.querySelector('#paypal-button-container').style.opacity = '0.5';
+                });
+            }
+
+            // Function to handle merchant data
+            function handleMerchantData(merchants) {
+                const convertedToArray = Object.values(merchants);
+
+                formattedMerchant = convertedToArray.map((merchant) => ({
+                    amount: {
+                        value: merchant.total.toFixed(2),
+                        currency_code: 'USD'
+                    },
+                    payee: {
+                        email_address: merchant.seller.store_information.paypal_email
+                    },
+                    reference_id: merchant.seller.store_information.paypal_merchant_id
+                }));
+
+                merchantIDs = formattedMerchant.map((merchant) => merchant.reference_id);
+
+                // Load PayPal SDK and render buttons
+                loadPayPalScript(merchantIDs)
+                    .then(renderPayPalButtons)
+                    .catch(error => console.error('Error loading PayPal SDK:', error));
+            }
+
+            function enablePayPalButton() {
+                const container = document.querySelector('#paypal-button-container');
+                if (container) {
+                    container.style.pointerEvents = 'auto';
+                    container.style.opacity = '1';
+                }
+            }
+
+            // Additional Livewire event handlers
             Livewire.on('close-modal', (event) => {
                 $closeModal(event[0].modal);
             });
@@ -101,40 +184,12 @@ $storeRegistration = new StoreRegistration();
                     $wireui.notify({
                         icon: 'info',
                         title: 'Info!',
-                        description: 'You have received new notification!'
-                    })
-                }
-            );
-
-            paypal.Buttons({
-                createOrder: function(data, actions){
-                    return actions.order.create({
-                        purchase_units: [{
-                            amount: {
-                                value: total.toFixed(2)
-                            }
-                        }],
-                        application_context: {
-                            shipping_preference: "NO_SHIPPING"
-                        }
-                    })
-                },
-                onApprove: function(data, actions){
-                    return actions.order.capture().then(function(details){
-                        //reference number
-                        // console.log(details.purchase_units[0].payments.captures[0].id);
-                        Livewire.dispatch('payment-completed', { status: details.status, referenceID: details.purchase_units[0].payments.captures[0].id });
-                    })
-                },
-            }).render('#paypal-button-container').then(() => {
-                // Disable the button after rendering
-                document.querySelector('#paypal-button-container').style.pointerEvents = 'none';
-                document.querySelector('#paypal-button-container').style.opacity = '0.5'; 
-            });
+                        description: 'You have received a new notification!'
+                    });
+                });
 
             Livewire.on('enable-paypal-button', function() {
-                document.querySelector('#paypal-button-container').style.pointerEvents = 'auto';
-                document.querySelector('#paypal-button-container').style.opacity = '1'; 
+                enablePayPalButton()
             });
         });
     </script>

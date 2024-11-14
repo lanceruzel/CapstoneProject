@@ -19,7 +19,7 @@ class StoreInformation extends Model
         'requirements',
         'profile_bio',
         'profile_picture',
-        'paypal_name',
+        'paypal_merchant_id',
         'paypal_email'
     ];
 

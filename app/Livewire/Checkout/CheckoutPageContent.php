@@ -41,6 +41,8 @@ class CheckoutPageContent extends Component
         foreach ($this->checkedOutSellers as $checkedOutSeller) {
             $this->affiliate[$checkedOutSeller['seller']->id] = null; // Initialize the affiliate codes
         }
+        
+        $this->dispatch('orders-merchant', ['merchants' => $this->checkedOutSellers]);
     }
 
     public function getShippingInformationData($id){
@@ -121,8 +123,8 @@ class CheckoutPageContent extends Component
 
         return true;
     }
-    
-    public function placeOrder($status = null, $referenceID = null){
+
+    public function checkFirst(){
         $this->validateAffiliateInputs();
 
         if (!$this->checkCodePerStore()) {
@@ -131,7 +133,8 @@ class CheckoutPageContent extends Component
                 'title' => 'Info!',
                 'description' => 'You have applied an non existing or inactive affiliate code. Please refresh your browser.',
             ]);
-            return; // Stop further execution if the affiliate code check fails
+
+            return false; // Stop further execution if the affiliate code check fails
         }
 
         //Check if user haven't select shipping information
@@ -142,6 +145,125 @@ class CheckoutPageContent extends Component
                 'description' => 'Please select shipping information first.',
             ]);
 
+            return false;
+        }
+
+        return true;
+    }
+    
+    // public function placeOrder($status = null, $referenceID = null){
+    //     $this->validateAffiliateInputs();
+
+    //     if (!$this->checkCodePerStore()) {
+    //         $this->notification()->send([
+    //             'icon' => 'info',
+    //             'title' => 'Info!',
+    //             'description' => 'You have applied an non existing or inactive affiliate code. Please refresh your browser.',
+    //         ]);
+    //         return; // Stop further execution if the affiliate code check fails
+    //     }
+
+    //     //Check if user haven't select shipping information
+    //     if($this->shippingInformation == null){
+    //         $this->notification()->send([
+    //             'icon' => 'info',
+    //             'title' => 'Info!',
+    //             'description' => 'Please select shipping information first.',
+    //         ]);
+
+    //         return;
+    //     }
+
+    //     $paymentMethod = 'COD';
+    //     $isPaid = false;
+
+    //     if($status && $status == 'COMPLETED'){
+    //         $paymentMethod = 'Paypal';
+    //         $isPaid = true;
+    //     }
+
+    //     //Per Seller
+    //     foreach($this->checkedOutSellers as $checkedOutSeller){
+    //         $seller = $checkedOutSeller['seller'];
+    //         $discount = isset($checkedOutSeller['discount']) ? $checkedOutSeller['discount'] : 0;
+    //         $discountPercentage = isset($checkedOutSeller['applied_discount']) ? $checkedOutSeller['applied_discount'] : 0;
+    //         $products = $checkedOutSeller['products'];
+    //         $total = $checkedOutSeller['total'] + $this->shippingTotal;
+    //         $shippingInformation = $this->shippingInformation[0];
+
+    //         $commission = 0;
+
+    //         if($this->affiliate[$seller->id] != ''){
+    //             $rates = Affiliate::where('affiliate_code', $this->affiliate[$seller->id])
+    //                     ->where('status', Status::Active)
+    //                     ->pluck('rate');
+
+    //             $rate = floatval($rates[0]) / 100; 
+
+    //             $commission = $total * $rate;
+    //         }
+
+    //         try{
+    //             $storeOrder = $this->storeOrder($seller, $shippingInformation, $paymentMethod, $isPaid, $total, $this->affiliate[$seller->id], $commission, $referenceID, $discount, $discountPercentage);
+
+    //             if($storeOrder){
+    //                 //Notify Seller
+    //                 UserNotif::sendNotif($seller->id, 'You have new order.' , NotificationType::Order);
+
+    //                 if($paymentMethod == 'Paypal' && $isPaid){
+    //                     UserNotif::sendNotif(Auth::id(), 'You have successfully paid Order #' . $storeOrder->id . ' . Your payment reference number is #' . $referenceID . '.' , NotificationType::Order);
+    //                 }
+
+    //                 //Store Ordered Product
+    //                 foreach($products as $product){
+    //                     $storeOrderedProduct = $this->storeOrderedProducts($storeOrder->id, $product);
+
+    //                     if(!$storeOrderedProduct){
+    //                         $this->notification()->send([
+    //                             'icon' => 'error',
+    //                             'title' => 'Error!',
+    //                             'description' => 'Woops, theres an error submitting your ordered products.',
+    //                         ]);
+
+    //                         return;
+    //                     }
+    //                 }
+
+    //                 //Delete Cart Items
+    //                 if(CartItem::deleteCheckoutItems()){
+    //                     $this->notification()->send([
+    //                         'icon' => 'error',
+    //                         'title' => 'Error!',
+    //                         'description' => 'Woops, there\'s a problem removing your cart items',
+    //                     ]);
+
+    //                     return;
+    //                 }
+
+    //             }
+
+    //         }catch(\Exception $e){
+    //             $this->notification()->send([
+    //                 'icon' => 'error',
+    //                 'title' => 'Error!',
+    //                 'description' => 'Woops, its an error. ' . $e->getMessage() ,
+    //             ]);
+
+    //             return;
+    //         } 
+    //     }
+
+    //     $this->notification()->send([
+    //         'icon' => 'success',
+    //         'title' => 'Success!',
+    //         'description' => 'Your order/s has been successfully placed.',
+    //     ]);
+
+    //     return redirect()->route('orders');
+    // }
+
+    public function placeOrder($status = null, $references = null){
+        if(!$this->checkFirst()){
             return;
         }
 
@@ -175,7 +297,20 @@ class CheckoutPageContent extends Component
             }
 
             try{
-                $storeOrder = $this->storeOrder($seller, $shippingInformation, $paymentMethod, $isPaid, $total, $this->affiliate[$seller->id], $commission, $referenceID, $discount, $discountPercentage);
+                $referenceID = $this->getTransactionId($seller->storeInformation->paypal_email, $references);
+
+                $storeOrder = $this->storeOrder(
+                    $seller, 
+                    $shippingInformation, 
+                    $paymentMethod, 
+                    $isPaid, 
+                    $total, 
+                    $this->affiliate[$seller->id], 
+                    $commission, 
+                    $referenceID, 
+                    $discount, 
+                    $discountPercentage
+                );
 
                 if($storeOrder){
                     //Notify Seller
@@ -210,9 +345,7 @@ class CheckoutPageContent extends Component
 
                         return;
                     }
-
                 }
-
             }catch(\Exception $e){
                 $this->notification()->send([
                     'icon' => 'error',
@@ -231,6 +364,24 @@ class CheckoutPageContent extends Component
         ]);
 
         return redirect()->route('orders');
+    }
+
+    public function getTransactionId($sellerId, $references){
+        $referenceId = null;
+
+        if($references != null){
+            foreach($references as $reference) {
+                if ($reference['reference_id'] === $sellerId) {
+                    if (!empty($reference['payments']['captures'][0]['id'])) {
+                        $referenceId = $reference['payments']['captures'][0]['id'];
+                    }
+    
+                    break;
+                }
+            }
+        }
+
+        return $referenceId;
     }
 
     public function storeOrder($seller, $shippingInformation, $paymentMethod, $isPaid, $total, $code = null, $commission = null, $referenceID = null, $discount, $discountPercentage){

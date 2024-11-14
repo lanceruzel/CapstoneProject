@@ -22,7 +22,7 @@ return new class extends Migration
             $table->string('contact')->nullable();
             $table->string('country')->nullable();
             $table->string('state')->nullable();
-            $table->string('paypal_name')->nullable();
+            $table->string('paypal_merchant_id')->nullable();
             $table->string('paypal_email')->nullable();
             $table->json('requirements');
 

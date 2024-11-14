@@ -40,7 +40,7 @@ class ViewStoreRegistrationModal extends Component
             $this->email = $this->registration->email;
             $this->country = $this->registration->country;
             $this->state = $this->registration->state;
-            $this->paypalAccountName = $this->registration->paypal_name;
+            $this->paypalAccountName = $this->registration->paypal_merchant_id;
             $this->paypalEmail = $this->registration->paypal_email;
             $this->requirements = json_decode($this->registration->requirements);
         }

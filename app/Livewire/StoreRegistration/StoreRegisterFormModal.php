@@ -26,7 +26,7 @@ class StoreRegisterFormModal extends Component
 
     public $savedRequirements;
 
-    public $paypalAccountName;
+    public $paypalMerchantId;
     public $paypalEmail;
 
     public $dti_permit;
@@ -134,7 +134,7 @@ class StoreRegisterFormModal extends Component
             $storeInformation->contact = $validated['contact'];
             $storeInformation->country = $validated['country'];
             $storeInformation->state = $validated['state'];
-            $storeInformation->paypal_name = $validated['paypalAccountName'];
+            $storeInformation->paypal_merchant_id = $validated['paypalMerchantId'];
             $storeInformation->paypal_email = $validated['paypalEmail'];
 
             if($this->email != $this->user->storeInformation->email){
@@ -179,7 +179,7 @@ class StoreRegisterFormModal extends Component
                 'country' => 'required',
                 'contact' => 'required|min:5',
                 'state' => 'required|min:5',
-                'paypalAccountName' => 'required|min:5',
+                'paypalMerchantId' => 'required|min:5',
                 'paypalEmail' => 'required|email|min:5',
             ];
 

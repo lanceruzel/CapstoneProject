@@ -59,7 +59,7 @@
                 </div>
             
                 <div class="grid grid-cols-2 gap-3 w-full">
-                    <x-input class="max-lg:col-span-2" label="Account Name" wire:model="paypalAccountName" shadowless />
+                    <x-input class="max-lg:col-span-2" label="Merchant ID" wire:model="paypalMerchantId" shadowless />
                     <x-input class="max-lg:col-span-2" label="Email" wire:model="paypalEmail" shadowless />
                 </div>
             </div>
