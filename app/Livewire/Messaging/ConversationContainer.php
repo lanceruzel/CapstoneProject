@@ -117,7 +117,7 @@ class ConversationContainer extends Component
     public function formValidate(){
         return $this->validate([
             'message' => 'nullable|blasp_check',
-            'media.*' => 'nullable|mimes:png,jpg,jpeg,mp4,mov,avi,wmv,mkv,webm',
+            'media.*' => 'nullable|max:307200|mimes:png,jpg,jpeg,mp4,mov,avi,wmv,mkv,webm',
         ]);
     }
 

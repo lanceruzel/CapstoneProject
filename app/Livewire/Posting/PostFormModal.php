@@ -123,7 +123,7 @@ class PostFormModal extends Component
     public function formValidate(){
         return $this->validate([
             'content' => 'required|blasp_check',
-            'media.*' => $this->postUpdate ? '' : 'nullable|mimes:png,jpg,jpeg,mp4,mov,avi,wmv,mkv,webm',
+            'media.*' => $this->postUpdate ? '' : 'nullable|max:307200|mimes:png,jpg,jpeg,mp4,mov,avi,wmv,mkv,webm',
         ]);
     }
 

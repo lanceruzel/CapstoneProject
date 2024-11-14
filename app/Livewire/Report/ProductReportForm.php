@@ -144,12 +144,12 @@ class ProductReportForm extends Component
         $rules = [
             'reason' => 'required',
             'description' => 'required|min:10',
-            'media.*' => 'required|mimes:png,jpg,jpeg,mp4,mov,avi,wmv,mkv,webm',
+            'media.*' => 'required|max:307200|mimes:png,jpg,jpeg,mp4,mov,avi,wmv,mkv,webm',
             'selectedProducts' => 'required'
         ];
 
         if(empty($this->media) || !$this->media || $this->media == '[]'){
-            $rules['media'] = 'required|mimes:png,jpg,jpeg,mp4,mov,avi,wmv,mkv,webm';
+            $rules['media'] = 'required|max:307200|mimes:png,jpg,jpeg,mp4,mov,avi,wmv,mkv,webm';
         }
 
         return $this->validate($rules);

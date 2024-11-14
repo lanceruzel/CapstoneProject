@@ -45,11 +45,11 @@ class ProductAppealForm extends Component
     public function store(){
         $rules = [
             'content' => 'required|blasp_check',
-            'media.*' => 'nullable|mimes:png,jpg,jpeg,mp4,mov,avi,wmv,mkv,webm',
+            'media.*' => 'nullable|max:307200|mimes:png,jpg,jpeg,mp4,mov,avi,wmv,mkv,webm',
         ];
 
         if(empty($this->media) || !$this->media || $this->media == '[]'){
-            $rules['media'] = 'required|mimes:png,jpg,jpeg,mp4,mov,avi,wmv,mkv,webm';
+            $rules['media'] = 'required|max:307200|mimes:png,jpg,jpeg,mp4,mov,avi,wmv,mkv,webm';
         }
 
         $validated = $this->validate($rules);

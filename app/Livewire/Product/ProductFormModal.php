@@ -270,16 +270,16 @@ class ProductFormModal extends Component
 
         if($this->productUpdate){
             if(empty($this->media) || !$this->media || $this->media == '[]'){
-                $rules['media'] = 'required|mimes:png,jpg,jpeg,mp4,mov,avi,wmv,mkv,webm';
+                $rules['media'] = 'required|max:307200|mimes:png,jpg,jpeg,mp4,mov,avi,wmv,mkv,webm';
             }else{
                 if($this->media == $this->existingMediaPath || array_intersect($this->media,$this->existingMediaPath)){
                     $rules['media.*'] = '';
                 }else{
-                    $rules['media.*'] = 'required|mimes:png,jpg,jpeg,mp4,mov,avi,wmv,mkv,webm';
+                    $rules['media.*'] = 'required|max:307200|mimes:png,jpg,jpeg,mp4,mov,avi,wmv,mkv,webm';
                 }
             }
         }else{
-            $rules['media.*'] = 'required|mimes:png,jpg,jpeg,mp4,mov,avi,wmv,mkv,webm';
+            $rules['media.*'] = 'required|max:307200|mimes:png,jpg,jpeg,mp4,mov,avi,wmv,mkv,webm';
         }
 
         if ($this->hasVariation) {
