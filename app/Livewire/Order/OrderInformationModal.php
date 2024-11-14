@@ -3,7 +3,9 @@
 namespace App\Livewire\Order;
 
 use App\Enums\Status;
+use App\Mail\OrderAcceptedMail;
 use App\Models\Order;
+use Illuminate\Support\Facades\Mail;
 use Livewire\Component;
 use WireUi\Traits\WireUiActions;
 
@@ -94,6 +96,8 @@ class OrderInformationModal extends Component
 
         $this->order->status = Status::OrderSellerPreparing;
         $this->saveOrder();
+
+        Mail::to($this->order->user->email)->send(new OrderAcceptedMail($this->order));
     }
 
     public function updateTrackingNumber(){

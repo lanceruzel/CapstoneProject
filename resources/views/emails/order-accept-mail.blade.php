@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Order Cancelled - Refund Processed</title>
+    <title>Order Accepted by Seller</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -30,21 +30,38 @@
             margin-top: 20px;
             color: #777;
         }
+        table {
+            width: 100%;
+            margin-top: 20px;
+            border-collapse: collapse;
+        }
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #f4f4f4;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header">
-            <h2>Order Cancelled</h2>
+            <h2>Order Accepted by Seller</h2>
         </div>
         <div class="content">
-            <p>Dear {{ $order->name }},</p>
+            <p>Dear {{ $order->user->name() }},</p>
 
-            <p>We confirm that your recent order with Order ID <strong>{{ $order->id }}</strong> has been cancelled. A refund of <strong>${{ number_format($order->total, 2) }}</strong> has been processed to your original payment method.</p>
+            <p>We are pleased to inform you that your order with Order ID <strong>{{ $order->id }}</strong> has been accepted by the seller and will be shipped soon.</p>
 
-            <p>If you have any questions or need further assistance, please feel free to reach out to our support team through support@globeconnect.com.</p>
+            <p>You can track your order status in your account under the <strong>Orders</strong> section.</p>
 
-            <p>Best regards,<br>GlobeConnect</p>
+            <p>If you have any questions or need further assistance, please feel free to reach out to our support team at support@globeconnect.com.</p>
+
+            <p>Thank you for shopping with us!<br>GlobeConnect</p>
         </div>
         <div class="footer">
             <p>&copy; {{ date('Y') }} GlobeConnect. All rights reserved.</p>
