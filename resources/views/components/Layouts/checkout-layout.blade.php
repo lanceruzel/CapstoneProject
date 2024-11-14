@@ -141,7 +141,7 @@ $storeRegistration = new StoreRegistration();
 
                 formattedMerchant = convertedToArray.map((merchant) => ({
                     amount: {
-                        value: merchant.total.toFixed(2),
+                        value: (parseFloat(merchant.total.toFixed(2)) + 3 ).toFixed(2),
                         currency_code: 'USD'
                     },
                     payee: {

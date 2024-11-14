@@ -56,6 +56,7 @@
                                             @endisset 
                                         {{ App\Classes\CurrencyConverter::formatPrice($checkedOutSeller['total']) }}
                                 </p>
+                                
                                 @isset($checkedOutSeller['discount']) 
                                     <small>{{ $checkedOutSeller['applied_discount'] }}% discount applied</small>
                                 @endisset 
