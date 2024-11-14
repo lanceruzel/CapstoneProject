@@ -123,7 +123,7 @@ class Store extends Component{
     }
 
     public function getTotalOrders(){
-        return Order::where('seller_id' , Auth::id())->where('status', Status::OrderBuyerReceived)->count();
+        return Order::where('seller_id' , Auth::id())->count();
     }
 
     public function getTotalSales(){
