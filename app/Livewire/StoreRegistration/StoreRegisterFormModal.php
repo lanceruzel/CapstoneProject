@@ -57,6 +57,8 @@ class StoreRegisterFormModal extends Component
             $this->email = $this->user->storeInformation->email;
             $this->country = $this->user->storeInformation->country;
             $this->state = $this->user->storeInformation->state;
+            $this->paypalMerchantId = $this->user->storeInformation->paypal_merchant_id;
+            $this->paypalEmail = $this->user->storeInformation->paypal_email;
 
             $this->savedRequirements = json_decode($this->user->storeInformation->requirements);
 

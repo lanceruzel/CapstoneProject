@@ -28,7 +28,7 @@
                     To proceed, you will be redirected to the login page. Click the button below to continue:
                 </p>
                 
-                <x-button class="mt-3 w-full" label="Proceed" href="{{ route('signout') }}" />
+                <x-button class="mt-3 w-full" label="Sign in now" href="{{ route('signout') }}" />
 
                 <div class="absolute top-0 w-full h-full max-w-[1500px] z-[-10] object-auto">
                     <img src="{{ asset('assets/svg/13124789_5156365.svg') }}" alt="Traveling-cuate"/>

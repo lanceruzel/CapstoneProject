@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
 
-Route::group(['middleware' => 'guest', 'user_check'], function () {
+Route::group(['middleware' => ['guest', 'user_check']], function () {
     Route::get('/signin', function () {
         return view('livewire.Pages.signin');
     })->name('login');

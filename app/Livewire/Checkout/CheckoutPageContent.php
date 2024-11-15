@@ -33,7 +33,8 @@ class CheckoutPageContent extends Component
     protected $listeners = [
         'selected-shipping-address' => 'getShippingInformationData',
         'totalUpdated' => '$refresh',
-        'payment-completed' => 'placeOrder'
+        'payment-completed' => 'placeOrder',
+        'showPaymentErrorMessage'
     ];
 
     public function mount(){
@@ -52,6 +53,14 @@ class CheckoutPageContent extends Component
 
     public function getShippingInformationData($id){
         $this->shippingInformation = UserShippingInformation::findOrFail($id);
+    }
+
+    public function showPaymentErrorMessage(){
+        $this->dialog()->show([
+            'icon' => 'error',
+            'title' => 'Error!',
+            'description' => 'Whoops! It seems there was an issue processing your PayPal payment. You might want to try the Cash on Delivery option instead. If you need assistance, feel free to contact us at support@globeconnect.space.',
+        ]);
     }
 
     public function validateAffiliateInputs(){

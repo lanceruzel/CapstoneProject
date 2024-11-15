@@ -129,6 +129,9 @@ $storeRegistration = new StoreRegistration();
                             });
                         });
                     },
+                    onError: function(err){
+                        Livewire.dispatch('showPaymentErrorMessage');
+                    },
                 }).render('#paypal-button-container').then(() => {
                     document.querySelector('#paypal-button-container').style.pointerEvents = 'none';
                     document.querySelector('#paypal-button-container').style.opacity = '0.5';
@@ -155,7 +158,9 @@ $storeRegistration = new StoreRegistration();
                 // Load PayPal SDK and render buttons
                 loadPayPalScript(merchantIDs)
                     .then(renderPayPalButtons)
-                    .catch(error => console.error('Error loading PayPal SDK:', error));
+                    .catch(error => {
+                        console.error('Error loading PayPal SDK:', error);
+                    });
             }
 
             function enablePayPalButton() {
