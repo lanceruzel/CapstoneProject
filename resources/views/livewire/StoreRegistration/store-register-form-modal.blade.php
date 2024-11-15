@@ -192,13 +192,13 @@
             <img class="w-[400px] h-[400px]" src="{{ asset('assets/svg/for-review.svg') }}" alt="For Review and Validation"/>
         </div>
     @elseif($registrationStatus == App\Enums\Status::ForReSubmission)
-        <div class="w-full flex flex-col items-center justify-center">
-            <x-alert title="Your registration has been declined and need for resubmission." info>
+        <div class="w-full flex flex-col items-center justify-center gap-5">
+            <x-alert title="Your registration has been declined and need for an update or resubmission." info>
                 <span class="font-medium">Admin's Remarks:</span> {{ $savedRequirements->remarks }}
             </x-alert>
 
             {{-- Store Information --}}
-            <div class="flex flex-col gap-1 w-full pt-3">
+            <div class="flex flex-col gap-1 w-full">
                 <div>
                     <h1 class="col-span-2 text-xl font-semibold">Store Information</h1>
                     <small class="text-gray-500">(Note: The following information will be used to contact your store)</small>
@@ -267,13 +267,13 @@
                 </div>
             </div>
 
-            <div class="flex flex-col gap-1">
+            <div class="flex flex-col w-full">
                 <div>
                     <h1 class="col-span-2 text-xl font-semibold">Store Requirements</h1>
-                    {{-- <small class="text-gray-500">(Note: The following information will be used to contact your store)</small> --}}
+                    <small class="text-gray-500">(Note: The following are the only requirements you need to resubmit.)</small>
                 </div>
     
-                <div class="w-full space-y-3">
+                <div class="w-full space-y-3 -mt-3">
                     @foreach (array_slice((array) $savedRequirements, 0, -2) as $key => $requirement)
                         @if($requirement->status == App\Enums\Status::Declined)
                             @if($key == 'valid_id')

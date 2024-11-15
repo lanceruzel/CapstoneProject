@@ -19,15 +19,10 @@ class StoreRegistration
     }
 
     public function isRegistered(){
-        $isRegistered = true;
-
-        foreach(array_slice((array) $this->registrations, 0, -2) as $key => $registration) {
-            if($registration->status != Status::Accepted){
-                $isRegistered = false;
-                break;
-            }
+        if($this->registrations->status != Status::Accepted){
+            return false;
         }
 
-        return $isRegistered;
+        return true;
     }
 }

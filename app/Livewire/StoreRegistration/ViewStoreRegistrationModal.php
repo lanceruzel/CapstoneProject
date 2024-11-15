@@ -5,8 +5,10 @@ namespace App\Livewire\StoreRegistration;
 use App\Classes\UserNotif;
 use App\Enums\NotificationType;
 use App\Enums\Status;
+use App\Mail\StoreRegistrationUpdated;
 use App\Models\StoreInformation;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use Livewire\Component;
 use WireUi\Traits\WireUiActions;
 
@@ -26,6 +28,7 @@ class ViewStoreRegistrationModal extends Component
     public $requirements;
     public $paypalAccountName;
     public $paypalEmail;
+    public $oldRemarks;
 
     protected $listeners = [
         'clearStoreRegistrationData' => 'clearData',
@@ -43,6 +46,7 @@ class ViewStoreRegistrationModal extends Component
             $this->paypalAccountName = $this->registration->paypal_merchant_id;
             $this->paypalEmail = $this->registration->paypal_email;
             $this->requirements = json_decode($this->registration->requirements);
+            $this->oldRemarks = $this->requirements->remarks;
         }
     }
 
@@ -51,7 +55,22 @@ class ViewStoreRegistrationModal extends Component
             return;
         }
 
-        $this->requirements->remarks = $this->remarks;
+        if($this->remarks != null || trim($this->remarks) != '' || !empty($this->remarks)){
+            $this->requirements->remarks = $this->remarks;
+            $this->requirements->status = Status::ForReSubmission;
+            $this->update();
+        }else{
+            $this->dialog()->confirm([
+                'title' => 'Are you Sure?',
+                'description' => 'Approve this store\'s registration?',
+                'acceptLabel' => 'Yes, approve it',
+                'method' => 'update',
+                'params' => '',
+            ]);
+        }
+    }
+
+    public function update(){
         $this->registration->requirements = json_encode($this->requirements);
 
         if($this->registration->save()){
@@ -64,6 +83,8 @@ class ViewStoreRegistrationModal extends Component
             $this->dispatch('refreshStoreRegistrationTable');
 
             UserNotif::sendNotif($this->registration->user_id, 'Your store registration has been updated.' , NotificationType::StoreRegistration);
+            Mail::to($this->registration->user->email)->send(new StoreRegistrationUpdated($this->registration->user->name()));
+            
         }else{
             $this->notification()->send([
                 'icon' => 'error',
@@ -94,7 +115,6 @@ class ViewStoreRegistrationModal extends Component
         }
 
         $this->requirements->status = $isAccepted ? Status::Accepted : Status::ForReSubmission;
-
         return true;
     }
 
@@ -113,7 +133,8 @@ class ViewStoreRegistrationModal extends Component
             'country',
             'state',
             'requirements',
-            'registration'
+            'registration',
+            'remarks'
         ]);
     }
 

@@ -33,7 +33,7 @@
                 </div>
             
                 <div class="grid grid-cols-2 gap-3 w-full">
-                    <x-input class="max-lg:col-span-2" disabled label="Account Name" wire:model="paypalAccountName" shadowless />
+                    <x-input class="max-lg:col-span-2" disabled label="Merhchant ID" wire:model="paypalAccountName" shadowless />
                     <x-input class="max-lg:col-span-2" disabled label="Email" wire:model="paypalEmail" shadowless />
                 </div>
             </div>
@@ -111,8 +111,16 @@
                 </tbody>
             </table>
 
+            @if($oldRemarks)
+                <x-alert title="Past Remarks" secondary >
+                    <x-slot name="slot">
+                        {{ $oldRemarks }}
+                    </x-slot>
+                </x-alert>
+            @endif
+
             @if($requirements->status != App\Enums\Status::Accepted)
-                <x-textarea wire:model='remarks' label="Remarks" placeholder="Send remarks" shadowless />
+                <x-textarea wire:model='remarks' label="Remarks" placeholder="Leave empty if you approve this registration" shadowless />
             @endif
             
             <x-slot name="footer" class="flex justify-end gap-x-4">
