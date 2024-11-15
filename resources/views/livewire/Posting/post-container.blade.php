@@ -2,11 +2,15 @@
 <div class="w-full border p-5 rounded-lg bg-white">
     <div wire:ignore class="flex flex-row justify-between items-center gap-3">
         <div class="flex gap-2 items-center">
-            <div class="size-10 rounded-full">
+            <div class="size-10 rounded-full relative">
                 @if($post->user->profilePicture() == null)
                     <x-icon name="user" solid class="w-full h-full bg-gray-200 rounded-full p-2 border" />
                 @else
                     <img src="{{ asset('uploads') . '/' . $post->user->profilePicture() }}" class="w-full h-full object-cover rounded-full border">
+                @endif
+
+                @if($post->user->isOnline())
+                    <div class="absolute size-3 bg-green-500 rounded-full top-0 right-0"></div>
                 @endif
             </div>
 
@@ -165,12 +169,14 @@
     <hr>
 
     <div class="flex gap-2 flex-row items-center justify-items-center mt-4">
-        <div class="min-w-7 h-7 max-w-7 max-h-7 rounded-full">
+        <div class="min-w-7 h-7 max-w-7 max-h-7 rounded-full relative">
             @if(auth()->user()->profilePicture() == null)
-                <x-icon name="user" solid class="w-full h-full bg-gray-200 rounded-full p-2 border" />
+                <x-icon name="user" solid class="w-full h-full bg-gray-200 rounded-full border p-.5" />
             @else
                 <img src="{{ asset('uploads') . '/' . auth()->user()->profilePicture() }}" class="w-full h-full object-cover rounded-full border">
             @endif
+
+            <div class="absolute size-2.5 bg-green-500 rounded-full top-0 -right-1"></div>
         </div>
 
         <input placeholder="Add Comment...." class="w-full resize-none text-sm !bg-transparent px-4 py-2 focus:outline-none focus:!border-transparent focus:!ring-transparent" wire:model="commentContent"></input>

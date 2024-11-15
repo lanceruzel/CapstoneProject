@@ -111,11 +111,17 @@
     
             <div class="max-lg:p-5 lg:p-7 border rounded-lg mt-3 grid grid-cols-12 gap-3">
                 <div class="col-span-12 md:col-span-6 lg:col-span-4 flex max-sm:flex-col items-center justify-center gap-3">
-                    @if($product->seller->profilePicture() == null)
-                        <x-icon name="user" solid class="w-20 h-20 bg-gray-200 rounded-full p-2 border" />
-                    @else
-                        <img src="{{ asset('uploads') . '/' . $product->seller->profilePicture() }}" class="h-20 w-20 object-cover rounded-full shadow">
-                    @endif
+                    <div class="w-20 h-20 relative">
+                        @if($product->seller->profilePicture() == null)
+                            <x-icon name="user" solid class="w-full h-full bg-gray-200 rounded-full p-2 border" />
+                        @else
+                            <img src="{{ asset('uploads') . '/' . $product->seller->profilePicture() }}" class="h-20 w-20 object-cover rounded-full shadow">
+                        @endif
+
+                        @if($product->seller->isOnline())  
+                            <div class="absolute size-4 bg-green-500 rounded-full top-0 right-0.5"></div>
+                        @endif
+                    </div>
 
                     <div class="flex flex-col items-start justify-center gap-1">
                         <p class="text-lg font-medium">{{ $product->seller->name() }}</p>

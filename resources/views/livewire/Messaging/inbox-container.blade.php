@@ -53,11 +53,19 @@
                             @else
                                 <img src="{{ asset('uploads') . '/' . $convo->user1->profilePicture() }}" class="w-full h-full object-cover rounded-full border">
                             @endif
+
+                            @if($convo->user1->isOnline())  
+                                <div class="absolute size-3.5 bg-green-500 rounded-full top-0 right-0"></div>
+                            @endif
                         @else
                             @if($convo->user2->profilePicture() == null)
                                 <x-icon name="user" solid class="w-full h-full bg-gray-200 rounded-full p-2 border" />
                             @else
                                 <img src="{{ asset('uploads') . '/' . $convo->user2->profilePicture() }}" class="w-full h-full object-cover rounded-full border">
+                            @endif
+
+                            @if($convo->user2->isOnline())  
+                                <div class="absolute size-3.5 bg-green-500 rounded-full top-0 right-0"></div>
                             @endif
                         @endif
                     </div>

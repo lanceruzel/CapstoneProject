@@ -120,16 +120,24 @@
                     <!-- Left Side -->
                     <div class="col-span-12 lg:col-span-4 flex flex-col items-center justify-start gap-3">
                         <!-- Profile Picture -->
-                        <div class="relative h-28 w-28 md:h-40 md:w-40 rounded-full overflow-hidden border-[6px] bg-slate-400 border-gray-100">
-                            @if($user->profilePicture() == null)
-                                <div class="w-full h-full object-cover absolute bottom-10 right-1">
-                                    <i class="ri-user-3-fill ri-10x"></i>
-                                </div>
-                            @else
-                                <img src="{{ asset('uploads') . '/' . $user->profilePicture() }}" class="w-full h-full absolute object-cover">
-                            @endif
+                        <div class="relative">
+                            <div class="relative h-28 w-28 md:h-40 md:w-40 rounded-full overflow-hidden border-[6px] bg-slate-400 border-gray-100">
+                                @if($user->profilePicture() == null)
+                                    <div class="w-full h-full object-cover absolute bottom-10 right-1">
+                                        <i class="ri-user-3-fill ri-10x"></i>
+                                    </div>
+                                @else
+                                    <img src="{{ asset('uploads') . '/' . $user->profilePicture() }}" class="w-full h-full absolute object-cover">
+                                @endif
+                            </div>
                         </div>
-                        
+
+                        @if($user->isOnline())
+                            <x-badge positive label="Online" />
+                        @else
+                            <x-badge negative label="Offline" />
+                        @endif
+
                         <!-- User Location -->
                         @if($user->role == App\Enums\UserType::ContentCreator)
                             @if($user->userInformation->current_country)

@@ -2,12 +2,14 @@
 <div class="w-full border p-5 rounded-lg bg-white">
     <div wire:ignore class="flex flex-row justify-between items-center gap-3">
         <div class="flex gap-2 items-center">
-            <div class="size-10 rounded-full">
+            <div class="size-10 rounded-full relative">
                 @if($livestream->user->profilePicture() == null)
-                    <x-icon name="user" solid class="w-full h-full bg-gray-200 rounded-full p-2 border" />
+                    <x-icon name="user" solid class="w-full h-full bg-gray-200 rounded-full p-1 border" />
                 @else
                     <img src="{{ asset('uploads') . '/' . $livestream->user->profilePicture() }}" class="w-full h-full object-cover rounded-full border">
                 @endif
+
+                <div class="absolute size-2.5 bg-green-500 rounded-full top-0 right-0"></div>
             </div>
 
             <div class="leading-none">

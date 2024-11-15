@@ -22,11 +22,15 @@
                             </div>
         
                             <div class="flex gap-3">
-                                <div class="min-w-9 h-9 max-w-9 max-h-9 rounded-full">
+                                <div class="min-w-9 h-9 max-w-9 max-h-9 rounded-full relative">
                                     @if($comment->user->profilePicture() == null)
                                         <x-icon name="user" solid class="w-full h-full bg-gray-200 rounded-full border" />
                                     @else
                                         <img src="{{ asset('uploads') . '/' . $comment->user->profilePicture() }}" class="w-full h-full object-cover rounded-full border">
+                                    @endif
+
+                                    @if($comment->user->isOnline())  
+                                        <div class="absolute size-3 bg-green-500 rounded-full top-0 -right-1"></div>
                                     @endif
                                 </div>
         

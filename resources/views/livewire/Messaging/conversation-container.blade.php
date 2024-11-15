@@ -15,26 +15,42 @@
                             @else
                                 <img src="{{ asset('uploads') . '/' . $conversation->user1->profilePicture() }}" class="w-full h-full object-cover rounded-full border">
                             @endif
+
+                            @if($conversation->user1->isOnline())  
+                                <div class="absolute size-3 bg-green-500 rounded-full top-0 -right-1"></div>
+                            @endif
                         @else
                             @if($conversation->user2->profilePicture() == null)
                                 <x-icon name="user" solid class="w-full h-full bg-gray-200 rounded-full p-2 border" />
                             @else
                                 <img src="{{ asset('uploads') . '/' . $conversation->user2->profilePicture() }}" class="w-full h-full object-cover rounded-full border">
                             @endif
+
+                            @if($conversation->user2->isOnline())  
+                                <div class="absolute size-3 bg-green-500 rounded-full top-0 -right-1"></div>
+                            @endif
                         @endif
-                        {{-- <div class="w-2 h-2 bg-teal-500 rounded-full absolute right-0 bottom-0 m-px"></div> --}}
                     </div>
                     
                     <div class="cursor-pointer">
                         @if($conversation->user2->id != Auth::id())
                             <a href="{{ route('profile', $conversation->user2->username) }}" class="hover:no-underline hover:text-gray-700 text-base font-bold">{{  $conversation->user2->role == App\Enums\UserType::Store ? $conversation->user2->storeInformation->name : $conversation->user2->userInformation->fullname() }}</a>
+                            
+                            @if($conversation->user2->isOnline())  
+                                <div class="text-xs text-green-500 font-semibold">Online</div>
+                            @else
+                                <div class="text-xs text-gray-500 font-semibold">Offline</div>
+                            @endif
                         @else
                             <a href="{{ route('profile', $conversation->user1->username) }}" class="hover:no-underline hover:text-gray-700 text-base font-bold">{{  $conversation->user1->role == App\Enums\UserType::Store ? $conversation->user1->storeInformation->name : $conversation->user1->userInformation->fullname() }}</a>
-                        @endif
-                        
-                        {{-- <div class="text-xs text-green-500 font-semibold">Online</div> --}}
+                            
+                            @if($conversation->user1->isOnline())  
+                                <div class="text-xs text-green-500 font-semibold">Online</div>
+                            @else
+                                <div class="text-xs text-gray-500 font-semibold">Offline</div>
+                            @endif
+                         @endif 
                     </div>
-
                 </div> 
                 
 
@@ -55,7 +71,6 @@
                         </svg> 
                     </button>  --}}
                 </div>
-
             </div>
         @endif
             
@@ -310,7 +325,6 @@
                                 </div>
                                 <small>{{ date_format($message->created_at, "m/d/Y g:i A") }}</small> 
                             </div> 
-
                         @else
                             <!-- received -->
                             <div>
@@ -327,6 +341,10 @@
                                                 <x-icon name="user" solid class="w-full h-full bg-gray-200 rounded-full p-2 border" />
                                             @else
                                                 <img src="{{ asset('uploads') . '/' . $conversation->user2->profilePicture() }}" class="w-full h-full object-cover rounded-full border">
+                                            @endif
+
+                                            @if($conversation->user2->isOnline())  
+                                                <div class="absolute size-2.5 bg-green-500 rounded-full top-0 -right-1"></div>
                                             @endif
                                         @endif
                                     </div>

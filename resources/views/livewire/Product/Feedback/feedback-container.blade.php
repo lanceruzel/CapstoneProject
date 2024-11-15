@@ -7,11 +7,15 @@
 @endphp
 
 <div class="flex flex-row gap-3 py-5">
-    <div class="min-w-12 min-h-12 size-12 rounded-full">
+    <div class="min-w-12 min-h-12 size-12 rounded-full relative">
         @if($feedback->user->profilePicture() == null)
             <x-icon name="user" solid class="w-full h-full bg-gray-200 rounded-full p-2 border" />
         @else
             <img src="{{ asset('uploads') . '/' . $feedback->user->profilePicture() }}" class="w-full h-full object-cover rounded-full border">
+        @endif
+
+        @if($feedback->user->isOnline())  
+            <div class="absolute size-3 bg-green-500 rounded-full top-0 right-0"></div>
         @endif
     </div>
 

@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
 
-Route::group(['middleware' => 'guest'], function () {
+Route::group(['middleware' => 'guest', 'user_check'], function () {
     Route::get('/signin', function () {
         return view('livewire.Pages.signin');
     })->name('login');
@@ -37,7 +37,7 @@ Route::get('/signout', function () {
     return redirect()->route('login');
 })->middleware('auth')->name('signout');
 
-Route::group(['middleware' => ['role:store,travelpreneur,content-creator', 'verified']], function () {
+Route::group(['middleware' => ['role:store,travelpreneur,content-creator', 'verified', 'user_check']], function () {
     Route::get('/', function () {
         return view('livewire.Pages.home');
     })->name('home');
@@ -159,7 +159,7 @@ Route::group(['middleware' => 'role:admin'], function () {
     })->name('admin.report-appeals');
 });
 
-Route::group(['middleware' => ['role:store,travelpreneur', 'verified']], function () {
+Route::group(['middleware' => ['role:store,travelpreneur', 'verified', 'user_check']], function () {
     Route::get('/store/dashboard', function () {
         return view('livewire.Pages.store-dashboard');
     })->name('store.dashboard');

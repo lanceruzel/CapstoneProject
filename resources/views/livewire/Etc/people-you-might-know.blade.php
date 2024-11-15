@@ -12,11 +12,15 @@
         @if(count($users) > 0)
             @foreach ($users as $user)
                 <div class="flex items-center gap-3 capitalize">
-                    <a href="{{ route('profile', $user->username) }}">
+                    <a href="{{ route('profile', $user->username) }}" class="relative">
                         @if($user->profilePicture() == null)
                             <x-icon name="user" solid class="w-10 h-10 bg-gray-200 rounded-full p-2 border" />
                         @else
                             <img src="{{ asset('uploads') . '/' . $user->profilePicture() }}" class="object-cover rounded-full w-10 h-10 border">
+                        @endif
+
+                        @if($user->isOnline())  
+                            <div class="absolute size-3 bg-green-500 rounded-full top-0 -right-0.5"></div>
                         @endif
                     </a>
 
