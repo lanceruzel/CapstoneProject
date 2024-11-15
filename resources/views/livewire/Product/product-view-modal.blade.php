@@ -42,7 +42,7 @@
                         <div class="relative w-full h-full" uk-lightbox>
                             @if(App\Classes\FileTypeIdentifier::identify($media[0]) == 'video')
                                 <a data-type="video" class="relative" href="{{ asset('uploads/products') . '/' . $media[0] }}">
-                                    <video src="{{ asset('uploads/products') . '/' . $media[0] }}" class="sm:rounded-lg w-full h-full object-contai" alt="video"></video>
+                                    <video src="{{ asset('uploads/products') . '/' . $media[0] }}" class="sm:rounded-lg w-full h-full object-cover" alt="video"></video>
 
                                     <div class="absolute top-0 bottom-0 right-0 left-0 flex items-center justify-center">
                                         <x-icon name="play-circle" solid class="w-10 h-10" />
@@ -50,7 +50,7 @@
                                 </a>
                             @else
                                 <a href="{{ asset('uploads/products') . '/' . $media[0] }}">
-                                    <img src="{{ asset('uploads/products') . '/' . $media[0] }}" class="sm:rounded-lg w-full h-full object-contai" alt="image">
+                                    <img src="{{ asset('uploads/products') . '/' . $media[0] }}" class="sm:rounded-lg w-full h-full object-cover" alt="image">
                                 </a>
                             @endif
                         </div>

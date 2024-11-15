@@ -31,16 +31,9 @@
         <div>
             @if($selectedVariation != null)
                 <div class="flex items-center gap-x-3 p-3 justify-center w-full" x-data="{
-                    quantity: @entangle('quantity'),
-                    plus() { 
-                        this.quantity++ 
-                    },
-                    minus() { 
-                        (quantity >= 2) ? this.quantity-- : this.quantity
-                    }
-                }">
+                    quantity: @entangle('quantity')}">
                     <div>
-                        <x-number min="1" label="Quantity:" x-model="quantity" shadowless />
+                        <x-number min="1" max="1000" label="Quantity:" x-model="quantity" shadowless />
                     </div>
                 </div>
             @endif
