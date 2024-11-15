@@ -1,10 +1,10 @@
 <div class="relative hover:no-underline hover:text-gray-700 border shadow-sm rounded-lg cursor-pointer flex-1 bg-white overflow-hidden">
     <div onclick="$openModal('productViewModal')" wire:click="$dispatch('view-product-info', { id: {{ $product->id }} })">
-        <div class="h-[220px] rounded-t-lg border-b-2">
+        <div class="h-[220px] border-b">
             @if(App\Classes\FileTypeIdentifier::identify(json_decode($product->media)[0]) == 'video')
-                <video src="{{ asset('uploads/products') . '/' . json_decode($product->media)[0] }}" class="block w-full h-full object-fit rounded-t-lg bg-white" alt="video"></video>
+                <video src="{{ asset('uploads/products') . '/' . json_decode($product->media)[0] }}" class="block w-full h-full object-cover bg-white" alt="video"></video>
             @else
-                <img src="{{ asset('uploads/products') . '/' . json_decode($product->media)[0] }}" class="block w-full h-full object-fit rounded-t-lg bg-white" alt="image">
+                <img src="{{ asset('uploads/products') . '/' . json_decode($product->media)[0] }}" class="block w-full h-full object-cover bg-white" alt="image">
             @endif
         </div>
     

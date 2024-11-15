@@ -24,7 +24,7 @@
                                             <img src="{{ asset('uploads/products') . '/' . json_decode($product->media)[0] }}" class="object-cover w-full h-full inset-0" alt="image">
                                         @endif
                                     </div> 
-                                    <div class="absolute right-0 top-0 m-2 bg-white/60 rounded-full py-0.5 px-2 text-sm font-semibold dark:bg-slate-800/60">{{ $product->priceRange() }}</div>
+                                    <div class="absolute right-0 top-0 m-2 bg-white/60 rounded-full py-0.5 px-2 text-sm font-semibold dark:bg-slate-800/60">{{ $product->firstStockPrice() }}</div>
                                 </div>
                                 <div class="mt-3 w-full text-ellipsis line-clamp-2">{{ $product->name }}</div>
                             </div>

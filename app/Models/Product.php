@@ -91,6 +91,16 @@ class Product extends Model
         return $price;
     }
 
+    public function firstStockPrice() {
+        $variations = json_decode($this->variations);
+    
+        if(!empty($variations) && isset($variations[0]->price)){
+            return '$' . number_format((float) $variations[0]->price, 2);
+        }
+    
+        return null;
+    }
+
     public function formattedPriceRage(){
         $moneySign = '$';
         $currencyRate = CurrencyConverter::getRate(auth()->user()->currency);
