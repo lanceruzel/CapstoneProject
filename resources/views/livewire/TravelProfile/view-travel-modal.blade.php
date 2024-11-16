@@ -27,19 +27,58 @@
                         </div>
 
                         <div wire:ignore class="mt-3">
-                            @if(json_decode($post->images) != null)
-                                <div class="uk-position-relative uk-visible-toggle uk-light w-full" tabindex="-1" uk-slider>
-                                    <div class="uk-slider-items uk-child-width-1-2 uk-child-width-1-3@s uk-child-width-1-4@m h-[200px]" uk-lightbox="">
-                                        @foreach(json_decode($post->images) as $image)
-                                            <a class="mx-2 w-[200px] " href="{{ asset('uploads/posts') . '/' . $image }}">
-                                                <img src="{{ asset('uploads/posts') . '/' . $image }}" class="border-2 shadow-md h-full w-full object-cover inset-0" alt="">
+                            @if(json_decode($post->media) != null)
+                                @if(count(json_decode($post->media)) === 1)
+                                    <!-- post image -->
+                                    <div class="relative w-full h-full" uk-lightbox>
+                                        @if(App\Classes\FileTypeIdentifier::identify(json_decode($post->media)[0]) == 'video')
+                                            <a data-type="video" class="relative" href="{{ asset('uploads/posts') . '/' . json_decode($post->media)[0] }}">
+                                                <video src="{{ asset('uploads/posts') . '/' . json_decode($post->media)[0] }}" class="m:rounded-lg w-full h-full object-cover" alt="video"></video>
+                    
+                                                <div class="absolute top-0 bottom-0 right-0 left-0 flex items-center justify-center">
+                                                    <x-icon name="play-circle" solid class="w-10 h-10" />
+                                                </div>
                                             </a>
-                                        @endforeach
+                                        @else
+                                            <a href="{{ asset('uploads/posts') . '/' . json_decode($post->media)[0] }}">
+                                                <img src="{{ asset('uploads/posts') . '/' . json_decode($post->media)[0] }}" class="m:rounded-lg w-full h-full object-cover" alt="image">
+                                            </a>
+                                        @endif
                                     </div>
-                                
-                                    <x-mini-button flat black class="uk-position-center-left" rounded icon="chevron-left" uk-slider-item="previous" />
-                                    <x-mini-button flat black class="uk-position-center-right" rounded icon="chevron-right" uk-slider-item="next" />
-                                </div>
+                                @elseif(count(json_decode($post->media)) > 1)
+                                    <!-- slide images -->
+                                    <div class="relative uk-visible-toggle uk-slideshow w-full" tabindex="-1" uk-slideshow="animation: push;finite: true;min-height: 300; max-height: 350">
+                    
+                                        <ul class="uk-slideshow-items" uk-lightbox="" style="min-height: 350px;">
+                                            @foreach(json_decode($post->media) as $index => $item)
+                                                <li class="w-full sm:rounded-md" tabindex="-1" wire:key="update-media-{{ $index }}">
+                                                    @if(App\Classes\FileTypeIdentifier::identify($item) == 'video')
+                                                        <a data-type="video" class="relative" href="{{ asset('uploads/posts') . '/' . $item }}">
+                                                            <video src="{{ asset('uploads/posts') . '/' . $item }}" class="w-full h-full object-cover inset-0" alt="video"></video>
+                    
+                                                            <div class="absolute top-0 bottom-0 right-0 left-0 flex items-center justify-center">
+                                                                <x-icon name="play-circle" solid class="w-10 h-10" />
+                                                            </div>
+                                                        </a>
+                                                    @else
+                                                        <a href="{{ asset('uploads/posts') . '/' . $item }}">
+                                                            <img src="{{ asset('uploads/posts') . '/' . $item }}" class="w-full h-full object-cover inset-0" alt="image">
+                                                        </a>
+                                                    @endif
+                                                </li>
+                                            @endforeach
+                                        </ul>
+                    
+                                        <!-- navigation -->
+                                        <button type="button" class="absolute -left-3 -translate-y-1/2 bg-gray-100/50 backdrop-blur-xl rounded-full top-1/2 grid w-8 h-7 place-items-center border" uk-slideshow-item="previous">
+                                            <x-icon name="chevron-left" class="w-5 h-5" />
+                                        </button>
+                    
+                                        <button type="button" class="absolute -right-3 -translate-y-1/2 bg-gray-100/50 backdrop-blur-xl rounded-full top-1/2 grid w-8 h-7 place-items-center border uk-invisible" uk-slideshow-item="next">
+                                            <x-icon name="chevron-right" class="w-5 h-5" />
+                                        </button>
+                                    </div>
+                                @endif
                             @endif
                         </div>
                     </div>
