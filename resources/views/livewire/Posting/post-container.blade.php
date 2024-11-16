@@ -176,7 +176,7 @@
                 <img src="{{ asset('uploads') . '/' . auth()->user()->profilePicture() }}" class="w-full h-full object-cover rounded-full border">
             @endif
 
-            <div class="absolute size-2.5 bg-green-500 rounded-full top-0 -right-1"></div>
+            {{-- <div class="absolute size-2.5 bg-green-500 rounded-full top-0 -right-1"></div> --}}
         </div>
 
         <input placeholder="Add Comment...." class="w-full resize-none text-sm !bg-transparent px-4 py-2 focus:outline-none focus:!border-transparent focus:!ring-transparent" wire:model="commentContent"></input>
