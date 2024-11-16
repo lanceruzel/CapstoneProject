@@ -87,7 +87,7 @@
                                 @if($convo->lastMessage->content)
                                     <span>{{ $convo->lastMessage->content }}</span>
                                 @else
-                                    <span>Sent an media</span>
+                                    <span>Sent a media</span>
                                 @endif
                             @else
                                 <span>No message</span>
