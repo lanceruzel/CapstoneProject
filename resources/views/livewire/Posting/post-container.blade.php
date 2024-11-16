@@ -124,7 +124,7 @@
             <button wire:click='storeLike' class="group flex gap-1 items-center justify-center rounded-lg active:scale-110 transition-all text-sm font-medium h-full">
                 
                 @if($hasLike)
-                    <x-icon name="heart" solid/>  
+                    <x-icon name="heart" class="text-rose-500 bg-rose-200 p-0.5 rounded-full" solid/> 
                 @else
                     <x-icon name="heart" />  
                 @endif
