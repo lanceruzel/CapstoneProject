@@ -94,7 +94,7 @@
         </div>
 
         <x-slot name="footer" class="flex justify-end gap-x-4">
-            <x-button flat label="View Payout History" onclick="$openModal('affiliatePayoutHistoryModal')"/>
+            <x-button flat label="View Payout History" wire:click="$dispatch('get-payout-info', { id: {{ Auth::id() }} })" onclick="$openModal('affiliatePayoutHistoryModal')"/>
             <x-button label="View Invites" onclick="$openModal('affiliateInvitationsModal')" />
         </x-slot>
     </div>

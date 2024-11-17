@@ -11,4 +11,6 @@
 
     <livewire:Affiliate.affiliate-invite-form-modal />
     <livewire:Affiliate.view-terms-and-condition-modal />
+    <livewire:Affiliate.payout-history-modal />
+    <livewire:Affiliate.affiliate-update-modal />
 </x-layouts.store-layout>

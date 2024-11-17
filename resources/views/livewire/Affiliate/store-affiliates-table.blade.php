@@ -20,6 +20,10 @@
                     <x-dropdown.item>
                         <x-checkbox label="Invitation" wire:model.live="filterStatus" :value="App\Enums\Status::Invitation" />
                     </x-dropdown.item> 
+
+                    <x-dropdown.item>
+                        <x-checkbox label="Declined" wire:model.live="filterStatus" :value="App\Enums\Status::Declined" />
+                    </x-dropdown.item> 
                 </x-dropdown.header>
             </x-dropdown>
 
@@ -34,8 +38,9 @@
                     <th scope="col" class="px-6 py-3">Promoter</th>
                     <th scope="col" class="px-6 py-3">Affiliate Code</th>
                     <th scope="col" class="px-6 py-3">Total Commissioned</th>
-                    <th scope="col" class="px-6 py-3">Unclaimed Commissions</th>
+                    <th scope="col" class="px-6 py-3">Unclaimed</th>
                     <th scope="col" class="px-6 py-3">Rate Per Order</th>
+                    <th scope="col" class="px-6 py-3">Discount Rate</th>
                     <th scope="col" class="px-6 py-3">Status</th>
                     <th scope="col" class="px-6 py-3"></th>
                 </tr>
@@ -50,6 +55,7 @@
                             <td class="px-6 py-4">${{ number_format($affiliate->total, 2) }}</td>
                             <td class="px-6 py-4">${{ number_format($affiliate->unclaimed, 2) }}</td>
                             <td class="px-6 py-4">{{ $affiliate->rate }}%</td>
+                            <td class="px-6 py-4">{{ $affiliate->discount }}%</td>
                             <td class="px-6 py-4">
                                 @if($affiliate->status == App\Enums\Status::Invitation)
                                     <x-badge flat info label="Invitation" />

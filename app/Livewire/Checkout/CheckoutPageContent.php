@@ -100,6 +100,16 @@ class CheckoutPageContent extends Component
         if($affiliateInfo){
             foreach($this->checkedOutSellers as $key => $checkedOutSeller){
                 if($checkedOutSeller['seller']->id == $sellerId){
+                    if($affiliateInfo->status == Status::Inactive || $affiliateInfo->status == Status::Declined){
+                        $this->notification()->send([
+                            'icon' => 'info',
+                            'title' => 'Affiliate!',
+                            'description' => 'This affiliate code is currently inactive.',
+                        ]);
+
+                        return;
+                    }
+
                     $originalTotal = $checkedOutSeller['total'];
                     $discount = $originalTotal * ($affiliateInfo->discount/100); // discount
                     $newTotal = $originalTotal - $discount;

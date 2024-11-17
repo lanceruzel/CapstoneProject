@@ -181,7 +181,7 @@ class SignupForm extends Component
             'gender' => 'required',
             'country' => 'required',
             'state' => 'required',
-            'username' => 'required|min:5',
+            'username' => 'required|min:5|unique:users,username',
             'email' => 'required|email|unique:users',
             'password' => [
                 'required', 

@@ -12,15 +12,14 @@
                 <ul class="list-disc pl-4">
                     <li>You must be at least 18 years old to participate in the Program.</li>
                     <li>You must have a website, blog, or other online presence that is appropriate for promoting our products.</li>
-                    <li>We reserve the right to reject any affiliate application for any reason.</li>
                 </ul>
             
                 <br>
             
                 <h2>2. Promotion and Linking</h2>
                 <ul class="list-disc pl-4">
-                    <li>You are permitted to promote our products using the unique affiliate links or coupon codes provided by us.</li>
-                    <li>You may place these links or codes on your website, social media channels, or other online platforms.</li>
+                    <li>You are permitted to promote our products using the unique coupon codes provided by us.</li>
+                    <li>You may place these codes on your website, social media channels, or other online platforms.</li>
                     <li>Your promotions must be truthful and not misleading. You may not make any false or exaggerated claims about our products.</li>
                     <li>You may not use spam or other unethical marketing practices to promote our products.</li>
                 </ul>
@@ -38,12 +37,12 @@
                 <br>
             
                 <h2>4. Tracking and Commissions</h2>
-                <p>We will track sales generated through your affiliate links or coupon codes. You will earn a commission on qualified sales referred by you. The commission rate is <span class="font-bold">{{ $affiliate->rate }}%</span>. The discount rate provided to customers through your affiliate coupon code is <span class="font-bold">{{ $affiliate->discount }}%</span>. We reserve the right to withhold commission for any sales that are fraudulent, cancelled, or returned.</p>
+                <p>We will track sales generated through your coupon codes. You will earn a commission on qualified sales referred by you. The commission rate is <span class="font-bold">{{ $affiliate->rate }}%</span>. The discount rate provided to customers through your affiliate coupon code is <span class="font-bold">{{ $affiliate->discount }}%</span>. We reserve the right to withhold commission for any sales that are fraudulent, cancelled, or returned.</p>
             
                 <br>
             
                 <h2>5. Termination</h2>
-                <p>We may terminate your participation in the Program at any time for any reason. You may terminate your participation in the Program at any time. Upon termination, all rights and obligations under these Terms will cease, but any accrued and unpaid commissions will be paid out.</p>
+                <p>We may deactivate your participation in the Program at any time for any reason. Upon termination, all rights and obligations under these Terms will cease.</p>
             
                 <br>
             
@@ -52,12 +51,7 @@
 
                 <br>
             
-                <h2>7. Changes to the Terms</h2>
-                <p>We may update these Terms at any time. We will notify you of any changes by posting the updated Terms on our website. Your continued participation in the Program after the posting of any changes constitutes your acceptance of the updated Terms.</p>
-            
-                <br>
-            
-                <h2>8. Contact Us</h2>
+                <h2>9. Contact Us</h2>
                 <p>If you have any questions about these Terms, please contact us at our email {{ $affiliate->store->storeInformation->email }} or via phone number {{ $affiliate->store->storeInformation->contact }}.</p>
             </div>
             
@@ -71,10 +65,12 @@
                     <x-button flat negative wire:loading.attr="disabled" wire:click="decline" spinner="decline" label="Decline" />
                     <x-button wire:loading.attr="disabled" wire:click="accept" spinner="accept" label="Accept" />
                 @elseif($mode == 'seller')
+                    <x-button label="View Payout History" wire:click="$dispatch('get-payout-info', { id: {{ $affiliate->promoter_id }} })" onclick="$openModal('affiliatePayoutHistoryModal')"/>
+
                     @if($affiliate->status == App\Enums\Status::Active)
                         <x-button negative wire:loading.attr="disabled" wire:click="inactiveConfirmation" spinner="inactiveConfirmation" label="Deactivate Affiliation" />
                     @elseif($affiliate->status == App\Enums\Status::Inactive)
-                        <x-button positive wire:loading.attr="disabled" wire:click="activeConfirmation" spinner="activeConfirmation" label="Activate Affiliation" />
+                        <x-button positive wire:loading.attr="disabled" wire:click="activeConfirmation" onclick="$openModal('affiliateUpdateFormModal')" wire:click="$dispatch('get-affilaite-data', { id: {{ $affiliate->id }}, affiliateCode: '{{ $affiliate->affiliate_code }}' })" label="Update Affiliation" />
                     @endif
                 @endif
             </div>

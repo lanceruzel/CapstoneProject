@@ -212,7 +212,7 @@ class StoreSignupForm extends Component
             'country' => 'required',
             'contact' => 'required|min:5',
             'state' => 'required',
-            'username' => 'required|min:5',
+            'username' => 'required|min:5|unique:users,username',
             'email' => 'required|email|unique:users',
             'password' => [
                 'required', 

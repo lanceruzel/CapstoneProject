@@ -23,7 +23,7 @@ return new class extends Migration
             $table->string('account_name');
             $table->string('paypal_email');
             $table->float('amount');
-            $table->string('currency');
+            $table->string('code');
             $table->string('reference_id')->nullable();
             $table->text('status');
             $table->timestamps();

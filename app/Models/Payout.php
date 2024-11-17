@@ -15,7 +15,7 @@ class Payout extends Model
         'account_name',
         'paypal_email',
         'amount',
-        'currency',
+        'code',
         'reference_id',
         'status',
     ];

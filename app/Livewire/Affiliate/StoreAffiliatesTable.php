@@ -35,11 +35,11 @@ class StoreAffiliatesTable extends Component
             return Affiliate::query()
             ->Where(function ($query) use($filter) {
                 for ($i = 0; $i < count($filter); $i++){
-                    $query->orwhere('status', 'like',  '%' . $filter[$i] .'%');
+                    $query->orwhere('status', $filter[$i]);
                 }  
             })
             ->whereHas('user', function($query){
-                $query->whereHas('user_information', function($query){
+                $query->whereHas('userinformation', function($query){
                     $query->where('first_name', 'like', '%' . $this->search . '%')
                     ->orWhere('last_name', 'like', '%' . $this->search . '%');
                 });

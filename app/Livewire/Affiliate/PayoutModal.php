@@ -46,8 +46,8 @@ class PayoutModal extends Component
             $this->payout->reference_id = $validated['reference'];
             $this->payout->status = Status::PayoutSent;
         
-            if(auth()->user()->role == UserType::Store){
-                $this->deductAffiliate($this->payout->user_id, $this->payout->amount);
+            if(auth()->user()->role != UserType::ContentCreator){
+                $this->deductAffiliate($this->payout->code, $this->payout->amount);
             }
 
             if($this->payout->save()){
@@ -70,11 +70,8 @@ class PayoutModal extends Component
         }
     }
 
-    public function deductAffiliate($userID, $amount){
-        $affiliate = Affiliate::where('store_id', Auth::id())
-            ->where('promoter_id', $userID)
-            ->where('status', '<>', Status::Declined)
-            ->first();
+    public function deductAffiliate($code, $amount){
+        $affiliate = Affiliate::where('affiliate_code', $code)->first();
 
         if($affiliate){
             $affiliate->unclaimed -= $amount;
