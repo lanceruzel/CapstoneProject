@@ -9,7 +9,9 @@
                     <img src="{{ asset('uploads') . '/' . $livestream->user->profilePicture() }}" class="w-full h-full object-cover rounded-full border">
                 @endif
 
-                <div class="absolute size-2.5 bg-green-500 rounded-full top-0 right-0"></div>
+                @if($livestream->user->isOnline())
+                    <div class="absolute size-2.5 bg-green-500 rounded-full top-0 right-0"></div>
+                @endif
             </div>
 
             <div class="leading-none">

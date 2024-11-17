@@ -3,8 +3,10 @@
 namespace App\Livewire\Affiliate;
 
 use App\Enums\Status;
+use App\Mail\AffiliateUpdatePositive;
 use App\Models\Affiliate;
 use App\Models\Payout;
+use Illuminate\Support\Facades\Mail;
 use Livewire\Component;
 use WireUi\Traits\WireUiActions;
 
@@ -78,6 +80,8 @@ class AffiliateUpdateModal extends Component
             $this->dispatch('close-modal', ['modal' => 'affiliateUpdateFormModal']);
             $this->dispatch('close-modal', ['modal' => 'affiliateTermsAndConditionModal']);
             $this->dispatch('refresh-affiliate-tables');
+
+            Mail::to($this->affiliate->user->email)->send(new AffiliateUpdatePositive($this->affiliate->store->name(), $this->affiliate->user->name()));
         }
     }
 

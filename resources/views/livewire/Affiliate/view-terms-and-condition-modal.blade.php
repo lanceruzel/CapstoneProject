@@ -68,7 +68,7 @@
                     <x-button label="View Payout History" wire:click="$dispatch('get-payout-info', { id: {{ $affiliate->promoter_id }} })" onclick="$openModal('affiliatePayoutHistoryModal')"/>
 
                     @if($affiliate->status == App\Enums\Status::Active)
-                        <x-button negative wire:loading.attr="disabled" wire:click="inactiveConfirmation" spinner="inactiveConfirmation" label="Deactivate Affiliation" />
+                        <x-button negative wire:loading.attr="disabled" wire:click="inactiveConfirmation" spinner="inactive" label="Deactivate Affiliation" />
                     @elseif($affiliate->status == App\Enums\Status::Inactive)
                         <x-button positive wire:loading.attr="disabled" wire:click="activeConfirmation" onclick="$openModal('affiliateUpdateFormModal')" wire:click="$dispatch('get-affilaite-data', { id: {{ $affiliate->id }}, affiliateCode: '{{ $affiliate->affiliate_code }}' })" label="Update Affiliation" />
                     @endif

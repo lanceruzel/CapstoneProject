@@ -5,8 +5,10 @@ namespace App\Livewire\Affiliate;
 use App\Classes\UserNotif;
 use App\Enums\NotificationType;
 use App\Enums\Status;
+use App\Mail\AffiliateUpdateNegative;
 use App\Models\Affiliate;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 use Livewire\Component;
 use WireUi\Traits\WireUiActions;
 
@@ -60,7 +62,29 @@ class ViewTermsAndConditionModal extends Component
 
     public function inactive(){
         $this->affiliate->status = Status::Inactive;
-        $this->saveAffiliate();
+
+        try{
+            if($this->affiliate->save()){
+                $this->notification()->send([
+                    'icon' => 'success',
+                    'title' => 'Success!',
+                    'description' => 'Successfully updated.',
+                ]);
+    
+                $this->dispatch('close-modal', ['modal' => 'affiliateTermsAndConditionModal']);
+                $this->dispatch('refresh-invitation-modals');
+                $this->dispatch('refresh-affiliate-tables');
+                Mail::to($this->affiliate->user->email)->send(new AffiliateUpdateNegative($this->affiliate->store->name(), $this->affiliate->user->name(), $this->affiliate->store->storeInformation->email));
+            }
+        }catch(\Exception $e){
+            $this->notification()->send([
+                'icon' => 'error',
+                'title' => 'Error!',
+                'description' => 'Woops, its an error.',
+            ]);
+
+            Log::error('Error ViewTermsAndConfition: ' . $e->getMessage());
+        }
     }
 
     public function accept(){
