@@ -27,12 +27,20 @@
                 <span class="font-medium">Variation: </span>{{ $cartItem->variation }}
             </p>
 
-            @if($status != null)
-                <x-badge flat negative class="mt-2" label="{{ $status }}" />
+            @if($stocksAvailable >= 100)
+                <x-badge flat positive class="mt-2" label="Stocks available x{{ $stocksAvailable }}" />
+            @elseif($stocksAvailable >= 50 && $stocksAvailable < 100)
+                <x-badge flat warning class="mt-2" label="Stocks available x{{ $stocksAvailable }}" />
+            @elseif($stocksAvailable >= 20 && $stocksAvailable < 50)
+                <x-badge flat warning class="mt-2" label="Stocks available x{{ $stocksAvailable }}" />
+            @elseif($stocksAvailable > 3 && $stocksAvailable < 20)
+                <x-badge flat negative class="mt-2" label="Stocks available x{{ $stocksAvailable }}" />
+            @elseif($stocksAvailable <= 3)
+                {{-- <x-badge flat negative class="mt-2" label="No stocks available" /> --}}
             @endif
 
-            @if($stocksAvailable > 0 && $stocksAvailable <= 20)
-                <x-badge flat warning class="mt-2" label="Stocks available x{{ $stocksAvailable }}" />
+            @if($status != null)
+                <x-badge flat negative class="mt-2" label="{{ $status }}" />
             @endif
         </div>
     </td>

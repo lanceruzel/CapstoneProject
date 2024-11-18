@@ -47,7 +47,7 @@ class CartItemContainer extends Component
     
                     $this->price = $variation->price;
 
-                    if ($variation->stocks == 0) {
+                    if ($variation->stocks < 3) {
                         $this->status = 'Stocks unavailable';
                     }
     
