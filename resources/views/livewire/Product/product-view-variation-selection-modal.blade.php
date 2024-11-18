@@ -65,7 +65,7 @@
                             }">
                                 <x-button icon="minus" x-on:click="decrement()" x-bind:disabled="value <= min" />
 
-                                <label class="rounded-md focus-within:ring-primary-600 bg-background-white dark:bg-background-dark relative flex justify-between gap-x-2 items-center transition-all ease-in-out duration-150 ring-1 ring-inset ring-gray-300 focus-within:ring-2 outline-0 pl-3 pr-3 py-2 invalidated:bg-negative-50 invalidated:ring-negative-500 invalidated:dark:ring-negative-700 invalidated:dark:bg-negative-700/10 invalidated:dark:ring-negative-600">
+                                <label class="rounded-md focus-within:ring-primary-600 bg-background-white dark:bg-background-dark relative flex justify-between gap-x-2 items-center transition-all ease-in-out duration-150 ring-1 ring-inset ring-gray-300 focus-within:ring-2 outline-0 pl-3 pr-3 py-2 invalidated:bg-negative-50 invalidated:ring-negative-500 invalidated:dark:bg-negative-700/10 invalidated:dark:ring-negative-600">
                                     <input class="!w-[50px] !text-center bg-transparent block border-0 text-gray-900 dark:text-gray-400 p-0 outline-none ring-0 sm:text-sm sm:leading-6 focus:ring-0 focus:border-0 placeholder:text-gray-400 dark:placeholder:text-gray-300 invalidated:text-negative-800 invalidated:dark:text-negative-600 invalidated:placeholder-negative-400 invalidated:dark:placeholder-negative-600/70" 
                                         type="number"
                                         x-model="value"
