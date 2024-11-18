@@ -99,11 +99,7 @@
                     
                     <div class="flex max-lg:justify-center lg:justify-end items-center gap-3">
                         @if(auth()->user()->role != UserType::Store && auth()->user()->role != 'admin')
-                            @if(count($variations) > 1)
-                                <x-button onclick="$openModal('variationSelectionModal')" wire:click="$dispatch('view-variations-info', { id: {{ $product->id }} })" label="Add to cart" />
-                            @else
-                                <x-button wire:click="store_toCart" label="Add to cart" />
-                            @endif
+                            <x-button onclick="$openModal('variationSelectionModal')" wire:click="$dispatch('view-variations-info', { id: {{ $product->id }} })" label="Add to cart" />
                         @endif
                     </div>
                 </div>  

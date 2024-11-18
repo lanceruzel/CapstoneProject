@@ -31,6 +31,10 @@ class ProductViewVariationSelectionModal extends Component
         
         if($this->product){
             $this->variations = json_decode($this->product->variations);
+
+            if(count($this->variations) == 1){
+                $this->selectedVariation = $this->variations[0]->name;
+            }
         }
     }
 
