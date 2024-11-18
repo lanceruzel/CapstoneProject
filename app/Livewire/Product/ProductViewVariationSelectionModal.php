@@ -43,6 +43,14 @@ class ProductViewVariationSelectionModal extends Component
             'quantity' => 'required',
         ]);
 
+        if($this->quantity == '' || $this->quantity == null){
+            $this->quantity = 1;
+        }
+
+        if($this->quantity < 1){
+            $this->quantity = 1;
+        }
+
         if($this->selectedVariation == null){
             $this->notification()->send([
                 'icon' => 'info',
@@ -128,6 +136,10 @@ class ProductViewVariationSelectionModal extends Component
         $this->variations = null;
         $this->selectedVariation = null;
         $this->quantity = 1;
+
+        $this->reset([
+            'product'
+        ]);
     }
 
     public function render()
