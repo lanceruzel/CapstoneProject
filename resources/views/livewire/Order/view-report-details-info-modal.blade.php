@@ -109,16 +109,16 @@
                     </table>
                 </div>
 
-                <x-errors only="images" />
+                <x-errors only="media" />
 
-                <p class="text-gray-600 mt-3">Images</p>
+                <p class="text-gray-600 mt-3">Media</p>
 
-                @if($images)
+                @if($media)
                     <div class="max-w-full flex gap-4 overflow-x-auto p-3" uk-lightbox>
-                        @foreach($images as $key => $image)
+                        @foreach($media as $key => $item)
                             <div class="flex-shrink-0 w-56 h-56 relative">
-                                <a href="{{ is_object($image) && method_exists($image, 'temporaryUrl') ? $image->temporaryUrl() : asset('uploads/report') . '/' . $image }}">
-                                    <img src="{{ is_object($image) && method_exists($image, 'temporaryUrl') ? $image->temporaryUrl() : asset('uploads/report') . '/' . $image }}" alt="Uploaded Image" accept="image/png, image/jpeg" class="w-full h-full object-cover rounded-lg shadow border">
+                                <a href="{{ is_object($item) && method_exists($item, 'temporaryUrl') ? $item->temporaryUrl() : asset('uploads/report') . '/' . $item }}">
+                                    <img src="{{ is_object($item) && method_exists($item, 'temporaryUrl') ? $item->temporaryUrl() : asset('uploads/report') . '/' . $item }}" alt="Uploaded Image" accept="image/png, image/jpeg" class="w-full h-full object-cover rounded-lg shadow border">
                                 </a>
                             </div>  
                         @endforeach

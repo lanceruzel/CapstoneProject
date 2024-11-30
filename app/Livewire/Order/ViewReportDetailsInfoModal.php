@@ -9,7 +9,7 @@ class ViewReportDetailsInfoModal extends Component
 {
     public $report;
 
-    public $images;
+    public $media;
     public $description;
     public $products;
     public $type;
@@ -25,7 +25,7 @@ class ViewReportDetailsInfoModal extends Component
 
         if($this->report){
             $this->description = $this->report->description;
-            $this->images = json_decode($this->report->images);
+            $this->media = json_decode($this->report->media);
             $this->type = $this->report->type;
         }
     }
@@ -33,7 +33,7 @@ class ViewReportDetailsInfoModal extends Component
     public function clearData(){
         $this->reset([
             'report',
-            'images',
+            'media',
             'description',
             'products',
             'type'

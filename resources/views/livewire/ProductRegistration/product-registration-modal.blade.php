@@ -61,14 +61,14 @@
                     </div>
                 @endif
                 
-                <x-errors only="images.*" />
+                <x-errors only="media" />
 
-                @if($images)
+                @if($media)
                     <div class="max-w-full flex gap-4 overflow-x-auto p-3 pt-5" uk-lightbox>
-                        @foreach($images as $key => $image)
+                        @foreach($media as $key => $item)
                             <div class="flex-shrink-0 w-56 h-56 relative">
-                                <a href="{{ is_object($image) && method_exists($image, 'temporaryUrl') ? $image->temporaryUrl() : asset('uploads/products') . '/' . $image }}">
-                                    <img src="{{ is_object($image) && method_exists($image, 'temporaryUrl') ? $image->temporaryUrl() : asset('uploads/products') . '/' . $image }}" alt="Uploaded Image" accept="image/png, image/jpeg" class="w-full h-full object-cover rounded-lg shadow border">
+                                <a href="{{ is_object($item) && method_exists($item, 'temporaryUrl') ? $item->temporaryUrl() : asset('uploads/products') . '/' . $item }}">
+                                    <img src="{{ is_object($item) && method_exists($item, 'temporaryUrl') ? $item->temporaryUrl() : asset('uploads/products') . '/' . $item }}" alt="Uploaded Image" accept="image/png, image/jpeg" class="w-full h-full object-cover rounded-lg shadow border">
                                 </a>
 
                                 {{-- <button wire:click="deleteImage({{ $key }})" class="absolute -top-5 -right-3.5 active:scale-95 transition-all">

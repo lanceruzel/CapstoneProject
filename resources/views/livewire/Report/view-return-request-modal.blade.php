@@ -104,7 +104,7 @@
 
                 <x-errors only="media" />
 
-                <p class="text-gray-600 mt-3">Images</p>
+                <p class="text-gray-600 mt-3">Media</p>
 
                 @if($media)
                     <div class="max-w-full flex gap-4 overflow-x-auto p-3" uk-lightbox>

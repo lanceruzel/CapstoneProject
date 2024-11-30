@@ -13,7 +13,7 @@ class ProductRegistrationModal extends Component
 {
     use WireUiActions;
 
-    public $images;
+    public $media;
     public $name;
     public $description;
     public $category;
@@ -40,7 +40,7 @@ class ProductRegistrationModal extends Component
         $this->product = Product::findOrFail($id);
 
         if ($this->product) {
-            $this->images = json_decode($this->product->images);
+            $this->media = json_decode($this->product->media);
             $this->name = $this->product->name;
             $this->description = $this->product->description;
             $this->category = $this->product->category;
